@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+require('dotenv').config({ path: './environments/.env'});
 
 var app = require('../app');
 var debug = require('debug')('prelloproject:server');
@@ -12,7 +13,7 @@ var socketIO = require('socket.io')
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT);
 app.set('port', port);
 
 /**

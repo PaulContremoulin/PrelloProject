@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 
-export const socket = io.connect('localhost:3000');
+export const socket = io.connect("localhost:5000");
 
 export const socketMiddleware = function (socket) {
     return function () {
