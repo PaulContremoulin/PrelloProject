@@ -28,7 +28,7 @@ passport.use('jwt', new JWTStrategy({
     },
     function (jwtPayload, cb) {
         //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-        return User.findById(jwtPayload.id)
+        return User.findById(jwtPayload.data._id)
             .then(user => {
                 return cb(null, user);
             })
@@ -42,33 +42,27 @@ passport.use('signup', new LocalStrategy({
         passReqToCallback : true
     },
     function(req, username, password, done) {
-        // find a user in Mongo with provided username
-        User.findOne({'username':username},function(err, user) {
-            // In case of any error return
-            if (err){
-                console.log('Error in SignUp: '+err);
-                return done(err);
-            }
-            // already exists
-            if (user) {
-                console.log('User already exists');
-                return done(null, false, { message: 'User Already Exists' });
-            } else {
-                // if there is no user with that username
-                // create the user
-                var newUser = new User();
-                // set the user's local credentials
-                newUser.username = username;
-                newUser.firstName = req.param('firstName');
-                newUser.lastName = req.param('lastName');
-                newUser.email = req.param('email');
-                newUser.salt = crypto.getSalt();
-                newUser.hash = crypto.sha512(password, newUser.salt).passwordHash;
+        // if there is no user with that username
+        // create the user
+        let newUser = new User({
+            username: username,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email
+        });
+        // set the user's local credentials
+        newUser.salt = crypto.getSalt();
+        newUser.hash = crypto.sha512(password, newUser.salt).passwordHash;
 
+        newUser.validate(function (error) {
+            if (error) {
+                return done(null, false, {message: error});
+            }
+            else {
                 // save the user
-                newUser.save(function(err) {
-                    if (err){
-                        console.log('Error in Saving user: '+err);
+                newUser.save(function (err) {
+                    if (err) {
+                        console.log('Error in Saving user: ' + err);
                         throw err;
                     }
                     console.log('User Registration successful');
@@ -76,5 +70,4 @@ passport.use('signup', new LocalStrategy({
                 });
             }
         });
-    }
-));
+    }));

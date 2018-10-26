@@ -1,17 +1,54 @@
 let mongoose = require('mongoose');
 let crypto = require('../config/crypto');
+var uniqueValidator = require('mongoose-unique-validator');
 
 let Schema = mongoose.Schema;
 
 let userSchema = new Schema({
-    id: String,
-    username: String,
-    firstName: String,
-    lastName: String,
-    email: String,
-    hash: String,
-    salt: String
+    username: {
+        required  : true,
+        unique   : true,
+        minlength : 3,
+        type      : String
+    },
+    firstName: {
+        required  : true,
+        minlength : 3,
+        type      : String
+    },
+    lastName: {
+        required  : true,
+        minlength : 3,
+        type      : String
+    },
+    email: {
+        required : true,
+        unique   : true,
+        type     : String,
+        match    : [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    },
+    hash: {
+        type : String,
+        select : true
+    },
+    salt: {
+        type : String,
+        select : true
+    }
+},
+{
+    versionKey: false
 });
+
+userSchema.plugin(uniqueValidator);
+
+/**
+ * give the user's fullName
+ * @returns {string} the user fullName
+ */
+userSchema.methods.fullName = function() {
+    return this.lastName + ' ' + this.firstName;
+};
 
 /**
  * method to valid the password given
@@ -22,6 +59,7 @@ userSchema.methods.validPassword = function(password) {
     let payloads = crypto.sha512(password, this.salt);
     return payloads.passwordHash === this.hash;
 };
+
 
 /**
  * method to set the password
@@ -37,6 +75,14 @@ userSchema.methods.setPassword = function(oldPassword, newPassword) {
     }
     return false
 };
+
+userSchema.methods.toJSON = function() {
+    var json = this.toObject();
+    delete json.salt;
+    delete json.hash;
+    delete json._id;
+    return json;
+}
 
 let User = mongoose.model('User', userSchema);
 
