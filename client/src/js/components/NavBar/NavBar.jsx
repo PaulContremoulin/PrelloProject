@@ -1,6 +1,6 @@
 // Modules
 import React from 'react';
-
+import './NavBar.css';
 // Css...
 
 // Actions & Constant
@@ -9,7 +9,7 @@ import React from 'react';
 export class NavBar extends React.Component {
     render() {
         return (
-            <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+            <nav className="navbar navbar-expand-lg">
                 <a className="navbar-brand" href="#">Prello</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

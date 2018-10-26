@@ -1,5 +1,7 @@
 // Modules
 import React from 'react';
+import './Login.css';
+import Ionicon from 'react-ionicons'
 
 // Css...
 
@@ -37,19 +39,36 @@ export class Login extends React.Component {
                         <h3>Sign In</h3>
                     </div>
                 </div>
-                <div className="container">
+                <div className="loginForm container">
                     <div className="row">
                         <div className="col-sm-6 offset-sm-3">
                             <form>
                                 <div className="form-group">
-                                    <label htmlFor="exampleInputEmail1">Email address</label>
-                                    <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Enter email"/>
+                                    <div className="row">
+                                        <div className="col-2 col-md-1">
+                                            <Ionicon icon="md-contact"/>
+                                        </div>
+                                        <div className="col-10 col-md-11">
+                                            <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Enter email address"/>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="exampleInputPassword1">Password</label>
-                                    <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
+                                    <div className="row">
+                                        <div className="col-2 col-md-1">
+                                            <Ionicon icon="md-unlock"/>
+                                        </div>
+                                        <div className="col-10 col-md-11">
+                                            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Enter password"/>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button type="submit" className="btn btn-primary">Submit</button>
+                                <div className="text-center">
+                                    <button type="submit" className="btn btn-primary">Sign In</button>
+                                </div>
+                                <div className="buttonGithub text-center">
+                                    <button type="submit" className="btn"><Ionicon icon="logo-github"/> Sign In with Github</button>
+                                </div>
                             </form>
                         </div>
                     </div>
