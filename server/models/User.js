@@ -6,8 +6,8 @@ let Schema = mongoose.Schema;
 let userSchema = new Schema({
     id: String,
     username: String,
-    firstname: String,
-    lastname: String,
+    firstName: String,
+    lastName: String,
     email: String,
     hash: String,
     salt: String
@@ -31,13 +31,13 @@ userSchema.methods.validPassword = function(password) {
  */
 userSchema.methods.setPassword = function(oldPassword, newPassword) {
     if(validPassword(oldPassword)) {
-        this.salt = crypto.genRandomString(50);
+        this.salt = crypto.getSalt();
         this.hash = crypto.sha512(newPassword, this.salt).passwordHash;
         return true
     }
     return false
 };
 
-let User = db.model('User', userSchema);
+let User = mongoose.model('User', userSchema);
 
 module.exports = User;
