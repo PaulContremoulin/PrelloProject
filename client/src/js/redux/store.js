@@ -8,4 +8,3 @@ export const store = createStore(rootReducer, applyMiddleware(socketMiddleware(s
 socket.on('data:store', function(action) {
    store.dispatch(action)
 });
-
