@@ -4,15 +4,15 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
+    render() {
+        return (
+            <div className="App">
+                <header className="App-header">
 
-        </header>
-      </div>
-    );
-  }
+                </header>
+            </div>
+        );
+    }
 }
 
 
