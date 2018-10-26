@@ -6,9 +6,9 @@ let passport = require('passport');
 
 require('./config/database');
 
-let indexRouter = require('./routes/index');
-let authRouter = require('./routes/auth');
-let usersRouter = require('./routes/users');
+let indexRouter = require('./routes/IndexRoutes');
+let authRouter = require('./routes/AuthRoutes');
+let usersRouter = require('./routes/UserRoutes');
 
 let app = express();
 
@@ -21,8 +21,8 @@ app.use(passport.initialize());
 
 require('./config/passport');
 
-app.use('/api/', indexRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/user', passport.authenticate('jwt', {session: false}), usersRouter);
+app.use('/api', indexRouter);
+app.use('/api', authRouter);
+app.use('/api/user', passport.authenticate('jwt', { failWithError: true, session: false}), usersRouter);
 
 module.exports = app;
