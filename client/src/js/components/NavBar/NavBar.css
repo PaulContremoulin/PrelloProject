@@ -3,9 +3,17 @@
 }
 
 .navbar-brand {
+    color: white;
+}
+
+.navbar-brand:hover {
+    color: white;
+}
+
+.helpNavItem {
     color : white;
 }
 
-.nav-link {
-    color : white;
+.helpNavItem:hover {
+    color: gainsboro;
 }

@@ -1,7 +1,8 @@
 // Modules
 import React from 'react';
 import './Login.css';
-import Ionicon from 'react-ionicons'
+import { Container, Col, Form, FormGroup, Label, Input, Button, FormFeedback } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // Css...
 
@@ -9,74 +10,95 @@ import Ionicon from 'react-ionicons'
 
 
 export class Login extends React.Component {
-    /*
-     constructor(props) {
-      super(props);
-      this.nameUser;
-      this.passwUser;
-      this.state = {
-        nameUser: "",
-        passwordUser: "",
-        error_Str: ""
-      };
+    constructor(props) {
+        super(props);
+        this.state = {
+            'email': '',
+            'password': '',
+            validate: {
+                emailState: '',
+            },
+        }
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange = (callback) => {
-
+    validateEmail(e) {
+        const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const { validate } = this.state
+        if (emailRex.test(e.target.value)) {
+            validate.emailState = 'success'
+        } else {
+            validate.emailState = 'error'
+        }
+        this.setState({ validate })
     }
 
-    handleSubmit = event => {
-
+    handleChange = async (event) => {
+        const { target } = event;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const { name } = target;
+        await this.setState({
+            [ name ]: value,
+        });
     }
 
-    login = ( state ) => ;
-   */
+    submitForm(e) {
+        e.preventDefault();
+        alert(this.state.email+'  '+this.state.password);
+    }
+
     render() {
+        const { email, password } = this.state;
         return (
-            <div className="Login container">
-                <div className="container">
-                    <div className="row justify-content-md-center">
-                        <h3>Sign In</h3>
-                    </div>
-                </div>
-                <div className="loginForm container">
-                    <div className="row">
-                        <div className="col-sm-6 offset-sm-3">
-                            <form>
-                                <div className="form-group">
-                                    <div className="row">
-                                        <div className="col-2 col-md-1">
-                                            <Ionicon icon="md-contact"/>
-                                        </div>
-                                        <div className="col-10 col-md-11">
-                                            <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Enter email address"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <div className="row">
-                                        <div className="col-2 col-md-1">
-                                            <Ionicon icon="md-unlock"/>
-                                        </div>
-                                        <div className="col-10 col-md-11">
-                                            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Enter password"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="text-center">
-                                    <button type="submit" className="btn btn-primary">Sign In</button>
-                                </div>
-                                <div className="buttonGithub text-center">
-                                    <button type="submit" className="btn"><Ionicon icon="logo-github"/> Sign In with Github</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
+            <Container>
+                <Col className="Login" md={{ size: 6, offset: 3 }}>
+                    <h2 align="center">Sign In</h2>
+                    <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+                        <Col>
+                            <FormGroup>
+                                <Label>Email address</Label>
+                                <Input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    value={ email }
+                                    valid={ this.state.validate.emailState === 'success' }
+                                    invalid={ this.state.validate.emailState === 'error' }
+                                    onChange={ (e) => {
+                                        this.validateEmail(e)
+                                        this.handleChange(e)
+                                    } }
+                                />
+                                <FormFeedback invalid>
+                                    Please input a correct email.
+                                </FormFeedback>
+                            </FormGroup>
+                        </Col>
+                        <Col>
+                            <FormGroup>
+                                <Label for="examplePassword">Password</Label>
+                                <Input
+                                    type="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    value={ password }
+                                    onChange={ (e) => this.handleChange(e) }
+                                />
+                            </FormGroup>
+                        </Col>
+                        <Col className="text-center">
+                            <Button>Sign In</Button>
+                        </Col>
+                    </Form>
+                    <Col className="text-center">
+                        <Button><FontAwesomeIcon icon="github-square" /> Sign In with Github</Button>
+                    </Col>
+                </Col>
+            </Container>
+        );
     }
-}
+
+
 /*
 const mapStateToProps = (state, props) => ({});
 const mapDispatchToProps = (dispatch) => ({
@@ -88,3 +110,4 @@ export const Login = connect(
     mapDispatchToProps
 )( LoginToBeConnected )
 */
+}
