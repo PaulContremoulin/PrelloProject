@@ -1,54 +1,38 @@
 // Modules
 import React from 'react';
-import './Login.css';
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button, FormFeedback } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // Css...
+import './Login.css';
 
 // Actions & Constant
-
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
 export class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'email': '',
+            'username': '',
             'password': '',
-            validate: {
-                emailState: '',
-            },
-        }
+        };
         this.handleChange = this.handleChange.bind(this);
-    }
-
-    validateEmail(e) {
-        const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        const { validate } = this.state
-        if (emailRex.test(e.target.value)) {
-            validate.emailState = 'success'
-        } else {
-            validate.emailState = 'error'
-        }
-        this.setState({ validate })
     }
 
     handleChange = async (event) => {
         const { target } = event;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const { name } = target;
-        await this.setState({
+        this.setState({
             [ name ]: value,
         });
-    }
+    };
 
     submitForm(e) {
         e.preventDefault();
-        alert(this.state.email+'  '+this.state.password);
-    }
+        alert(this.state.username+'  '+this.state.password);
+    };
 
     render() {
-        const { email, password } = this.state;
+        const { username, password } = this.state;
         const { onClick } = this.props;
         return (
             <Container>
@@ -58,27 +42,19 @@ export class Login extends React.Component {
                     <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
                         <Col>
                             <FormGroup>
-                                <Label>Email address</Label>
+                                <Label>Username</Label>
                                 <Input
-                                    type="email"
-                                    name="email"
-                                    placeholder="Email"
-                                    value={ email }
-                                    valid={ this.state.validate.emailState === 'success' }
-                                    invalid={ this.state.validate.emailState === 'error' }
-                                    onChange={ (e) => {
-                                        this.validateEmail(e)
-                                        this.handleChange(e)
-                                    } }
+                                    type="text"
+                                    name="username"
+                                    placeholder="Username"
+                                    value={ username }
+                                    onChange={ (e) => this.handleChange(e)}
                                 />
-                                <FormFeedback invalid>
-                                    Please input a correct email.
-                                </FormFeedback>
                             </FormGroup>
                         </Col>
                         <Col>
                             <FormGroup>
-                                <Label for="examplePassword">Password</Label>
+                                <Label>Password</Label>
                                 <Input
                                     type="password"
                                     name="password"
@@ -93,7 +69,7 @@ export class Login extends React.Component {
                         </Col>
                     </Form>
                     <Col className="text-center">
-                        <Button><FontAwesomeIcon icon="github-square" />Sign In with Github</Button>
+                        <Button>Sign In with Github</Button>
                     </Col>
                   <Row>
                     <Col className="text-center">
