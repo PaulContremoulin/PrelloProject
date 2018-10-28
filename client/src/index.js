@@ -11,13 +11,14 @@ import 'react-bootstrap/dist/react-bootstrap.min';
 
 //Pages
 import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
 
 dotenv.config({ path: '../environments/.env'});
 
 ReactDOM.render(
     <Provider store={store}>
         <Router>
-            <Route exact path="/" component={LoginPage} />
+            <Route exact path="/" component={HomePage} />
         </Router>
     </Provider>
     , document.getElementById('root'));
