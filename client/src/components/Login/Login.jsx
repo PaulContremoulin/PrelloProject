@@ -89,7 +89,7 @@ export class Login extends React.Component {
                             </FormGroup>
                         </Col>
                         <Col className="text-center">
-                            <Button>Sign In</Button>
+                            <Button type="submit">Sign In</Button>
                         </Col>
                     </Form>
                     <Col className="text-center">
