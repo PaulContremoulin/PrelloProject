@@ -1,12 +1,12 @@
 import React from 'react';
-import {Login} from '../components/Login/Login';
+import {Sign} from '../components/SignInOrSignUp/Sign';
 import {NavBar} from '../components/NavBar/NavBar';
 import './LoginPage.css';
 
 export const LoginPage = () => (
     <div className="LoginPage">
         <NavBar/>
-        <Login />
+        <Sign />
     </div>
 )
 

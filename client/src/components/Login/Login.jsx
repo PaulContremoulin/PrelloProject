@@ -1,7 +1,7 @@
 // Modules
 import React from 'react';
 import './Login.css';
-import { Container, Col, Form, FormGroup, Label, Input, Button, FormFeedback } from 'reactstrap';
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button, FormFeedback } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // Css...
@@ -49,8 +49,10 @@ export class Login extends React.Component {
 
     render() {
         const { email, password } = this.state;
+        const { onClick } = this.props;
         return (
             <Container>
+              <Row>
                 <Col className="Login" md={{ size: 6, offset: 3 }}>
                     <h2 align="center">Sign In</h2>
                     <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
@@ -91,9 +93,15 @@ export class Login extends React.Component {
                         </Col>
                     </Form>
                     <Col className="text-center">
-                        <Button><FontAwesomeIcon icon="github-square" /> Sign In with Github</Button>
+                        <Button><FontAwesomeIcon icon="github-square" />Sign In with Github</Button>
                     </Col>
+                  <Row>
+                    <Col className="text-center">
+                        <Button color="info" onClick={ onClick }>Create an account</Button>
+                    </Col>
+                  </Row>
                 </Col>
+              </Row>
             </Container>
         );
     }
