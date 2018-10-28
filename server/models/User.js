@@ -63,9 +63,9 @@ userSchema.methods.validPassword = function(password) {
 
 /**
  * method to set the password
- * @param oldPassword the old password
- * @param newPassword the new password
- * @returns {boolean} true if the password is modified, false if the password can't be modified
+ * @param oldPassword the old user's password
+ * @param newPassword the new user's password
+ * @returns {boolean} true if the password is modified successfully, false if the password can't be modified (old password wrong)
  */
 userSchema.methods.setPassword = function(oldPassword, newPassword) {
     if(validPassword(oldPassword)) {
@@ -76,6 +76,10 @@ userSchema.methods.setPassword = function(oldPassword, newPassword) {
     return false
 };
 
+/**
+ * Json object that describe the user instance
+ * @returns {Object|*|Array|Binary} a JSON with user's public information
+ */
 userSchema.methods.toJSON = function() {
     var json = this.toObject();
     delete json.salt;
