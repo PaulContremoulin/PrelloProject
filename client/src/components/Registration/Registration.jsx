@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
 import './Registration.css';
+import { registerUser } from '../../requests/registration';
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -18,10 +19,14 @@ export class Registration extends React.Component {
         "stepTwo" : false,
         "userName" : "",
         "firstName" : "",
-        "lastname" : "",
+        "lastName" : "",
         "email" : "",
         "passwordA" : "",
+        "passwordB" : "",
         "organisation" : "",
+        "allFieldsFilled" : true,
+        "passwordsMatch" : true,
+        "emailIsValid" : true
       }
   }
 
@@ -32,10 +37,52 @@ export class Registration extends React.Component {
     })
   }
 
+  changeToStepTwo = (state) => {
+    console.log(state);
+    if ( state.userName == "" || state.firstName == "" || state.lastName == "" || state.email == "" || state.passwordA == "" || state.passwordB == "") {
+      this.setState({ allFieldsFilled: false });
+    } else if ( state.passwordA != state.passwordB ) {
+      this.setState({ allFieldsFilled: true, passwordsMatch: false });
+    } else if ( !state.emailIsValid ) {
+      this.setState({ allFieldsFilled: true, passwordsMatch: true });
+    } else {
+      this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true });
+      this.changeStep();
+    }
+  }
 
- handleSubmit = event => {
-   event.preventDefault();
- }
+  setStateElement = (element, value) => {
+    console.log(this.state[element]);
+    this.setState({
+      [ element ]: value
+    })
+  }
+
+   handleSubmit = event => {
+     event.preventDefault();
+     const userName = this.state.userName,
+          firstName = this.state.firstName,
+          lastName = this.state.lastName,
+          email = this.state.email,
+          passwordA = this.state.passwordA;
+     registerUser(userName, firstName, lastName, email, passwordA)
+     // .then(response => )
+     // .catch( err => )
+   }
+
+   handleOnBlur = ( event, element ) => {
+     this.setStateElement( element, event.target.value );
+   }
+
+   validateEmail = (e) => {
+    const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (emailRex.test(e.target.value)) {
+        this.setState({ emailIsValid: true, email: e.target.value })
+    } else {
+      this.setState({ emailIsValid: false, email: e.target.value })
+    }
+  }
+
 
   render() {
     const { stepOne, stepTwo } = this.state;
@@ -59,6 +106,7 @@ export class Registration extends React.Component {
                                     name="firstname"
                                     placeholder="First name"
                                     required={true}
+                                    onBlur={( event ) => this.handleOnBlur( event, "firstName" )}
                                 />
                             </FormGroup>
                           </Col>
@@ -70,6 +118,7 @@ export class Registration extends React.Component {
                                     name="lastname"
                                     placeholder="Last name"
                                     required={true}
+                                    onBlur={( event ) => this.handleOnBlur( event, "lastName" )}
                                 />
                             </FormGroup>
                           </Col>
@@ -83,6 +132,7 @@ export class Registration extends React.Component {
                                     name="username"
                                     placeholder="Username"
                                     required={true}
+                                    onBlur={( event ) => this.handleOnBlur( event, "userName" )}
                                 />
                             </FormGroup>
                           </Col>
@@ -96,6 +146,7 @@ export class Registration extends React.Component {
                                       name="email"
                                       placeholder="Email"
                                       required={true}
+                                      onBlur={( event ) => this.validateEmail( event )}
                                   />
                               </FormGroup>
                             </Col>
@@ -109,6 +160,7 @@ export class Registration extends React.Component {
                                       name="passwordA"
                                       placeholder="Password"
                                       required={true}
+                                      onBlur={( event ) => this.handleOnBlur( event, "passwordA" )}
                                   />
                               </FormGroup>
                             </Col>
@@ -122,13 +174,14 @@ export class Registration extends React.Component {
                                         name="passwordB"
                                         placeholder="Confirm Password"
                                         required={true}
+                                        onBlur={ ( event ) => this.handleOnBlur( event, "passwordB" ) }
                                     />
                                 </FormGroup>
                             </Col>
                           </Row>
                           <Row>
                             <Col className="text-center">
-                                <Button onClick={ () => this.changeStep() }>Sign Up</Button>
+                                <Button onClick={ () => this.changeToStepTwo(this.state) }>Sign Up</Button>
                             </Col>
                         </Row>
                       </div>
@@ -140,6 +193,7 @@ export class Registration extends React.Component {
                               <Input
                                   type="text"
                                   name="organisation"
+                                  onBlur={( event ) => this.handleOnBlur( event, "organisation" )}
                               />
                           </FormGroup>
                       </Col>
@@ -153,11 +207,17 @@ export class Registration extends React.Component {
                   )}
                   </Form>
                 </Row>
+                { this.state.allFieldsFilled ? null :
+                  <Col className="text-center"><span> You need to fill all fields </span></Col> }
+                { this.state.passwordsMatch ? null :
+                  <Col className="text-center"><span> The passwords do not match </span></Col> }
+                { this.state.emailIsValid ? null :
+                  <Col className="text-center"><span> The email is not valid </span></Col> }
                 { (stepOne && !stepTwo) ? (
                   <div>
                     <Row>
                       <Col className="text-center">
-                          <Button><FontAwesomeIcon icon="github-square" />Sign Up with Github</Button>
+                          <Button>Sign Up with Github</Button>
                       </Col>
                     </Row>
                     <Row>
