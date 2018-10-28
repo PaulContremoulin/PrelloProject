@@ -1,10 +1,12 @@
+let debug = require('debug')('app:db');
 let mongoose = require('mongoose');
-mongoose.connect('mongodb://' + process.env.DB_URL + '/prello', { useNewUrlParser: true });
+
+mongoose.connect('mongodb://' + process.env.DB_URL + '/' + process.env.DB_NAME, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    console.log('Database openned.')
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+
+mongoose.connection.once('connected', () => {
+    debug('Mongoose conected at ' + process.env.DB_URL + ' - ' + process.env.DB_NAME)
 });
 

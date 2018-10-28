@@ -3,29 +3,30 @@
 /**
  * Module dependencies.
  */
-require('dotenv').config({ path: './environments/.env'});
 
-var app = require('../app');
-var debug = require('debug')('prelloproject:server');
-var http = require('http');
-var socketIO = require('socket.io')
+let app = require('../app');
+let http = require('http');
+let socketIO = require('socket.io')
+let debug = require('debug')('app:www');
+let sobug = require('debug')('app:socket');
+
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT);
+let port = normalizePort(process.env.PORT);
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-var server = http.Server(app);
+let server = http.Server(app);
 
 /**
  * Socket.io
  */
 
-var io = socketIO(server)
+let io = socketIO(server)
 io.on('connection', onConnection);
 
 /**
@@ -41,7 +42,8 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+
+  let port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -101,12 +103,12 @@ function onListening() {
  */
 
 function onConnection(socket){
-    console.log('A user connected');
+    sobug('A user connected');
     socket.on('disconnect', function(){
-        console.log('user disconnected');
+        sobug('user disconnected');
     });
     socket.on('data:store', function(action){
-        console.log('Data store event : ' + JSON.stringify(action));
+        sobug('Data store event : ' + JSON.stringify(action));
         socket.broadcast.emit('data:store', action)
     });
 }

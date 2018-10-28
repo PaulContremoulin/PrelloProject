@@ -4,7 +4,7 @@ let LocalStrategy = require('passport-local').Strategy;
 let JWTStrategy = passportJWT.Strategy;
 let ExtractJWT = passportJWT.ExtractJwt;
 let crypto = require('./crypto');
-
+let debug = require('debug')('app:passport');
 let User = require('../models/User');
 
 passport.use('local', new LocalStrategy(
@@ -12,9 +12,11 @@ passport.use('local', new LocalStrategy(
         User.findOne({ username: username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) {
+                debug('Incorrect username.')
                 return done(null, false, { message: 'Incorrect username.' });
             }
             if (!user.validPassword(password)) {
+                debug('Incorrect password.' )
                 return done(null, false, { message: 'Incorrect password.' });
             }
             return done(null, user);
@@ -62,10 +64,10 @@ passport.use('signup', new LocalStrategy({
                 // save the user
                 newUser.save(function (err) {
                     if (err) {
-                        console.log('Error in Saving user: ' + err);
+                        debug('Error in Saving user: ' + err);
                         throw err;
                     }
-                    console.log('User Registration successful');
+                    debug('User Registration successful');
                     return done(null, newUser);
                 });
             }
