@@ -6,6 +6,8 @@ import './Login.css';
 
 // Actions & Constant
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import {loginUser} from "../../requests/login";
+
 
 export class Login extends React.Component {
     constructor(props) {
@@ -29,6 +31,11 @@ export class Login extends React.Component {
     submitForm(e) {
         e.preventDefault();
         alert(this.state.username+'  '+this.state.password);
+        const userName = this.state.userName,
+              password = this.state.password;
+        loginUser(userName, password)
+        // .then(response => )
+        // .catch( err => )
     };
 
     render() {
