@@ -1,16 +1,19 @@
-let express = require('express');
-let path = require('path');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
-let passport = require('passport');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const passport = require('passport');
 
 require('./config/database');
 
-let indexRouter = require('./routes/IndexRoutes');
-let authRouter = require('./routes/AuthRoutes');
-let usersRouter = require('./routes/UserRoutes');
+const indexRouter = require('./routes/IndexRoutes');
+const authRouter = require('./routes/AuthRoutes');
+const usersRouter = require('./routes/UserRoutes');
 
-let app = express();
+const app = express();
+const expressSwagger = require('express-swagger-generator')(app);
+const confSwagger = require('./config/swagger');
+expressSwagger(confSwagger.options)
 
 app.use(logger('dev'));
 app.use(express.json());
