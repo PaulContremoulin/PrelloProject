@@ -52,7 +52,6 @@ export class Registration extends React.Component {
   }
 
   setStateElement = (element, value) => {
-    console.log(this.state[element]);
     this.setState({
       [ element ]: value
     })
