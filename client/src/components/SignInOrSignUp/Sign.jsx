@@ -1,7 +1,8 @@
 // Modules
 import React from 'react';
-import {Login} from '../Login/Login';
-import {Registration} from '../Registration/Registration';
+import {Login} from './Login/Login';
+import {Registration} from './Registration/Registration';
+import {NavBar} from './NavBar/NavBar';
 
 // Css...
 
@@ -17,9 +18,15 @@ export class Sign extends React.Component {
       }
   }
 
-  changeMode = () => {
+  toggleMode = () => {
     this.setState({
       signUpMode: !this.state.signUpMode
+    })
+  }
+
+  changeMode = (mode) => {
+    this.setState({
+      signUpMode: mode
     })
   }
 
@@ -27,7 +34,8 @@ export class Sign extends React.Component {
     const { signUpMode } = this.state;
     return (
       <div className="Sign">
-        {signUpMode ? <Registration onClick={ () => this.changeMode() } /> : <Login onClick={ () => this.changeMode() } />}
+        <NavBar changeMode= { ( mode ) => this.changeMode( mode ) }/>
+        {signUpMode ? <Registration onClick={ () => this.toggleMode() } /> : <Login onClick={ () => this.toggleMode() } />}
       </div>
     );
   }
