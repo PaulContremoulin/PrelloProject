@@ -30,7 +30,6 @@ export class Login extends React.Component {
 
     submitForm(e) {
         e.preventDefault();
-        alert(this.state.username+'  '+this.state.password);
         const username = this.state.username,
               password = this.state.password;
         loginUser(username, password)
