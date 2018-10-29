@@ -19,6 +19,20 @@
      font-weight: 600;
  }
 
- button {
-     justify-content: flex-end;
+.btnSign {
+    background-color: #6495ED;
+}
+
+.btnSign:hover {
+    background-color: #4169E1;
+}
+
+ .btnGithub {
+     background-color: white;
+     color : black;
  }
+
+ .text-center {
+     margin-top: 10px;
+ }
+

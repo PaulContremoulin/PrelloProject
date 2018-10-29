@@ -3,10 +3,13 @@ import React from 'react';
 
 // Css...
 import './Login.css';
+import Octicon from 'react-octicon'
+
 
 // Actions & Constant
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import {loginUser} from "../../../requests/login";
+import history from '../../../history';
 
 
 export class Login extends React.Component {
@@ -15,6 +18,7 @@ export class Login extends React.Component {
         this.state = {
             'username': '',
             'password': '',
+            "allFieldsFilled" : true,
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -32,7 +36,8 @@ export class Login extends React.Component {
         e.preventDefault();
         const username = this.state.username,
               password = this.state.password;
-        loginUser(username, password)
+        history.push('/home');
+        //loginUser(username, password)
         // .then(response => )
         // .catch( err => )
     };
@@ -54,6 +59,7 @@ export class Login extends React.Component {
                                     name="username"
                                     placeholder="Username"
                                     value={ username }
+                                    required={true}
                                     onChange={ (e) => this.handleChange(e)}
                                 />
                             </FormGroup>
@@ -66,20 +72,23 @@ export class Login extends React.Component {
                                     name="password"
                                     placeholder="Password"
                                     value={ password }
+                                    required={true}
                                     onChange={ (e) => this.handleChange(e) }
                                 />
                             </FormGroup>
                         </Col>
                         <Col className="text-center">
-                            <Button type="submit">Sign In</Button>
+                            <Button className="btnSign" type="submit">Sign In</Button>
                         </Col>
                     </Form>
-                    <Col className="text-center">
-                        <Button>Sign In with Github</Button>
-                    </Col>
+                    <Row>
+                        <Col className="text-center">
+                            <Button className="btnGithub"><Octicon name="mark-github"/> Sign In with Github</Button>
+                        </Col>
+                    </Row>
                   <Row>
                     <Col className="text-center">
-                        <Button color="info" onClick={ onClick }>Create an account</Button>
+                        <Button color="link" onClick={ onClick }>Create an account</Button>
                     </Col>
                   </Row>
                 </Col>
