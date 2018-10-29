@@ -9,16 +9,20 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap/dist/react-bootstrap.min';
 
+import history from './history';
 //Pages
 import LoginPage from './pages/LoginPage';
-//import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePage';
 
 dotenv.config({ path: '../environments/.env'});
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router>
-            <Route exact path="/" component={LoginPage} />
+        <Router history={history}>
+            <div>
+                <Route exact path="/" component={LoginPage}/>
+                <Route path="/home" component={HomePage}/>
+            </div>
         </Router>
     </Provider>
     , document.getElementById('root'));

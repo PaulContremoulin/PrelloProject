@@ -3,7 +3,7 @@ import React from 'react';
 import './Registration.css';
 import { registerUser } from '../../../requests/registration';
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Octicon from 'react-octicon'
 
 // Css...
 
@@ -96,7 +96,7 @@ export class Registration extends React.Component {
                   { (stepOne && !stepTwo) ? (
                       <div>
                         <Row>
-                          <Col>
+                          <Col md="6">
                             <FormGroup>
                                 <Label>First name</Label>
                                 <Input
@@ -108,7 +108,7 @@ export class Registration extends React.Component {
                                 />
                             </FormGroup>
                           </Col>
-                          <Col>
+                          <Col md="6">
                             <FormGroup>
                                 <Label>Last name</Label>
                                 <Input
@@ -134,7 +134,7 @@ export class Registration extends React.Component {
                                 />
                             </FormGroup>
                           </Col>
-                          </Row>
+                        </Row>
                           <Row>
                             <Col>
                               <FormGroup>
@@ -179,7 +179,7 @@ export class Registration extends React.Component {
                           </Row>
                           <Row>
                             <Col className="text-center">
-                                <Button onClick={ () => this.changeToStepTwo(this.state) }>Sign Up</Button>
+                                <Button className="btnSign" onClick={ () => this.changeToStepTwo(this.state) }>Sign Up</Button>
                             </Col>
                         </Row>
                       </div>
@@ -195,12 +195,14 @@ export class Registration extends React.Component {
                               />
                           </FormGroup>
                       </Col>
-                      <Col className="text-center">
-                        <Button color="primary">Sign Up</Button>
+                          <Row>
+                      <Col md="6" className="text-center">
+                        <Button className="btnSign">Sign Up</Button>
                       </Col>
-                      <Col className="text-center">
-                        <Button onClick={ () => this.changeStep() }>Return</Button>
+                      <Col md="6" className="text-center">
+                        <Button className="btnReturn" onClick={ () => this.changeStep() }>Return</Button>
                       </Col>
+                          </Row>
                     </div>
                   )}
                   </Form>
@@ -215,12 +217,12 @@ export class Registration extends React.Component {
                   <div>
                     <Row>
                       <Col className="text-center">
-                          <Button>Sign Up with Github</Button>
+                          <Button className="btnGithub"><Octicon name="mark-github"/> Sign Up with Github</Button>
                       </Col>
                     </Row>
                     <Row>
                       <Col className="text-center">
-                          <Button color="info" onClick={ onClick }>Sign In</Button>
+                          <Button color="link" onClick={ onClick }>Sign In</Button>
                       </Col>
                     </Row>
                   </div>
