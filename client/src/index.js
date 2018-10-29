@@ -11,8 +11,8 @@ import 'react-bootstrap/dist/react-bootstrap.min';
 
 import history from './history';
 //Pages
-import LoginPage from './pages/LoginPage';
-import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import HomePage from './pages/HomePage/HomePage';
 
 dotenv.config({ path: '../environments/.env'});
 
