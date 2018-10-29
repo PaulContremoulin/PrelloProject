@@ -2,7 +2,7 @@ import axios from 'axios';
 
 /**
  * @desc log user to the database
- * @param { String } userName
+ * @param { String } username
  * @param { String } password
  * @return status code
  */

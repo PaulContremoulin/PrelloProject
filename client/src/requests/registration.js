@@ -16,7 +16,7 @@ export const registerUser = (
   email,
   password
 ) => (
-  axios.post( '/api/signup/', {
+  axios.post( process.env.API_URL+'/api/signup/', {
     username,
     firstName,
     lastName,
