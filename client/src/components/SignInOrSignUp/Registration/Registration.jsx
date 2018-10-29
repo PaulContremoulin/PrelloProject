@@ -1,7 +1,7 @@
 // Modules
 import React from 'react';
 import './Registration.css';
-import { registerUser } from '../../requests/registration';
+import { registerUser } from '../../../requests/registration';
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -17,7 +17,7 @@ export class Registration extends React.Component {
       this.state = {
         "stepOne" : true,
         "stepTwo" : false,
-        "userName" : "",
+        "username" : "",
         "firstName" : "",
         "lastName" : "",
         "email" : "",
@@ -38,8 +38,7 @@ export class Registration extends React.Component {
   }
 
   changeToStepTwo = (state) => {
-    console.log(state);
-    if ( state.userName == "" || state.firstName == "" || state.lastName == "" || state.email == "" || state.passwordA == "" || state.passwordB == "") {
+    if ( state.username == "" || state.firstName == "" || state.lastName == "" || state.email == "" || state.passwordA == "" || state.passwordB == "") {
       this.setState({ allFieldsFilled: false });
     } else if ( state.passwordA != state.passwordB ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: false });
@@ -59,14 +58,14 @@ export class Registration extends React.Component {
 
    handleSubmit = event => {
      event.preventDefault();
-     const userName = this.state.userName,
+     const username = this.state.username,
           firstName = this.state.firstName,
           lastName = this.state.lastName,
           email = this.state.email,
           passwordA = this.state.passwordA;
-     registerUser(userName, firstName, lastName, email, passwordA)
-     // .then(response => )
-     // .catch( err => )
+     registerUser(username, firstName, lastName, email, passwordA);
+    const { onClick } = this.props;
+    onClick();
    }
 
    handleOnBlur = ( event, element ) => {
@@ -131,7 +130,7 @@ export class Registration extends React.Component {
                                     name="username"
                                     placeholder="Username"
                                     required={true}
-                                    onBlur={( event ) => this.handleOnBlur( event, "userName" )}
+                                    onBlur={( event ) => this.handleOnBlur( event, "username" )}
                                 />
                             </FormGroup>
                           </Col>

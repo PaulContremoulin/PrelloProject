@@ -10,14 +10,14 @@ import axios from 'axios';
 * @return status code
 */
 export const registerUser = (
-  userName,
+  username,
   firstName,
   lastName,
   email,
   password
 ) => (
   axios.post( '/api/signup/', {
-    userName,
+    username,
     firstName,
     lastName,
     email,
