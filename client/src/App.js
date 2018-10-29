@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
-
-import AddTodo from "./components/AddTodo";
-import TodoList from "./components/TodoList";
-import VisibilityFilters from "./components/VisibilityFilters";
-import './App.css';
+import ReactDom from 'react-dom';
+import { Provider } from 'react-redux';
+import { Router, browserHistory } from 'react-router';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-            <h1>TODO list</h1>
-            <AddTodo />
-            <TodoList />
-            <VisibilityFilters />
-        </header>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="App">
+                <header className="App-header">
+
+                </header>
+            </div>
+        );
+    }
 }
+
 
 export default App;
