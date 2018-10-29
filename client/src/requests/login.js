@@ -8,11 +8,11 @@ import axios from 'axios';
  */
 
 export const loginUser = (
-    userName,
+    username,
     password
 ) => (
-    axios.post( '/api/login/', {
-        userName,
+    axios.post( process.env.API_URL + '/api/login/', {
+        username,
         password,
     })
         .then( response => response.data )
