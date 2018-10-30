@@ -81,10 +81,10 @@ module.exports = function (app, options) {
                     .expect(200)
                     .end(function (err, res) {
                         if (err) return done(err);
-                        res.body.user.should.exist;
+                        res.body.member.should.exist;
                         res.body.token.should.exist;
                         options.token = res.body.token;
-                        options.user = res.body.user;
+                        options.member = res.body.member;
                         done();
                     });
             });

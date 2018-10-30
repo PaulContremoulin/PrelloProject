@@ -14,7 +14,7 @@ module.exports = function (app, options) {
 
             it('should send back a OK response - Get with right member Id', function (done) {
                 request(app)
-                    .get('/api/members/' + options.user._id)
+                    .get('/api/members/' + options.member._id)
                     .set('Authorization', 'Bearer ' + options.token)
                     .set('Content-Type', 'application/json')
                     .expect(200)
@@ -38,7 +38,7 @@ module.exports = function (app, options) {
 
             it('should send back a UNAUTHORIZED response - Get member with no token', function (done) {
                 request(app)
-                    .get('/api/members/' + options.user._id)
+                    .get('/api/members/' + options.member._id)
                     .set('Content-Type', 'application/json')
                     .expect(401)
                     .end(function (err, res) {
@@ -54,7 +54,7 @@ module.exports = function (app, options) {
 
             it('should send back a OK response - Get member\'s boards with right member Id', function (done) {
                 request(app)
-                    .get('/api/members/' + options.user._id + '/boards')
+                    .get('/api/members/' + options.member._id + '/boards')
                     .set('Authorization', 'Bearer ' + options.token)
                     .set('Content-Type', 'application/json')
                     .expect(200)
@@ -79,7 +79,7 @@ module.exports = function (app, options) {
 
             it('should send back a UNAUTHORIZED response - Get member\'s boards with no token', function (done) {
                 request(app)
-                    .get('/api/members/' + options.user._id + '/boards')
+                    .get('/api/members/' + options.member._id + '/boards')
                     .set('Content-Type', 'application/json')
                     .expect(401)
                     .end(function (err, res) {

@@ -53,12 +53,12 @@ router.post('/signup', function(req, res, next) {
  * @returns {Error}  default - Unexpected error
  */
 router.post('/login', passport.authenticate('local', {session: false}), function(req, res) {
-    const user = req.user.toPublic()
+    const member = req.user.toPublic()
     const token = jwt.sign({
         exp: Math.floor(Date.now() / 1000) + (60 * 60),
         data: req.user.payload()
     }, process.env.JWT_SECRET);
-    return res.json({user, token});
+    return res.json({member, token});
 });
 
 module.exports = router;
