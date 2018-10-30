@@ -4,7 +4,7 @@ var uniqueValidator = require('mongoose-unique-validator');
 
 let Schema = mongoose.Schema;
 
-let userSchema = new Schema({
+let memberSchema = new Schema({
     username: {
         required  : true,
         unique   : true,
@@ -45,13 +45,13 @@ let userSchema = new Schema({
     versionKey: false
 });
 
-userSchema.plugin(uniqueValidator);
+memberSchema.plugin(uniqueValidator);
 
 /**
  * give the user's fullName
  * @returns {string} the user fullName
  */
-userSchema.methods.fullName = function() {
+memberSchema.methods.fullName = function() {
     return this.lastName + ' ' + this.firstName;
 };
 
@@ -60,7 +60,7 @@ userSchema.methods.fullName = function() {
  * @param password the password given
  * @returns {boolean} true if the password is valid, false if the password isn't valid
  */
-userSchema.methods.validPassword = function(password) {
+memberSchema.methods.validPassword = function(password) {
     let payloads = crypto.sha512(password, this.salt);
     return payloads.passwordHash === this.hash;
 };
@@ -72,7 +72,7 @@ userSchema.methods.validPassword = function(password) {
  * @param newPassword the new user's password
  * @returns {boolean} true if the password is modified successfully, false if the password can't be modified (old password wrong)
  */
-userSchema.methods.setPassword = function(oldPassword, newPassword) {
+memberSchema.methods.setPassword = function(oldPassword, newPassword) {
     if(validPassword(oldPassword)) {
         this.salt = crypto.getSalt();
         this.hash = crypto.sha512(newPassword, this.salt).passwordHash;
@@ -85,11 +85,10 @@ userSchema.methods.setPassword = function(oldPassword, newPassword) {
  * Json object that describe the user instance
  * @returns {Object|*|Array|Binary} a JSON with user's public information
  */
-userSchema.methods.toPublic = function() {
+memberSchema.methods.toPublic = function() {
     var json = this.toObject();
     delete json.salt;
     delete json.hash;
-    delete json._id;
     return json;
 };
 
@@ -97,12 +96,13 @@ userSchema.methods.toPublic = function() {
  * Json object that describe the user's payload
  * @returns {Object|*|Array|Binary} a JSON with user's payload information
  */
-userSchema.methods.payload = function() {
+memberSchema.methods.payload = function() {
     return {
         _id : this._id
     };
 }
 
-let User = mongoose.model('User', userSchema);
 
-module.exports = User;
+let Member = mongoose.model('Member', memberSchema);
+
+module.exports = Member;

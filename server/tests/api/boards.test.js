@@ -6,16 +6,16 @@ let mongoose = require('mongoose');
 let should = chai.should();
 
 
-module.exports = function (app, auth) {
+module.exports = function (app, options) {
 
     describe('BOARD API TEST', function () {
 
-        describe('POST /api/board - Board creation', function () {
+        describe('POST /api/boards - Board creation', function () {
 
             it('should send back a CREATED response - Board creation', function (done) {
                 request(app)
-                    .post('/api/board')
-                    .set('Authorization', 'Bearer ' + auth.token)
+                    .post('/api/boards')
+                    .set('Authorization', 'Bearer ' + options.token)
                     .set('Content-Type', 'application/json')
                     .send({
                         name: "BoardName",
@@ -34,7 +34,7 @@ module.exports = function (app, auth) {
 
             it('should send back a UNAUTHORIZED response - Board creation with no valid token', function (done) {
                 request(app)
-                    .post('/api/board')
+                    .post('/api/boards')
                     .set('Content-Type', 'application/json')
                     .send({
                         name: "BoardName",
@@ -49,8 +49,8 @@ module.exports = function (app, auth) {
 
             it('should send back a BAD REQUEST response - Board creation with no name', function (done) {
                 request(app)
-                    .post('/api/board')
-                    .set('Authorization', 'Bearer ' + auth.token)
+                    .post('/api/boards')
+                    .set('Authorization', 'Bearer ' + options.token)
                     .set('Content-Type', 'application/json')
                     .send({
                         name: "",
@@ -65,8 +65,8 @@ module.exports = function (app, auth) {
 
             it('should send back a BAD REQUEST response - Board creation with invalid color format', function (done) {
                 request(app)
-                    .post('/api/board')
-                    .set('Authorization', 'Bearer ' + auth.token)
+                    .post('/api/boards')
+                    .set('Authorization', 'Bearer ' + options.token)
                     .set('Content-Type', 'application/json')
                     .send({
                         name: "BoardName",
