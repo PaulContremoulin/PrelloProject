@@ -18,7 +18,6 @@ export class Login extends React.Component {
         this.state = {
             'username': '',
             'password': '',
-            "allFieldsFilled" : true,
         };
         this.handleChange = this.handleChange.bind(this);
     }
