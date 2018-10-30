@@ -13,10 +13,9 @@ exports.options = {
         schemes: ['http', 'https'],
         securityDefinitions: {
             JWT: {
-                type: 'Bearer Token',
+                type: 'apiKey',
                 in: 'header',
-                name: 'Authorization',
-                description: '',
+                name: 'Authorization'
             }
         }
     },

@@ -21,6 +21,11 @@ let userSchema = new Schema({
         minlength : 3,
         type      : String
     },
+    organization: {
+        required  : false,
+        minlength : 2,
+        type      : String
+    },
     email: {
         required : true,
         unique   : true,
@@ -80,12 +85,22 @@ userSchema.methods.setPassword = function(oldPassword, newPassword) {
  * Json object that describe the user instance
  * @returns {Object|*|Array|Binary} a JSON with user's public information
  */
-userSchema.methods.toJSON = function() {
+userSchema.methods.toPublic = function() {
     var json = this.toObject();
     delete json.salt;
     delete json.hash;
     delete json._id;
     return json;
+};
+
+/**
+ * Json object that describe the user's payload
+ * @returns {Object|*|Array|Binary} a JSON with user's payload information
+ */
+userSchema.methods.payload = function() {
+    return {
+        _id : this._id
+    };
 }
 
 let User = mongoose.model('User', userSchema);
