@@ -5,5 +5,5 @@ import { boards } from './boards';
 
 export default combineReducers({
     user,
-    board: boards
+    boards: boards
 });

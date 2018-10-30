@@ -6,11 +6,11 @@ import { combineReducers } from 'redux';
  * Action types are exported from the action source file
  * It's the best place to avoid circular dependencies
  */
-import { ADD_BOARD } from "../../actions/boardActions";
+import { ADD_BOARD, FETCH_BOARD } from "../../actions/boardActions";
 
 
 /******************************************************************************/
-/******************************* LOGIN REDUCERS ********************************/
+/******************************* BOARDS REDUCERS ********************************/
 /******************************************************************************/
 /**
  * Reducers
@@ -35,7 +35,9 @@ import { ADD_BOARD } from "../../actions/boardActions";
 const board = ( state = {}, action ) => {
     switch( action.type ){
         case ADD_BOARD :
-            return action.board ;
+            return action.payload ;
+        case FETCH_BOARD :
+            return action.boards ;
         default:
             return state ;
     }
@@ -45,5 +47,5 @@ const board = ( state = {}, action ) => {
 // It return a reducer responsible for this sub-state
 // combineReducers got others untold subtilities
 export const boards = combineReducers({
-    board
+    boards
 });
