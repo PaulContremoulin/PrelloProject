@@ -10,10 +10,11 @@ import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap';
 
 export class NavBar extends React.Component {
     render() {
-        const { changeMode } = this.props;
+        const { changeMode, incomingFrom } = this.props;
         return (
             <Navbar expand="md">
                 <NavbarBrand href="/">Prello</NavbarBrand>
+                { (incomingFrom == "LoginPage") ?
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
@@ -24,6 +25,15 @@ export class NavBar extends React.Component {
                         </NavItem>
                     </Nav>
                 </Collapse>
+                :
+                <Collapse navbar>
+                    <Nav className="ml-auto" navbar>
+                        <NavItem>
+                            <NavLink className="helpNavItem" href="/account" >My account</NavLink>
+                        </NavItem>
+                    </Nav>
+                </Collapse>
+                }
             </Navbar>
         )
     }

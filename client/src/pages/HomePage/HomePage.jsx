@@ -6,8 +6,8 @@ import './HomePage.css';
 import { Container, Row, Col } from 'reactstrap';
 
 export const HomePage = () => (
-    <div className="LoginPage">
-        <NavBar/>
+    <div className="HomePage">
+        <NavBar incomingFrom="HomePage" />
             <Row>
                 <Col md="3">
                     <MenuHome/>
@@ -18,5 +18,7 @@ export const HomePage = () => (
             </Row>
     </div>
 )
+
+// TODO : Store in home page what content to show in ContentHome. I.e "personnal boards".
 
 export default HomePage;
