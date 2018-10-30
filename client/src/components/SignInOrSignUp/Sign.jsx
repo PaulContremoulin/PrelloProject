@@ -34,7 +34,7 @@ export class Sign extends React.Component {
     const { signUpMode } = this.state;
     return (
       <div className="Sign">
-        <NavBar changeMode= { ( mode ) => this.changeMode( mode ) }/>
+        <NavBar changeMode= { ( mode ) => this.changeMode( mode ) } incomingFrom="LoginPage" />
         {signUpMode ? <Registration onClick={ () => this.toggleMode() } /> : <Login onClick={ () => this.toggleMode() } />}
       </div>
     );

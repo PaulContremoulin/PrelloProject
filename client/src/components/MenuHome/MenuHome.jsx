@@ -1,28 +1,39 @@
 // Modules
 import React from 'react';
+import { connect } from 'react-redux';
 import './MenuHome.css';
+import { Button, Col, Row } from 'reactstrap';
 
-//import {} from 'reactstrap';
 
 // Css...
 
 // Actions & Constant
 
-export class MenuHome extends React.Component {
-    render() {
-        return (
-            <div className="vertical-menu">
-                <h3>Board</h3>
-                <a href="#">Personnal's Boards</a>
-                <h3>Circles</h3>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-                <a href="#">Link 4</a>
-                <h3>Team</h3>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-                <a href="#">Link 4</a>
-            </div>
-        )
-    }
-}
+export const MenuHomeToBeConnected = ({ circles, teams }) => (
+    <div className="vertical-menu">
+      <h3>Boards<Button color="primary">+</Button></h3>
+      <a href="#">Personnal Boards</a>
+      <h3>Circles<Button color="primary">+</Button></h3>
+      {
+        // circles.map(( circle ) => <a href="#">circle.circleName</a> )
+        // .reduce(( childArray, child ) => childArray.concat( child ), [])
+      }
+      <h3>Team<Button color="primary">+</Button></h3>
+      {
+        // teams.map(( team ) => <a href="#">team.teamName</a> )
+        // .reduce(( childArray, child ) => childArray.concat( child ), [])
+      }
+    </div>
+)
+
+const mapStateToProps = ( state, props ) => ({
+  circles: state.circles,
+  teams: state.teams
+})
+
+const mapDispatchToProps = ( dispatch ) => ({})
+
+export const MenuHome = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)( MenuHomeToBeConnected );
