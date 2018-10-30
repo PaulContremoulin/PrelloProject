@@ -1,29 +1,60 @@
 // Modules
 import React from 'react';
-import {Button, Container, Row, Col} from 'reactstrap';
+import {Button, Container, Row, Col, Form, FormGroup, Label, Input,} from 'reactstrap';
 import Popup from "reactjs-popup";
 
 // Css
 import './CreateBoard.css';
+import history from "../../history";
 
 // Actions & Constant
+import {createBoard} from "../../requests/boards";
 
 export class CreateBoard extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { open: false }
-        this.openModal = this.openModal.bind(this)
-        this.closeModal = this.closeModal.bind(this)
+        this.state = {
+            open: false,
+            'name': '',
+            'color': '',
+        }
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.handleChange = this.handleChange.bind(this);
 
     }
     openModal (){
         this.setState({ open: true })
     }
     closeModal () {
-        this.setState({ open: false })
+        this.setState({
+            open: false,
+            'name':'',
+            'color':'',
+        })
     }
 
+    handleChange = async (event) => {
+        const { target } = event;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const { name } = target;
+        this.setState({
+            [ name ]: value,
+        });
+    };
+
+    submitForm(e) {
+        e.preventDefault();
+        const name = this.state.name,
+            color = this.state.color;
+        console.log(this.state.name+"/"+this.state.color)
+        createBoard(name, color)
+        // .then(response => )
+        // .catch( err => )
+    };
+
     render() {
+        const { name, color } = this.state;
         return (
             <div>
                 <Button className="button" onClick={this.openModal}> Create Board </Button>
@@ -32,24 +63,49 @@ export class CreateBoard extends React.Component {
                     closeOnDocumentClick
                     onClose={this.closeModal}
                 >
-                    <Container>
-                        <Row>
-                            <Col>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae magni
-                                omnis delectus nemo, maxime molestiae dolorem numquam mollitia, voluptate
-                                ea, accusamus excepturi deleniti ratione sapiente! Laudantium, aperiam
-                                doloribus. Odit, aut.
-                            </Col>
-                        </Row>
-                        <Row className="test">
-                            <Col>
-                                <Button onClick={this.closeModal}>Return</Button>
-                            </Col>
-                            <Col>
-                                <Button>Create</Button>
-                            </Col>
-                        </Row>
-                    </Container>
+                    <Col>
+                        <h2 align="center">Create Board</h2>
+                        <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+                            <Row>
+                                <Col>
+                                    <FormGroup>
+                                        <Label>Board's name</Label>
+                                        <Input
+                                            type="text"
+                                            name="name"
+                                            placeholder="Board's name"
+                                            value={ name }
+                                            required={true}
+                                            onChange={ (e) => this.handleChange(e)}
+                                        />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <FormGroup>
+                                        <Label>Board's color</Label>
+                                        <Input
+                                            type="text"
+                                            name="color"
+                                            placeholder="Board's color"
+                                            value={ color }
+                                            required={true}
+                                            onChange={ (e) => this.handleChange(e)}
+                                        />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row className="text-center">
+                                <Col>
+                                    <Button onClick={this.closeModal}>Return</Button>
+                                </Col>
+                                <Col className="text-center">
+                                    <Button type="submit">Create</Button>
+                                </Col>
+                            </Row>
+                        </Form>
+                    </Col>
                 </Popup>
             </div>
         )
