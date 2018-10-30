@@ -23,6 +23,7 @@ yarn-error.log*
 .idea
 
 #public
+/public/*
 ./public/static
 ./public/asset-manifest.json
 ./public/manifest.json
