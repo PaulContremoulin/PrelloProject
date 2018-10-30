@@ -1,6 +1,6 @@
 // Modules
 import React from 'react';
-import {Button, Row, Col, Form, FormGroup, Label, Input,} from 'reactstrap';
+import {Button, Row, Col, Form, FormGroup, Label, Input} from 'reactstrap';
 import Popup from "reactjs-popup";
 
 // Css
@@ -66,7 +66,7 @@ export class CreateBoard extends React.Component {
                         <h2 align="center">Create Board</h2>
                         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
                             <Row>
-                                <Col>
+                                <Col sm="12" md="6">
                                     <FormGroup>
                                         <Label>Board's name</Label>
                                         <Input
@@ -79,19 +79,32 @@ export class CreateBoard extends React.Component {
                                         />
                                     </FormGroup>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col>
+                                <Col sm="12" md="6">
                                     <FormGroup>
-                                        <Label>Board's color</Label>
+                                        <Label for="exampleColor">Color</Label>
                                         <Input
-                                            type="text"
+                                            type="color"
                                             name="color"
-                                            placeholder="Board's color"
+                                            id="exampleColor"
+                                            placeholder="color placeholder"
                                             value={ color }
                                             required={true}
                                             onChange={ (e) => this.handleChange(e)}
                                         />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <FormGroup>
+                                        <Label>Add a team</Label>
+                                        <Input type="select" name="select" id="select">
+                                            <option>Team 1</option>
+                                            <option>Team 2</option>
+                                            <option>Team 3</option>
+                                            <option>Team 4</option>
+                                            <option>Team 5</option>
+                                        </Input>
                                     </FormGroup>
                                 </Col>
                             </Row>

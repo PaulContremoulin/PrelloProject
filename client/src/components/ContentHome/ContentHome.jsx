@@ -1,18 +1,27 @@
 // Modules
 import React from 'react';
-import './ContentHome.css';
-
-import {CreateBoard} from "../CreateBoard/CreateBoard";
+import {Container, Row, Col} from 'reactstrap';
 
 // Css...
+import './ContentHome.css';
 
 // Actions & Constant
+import {CreateBoard} from "../CreateBoard/CreateBoard";
 
 export class ContentHome extends React.Component {
 
     render() {
         return (
-            <CreateBoard/>
+            <Container className="contentHome">
+                <Row>
+                    <Col>
+                        <CreateBoard/>
+                    </Col>
+                </Row>
+                <Row>
+                    Display Board
+                </Row>
+            </Container>
         )
     }
 }
