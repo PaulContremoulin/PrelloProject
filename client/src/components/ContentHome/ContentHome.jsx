@@ -2,16 +2,19 @@
 import React from 'react';
 import './ContentHome.css';
 
-//import {} from 'reactstrap';
+import {CreateBoard} from "../CreateBoard/CreateBoard";
 
 // Css...
 
 // Actions & Constant
 
 export class ContentHome extends React.Component {
+
     render() {
         return (
-            <h4>Content</h4>
+            <CreateBoard/>
         )
     }
 }
+
+
