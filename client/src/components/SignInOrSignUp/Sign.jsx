@@ -2,7 +2,7 @@
 import React from 'react';
 import {Login} from './Login/Login';
 import {Registration} from './Registration/Registration';
-import {NavBar} from './NavBar/NavBar';
+import {NavBar} from '../NavBar/NavBar';
 
 // Css...
 
