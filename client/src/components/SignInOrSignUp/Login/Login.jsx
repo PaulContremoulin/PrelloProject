@@ -1,15 +1,14 @@
 // Modules
 import React from 'react';
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
 // Css...
 import './Login.css';
 import Octicon from 'react-octicon'
 
-
 // Actions & Constant
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import {loginUser} from "../../../requests/login";
-import history from '../../../history';
+
 
 
 export class Login extends React.Component {
@@ -35,8 +34,7 @@ export class Login extends React.Component {
         e.preventDefault();
         const username = this.state.username,
               password = this.state.password;
-        history.push('/home');
-        //loginUser(username, password)
+        loginUser(username, password)
         // .then(response => )
         // .catch( err => )
     };

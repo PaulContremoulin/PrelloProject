@@ -1,11 +1,10 @@
 // Modules
 import React from 'react';
-import {Button, Container, Row, Col, Form, FormGroup, Label, Input,} from 'reactstrap';
+import {Button, Row, Col, Form, FormGroup, Label, Input,} from 'reactstrap';
 import Popup from "reactjs-popup";
 
 // Css
 import './CreateBoard.css';
-import history from "../../history";
 
 // Actions & Constant
 import {createBoard} from "../../requests/boards";
@@ -21,8 +20,8 @@ export class CreateBoard extends React.Component {
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
-
     }
+
     openModal (){
         this.setState({ open: true })
     }

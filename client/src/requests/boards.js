@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /**
- * @desc create a new board in the database
+ * @desc create a new boards in the database
  * @param { String } name
  * @param { String } color
  * @return status code
