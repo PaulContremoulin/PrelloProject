@@ -5,11 +5,11 @@ let JWTStrategy = passportJWT.Strategy;
 let ExtractJWT = passportJWT.ExtractJwt;
 let crypto = require('./crypto');
 let debug = require('debug')('app:passport');
-let User = require('../models/User');
+let Member = require('../models/Member');
 
 passport.use('local', new LocalStrategy(
     function(username, password, done) {
-        User.findOne({ username: username }, function (err, user) {
+        Member.findOne({ username: username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) {
                 debug('Incorrect username.')
@@ -30,7 +30,7 @@ passport.use('jwt', new JWTStrategy({
     },
     function (jwtPayload, cb) {
         //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-        return User.findById(jwtPayload.data._id)
+        return Member.findById(jwtPayload.data._id)
             .then(user => {
                 return cb(null, user);
             })
@@ -46,7 +46,7 @@ passport.use('signup', new LocalStrategy({
     function(req, username, password, done) {
         // if there is no user with that username
         // create the user
-        let newUser = new User({
+        let newUser = new Member({
             username: username,
             firstName: req.body.firstName,
             lastName: req.body.lastName,

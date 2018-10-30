@@ -37,12 +37,12 @@ expressSwagger(confSwagger.options)
 // Routes
 const indexRouter = require('./routes/IndexRoutes');
 const authRouter = require('./routes/AuthRoutes');
-const userRouter = require('./routes/UserRoutes');
+const memberRouter = require('./routes/MemberRoutes');
 const boardRouter = require('./routes/BoardRoutes');
 
 app.use('/api', indexRouter);
 app.use('/api', authRouter);
-app.use('/api/user', passport.authenticate('jwt', { session: false }), userRouter);
-app.use('/api/board', passport.authenticate('jwt', { session: false }), boardRouter);
+app.use('/api/members', passport.authenticate('jwt', { session: false }), memberRouter);
+app.use('/api/boards', passport.authenticate('jwt', { session: false }), boardRouter);
 
 module.exports = app;

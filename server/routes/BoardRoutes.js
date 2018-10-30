@@ -20,7 +20,7 @@ let debug = require('debug')('app:board');
 
 /**
  * This function comment is parsed by doctrine
- * @route POST /board
+ * @route POST /boards
  * @group board - Operations about boards
  * @param {NewBoard.model} board.body.required - board's information.
  * @returns {BoardCreated} 201 - Board created

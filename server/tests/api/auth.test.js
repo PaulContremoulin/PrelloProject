@@ -6,7 +6,7 @@ let chai = require('chai')
 let mongoose = require('mongoose');
 let should = chai.should();
 
-module.exports = function (app, auth) {
+module.exports = function (app, options) {
 
     describe('AUTH API TEST', function () {
 
@@ -83,7 +83,8 @@ module.exports = function (app, auth) {
                         if (err) return done(err);
                         res.body.user.should.exist;
                         res.body.token.should.exist;
-                        auth.token = res.body.token;
+                        options.token = res.body.token;
+                        options.user = res.body.user;
                         done();
                     });
             });

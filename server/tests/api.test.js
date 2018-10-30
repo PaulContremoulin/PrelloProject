@@ -10,7 +10,7 @@ let should = chai.should();
 describe('PRELLO SERVER API TEST', function() {
 
     let app = require('./../app');
-    let auth = {}
+    let options = {}
     let server;
 
     this.timeout(10000); // Delay to start the server
@@ -33,8 +33,9 @@ describe('PRELLO SERVER API TEST', function() {
     });
 
     describe('ALL TESTS SHOULD BE PASS', function() {
-        require('./api/auth.test')(app, auth);
-        require('./api/board.test')(app, auth);
+        require('./api/auth.test')(app, options);
+        require('./api/boards.test')(app, options);
+        require('./api/members.test')(app, options);
     });
 
 });
