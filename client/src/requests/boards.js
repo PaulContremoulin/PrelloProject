@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {addBoard} from '../actions/boardActions';
 
 /**
  * @desc create a new boards in the database
@@ -15,5 +16,5 @@ export const createBoard = (
         name,
         color,
     })
-        .then( response => response.data )
+        .then( response => { addBoard(response.data) })
 )

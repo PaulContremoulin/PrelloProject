@@ -8,6 +8,7 @@ import './CreateBoard.css';
 
 // Actions & Constant
 import {createBoard} from "../../requests/boards";
+import { connect } from "react-redux";
 
 export class CreateBoard extends React.Component {
     constructor(props) {
@@ -124,4 +125,7 @@ export class CreateBoard extends React.Component {
     }
 }
 
-
+export default connect(
+    null,
+    { createBoard }
+)(CreateBoard);
