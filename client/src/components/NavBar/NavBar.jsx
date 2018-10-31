@@ -10,7 +10,7 @@ import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap';
 
 export class NavBar extends React.Component {
     render() {
-        const { changeMode, incomingFrom } = this.props;
+        const { changeMode, incomingFrom, logOut } = this.props;
         return (
             <Navbar expand="md">
                 {(incomingFrom == "LoginPage") ?
@@ -34,6 +34,9 @@ export class NavBar extends React.Component {
                     <Nav className="ml-auto" navbar>
                         <NavItem>
                             <NavLink className="helpNavItem" href="/account" >My account</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink className="helpNavItem" href="#" onClick={ () => logOut() } >Log out</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
