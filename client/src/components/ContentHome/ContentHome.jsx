@@ -12,16 +12,31 @@ export class ContentHome extends React.Component {
 
     render() {
         return (
-            <Container className="contentHome">
-                <Row>
-                    <Col>
-                        <CreateBoard/>
-                    </Col>
-                </Row>
-                <Row>
-                    Display Board
-                </Row>
-            </Container>
+            <div>
+                <Container className="contentHome">
+                    <Row>
+                        <Col>
+                            <h2>Personnal's Boards</h2>
+                        </Col>
+                    </Row>
+                </Container>
+                <Container className="contentBoard">
+                    <Row>
+                        <Col className="displayBoard" md="2">
+                            Display Board
+                        </Col>
+                        <Col className="displayBoard" md="2">
+                            Display Board
+                        </Col>
+                        <Col className="displayBoard" md="2">
+                            Display Board
+                        </Col>
+                        <Col md="2">
+                            <CreateBoard/>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
         )
     }
 }

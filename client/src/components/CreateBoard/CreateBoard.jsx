@@ -9,6 +9,7 @@ import './CreateBoard.css';
 // Actions & Constant
 import {createBoard} from "../../requests/boards";
 import { connect } from "react-redux";
+import {addBoard} from "../../actions/boardActions";
 
 export class CreateBoard extends React.Component {
     constructor(props) {
@@ -57,14 +58,14 @@ export class CreateBoard extends React.Component {
         const { name, color } = this.state;
         return (
             <div>
-                <Button className="button" onClick={this.openModal}> Create Board </Button>
+                <Button className="button" onClick={this.openModal}> Add a board </Button>
                 <Popup
                     open={this.state.open}
                     closeOnDocumentClick
                     onClose={this.closeModal}
                 >
                     <Col>
-                        <h2 align="center">Create Board</h2>
+                        <h2 align="center">Add a board</h2>
                         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
                             <Row>
                                 <Col sm="12" md="6">
@@ -125,7 +126,3 @@ export class CreateBoard extends React.Component {
     }
 }
 
-export default connect(
-    null,
-    { createBoard }
-)(CreateBoard);
