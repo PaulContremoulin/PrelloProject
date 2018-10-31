@@ -8,7 +8,7 @@ import Octicon from 'react-octicon'
 
 // Actions & Constant
 import {loginUser} from "../../../requests/login";
-import {setLogin} from "../actions/signActions";
+import {setLogin} from "../../../actions/signActions";
 
 export class Login extends React.Component {
     constructor(props) {
