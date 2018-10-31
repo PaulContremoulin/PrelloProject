@@ -12,7 +12,7 @@ export const HomePage = () => (
                 <Col md="3">
                     <MenuHome/>
                 </Col>
-                <Col md="9">
+                <Col md="8">
                     <ContentHome/>
                 </Col>
             </Row>

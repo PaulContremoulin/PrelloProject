@@ -1,5 +1,3 @@
-// Modules
-import { combineReducers } from 'redux';
 
 // Actions & constants
 /**

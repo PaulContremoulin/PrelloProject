@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {setLogin} from "../actions/signActions";
 
 /**
  * @desc log user to the database
@@ -15,5 +16,5 @@ export const loginUser = (
         username,
         password,
     })
-        .then( response => response.data )
+        .then( response => setLogin(response.data) )
 )
