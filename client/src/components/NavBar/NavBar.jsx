@@ -2,13 +2,18 @@
 import React from 'react';
 import './NavBar.css';
 
-import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap';
+import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reactstrap';
 
 // Css...
 
 // Actions & Constant
 
 export class NavBar extends React.Component {
+
+    logOut = () => {
+        //todo : appeler action log out & redirection page sign in
+    };
+
     render() {
         const { changeMode, incomingFrom } = this.props;
         return (
@@ -34,6 +39,9 @@ export class NavBar extends React.Component {
                     <Nav className="ml-auto" navbar>
                         <NavItem>
                             <NavLink className="helpNavItem" href="/account" >My account</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <Button onClick={this.logOut}>Log out</Button>
                         </NavItem>
                     </Nav>
                 </Collapse>
