@@ -1,8 +1,7 @@
 import axios from 'axios';
-import {setLogin} from "../actions/signActions";
 
 /**
- * @desc log user to the database
+ * @desc check if the user can be connect
  * @param { String } username
  * @param { String } password
  * @return status code

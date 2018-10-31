@@ -16,6 +16,7 @@ export class Login extends React.Component {
         this.state = {
             'username': '',
             'password': '',
+            'goodAccount': true,
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -46,7 +47,7 @@ export class Login extends React.Component {
                 //Todo : change page vers home
             })
             .catch(
-                alert("Error, bad account"),
+                this.state.goodAccount = false,
                 this.handleReset()
             )
     };
@@ -85,6 +86,8 @@ export class Login extends React.Component {
                                     onChange={ (e) => this.handleChange(e) }
                                 />
                             </FormGroup>
+                            { this.state.goodAccount ? null :
+                            <Col className="text-center" ><span> Error, bad account </span></Col> }
                         </Col>
                         <Col className="text-center">
                             <Button className="btnSign" type="submit">Sign In</Button>
