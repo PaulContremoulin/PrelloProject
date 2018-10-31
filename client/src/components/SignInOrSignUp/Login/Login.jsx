@@ -29,21 +29,26 @@ export class Login extends React.Component {
         });
     };
 
+    handleReset = () => {
+        this.setState({
+            'username': '',
+            'password': '',
+        });
+    };
+
     submitForm(e) {
         e.preventDefault();
         const username = this.state.username,
               password = this.state.password;
-        const res = loginUser(username, password)
-        if (res.isError === true) {
-            setLogin(res.result);
-            //push vers la page home
-        } else {
-            alert("Error, bad account");
-            this.state = {
-                'username': '',
-                'password': '',
-            };
-        }
+        loginUser(username, password)
+            .then(res => {
+                setLogin(res)
+                //Todo : change page vers home
+            })
+            .catch(
+                alert("Error, bad account"),
+                this.handleReset()
+            )
     };
 
     render() {

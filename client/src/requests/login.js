@@ -9,22 +9,18 @@ import {setLogin} from "../actions/signActions";
  */
 
 export function loginUser(username, password) {
-    const data = {
-        isError : '',
-        result : ''
-    };
-    axios.post( process.env.API_URL + '/api/login/', {
-        username,
-        password,
+    return new Promise((resolve, reject) =>
+    {
+        axios.post(process.env.API_URL + '/api/login/', {
+            username,
+            password,
+        })
+            .then(response => {
+                const res = response.data
+                resolve(res)
+            })
+            .catch(error => {
+                reject(error)
+            })
     })
-        .then( response => {
-            data.isError = true;
-            data.result = response.data;
-            return data;
-        })
-        .catch( error => {
-            data.isError = false;
-            data.result = error;
-            return data;
-        })
 }
