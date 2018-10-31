@@ -18,13 +18,13 @@ export const FETCH_BOARD = 'FETCH_BOARD';
  * @param board
  * @return ADD_BOARD action
  */
-export const addBoard =  (board) => {
+export const addBoard =  (data) => {
     return {
         type: ADD_BOARD,
         payload: {
-            _id: board._id,
-            name: board.name,
-            color: board.color
+            _id: data._id,
+            name: data.name,
+            color: data.color
         }
     }
 };

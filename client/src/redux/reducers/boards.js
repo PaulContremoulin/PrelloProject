@@ -31,21 +31,14 @@ import { ADD_BOARD, FETCH_BOARD } from "../../actions/boardActions";
  *   if the given previous state is undefined, you should initialize it
  */
 
-// Set the database current user object
-const board = ( state = {}, action ) => {
-    switch( action.type ){
-        case ADD_BOARD :
-            return action.payload ;
-        case FETCH_BOARD :
-            return action.boards ;
+export default function boardsReducer(state = [], action) {
+    switch (action.type) {
+        case ADD_BOARD:
+            return [...state, action.payload];
+        case FETCH_BOARD:
+            return action.boards;
         default:
-            return state ;
+            return state;
     }
 };
 
-// combineReducers is a redux function which associate object key with a reducers
-// It return a reducer responsible for this sub-state
-// combineReducers got others untold subtilities
-export const boards = combineReducers({
-    boards
-});

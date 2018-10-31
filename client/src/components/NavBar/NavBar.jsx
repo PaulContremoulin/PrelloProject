@@ -13,7 +13,11 @@ export class NavBar extends React.Component {
         const { changeMode, incomingFrom } = this.props;
         return (
             <Navbar expand="md">
-                <NavbarBrand href="/">Prello</NavbarBrand>
+                {(incomingFrom == "LoginPage") ?
+                    <NavbarBrand href="/">Prello</NavbarBrand>
+                    :
+                    <NavbarBrand href="/home">Prello</NavbarBrand>
+                }
                 { (incomingFrom == "LoginPage") ?
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
