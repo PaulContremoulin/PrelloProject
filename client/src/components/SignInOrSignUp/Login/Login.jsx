@@ -11,7 +11,7 @@ import Octicon from 'react-octicon';
 import {loginUser} from "../../../requests/login";
 import {setLogin} from "../../../actions/signActions";
 
-export class Login extends React.Component {
+export class LoginToBeConnected extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -116,9 +116,9 @@ const mapDispatchToProps = (dispatch) => ({
   setLogin: (res) => dispatch( setLogin(res)),
 });
 
-export const login = connect(
+export const Login = connect(
     mapStateToProps,
     mapDispatchToProps
-)( Login )
+)( LoginToBeConnected )
 
 
