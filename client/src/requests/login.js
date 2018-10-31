@@ -8,13 +8,23 @@ import {setLogin} from "../actions/signActions";
  * @return status code
  */
 
-export const loginUser = (
-    username,
-    password
-) => (
+export function loginUser(username, password) {
+    const data = {
+        isError : '',
+        result : ''
+    };
     axios.post( process.env.API_URL + '/api/login/', {
         username,
         password,
     })
-        .then( response => setLogin(response.data) )
-)
+        .then( response => {
+            data.isError = true;
+            data.result = response.data;
+            return data;
+        })
+        .catch( error => {
+            data.isError = false;
+            data.result = error;
+            return data;
+        })
+}

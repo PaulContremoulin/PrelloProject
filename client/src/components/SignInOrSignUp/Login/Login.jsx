@@ -8,8 +8,7 @@ import Octicon from 'react-octicon'
 
 // Actions & Constant
 import {loginUser} from "../../../requests/login";
-
-
+import {setLogin} from "../actions/signActions";
 
 export class Login extends React.Component {
     constructor(props) {
@@ -34,9 +33,17 @@ export class Login extends React.Component {
         e.preventDefault();
         const username = this.state.username,
               password = this.state.password;
-        loginUser(username, password)
-        // .then(response => )
-        // .catch( err => )
+        const res = loginUser(username, password)
+        if (res.isError === true) {
+            setLogin(res.result);
+            //push vers la page home
+        } else {
+            alert("Error, bad account");
+            this.state = {
+                'username': '',
+                'password': '',
+            };
+        }
     };
 
     render() {
