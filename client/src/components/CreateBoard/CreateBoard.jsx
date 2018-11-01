@@ -1,6 +1,6 @@
 // Modules
 import React from 'react';
-import {Button, Row, Col, Form, FormGroup, Label, Input} from 'reactstrap';
+import {Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 import Popup from "reactjs-popup";
 
 // Css
@@ -16,7 +16,8 @@ export class CreateBoardToBeConnected extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            open: false,
+            'open': false,
+            'visible': false,
             'name': '',
             'color': '',
         }
@@ -56,9 +57,18 @@ export class CreateBoardToBeConnected extends React.Component {
                 this.closeModal()
          })
          .catch(
-             this.closeModal,
-             alert("Board not created")
+             this.setState({
+                 visible: true,
+                 'name':'',
+                 'color':'',
+             })
          )
+    };
+
+    onDismiss = () => {
+        this.setState({
+            visible: false
+        });
     };
 
     render() {
@@ -73,6 +83,9 @@ export class CreateBoardToBeConnected extends React.Component {
                 >
                     <Col>
                         <h2 align="center">Add a board</h2>
+                        <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
+                            The board was not able to be created
+                        </Alert>
                         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
                             <Row>
                                 <Col sm="12" md="6">
