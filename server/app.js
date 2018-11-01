@@ -11,10 +11,11 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan-debug');
 const passport = require('passport');
 const dotenv = require('dotenv');
-
+var cors = require('cors');
 
 // Initialization
 const app = express();
+app.use(cors())
 app.use(logger('app:api', 'dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
