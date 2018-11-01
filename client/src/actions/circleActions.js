@@ -4,6 +4,7 @@
  * Action types are constants string meant to explains reducer which treatments are needed.
  */
 export const FETCH_CIRCLES = 'FETCH_CIRCLES';
+export const ADD_CIRCLE = 'ADD_CIRCLE';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -19,5 +20,19 @@ export const FETCH_CIRCLES = 'FETCH_CIRCLES';
 export const fetch_circles = () => {
     return {
         type: FETCH_CIRCLES
+    }
+};
+
+/**
+ * @desc add a circle
+ * @return ADD_CIRCLE action
+ */
+export const addCircle = (circleId, circleName) => {
+    return {
+        type: ADD_CIRCLE,
+        circle: {
+          circleId: circleId,
+          circleName: circleName
+        }
     }
 };

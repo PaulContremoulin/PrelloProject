@@ -6,7 +6,7 @@ import { combineReducers } from 'redux';
 * Action types are exported from the action source file
 * It's the best place to avoid circular dependencies
 */
-import { FETCH_TEAMS } from "../../actions/teamActions.js";
+import { FETCH_TEAMS, ADD_TEAM } from "../../actions/teamActions.js";
 
 
 /******************************************************************************/
@@ -32,18 +32,16 @@ import { FETCH_TEAMS } from "../../actions/teamActions.js";
 */
 
 // Set the database current user object
-const teams = ( state = {}, action ) => {
+export const teams = ( state = {}, action ) => {
   switch( action.type ){
     case FETCH_TEAMS :
-      return action.teams ;
+      return state.teams ;
+    case ADD_TEAM :
+      return [
+        ...state,
+        action.team
+      ];
     default:
       return state ;
   }
 };
-
-// combineReducers is a redux function which associate object key with a reducers
-// It return a reducer responsible for this sub-state
-// combineReducers got others untold subtilities
-export const user = combineReducers({
-  teams
-});

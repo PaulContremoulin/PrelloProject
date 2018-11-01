@@ -6,7 +6,7 @@ import { combineReducers } from 'redux';
 * Action types are exported from the action source file
 * It's the best place to avoid circular dependencies
 */
-import { FETCH_CIRCLES } from "../../actions/circleActions";
+import { FETCH_CIRCLES, ADD_CIRCLE } from "../../actions/circleActions";
 
 
 /******************************************************************************/
@@ -32,18 +32,16 @@ import { FETCH_CIRCLES } from "../../actions/circleActions";
 */
 
 // Set the database current user object
-const circles = ( state = {}, action ) => {
+export const circles = ( state = [], action ) => {
   switch( action.type ){
     case FETCH_CIRCLES :
-      return action.circles ;
+      return state;
+    case ADD_CIRCLE :
+      return [
+        ...state,
+        action.circle
+      ];
     default:
       return state ;
   }
 };
-
-// combineReducers is a redux function which associate object key with a reducers
-// It return a reducer responsible for this sub-state
-// combineReducers got others untold subtilities
-export const user = combineReducers({
-  circles
-});

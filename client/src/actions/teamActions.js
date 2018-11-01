@@ -4,6 +4,7 @@
  * Action types are constants string meant to explains reducer which treatments are needed.
  */
 export const FETCH_TEAMS = 'FETCH_TEAMS';
+export const ADD_TEAM = 'ADD_TEAM';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -19,5 +20,20 @@ export const FETCH_TEAMS = 'FETCH_TEAMS';
 export const fetchTeams = () => {
     return {
         type: FETCH_TEAMS
+    }
+};
+
+
+/**
+ * @desc add a team
+ * @return ADD_TEAM action
+ */
+export const addTeam = (teamId, teamName) => {
+    return {
+        type: ADD_TEAM,
+        team: {
+          teamId: teamId,
+          teamName: teamName
+        }
     }
 };
