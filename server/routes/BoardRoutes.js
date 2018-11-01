@@ -10,7 +10,7 @@ let debug = require('debug')('app:board');
  */
 
 /**
- * @typedef BoardCreated
+ * @typedef Board
  * @property {string} _id.required - the board's id
  * @property {string} name.required - the board's name
  * @property {string} color.required - the board's color
@@ -23,7 +23,7 @@ let debug = require('debug')('app:board');
  * @route POST /boards
  * @group board - Operations about boards
  * @param {NewBoard.model} board.body.required - board's information.
- * @returns {BoardCreated} 201 - Board created
+ * @returns {Board} 201 - Board created
  * @returns {Error}  400 - bad request, one of fields is invalid
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  default - Unexpected error
@@ -51,6 +51,27 @@ router.post('/', function(req, res) {
             debug('Board Registration successful');
             return res.status(201).json(newBoard);
         });
+    });
+});
+
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /boards/{id}
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @returns {Board} 200 - Board object
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id', function(req, res) {
+
+    // Validate the board
+    Board.findById(req.params.id, function (err, board) {
+        if (err) return res.status(404).end();
+        if (!board) return res.status(404).end();
+        res.status(200).json(board);
     });
 });
 
