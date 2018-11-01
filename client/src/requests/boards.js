@@ -6,12 +6,10 @@ import axios from 'axios';
  * @param { String } color
  * @return status code
  */
-
 export function createBoard(name, color) {
     return new Promise((resolve, reject) =>
     {
-        //todo : change la route pour connexion
-        axios.post(process.env.API_URL + '/api/login/', {
+        axios.post(process.env.API_URL + '/api/boards', {
             name,
             color,
         })
