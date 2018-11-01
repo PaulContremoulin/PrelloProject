@@ -24,8 +24,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 // Environment configuration
-const environmentPath = path.resolve('./environments/.env.'+app.get('env'));
+const environmentPath = path.resolve('./environments/.' + app.get('env') + '.env' );
 dotenv.config({ path: environmentPath});
+
 // Database & passport require
 require('./config/database');
 require('./config/passport');

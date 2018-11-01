@@ -1,4 +1,3 @@
-import dotenv from 'dotenv'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
@@ -13,8 +12,6 @@ import history from './history';
 //Pages
 import LoginPage from './pages/LoginPage/LoginPage';
 import HomePage from './pages/HomePage/HomePage';
-
-dotenv.config({ path: '../environments/.env'});
 
 ReactDOM.render(
     <Provider store={store}>

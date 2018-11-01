@@ -10,7 +10,7 @@ import axios from 'axios';
 export function loginUser(username, password) {
     return new Promise((resolve, reject) =>
     {
-        axios.post(process.env.API_URL + '/api/login/', {
+        axios.post(process.env.REACT_APP_API_URL + '/api/login/', {
             username,
             password,
         })
