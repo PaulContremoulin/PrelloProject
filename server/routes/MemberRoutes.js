@@ -57,7 +57,10 @@ router.get('/:id/boards', function(req, res) {
             return res.status(500).end();
         }
         if(!member) return res.status(404).end();
-        Board.find({ creator: member._id}, function (err, boards) {
+        Board.find(
+            { creator: member._id},
+            { 'lists': 0 },
+            function (err, boards) {
             if(err) {
                 debug('members/:id/boards error : ' + err)
                 return res.status(500).end();

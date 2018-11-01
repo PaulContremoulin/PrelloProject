@@ -61,6 +61,7 @@ module.exports = function (app, options) {
                     .end(function (err, res) {
                         if (err) return done(err);
                         res.body.should.be.instanceof(Array).and.have.length(1);
+                        res.body[0].should.to.not.have.any.keys('lists');
                         done();
                     });
             });
