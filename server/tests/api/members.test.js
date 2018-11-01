@@ -61,7 +61,7 @@ module.exports = function (app, options) {
                     .end(function (err, res) {
                         if (err) return done(err);
                         res.body.should.be.instanceof(Array).and.have.length(1);
-                        res.body[0].should.to.not.have.any.keys('lists');
+                        res.body[0].memberships[0].idMember.should.be.equal(options.member._id)
                         done();
                     });
             });

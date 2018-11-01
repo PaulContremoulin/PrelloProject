@@ -32,7 +32,7 @@ require('./config/passport');
 // Swagger
 const expressSwagger = require('express-swagger-generator')(app);
 const confSwagger = require('./config/swagger');
-expressSwagger(confSwagger.options)
+expressSwagger(confSwagger.options);
 
 // Routes
 const indexRouter = require('./routes/IndexRoutes');
