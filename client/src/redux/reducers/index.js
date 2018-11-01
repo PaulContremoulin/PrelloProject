@@ -8,6 +8,6 @@ import { circles } from './circles';
 export default combineReducers({
     user,
     boards,
-    teams,
-    circles
+    //teams,
+    //circles
 });

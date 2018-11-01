@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {addBoard} from '../actions/boardActions';
 
 /**
  * @desc create a new boards in the database
@@ -8,13 +7,20 @@ import {addBoard} from '../actions/boardActions';
  * @return status code
  */
 
-export const createBoard = (
-    name,
-    color
-) => (
-    axios.post( process.env.API_URL + '/api/login/', {
-        name,
-        color,
+export function createBoard(name, color) {
+    return new Promise((resolve, reject) =>
+    {
+        //todo : change la route pour connexion
+        axios.post(process.env.API_URL + '/api/login/', {
+            name,
+            color,
+        })
+            .then(response => {
+                const res = response.data
+                resolve(res)
+            })
+            .catch(error => {
+                reject(error)
+            })
     })
-        .then( response => { addBoard(response.data) })
-)
+}

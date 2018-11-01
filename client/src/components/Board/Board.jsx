@@ -22,7 +22,7 @@ export const BoardToBeConnected = ({ board }) => (
 )
 
 const mapStateToProps = ( state, props ) => ({
-  // board: state.board
+   //board: state.board
 })
 
 const mapDispatchToProps = ( dispatch ) => ({})

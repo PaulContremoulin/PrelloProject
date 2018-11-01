@@ -10,8 +10,9 @@ import './CreateBoard.css';
 import {createBoard} from "../../requests/boards";
 import { connect } from "react-redux";
 import {addBoard} from "../../actions/boardActions";
+//import {BoardToBeConnected} from "../Board/Board";
 
-export class CreateBoard extends React.Component {
+export class CreateBoardToBeConnected extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -50,8 +51,14 @@ export class CreateBoard extends React.Component {
             color = this.state.color;
         console.log(this.state.name+"/"+this.state.color)
         createBoard(name, color)
-        // .then(response => )
-        // .catch( err => )
+         .then(res => {
+                this.props.addBoard(res)
+                this.closeModal()
+         })
+         .catch(
+             this.closeModal,
+             alert("Board not created")
+         )
     };
 
     render() {
@@ -126,3 +133,13 @@ export class CreateBoard extends React.Component {
     }
 }
 
+const mapStateToProps = ( state, props ) => ({})
+
+const mapDispatchToProps = ( dispatch ) => ({
+    addBoard: (res) => dispatch( addBoard(res)),
+})
+
+export const CreateBoard = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)( CreateBoardToBeConnected );
