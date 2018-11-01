@@ -67,7 +67,26 @@ router.post('/', function(req, res) {
  */
 router.get('/:id', function(req, res) {
 
-    // Validate the board
+    Board.findById(req.params.id, function (err, board) {
+        if (err) return res.status(404).end();
+        if (!board) return res.status(404).end();
+        res.status(200).json(board);
+    });
+});
+
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /boards/{id}
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @returns {Board} 200 - Board object
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id', function(req, res) {
+
     Board.findById(req.params.id, function (err, board) {
         if (err) return res.status(404).end();
         if (!board) return res.status(404).end();
