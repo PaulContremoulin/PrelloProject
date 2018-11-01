@@ -82,6 +82,8 @@ module.exports = function (app, options) {
                     .end(function (err, res) {
                         if (err) return done(err);
                         res.body.member.should.exist;
+                        res.body.member.should.not.have.key('hash');
+                        res.body.member.should.not.have.key('salt');
                         res.body.token.should.exist;
                         options.token = res.body.token;
                         options.member = res.body.member;

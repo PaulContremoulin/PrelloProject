@@ -15,7 +15,8 @@ exports.options = {
             JWT: {
                 type: 'apiKey',
                 in: 'header',
-                name: 'Authorization'
+                name: 'Authorization',
+                description: ""
             }
         }
     },

@@ -1,6 +1,7 @@
 let mongoose = require('mongoose');
 let crypto = require('../config/crypto');
 var uniqueValidator = require('mongoose-unique-validator');
+let mongooseHidden = require('mongoose-hidden')()
 
 let Schema = mongoose.Schema;
 
@@ -9,6 +10,9 @@ let memberSchema = new Schema({
         required  : true,
         unique   : true,
         minlength : 3,
+        type      : String
+    },
+    bio: {
         type      : String
     },
     firstName: {
@@ -23,14 +27,28 @@ let memberSchema = new Schema({
     },
     organization: {
         required  : false,
-        minlength : 2,
         type      : String
+    },
+    idBoards: {
+        type : [Schema.Types.ObjectId],
+        default : [],
+        required : true
+    },
+    idOrganizations: {
+        type : [Schema.Types.ObjectId],
+        default : [],
+        required : true
     },
     email: {
         required : true,
         unique   : true,
         type     : String,
         match    : [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    },
+    confirmed : {
+        required : true,
+        type : Boolean,
+        default : false
     },
     hash: {
         type : String,
@@ -46,6 +64,7 @@ let memberSchema = new Schema({
 });
 
 memberSchema.plugin(uniqueValidator);
+memberSchema.plugin(mongooseHidden, { hidden: { hash: true, salt: true, _id: false } })
 
 /**
  * give the user's fullName
@@ -82,23 +101,13 @@ memberSchema.methods.setPassword = function(oldPassword, newPassword) {
 };
 
 /**
- * Json object that describe the user instance
- * @returns {Object|*|Array|Binary} a JSON with user's public information
- */
-memberSchema.methods.toPublic = function() {
-    var json = this.toObject();
-    delete json.salt;
-    delete json.hash;
-    return json;
-};
-
-/**
  * Json object that describe the user's payload
  * @returns {Object|*|Array|Binary} a JSON with user's payload information
  */
 memberSchema.methods.payload = function() {
     return {
-        _id : this._id
+        _id : this._id,
+        confirmed : this.confirmed
     };
 }
 

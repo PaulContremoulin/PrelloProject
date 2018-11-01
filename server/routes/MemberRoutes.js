@@ -10,7 +10,7 @@ let mongoose = require('mongoose');
  * @route GET /members/{id}
  * @group members - Operations about members
  * @param {string} id.path.required - member's id.
- * @returns {Object} 200 - Member's information
+ * @returns {Member.model} 200 - Member's information
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  404 - Not found if the user doesn't exist
  * @returns {Error}  default - Unexpected error
@@ -28,7 +28,7 @@ router.get('/:id', function(req, res) {
             return res.status(404).end();
         }
         if(!member) return res.status(404).end();
-        return res.status(200).json(member.toPublic());
+        return res.status(200).json(member);
     });
 
 });
@@ -39,7 +39,8 @@ router.get('/:id', function(req, res) {
  * @route GET /members/{id}/boards
  * @group members - Operations about members
  * @param {string} id.path.required - member's id.
- * @returns {Object} 200 - List of member's boards
+ * @param {string} name.query - board name
+ * @returns {Array.<Board>} 200 - List of member's boards
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  404 - Member not found
  * @returns {Error}  default - Unexpected error
@@ -57,16 +58,17 @@ router.get('/:id/boards', function(req, res) {
             return res.status(500).end();
         }
         if(!member) return res.status(404).end();
-        Board.find(
-            { creator: member._id},
-            { 'lists': 0 },
-            function (err, boards) {
-            if(err) {
-                debug('members/:id/boards error : ' + err)
-                return res.status(500).end();
-            }
-            return res.status(200).json(boards)
-        });
+
+        req.query._id = { $in: member.idBoards};
+
+        Board.find(req.query, function(err, board){
+                if(err) {
+                    debug('members/:id error : ' + err)
+                    return res.status(500).end();
+                }
+                return res.status(200).json(board)
+            });
+
     });
 
 });
