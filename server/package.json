@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev": "cross-env DEBUG=app:* node ./bin/www",
     "devmon": "cross-env DEBUG=app:* nodemon",
     "test-api": "cross-env NODE_ENV=test mocha --recursive ./tests/api.test"
