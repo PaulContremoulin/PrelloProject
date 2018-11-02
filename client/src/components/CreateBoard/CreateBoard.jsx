@@ -21,9 +21,6 @@ export class CreateBoardToBeConnected extends React.Component {
             'name': '',
             'color': '',
         }
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
     openModal (){

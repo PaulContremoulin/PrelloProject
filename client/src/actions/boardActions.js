@@ -4,7 +4,6 @@
  * Action types are constants string meant to explains reducer which treatments are needed.
  */
 export const ADD_BOARD= "ADD_BOARD" ;
-export const FETCH_BOARD = 'FETCH_BOARD';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -21,7 +20,7 @@ export const FETCH_BOARD = 'FETCH_BOARD';
 export const addBoard =  (data) => {
     return {
         type: ADD_BOARD,
-        payload: {
+        board: {
             _id: data._id,
             name: data.name,
             color: data.color
@@ -29,15 +28,6 @@ export const addBoard =  (data) => {
     }
 };
 
-/**
- * @desc set all boards
- * @param boards
- * @return FETCH_BOARD action
- */
-export const fetchBoards = (boards) => {
-    return {
-        type: FETCH_BOARD,
-        boards
-    }
-};
+
+
 

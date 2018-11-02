@@ -4,7 +4,7 @@
  * Action types are exported from the action source file
  * It's the best place to avoid circular dependencies
  */
-import { ADD_BOARD, FETCH_BOARD } from "../../actions/boardActions";
+import { ADD_BOARD } from "../../actions/boardActions";
 
 
 /******************************************************************************/
@@ -29,14 +29,17 @@ import { ADD_BOARD, FETCH_BOARD } from "../../actions/boardActions";
  *   if the given previous state is undefined, you should initialize it
  */
 
-export default function boardsReducer(state = [], action) {
-    switch (action.type) {
-        case ADD_BOARD:
-            return [...state, action.payload];
-        case FETCH_BOARD:
-            return action.boards;
+export const boards = ( state = [], action ) => {
+    switch( action.type ){
+        case ADD_BOARD :
+            return [
+                ...state,
+                action.board
+            ];
         default:
-            return state;
+            return state ;
     }
 };
+
+
 
