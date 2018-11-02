@@ -15,7 +15,7 @@ export class NavBar extends React.Component {
     };
 
     render() {
-        const { changeMode, incomingFrom } = this.props;
+        const { changeMode, incomingFrom, logOut } = this.props;
         return (
             <Navbar expand="md">
                 {(incomingFrom == "LoginPage") ?
@@ -41,7 +41,7 @@ export class NavBar extends React.Component {
                             <NavLink className="helpNavItem" href="/account" >My account</NavLink>
                         </NavItem>
                         <NavItem>
-                            <Button onClick={this.logOut}>Log out</Button>
+                            <NavLink className="helpNavItem" href="#" onClick={ () => logOut() } >Log out</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>

@@ -8,17 +8,33 @@ import { Button, Col, Row } from 'reactstrap';
 // Css...
 
 // Actions & Constant
+import {AddCircle} from "../AddCircle/AddCircle";
+import { addCircle } from "../../actions/circleActions";
+import { addCircleToDB } from "../../requests/circle";
+import {AddTeam} from "../AddTeam/AddTeam";
+import { addTeam } from "../../actions/teamActions";
+import { addTeamToDB } from "../../requests/team";
 
-export const MenuHomeToBeConnected = ({ circles, teams }) => (
+export const MenuHomeToBeConnected = ({ user, circles, teams, addCircle, addTeam }) => (
     <div className="vertical-menu">
       <h3>Boards<Button color="primary">+</Button></h3>
       <a href="#">Personnal Boards</a>
-      <h3>Circles<Button color="primary">+</Button></h3>
+      <h3>Circles
+        <AddCircle
+          addCircle={ (circleId, circleName) => addCircle(circleId, circleName) }
+          addCircleToDB={ (circleName) => addCircleToDB( user.userId , circleName ) }
+        />
+      </h3>
       {
         // circles.map(( circle ) => <a href="#">circle.circleName</a> )
         // .reduce(( childArray, child ) => childArray.concat( child ), [])
       }
-      <h3>Team<Button color="primary">+</Button></h3>
+      <h3>Teams
+        <AddTeam
+          addTeam={ (teamId, teamName) => addTeam(teamId, teamName) }
+          addTeamToDB={ (teamName) => addTeamToDB( user.userId , teamName ) }
+        />
+      </h3>
       {
         // teams.map(( team ) => <a href="#">team.teamName</a> )
         // .reduce(( childArray, child ) => childArray.concat( child ), [])
@@ -27,11 +43,15 @@ export const MenuHomeToBeConnected = ({ circles, teams }) => (
 )
 
 const mapStateToProps = ( state, props ) => ({
+  user: state.user,
   circles: state.circles,
-  teams: state.teams
+  teams: state.teams,
 })
 
-const mapDispatchToProps = ( dispatch ) => ({})
+const mapDispatchToProps = ( dispatch ) => ({
+  addCircle: ( circleId, circleName ) => dispatch( addCircle( circleId, circleName )),
+  addTeam: ( teamId, teamName ) => dispatch( addTeam( teamId, teamName )),
+})
 
 export const MenuHome = connect(
   mapStateToProps,

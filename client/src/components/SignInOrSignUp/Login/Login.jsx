@@ -11,6 +11,7 @@ import Octicon from 'react-octicon';
 import {loginUser} from "../../../requests/login";
 import {setLogin} from "../../../actions/signActions";
 
+
 export class LoginToBeConnected extends React.Component {
     constructor(props) {
         super(props);
@@ -19,7 +20,6 @@ export class LoginToBeConnected extends React.Component {
             'password': '',
             'goodAccount': true,
         };
-        this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange = async (event) => {
@@ -120,5 +120,3 @@ export const Login = connect(
     mapStateToProps,
     mapDispatchToProps
 )( LoginToBeConnected )
-
-
