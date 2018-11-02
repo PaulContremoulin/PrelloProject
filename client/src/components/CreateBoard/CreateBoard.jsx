@@ -20,6 +20,7 @@ export class CreateBoardToBeConnected extends React.Component {
             'visible': false,
             'name': '',
             'color': '',
+            'description': '',
         }
     }
 
@@ -32,6 +33,7 @@ export class CreateBoardToBeConnected extends React.Component {
             open: false,
             'name':'',
             'color':'',
+            'description':'',
         })
     }
 
@@ -47,9 +49,9 @@ export class CreateBoardToBeConnected extends React.Component {
     submitForm(e) {
         e.preventDefault();
         const name = this.state.name,
-            color = this.state.color;
-        console.log(this.state.name+"/"+this.state.color)
-        createBoard(name, color)
+            color = this.state.color,
+            description = this.state.description;
+        createBoard(name, color, description)
          .then(res => {
                 this.props.addBoard(res)
                 this.closeModal()
@@ -59,6 +61,7 @@ export class CreateBoardToBeConnected extends React.Component {
                  visible: true,
                  'name':'',
                  'color':'',
+                 'description':'',
              })
          )
     };
@@ -70,7 +73,7 @@ export class CreateBoardToBeConnected extends React.Component {
     };
 
     render() {
-        const { name, color } = this.state;
+        const { name, color, description } = this.state;
         return (
             <div>
                 <Button className="button" onClick={() => this.openModal() }> Add a board </Button>
@@ -88,11 +91,11 @@ export class CreateBoardToBeConnected extends React.Component {
                             <Row>
                                 <Col sm="12" md="6">
                                     <FormGroup>
-                                        <Label>Board's name</Label>
+                                        <Label>Name</Label>
                                         <Input
                                             type="text"
                                             name="name"
-                                            placeholder="Board's name"
+                                            placeholder="Enter a name"
                                             value={ name }
                                             required={true}
                                             onChange={ (e) => this.handleChange(e)}
@@ -117,14 +120,16 @@ export class CreateBoardToBeConnected extends React.Component {
                             <Row>
                                 <Col>
                                     <FormGroup>
-                                        <Label>Add a team</Label>
-                                        <Input type="select" name="select" id="select">
-                                            <option>Team 1</option>
-                                            <option>Team 2</option>
-                                            <option>Team 3</option>
-                                            <option>Team 4</option>
-                                            <option>Team 5</option>
-                                        </Input>
+                                        <Label>Description</Label>
+                                        <Input
+                                            type="textarea"
+                                            name="description"
+                                            id="exampleText"
+                                            placeholder="Enter a description"
+                                            value={ description }
+                                            required={true}
+                                            onChange={ (e) => this.handleChange(e)}
+                                        />
                                     </FormGroup>
                                 </Col>
                             </Row>
@@ -144,7 +149,9 @@ export class CreateBoardToBeConnected extends React.Component {
     }
 }
 
-const mapStateToProps = ( state, props ) => ({})
+const mapStateToProps = ( state, props ) => ({
+    user : state.user,
+})
 
 const mapDispatchToProps = ( dispatch ) => ({
     addBoard: (res) => dispatch( addBoard(res)),

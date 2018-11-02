@@ -23,7 +23,8 @@ export const addBoard =  (data) => {
         board: {
             _id: data._id,
             name: data.name,
-            color: data.color
+            color: data.color,
+            description: data.description,
         }
     }
 };
