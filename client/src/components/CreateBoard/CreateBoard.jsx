@@ -50,8 +50,9 @@ export class CreateBoardToBeConnected extends React.Component {
         e.preventDefault();
         const name = this.state.name,
             color = this.state.color,
-            description = this.state.description;
-        createBoard(name, color, description)
+            description = this.state.description,
+            tokenUser = this.props.user.token;
+        createBoard(tokenUser, name, color, description)
          .then(res => {
                 this.props.addBoard(res)
                 this.closeModal()
