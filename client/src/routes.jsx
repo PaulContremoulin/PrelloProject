@@ -1,11 +1,15 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route } from 'react-router';
 
 // Components
 import { LoginPage } from "./pages/LoginPage/LoginPage";
+import { HomePage } from "./pages/HomePage/HomePage";
+// import { BoardPage } from "./pages/BoardPage/BoardPage";
+import { GithubPage } from "./pages/GithubPage/GithubPage";
 
 // Routes constants & action
 import { store } from "./redux/store";
+import { HOME_ROUTE, BOARD_ROUTE, ROOT_ROUTE, GITHUB_ROUTE } from "./constants";
 
 
 /**
@@ -15,7 +19,11 @@ import { store } from "./redux/store";
 *   they can be nested, they can render interface part
 */
 export const routes = (
-  <Route  >
-    <IndexRoute component={ LoginPage } onEnter={ isLogged } />
+  <Route path={ ROOT_ROUTE } >
+    <Route path={ ROOT_ROUTE } component={ LoginPage } />
+    <Route path={ HOME_ROUTE } component={ HomePage } />
+    <Route path={ GITHUB_ROUTE } component={ GithubPage } />
   </Route>
 );
+// onEnter={ isLogged }
+// <Route path={ BOARD_ROUTE } component={ BoardPage } />

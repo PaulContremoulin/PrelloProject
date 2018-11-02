@@ -12,13 +12,15 @@ import history from './history';
 //Pages
 import LoginPage from './pages/LoginPage/LoginPage';
 import HomePage from './pages/HomePage/HomePage';
+import GithubPage from './pages/GithubPage/GithubPage';
 
 ReactDOM.render(
     <Provider store={store}>
         <Router history={history}>
             <div>
-                <Route exact path="/" component={LoginPage}/>
-                <Route path="/home" component={HomePage}/>
+              <Route path="/" component={LoginPage}/>
+              <Route path="/home" component={HomePage}/>
+              <Route path="/login/github" component={GithubPage}/>
             </div>
         </Router>
     </Provider>

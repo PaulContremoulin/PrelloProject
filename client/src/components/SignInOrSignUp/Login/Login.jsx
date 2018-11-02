@@ -2,14 +2,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
-
+import axios from 'axios';
 // Css...
 import './Login.css';
 import Octicon from 'react-octicon';
 
 // Actions & Constant
 import {loginUser} from "../../../requests/login";
+import {signInGithub} from "../../../requests/registration";
 import {setLogin} from "../../../actions/signActions";
+
 
 export class LoginToBeConnected extends React.Component {
     constructor(props) {
@@ -52,6 +54,7 @@ export class LoginToBeConnected extends React.Component {
                 this.handleReset()
             )
     };
+
 
     render() {
         const {username, password} = this.state;
@@ -96,7 +99,7 @@ export class LoginToBeConnected extends React.Component {
                         </Form>
                         <Row>
                             <Col className="text-center">
-                                <Button className="btnGithub"><Octicon name="mark-github"/> Sign In with Github</Button>
+                                <Button className="btnGithub" href="http://localhost:5000/api/auth/github" ><Octicon name="mark-github"/> Sign In with Github</Button>
                             </Col>
                         </Row>
                         <Row>
@@ -110,7 +113,7 @@ export class LoginToBeConnected extends React.Component {
         );
     }
 }
-
+// onClick={ () => signInGithub() }
 const mapStateToProps = (state, props) => ({});
 const mapDispatchToProps = (dispatch) => ({
   setLogin: (res) => dispatch( setLogin(res)),
@@ -120,5 +123,3 @@ export const Login = connect(
     mapStateToProps,
     mapDispatchToProps
 )( LoginToBeConnected )
-
-

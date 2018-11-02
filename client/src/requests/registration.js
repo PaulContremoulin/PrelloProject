@@ -25,3 +25,9 @@ export const registerUser = (
   })
   .then( response => response.data )
 )
+
+
+
+export function signInGithub() {
+    axios.get(process.env.REACT_APP_API_URL + '/api/auth/github')
+}

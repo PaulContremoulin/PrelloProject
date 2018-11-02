@@ -38,9 +38,9 @@ export class Registration extends React.Component {
   }
 
   changeToStepTwo = (state) => {
-    if ( state.username == "" || state.firstName == "" || state.lastName == "" || state.email == "" || state.passwordA == "" || state.passwordB == "") {
+    if ( state.username === "" || state.firstName === "" || state.lastName === "" || state.email === "" || state.passwordA === "" || state.passwordB === "") {
       this.setState({ allFieldsFilled: false });
-    } else if ( state.passwordA != state.passwordB ) {
+    } else if ( state.passwordA !== state.passwordB ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: false });
     } else if ( !state.emailIsValid ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: true });
@@ -96,7 +96,7 @@ export class Registration extends React.Component {
                   { (stepOne && !stepTwo) ? (
                       <div>
                         <Row>
-                          <Col md="6">
+                          <Col>
                             <FormGroup>
                                 <Label>First name</Label>
                                 <Input
@@ -108,7 +108,7 @@ export class Registration extends React.Component {
                                 />
                             </FormGroup>
                           </Col>
-                          <Col md="6">
+                          <Col>
                             <FormGroup>
                                 <Label>Last name</Label>
                                 <Input
@@ -196,10 +196,10 @@ export class Registration extends React.Component {
                           </FormGroup>
                       </Col>
                           <Row>
-                      <Col md="6" className="text-center">
+                      <Col className="text-center">
                         <Button className="btnSign">Sign Up</Button>
                       </Col>
-                      <Col md="6" className="text-center">
+                      <Col className="text-center">
                         <Button className="btnReturn" onClick={ () => this.changeStep() }>Return</Button>
                       </Col>
                           </Row>
