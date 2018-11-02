@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
-
+import history from '../../../history';
 // Css...
 import './Login.css';
 import Octicon from 'react-octicon';
@@ -16,7 +16,6 @@ export class LoginToBeConnected extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'requestPending': false,
             'badAccount': false,
             'username': '',
             'password': '',
@@ -50,20 +49,15 @@ export class LoginToBeConnected extends React.Component {
         e.preventDefault();
         const username = this.state.username,
             password = this.state.password;
-        if (this.state.requestPending === false) {
-            this.setState({
-                'requestPending': true,
-            });
-            loginUser(username, password)
-                .then(res => {
-                    this.props.setLogin(res)
-                    console.log("account good")
-                    //Todo : change page vers home
-                })
-                .catch(
-                    this.handleReset()
-                )
-        }
+        loginUser(username, password)
+            .then(res => {
+                this.props.setLogin(res)
+                console.log("account good")
+                history.push('/home')
+            })
+            .catch(
+                this.handleReset()
+            )
     };
 
     render() {
