@@ -35,11 +35,28 @@ module.exports = function (app, options) {
                     .post('/api/signup')
                     .set('Content-Type', 'application/json')
                     .send({
-                        username: 'JohnP',
+                        username: 'Titi',
                         lastName: 'Peter',
                         firstName: 'John',
                         password: '1234',
                         email: 'johnpetermail.com'
+                    })
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a BAD REQUEST response (missing email field)', function (done) {
+                request(app)
+                    .post('/api/signup')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        username: 'Toto',
+                        lastName: 'Peter',
+                        firstName: 'John',
+                        password: '1234'
                     })
                     .expect(400)
                     .end(function (err, res) {
@@ -54,6 +71,24 @@ module.exports = function (app, options) {
                     .set('Content-Type', 'application/json')
                     .send({
                         username: 'JohnP',
+                        lastName: 'Peter',
+                        firstName: 'John',
+                        password: '1234',
+                        email: 'john.p@mail.com'
+                    })
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a BAD REQUEST response (email already registered)', function (done) {
+                request(app)
+                    .post('/api/signup')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        username: 'JeanPaul',
                         lastName: 'Peter',
                         firstName: 'John',
                         password: '1234',

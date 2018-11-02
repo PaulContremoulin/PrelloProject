@@ -16,7 +16,6 @@ let memberSchema = new Schema({
         type      : String
     },
     firstName: {
-        required  : true,
         minlength : 3,
         type      : String
     },
@@ -40,9 +39,11 @@ let memberSchema = new Schema({
         required : true
     },
     email: {
-        required : true,
-        unique   : true,
-        type     : String,
+        type: String,
+        trim: true,
+        index: true,
+        unique: true,
+        sparse: true,
         match    : [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
     confirmed : {
@@ -50,21 +51,31 @@ let memberSchema = new Schema({
         type : Boolean,
         default : false
     },
-    hash: {
-        type : String,
-        select : true
+    loginType: {
+        type: String,
+        enum: ['password', 'both', 'saml'],
+        required : true
     },
-    salt: {
-        type : String,
-        select : true
-    }
+    hash: String,
+    salt: String,
+    oauth: {
+        github : String
+    },
 },
 {
     versionKey: false
 });
 
 memberSchema.plugin(uniqueValidator);
-memberSchema.plugin(mongooseHidden, { hidden: { hash: true, salt: true, _id: false } })
+memberSchema.plugin(mongooseHidden, { hidden: { hash: true, salt: true, oauth: true, _id: false } })
+
+memberSchema.pre('validate', function(next) {
+    if (!this.oauth.github) {
+        if(!this.hash && !this.salt) return next(new Error('Member must have a password or a authentication with OAuth protocol.'));
+        if(!this.email) return next(new Error('Email is required.'));
+    }
+    return next();
+});
 
 /**
  * give the user's fullName

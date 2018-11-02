@@ -45,14 +45,31 @@ router.post('/login', passport.authenticate('local', {session: false}), function
     return res.json({member, token});
 });
 
-
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /auth/github
+ * @group auth - Operations about authentification
+ * @returns {code} 302 - Redirection on github Oauth authentication page
+ */
 router.get('/auth/github', passport.authenticate('github'));
 
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /auth/github/callback
+ * @group auth - Operations about authentification
+ * @param {string} code.param.required - github payload
+ * @returns {Member.model} 200 - user info object and token object
+ */
 router.get('/auth/github/callback',
-    passport.authenticate('github', { session: false, failureRedirect: '/' }),
+    passport.authenticate('github', { session: false }),
     function(req, res) {
-        // Successful authentication, redirect home.
-        res.json(res.profile);
+        // Successful authentication
+        const member = req.user;
+        const token = jwt.sign({
+            exp: Math.floor(Date.now() / 1000) + (60 * 60),
+            data: req.user.payload()
+        }, process.env.JWT_SECRET);
+        return res.json({member, token});
     });
 
 module.exports = router;
