@@ -26,6 +26,7 @@ export class CreateBoardToBeConnected extends React.Component {
     openModal (){
         this.setState({ open: true })
     }
+
     closeModal () {
         this.setState({
             open: false,
@@ -72,15 +73,15 @@ export class CreateBoardToBeConnected extends React.Component {
         const { name, color } = this.state;
         return (
             <div>
-                <Button className="button" onClick={this.openModal}> Add a board </Button>
+                <Button className="button" onClick={() => this.openModal() }> Add a board </Button>
                 <Popup
                     open={this.state.open}
                     closeOnDocumentClick
-                    onClose={this.closeModal}
+                    onClose={() =>this.closeModal() }
                 >
                     <Col>
                         <h2 align="center">Add a board</h2>
-                        <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
+                        <Alert color="info" isOpen={this.state.visible} toggle={() =>this.onDismiss() }>
                             The board was not able to be created
                         </Alert>
                         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
@@ -129,7 +130,7 @@ export class CreateBoardToBeConnected extends React.Component {
                             </Row>
                             <Row className="text-center">
                                 <Col>
-                                    <Button onClick={this.closeModal}>Return</Button>
+                                    <Button onClick={() =>this.closeModal() }>Return</Button>
                                 </Col>
                                 <Col className="text-center">
                                     <Button type="submit">Create</Button>

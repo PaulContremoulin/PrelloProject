@@ -18,7 +18,6 @@ export class Login extends React.Component {
             'username': '',
             'password': '',
         };
-        this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange = async (event) => {
