@@ -45,4 +45,14 @@ router.post('/login', passport.authenticate('local', {session: false}), function
     return res.json({member, token});
 });
 
+
+router.get('/auth/github', passport.authenticate('github'));
+
+router.get('/auth/github/callback',
+    passport.authenticate('github', { session: false, failureRedirect: '/' }),
+    function(req, res) {
+        // Successful authentication, redirect home.
+        res.json(res.profile);
+    });
+
 module.exports = router;

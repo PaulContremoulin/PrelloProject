@@ -1,6 +1,7 @@
 let passport = require('passport');
 let passportJWT = require('passport-jwt');
 let LocalStrategy = require('passport-local').Strategy;
+var GitHubStrategy = require('passport-github').Strategy;
 let JWTStrategy = passportJWT.Strategy;
 let ExtractJWT = passportJWT.ExtractJwt;
 let crypto = require('./crypto');
@@ -73,3 +74,14 @@ passport.use('signup', new LocalStrategy({
             }
         });
     }));
+
+passport.use(new GitHubStrategy({
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: process.env.HOST + ':' + process.env.PORT + process.env.GITHUB_CLIENT_CALLBACK
+    },
+    function(accessToken, refreshToken, profile, cb) {
+        debug('Profil github : ' + JSON.stringify(profile))
+        return cb(null, profile);
+    }
+));
