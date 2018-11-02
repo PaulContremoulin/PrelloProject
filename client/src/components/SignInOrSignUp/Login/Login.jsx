@@ -1,7 +1,7 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 
 // Css...
 import './Login.css';
@@ -16,9 +16,10 @@ export class LoginToBeConnected extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            'requestPending': false,
+            'badAccount': false,
             'username': '',
             'password': '',
-            'goodAccount': true,
         };
     }
 
@@ -33,8 +34,15 @@ export class LoginToBeConnected extends React.Component {
 
     handleReset = () => {
         this.setState({
+            'badAccount': true,
             'username': '',
             'password': '',
+        });
+    };
+
+    onDismiss = () => {
+        this.setState({
+            'badAccount': false
         });
     };
 
@@ -42,19 +50,24 @@ export class LoginToBeConnected extends React.Component {
         e.preventDefault();
         const username = this.state.username,
             password = this.state.password;
-        loginUser(username, password)
-            .then(res => {
-                this.props.setLogin(res)
-                //Todo : change page vers home
-            })
-            .catch(
-                this.state.goodAccount = false,
-                this.handleReset()
-            )
+        if (this.state.requestPending === false) {
+            this.setState({
+                'requestPending': true,
+            });
+            loginUser(username, password)
+                .then(res => {
+                    this.props.setLogin(res)
+                    console.log("account good")
+                    //Todo : change page vers home
+                })
+                .catch(
+                    this.handleReset()
+                )
+        }
     };
 
     render() {
-        const {username, password} = this.state;
+        const {username, password, badAccount} = this.state;
         const {onClick} = this.props;
         return (
             <Container>
@@ -62,6 +75,9 @@ export class LoginToBeConnected extends React.Component {
                     <Col className="Login" md={{size: 6, offset: 3}}>
                         <h2 align="center">Sign In</h2>
                         <Form className="form" onSubmit={(e) => this.submitForm(e)}>
+                            <Alert color="danger" isOpen={badAccount} toggle={() =>this.onDismiss() }>
+                                Error, bad account
+                            </Alert>
                             <Col>
                                 <FormGroup>
                                     <Label>Username</Label>
@@ -87,8 +103,6 @@ export class LoginToBeConnected extends React.Component {
                                         onChange={(e) => this.handleChange(e)}
                                     />
                                 </FormGroup>
-                                {this.state.goodAccount ? null :
-                                    <Col className="text-center"><span> Error, bad account </span></Col>}
                             </Col>
                             <Col className="text-center">
                                 <Button className="btnSign" type="submit">Sign In</Button>

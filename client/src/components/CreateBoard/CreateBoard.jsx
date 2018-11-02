@@ -50,7 +50,7 @@ export class CreateBoardToBeConnected extends React.Component {
         const name = this.state.name,
             color = this.state.color,
             description = this.state.description,
-            tokenUser = this.props.user.token;
+            tokenUser = this.props.user.login.token;
         createBoard(tokenUser, name, color, description)
          .then(res => {
                 this.props.addBoard(res)
@@ -151,11 +151,11 @@ export class CreateBoardToBeConnected extends React.Component {
 
 const mapStateToProps = ( state, props ) => ({
     user : state.user,
-})
+});
 
 const mapDispatchToProps = ( dispatch ) => ({
     addBoard: (res) => dispatch( addBoard(res)),
-})
+});
 
 export const CreateBoard = connect(
     mapStateToProps,

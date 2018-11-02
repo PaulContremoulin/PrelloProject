@@ -28,7 +28,7 @@ import { ADD_BOARD, FETCH_BOARD } from "../../actions/boardActions";
  *   if the given previous state is undefined, you should initialize it
  */
 
-export default function boards (state = [], action) {
+export const boards = (state = [], action) => {
     switch (action.type) {
         case ADD_BOARD:
             return [...state, action.payload];
