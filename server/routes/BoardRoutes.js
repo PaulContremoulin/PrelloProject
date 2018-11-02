@@ -125,8 +125,6 @@ router.post('/:id/lists', function(req, res) {
  */
 router.get('/:id/lists', function(req, res) {
 
-    console.log(req.query);
-
     if(!mongoose.Types.ObjectId.isValid(req.params.id)){
         return res.status(404).end();
     }

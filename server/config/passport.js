@@ -51,7 +51,8 @@ passport.use('signup', new LocalStrategy({
             username: username,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            email: req.body.email
+            email: req.body.email,
+            loginType : 'password'
         });
         // set the user's local credentials
         newUser.salt = crypto.getSalt();
@@ -78,10 +79,41 @@ passport.use('signup', new LocalStrategy({
 passport.use(new GitHubStrategy({
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: process.env.HOST + ':' + process.env.PORT + process.env.GITHUB_CLIENT_CALLBACK
+        callbackURL: process.env.HOST + ':' + process.env.GITHUB_PORT_CALLBACK + process.env.GITHUB_PATH_CALLBACK
     },
     function(accessToken, refreshToken, profile, cb) {
-        debug('Profil github : ' + JSON.stringify(profile))
-        return cb(null, profile);
+
+        Member.findOne({ oauth: { github : profile.id } }, function (err, user) {
+            if(err) return cb(err, null);
+            if(user) return cb(null, user);
+
+            let jsonProfile = profile._json;
+
+            let userInfo = {};
+            jsonProfile.id !== null ? userInfo.oauth = { github : jsonProfile.id }: null;
+            profile.username !== null ? userInfo.username = profile.username : null;
+            jsonProfile.email !== null ? userInfo.email = jsonProfile.email : null;
+            userInfo.lastName = 'unknown';
+            userInfo.firstName = 'unknown';
+            userInfo.loginType = 'saml';
+
+            let newOauthUser = new Member(userInfo);
+
+            newOauthUser.validate(function (err) {
+                if (err) return cb(err, null);
+                // save the user
+                newOauthUser.save(function (err) {
+                    if (err) {
+                        debug('Error in Saving user: ' + err);
+                        return cb(err, null);
+                    }
+                    debug('User oauth registration');
+                    return cb(null, newOauthUser);
+                });
+            });
+
+        });
+
+
     }
 ));
