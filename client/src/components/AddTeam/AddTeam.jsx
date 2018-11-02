@@ -22,7 +22,7 @@ export class AddTeam extends React.Component {
 
     openModal (){
         this.setState({ open: true })
-    }
+    };
 
     closeModal () {
         this.setState({
@@ -30,7 +30,7 @@ export class AddTeam extends React.Component {
             'name':'',
             'color':'',
         })
-    }
+    };
 
     submitForm(e) {
         e.preventDefault();
@@ -61,15 +61,15 @@ export class AddTeam extends React.Component {
         const { name, color } = this.state;
         return (
             <div>
-              <Button color="primary"  onClick={ () => openModal() }>+</Button>
+              <Button color="primary"  onClick={ () => this.openModal() }>+</Button>
               <Popup
                   open={this.state.open}
                   closeOnDocumentClick
-                  onClose={ () => closeModal() }
+                  onClose={ () => this.closeModal() }
               >
                   <Col>
                       <h2 align="center">Add a team</h2>
-                      <Alert color="info" isOpen={this.state.visible} toggle={ () => onDismiss() }>
+                      <Alert color="info" isOpen={this.state.visible} toggle={ () => this.onDismiss() }>
                           There was an error. The team could not be created.
                       </Alert>
                       <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
@@ -88,7 +88,7 @@ export class AddTeam extends React.Component {
                           </Row>
                           <Row className="text-center">
                               <Col>
-                                  <Button onClick={ () => closeModal() }>Return</Button>
+                                  <Button onClick={ () => this.closeModal() }>Return</Button>
                               </Col>
                               <Col className="text-center">
                                   <Button type="submit">Add a team</Button>

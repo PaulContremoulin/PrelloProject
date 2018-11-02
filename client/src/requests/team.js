@@ -12,5 +12,7 @@ export const addTeamToDB = (
     teamName
   })
   .then( response => response.data )
+      /*
   .catch( error => {code: error.code, message: error.message} )
+  */
 )

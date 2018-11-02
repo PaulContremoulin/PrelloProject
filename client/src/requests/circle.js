@@ -12,5 +12,7 @@ export const addCircleToDB = (
     circleName
   })
   .then( response => response.data )
+      /*
   .catch( error => {code: error.code, message: error.message} )
+  */
 )
