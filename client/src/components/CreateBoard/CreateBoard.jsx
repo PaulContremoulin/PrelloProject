@@ -51,6 +51,8 @@ export class CreateBoardToBeConnected extends React.Component {
             color = this.state.color,
             description = this.state.description,
             tokenUser = this.props.user.login.token;
+        alert(tokenUser);
+        /*
         createBoard(tokenUser, name, color, description)
          .then(res => {
                 this.props.addBoard(res)
@@ -63,7 +65,7 @@ export class CreateBoardToBeConnected extends React.Component {
                  'color':'',
                  'description':'',
              })
-         )
+         )*/
     };
 
     onDismiss = () => {

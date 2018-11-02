@@ -41,7 +41,7 @@ export class NavBar extends React.Component {
                             <NavLink className="helpNavItem" href="/account" >My account</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink className="helpNavItem" href="#" onClick={ () => logOut() } >Log out</NavLink>
+                            <NavLink className="helpNavItem" href="/" onClick={ () => logOut() } >Log out</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
