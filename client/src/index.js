@@ -13,6 +13,7 @@ import history from './history';
 //Pages
 import LoginPage from './pages/LoginPage/LoginPage';
 import {HomePage} from './pages/HomePage/HomePage';
+import {AccountPage} from './pages/AccountPage/AccountPage';
 
 dotenv.config({ path: '../environments/.env'});
 
@@ -22,6 +23,7 @@ ReactDOM.render(
             <div>
                 <Route exact path="/" component={LoginPage}/>
                 <Route path="/home" component={HomePage}/>
+                <Route path="/account" component={AccountPage}/>
             </div>
         </Router>
     </Provider>
