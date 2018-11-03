@@ -2,6 +2,8 @@ let mongoose = require('mongoose');
 let crypto = require('../config/crypto');
 var uniqueValidator = require('mongoose-unique-validator');
 let mongooseHidden = require('mongoose-hidden')()
+let jwt = require('jsonwebtoken');
+var shortid = require('shortid');
 
 let Schema = mongoose.Schema;
 
@@ -51,13 +53,27 @@ let memberSchema = new Schema({
         type : Boolean,
         default : false
     },
+    tokenConfirm : {
+        type : String,
+        default : shortid.generate()
+    },
     loginType: {
         type: String,
         enum: ['password', 'both', 'saml'],
         required : true
     },
-    hash: String,
-    salt: String,
+    hash: {
+        type : String,
+        required : [true, 'Password isn\'t valid']
+    },
+    salt: {
+        type : String,
+        required : [true, 'Password isn\'t valid']
+    },
+    resetPass : {
+        token : String,
+        expire : Date
+    },
     oauth: {
         github : String
     },
@@ -67,7 +83,17 @@ let memberSchema = new Schema({
 });
 
 memberSchema.plugin(uniqueValidator);
-memberSchema.plugin(mongooseHidden, { hidden: { hash: true, salt: true, oauth: true, _id: false } })
+memberSchema.plugin(mongooseHidden,
+    { hidden:
+            {
+                hash: true,
+                salt: true,
+                oauth: true,
+                resetPass: true,
+                tokenConfirm: true,
+                _id: false
+            }
+    });
 
 memberSchema.pre('validate', function(next) {
     if (!this.oauth.github) {
@@ -95,20 +121,40 @@ memberSchema.methods.validPassword = function(password) {
     return payloads.passwordHash === this.hash;
 };
 
+/**
+ * method to generate a json web token
+ * @returns {String} a generate json web token
+ */
+memberSchema.methods.generateJWT = function() {
+    return jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        data: this.payload()
+    }, process.env.JWT_SECRET);
+};
+
+
+/**
+ * method to generate a reset password token
+ * @returns {String} a generate reset password token
+ */
+memberSchema.methods.generateResetPasswordToken = function() {
+    this.resetPass = {
+        expire : Math.floor(Date.now() / 1000) + (60 * 60),
+        token : shortid.generate()
+    };
+    return this.resetPass.token;
+};
 
 /**
  * method to set the password
- * @param oldPassword the old user's password
  * @param newPassword the new user's password
  * @returns {boolean} true if the password is modified successfully, false if the password can't be modified (old password wrong)
  */
-memberSchema.methods.setPassword = function(oldPassword, newPassword) {
-    if(validPassword(oldPassword)) {
-        this.salt = crypto.getSalt();
-        this.hash = crypto.sha512(newPassword, this.salt).passwordHash;
-        return true
-    }
-    return false
+memberSchema.methods.setPassword = function(password) {
+    if(!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/g)) return false
+    this.salt = crypto.getSalt();
+    this.hash = crypto.sha512(password, this.salt).passwordHash;
+    return true
 };
 
 /**
@@ -120,7 +166,7 @@ memberSchema.methods.payload = function() {
         _id : this._id,
         confirmed : this.confirmed
     };
-}
+};
 
 
 let Member = mongoose.model('Member', memberSchema);

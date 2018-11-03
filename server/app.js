@@ -44,7 +44,7 @@ const boardRouter = require('./routes/BoardRoutes');
 
 app.use('/api', indexRouter);
 app.use('/api', authRouter);
-app.use('/api/members', passport.authenticate('jwt', { session: false }), memberRouter);
+app.use('/api/members', memberRouter);
 app.use('/api/boards', passport.authenticate('jwt', { session: false }), boardRouter);
 
 module.exports = app;
