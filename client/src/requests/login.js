@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {setLogin} from "../actions/signActions";
 
 /**
  * @desc check if the user can be connect
@@ -23,4 +22,3 @@ export function loginUser(username, password) {
             })
     })
 }
-        // .then( response => setLogin(response.data) )

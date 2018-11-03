@@ -9,7 +9,7 @@ import { logOut } from '../../actions/signActions.js';
 
 // Css
 import './HomePage.css';
-import { Container, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 
 export const HomePageToBeConnected = ({ logOut }) => (
     <div className="HomePage">

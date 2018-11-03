@@ -8,7 +8,7 @@ import { Router, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap/dist/react-bootstrap.min';
 
-import history from './history';
+import { history } from './history';
 //Pages
 import LoginPage from './pages/LoginPage/LoginPage';
 import {HomePage} from './pages/HomePage/HomePage';

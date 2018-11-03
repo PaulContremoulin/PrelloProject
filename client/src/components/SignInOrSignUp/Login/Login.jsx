@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
-import history from '../../../history';
+import {history} from '../../../history';
 // Css...
 import './Login.css';
 import Octicon from 'react-octicon';
