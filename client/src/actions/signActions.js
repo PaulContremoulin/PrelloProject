@@ -18,9 +18,9 @@ export const LOG_OUT = "LOG_OUT" ;
 * @param login
 * @return SET_LOGIN action
 */
-export const setLogin = ( login ) => ({
+export const setLogin = ( user ) => ({
   type: SET_LOGIN,
-  login: login,
+  user: user,
 })
 
 /**

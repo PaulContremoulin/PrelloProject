@@ -25,8 +25,8 @@ export function putRequest( url, body = {}, config = {} ) {
 
 function getUserToken() {
   const stateStore = store.getState();
-  if (stateStore.user.login.member) {
-    return { Authorization: 'Bearer '+ stateStore.user.login.member.userToken }
+  if (stateStore.user.token) {
+    return { Authorization: 'Bearer '+ stateStore.user.token }
   } else {
     return {}
   }

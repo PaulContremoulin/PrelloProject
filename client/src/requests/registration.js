@@ -25,5 +25,5 @@ export const registerUser = (
     password,
     organisation
   })
-  .then( response => response.data )
+  .then( response => console.log(response) || response.data )
 )
