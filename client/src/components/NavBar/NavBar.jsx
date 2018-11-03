@@ -22,12 +22,12 @@ export class NavBarToBeConnected extends React.Component {
         } = this.props;
         return (
             <Navbar expand="md">
-                {(user.member) ?
+                {!(user.member) ?
                     <NavbarBrand href="/">Prello</NavbarBrand>
                     :
                     <NavbarBrand href="/home">Prello</NavbarBrand>
                 }
-                {(user.member) ?
+                {!(user.member) ?
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
