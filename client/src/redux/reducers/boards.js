@@ -31,7 +31,7 @@ import { ADD_BOARD, FETCH_BOARD } from "../../actions/boardActions";
 export const boards = (state = [], action) => {
     switch (action.type) {
         case ADD_BOARD:
-            return [...state, action.payload];
+            return [...state, action.board];
         case FETCH_BOARD:
             return action.boards;
         default:
