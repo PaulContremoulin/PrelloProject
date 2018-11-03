@@ -12,6 +12,7 @@
  * @property {string} firstName.required - the user's firstName
  * @property {string} lastName.required - the user's lastName
  * @property {string} organization.required - the user's organization
+ * @property {string} callback - the callback url to redirect when a user click on the confirm link
  */
 
 /**
