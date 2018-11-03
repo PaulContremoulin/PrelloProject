@@ -9,9 +9,10 @@ import './ContentHome.css';
 import {CreateBoard} from "../CreateBoard/CreateBoard";
 import {connect} from "react-redux";
 import {CardBoard} from "../CardBoard/CardBoard";
+import {getBoardsUser} from "../../requests/boards";
+import {fetchBoards} from "../../actions/boardActions";
 
 export class ContentHomeToBeConnected extends React.Component {
-
     render() {
         return (
             <div>
@@ -41,6 +42,12 @@ export class ContentHomeToBeConnected extends React.Component {
             </div>
         )
     }
+
+    componentDidMount() {
+        getBoardsUser(this.props.user.member._id)
+            .then(res => {this.props.fetchBoards(res.data)})
+            .catch(error => {console.log(error)})
+    }
 }
 
 const mapStateToProps = ( state, props ) => ({
@@ -48,7 +55,9 @@ const mapStateToProps = ( state, props ) => ({
     boards: state.boards,
 });
 
-const mapDispatchToProps = ( dispatch ) => ({});
+const mapDispatchToProps = ( dispatch ) => ({
+    fetchBoards: (res) => dispatch( fetchBoards(res)),
+});
 
 export const ContentHome = connect(
     mapStateToProps,

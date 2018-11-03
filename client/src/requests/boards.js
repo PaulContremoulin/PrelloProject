@@ -1,12 +1,12 @@
-import { postRequest } from './genericRequest';
+import { postRequest, getRequest } from './genericRequest';
 
 /**
  * @desc create a new boards in the database
- * @param { String } username
  * @param { String } name
  * @param { String } idOrganization
  * @param { String } desc
  * @param {[String]} memberships
+ * @param {{String}} prefs
  * @return status code
  */
 export function createBoard(name, idOrganization, desc, memberships, prefs) {
@@ -27,4 +27,18 @@ export function createBoard(name, idOrganization, desc, memberships, prefs) {
             })
     })
 }
+
+export function getBoardsUser(idUser) {
+    return new Promise((resolve, reject) =>
+    {
+        getRequest( '/api/members/'+idUser+'/boards')
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
 
