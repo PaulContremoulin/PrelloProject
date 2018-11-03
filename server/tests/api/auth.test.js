@@ -20,7 +20,7 @@ module.exports = function (app, options) {
                         username: 'JohnP',
                         lastName: 'Peter',
                         firstName: 'John',
-                        password: '1234',
+                        password: 'qsd1s5f34',
                         email: 'john.peter@mail.com'
                     })
                     .expect(200)
@@ -111,7 +111,7 @@ module.exports = function (app, options) {
                     .set('Content-Type', 'application/json')
                     .send({
                         username: 'JohnP',
-                        password: '1234'
+                        password: 'qsd1s5f34'
                     })
                     .expect(200)
                     .end(function (err, res) {

@@ -54,25 +54,20 @@ passport.use('signup', new LocalStrategy({
             email: req.body.email,
             loginType : 'password'
         });
-        // set the user's local credentials
-        newUser.salt = crypto.getSalt();
-        newUser.hash = crypto.sha512(password, newUser.salt).passwordHash;
 
-        newUser.validate(function (error) {
-            if (error) {
-                return done(null, false, {message: error});
-            }
-            else {
-                // save the user
-                newUser.save(function (err) {
-                    if (err) {
-                        debug('Error in Saving user: ' + err);
-                        throw err;
-                    }
-                    debug('User Registration successful');
-                    return done(null, newUser);
-                });
-            }
+        newUser.setPassword(password);
+
+        newUser.validate(function (err) {
+            if (err) return done(null, false, {message: err});
+            // save the user
+            newUser.save(function (err) {
+                if (err) {
+                    debug('Error in Saving user: ' + err);
+                    throw err;
+                }
+                debug('User Registration successful');
+                return done(null, newUser);
+            });
         });
     }));
 
