@@ -1,6 +1,6 @@
 // Modules
 import React from 'react';
-import {Container, Row, Col} from 'reactstrap';
+import {Container, Row, Col, Alert} from 'reactstrap';
 
 // Css...
 import './ContentHome.css';
@@ -22,16 +22,14 @@ export class ContentHome extends React.Component {
                 </Container>
                 <Container className="contentBoard">
                     <Row>
-                        <Col className="displayBoard" md="2">
-                            Display Board
+                        <Col>
+                            <Alert color="secondary">
+                                You haven't board ! Click on the button, to add a new board
+                            </Alert>
                         </Col>
-                        <Col className="displayBoard" md="2">
-                            Display Board
-                        </Col>
-                        <Col className="displayBoard" md="2">
-                            Display Board
-                        </Col>
-                        <Col md="2">
+                    </Row>
+                    <Row>
+                        <Col>
                             <CreateBoard/>
                         </Col>
                     </Row>

@@ -18,9 +18,9 @@ export class CreateBoardToBeConnected extends React.Component {
             'open': false,
             'visible': false,
             'name': '',
-            'idOrganization': '',
+            'idOrganization': null,
             'desc': '',
-            'memberships': [''],
+            'memberships': [],
             'color': '',
         }
     }
@@ -35,7 +35,7 @@ export class CreateBoardToBeConnected extends React.Component {
             'name':'',
             'idOrganization': null,
             'desc':'',
-            'memberships': [''],
+            'memberships': [],
             'color':'',
         })
     }
@@ -52,25 +52,26 @@ export class CreateBoardToBeConnected extends React.Component {
     submitForm(e) {
         e.preventDefault();
         const name = this.state.name,
-            color = this.state.color,
             desc = this.state.desc,
             idOrganization = this.state.idOrganization,
-            memberships = this.state.memberships,
-            username = this.props.user.login.username;
-        createBoard(username, name, idOrganization, desc, memberships)
-         .then(res => {
-             console.log("ok");
-             //this.props.addBoard(res)
+            memberships = this.state.memberships;
+        const prefs = {
+            'background': this.state.color,
+        };
+        createBoard(name, idOrganization, desc, memberships, prefs)
+            .then(res => {
+                console.log("ok");
+                //this.props.addBoard(res)
                 this.closeModal()
-         })
-         .catch(
-             this.setState({
-                 visible: true,
-                 'name':'',
-                 'color':'',
-                 'description':'',
-             })
-         )
+            })
+            .catch(
+                this.setState({
+                    visible: true,
+                    'name':'',
+                    'color':'',
+                    'description':'',
+                })
+            )
     };
 
     onDismiss = () => {
@@ -80,7 +81,7 @@ export class CreateBoardToBeConnected extends React.Component {
     };
 
     render() {
-        const { name, color, description } = this.state;
+        const { name, color, desc } = this.state;
         return (
             <div>
                 <Button className="button" onClick={() => this.openModal() }> Add a board </Button>
@@ -91,12 +92,12 @@ export class CreateBoardToBeConnected extends React.Component {
                 >
                     <Col>
                         <h2 align="center">Add a board</h2>
-                        <Alert color="info" isOpen={this.state.visible} toggle={() =>this.onDismiss() }>
+                        <Alert color="danger" isOpen={this.state.visible} toggle={() =>this.onDismiss() }>
                             The board was not able to be created
                         </Alert>
                         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
                             <Row>
-                                <Col sm="12" md="6">
+                                <Col sm="12" md="8">
                                     <FormGroup>
                                         <Label>Name</Label>
                                         <Input
@@ -109,7 +110,7 @@ export class CreateBoardToBeConnected extends React.Component {
                                         />
                                     </FormGroup>
                                 </Col>
-                                <Col sm="12" md="6">
+                                <Col sm="12" md="2">
                                     <FormGroup>
                                         <Label for="exampleColor">Color</Label>
                                         <Input
@@ -130,10 +131,10 @@ export class CreateBoardToBeConnected extends React.Component {
                                         <Label>Description</Label>
                                         <Input
                                             type="textarea"
-                                            name="description"
+                                            name="desc"
                                             id="exampleText"
                                             placeholder="Enter a description"
-                                            value={ description }
+                                            value={ desc }
                                             required={true}
                                             onChange={ (e) => this.handleChange(e)}
                                         />

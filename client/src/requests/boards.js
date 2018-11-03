@@ -9,22 +9,22 @@ import { postRequest } from './genericRequest';
  * @param {[String]} memberships
  * @return status code
  */
-export function createBoard(username, name, idOrganization, desc, memberships) {
+export function createBoard(name, idOrganization, desc, memberships, prefs) {
     return new Promise((resolve, reject) =>
     {
         postRequest( '/api/boards', {
-            username,
-            name,
-            idOrganization,
-            desc,
-            memberships,
+            name: name,
+            idOrganization: idOrganization,
+            desc: desc,
+            memberships: memberships,
+            prefs: prefs,
         })
             .then(response => {
-                const res = response.data
-                resolve(res)
+                resolve(response)
             })
             .catch(error => {
                 reject(error)
             })
     })
 }
+
