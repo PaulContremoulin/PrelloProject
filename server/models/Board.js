@@ -84,12 +84,20 @@ let boardSchema = new Schema({
         versionKey: false
     });
 
+boardSchema.methods.getMemberRole = function(memberId, next){
+    this.memberships.findById(memberId, (err, member) => {
+        if(err) next(err, null);
+        if(!member) next(null, null);
+        return next(null, member.memberType);
+    });
+};
+
 boardSchema.methods.addMember = function(idMember, memberType, unconfirmed) {
     this.memberships.push({
         idMember: idMember,
         memberType: memberType,
         unconfirmed: unconfirmed
-    })
+    });
 };
 
 

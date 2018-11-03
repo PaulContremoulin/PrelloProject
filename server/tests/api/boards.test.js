@@ -144,6 +144,7 @@ module.exports = function (app, options) {
                         res.body.name.should.equal("ListName");
                         res.body.pos.should.equal(123);
                         res.body.idBoard.should.be.equal(options.board._id);
+                        options.list = res.body;
                         done();
                     });
             });

@@ -30,7 +30,7 @@ router.post('/', function(req, res) {
         newBoard.save(function (err) {
             if (err) {
                 debug('Error in Saving board: ' + err);
-                throw err;
+                return res.status(400).json(err);
             }
             debug('Board Registration successful');
 

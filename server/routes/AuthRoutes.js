@@ -18,15 +18,18 @@ let Member = require('./../models/Member');
 router.post('/signup', function(req, res, next) {
     passport.authenticate('signup', {session: false}, function (err, member, info) {
         if (err) {
-            console.log(err)
-            return res.status(500)
+            debug(err)
+            return res.status(500);
         }
         if (!member) return res.status(400).send(info);
         let confirmUrl = process.env.HOST + ':' + process.env.PORT + '/api/members/' + member._id + '/email/confirm?token=' + member.tokenConfirm;
         if(req.body.callback) confirmUrl += '&callback=' + req.body.callback;
         if(process.env.NODE_ENV === 'test') return res.status(200).end();
         mail.confirmEmailMessage(member, confirmUrl, function(err){
-            if(err) return res.status(500).end();
+            if(err) {
+                debug(err);
+                return res.status(500).end();
+            }
             return res.status(200).end();
         });
     })(req, res, next);
