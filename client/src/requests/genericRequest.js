@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { store } from "../redux/store";
 
-console.log(store.getState().user);
 
 export function getRequest( url, config = {} ) {
   config["headers"] = getUserToken();

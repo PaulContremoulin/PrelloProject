@@ -1,4 +1,4 @@
-.Registration {
+.ResetPswd {
     text-align: left;
     padding: 1em;
     margin: 1em;
@@ -18,23 +18,6 @@
      display: flex;
      font-weight: 600;
  }
-
-.btnSign {
-   background-color: #6495ED;
-}
-
-.btnSign:hover {
-   background-color: #4169E1;
-}
-
-.btnGithub {
-    background-color: white;
-    color : black;
-}
-
-.btnReturn {
-    background-color: red;
-}
 
 .text-center {
    margin-top: 10px;

@@ -59,7 +59,7 @@ export class LoginToBeConnected extends React.Component {
 
     render() {
         const {username, password, badAccount} = this.state;
-        const {onClick} = this.props;
+        const {onClick, toggleResetPswd} = this.props;
         return (
             <Container>
                 <Row>
@@ -107,6 +107,11 @@ export class LoginToBeConnected extends React.Component {
                         <Row>
                             <Col className="text-center">
                                 <Button color="link" onClick={onClick}>Create an account</Button>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="text-center">
+                                <Button color="link" onClick={toggleResetPswd}>Forgotten password ?</Button>
                             </Col>
                         </Row>
                     </Col>

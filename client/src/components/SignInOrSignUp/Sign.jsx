@@ -2,6 +2,7 @@
 import React from 'react';
 import {Login} from './Login/Login';
 import {Registration} from './Registration/Registration';
+import {ResetPswd} from './ResetPswd/ResetPswd';
 import {NavBar} from '../NavBar/NavBar';
 
 // Css...
@@ -15,12 +16,19 @@ export class Sign extends React.Component {
       super(props);
       this.state = {
         "signUpMode" : false,
+        "requestResetPswd" : false,
       }
   }
 
   toggleMode = () => {
     this.setState({
       signUpMode: !this.state.signUpMode
+    })
+  }
+
+  toggleResetPswd = () => {
+    this.setState({
+      requestResetPswd: !this.state.requestResetPswd
     })
   }
 
@@ -31,11 +39,18 @@ export class Sign extends React.Component {
   }
 
   render() {
-    const { signUpMode } = this.state;
+    const { signUpMode, requestResetPswd } = this.state;
     return (
       <div className="Sign">
-        <NavBar changeMode= { ( mode ) => this.changeMode( mode ) } incomingFrom="LoginPage" />
-        {signUpMode ? <Registration onClick={ () => this.toggleMode() } /> : <Login onClick={ () => this.toggleMode() } />}
+        <NavBar changeMode= { ( mode ) => this.changeMode( mode ) } />
+          { (requestResetPswd) ?
+            <ResetPswd toggleResetPswd={ () => this.toggleResetPswd() }/>
+            :
+            (signUpMode) ?
+            <Registration onClick={ () => this.toggleMode() } />
+            :
+            <Login onClick={ () => this.toggleMode() } toggleResetPswd={ () => this.toggleResetPswd() } />
+          }
       </div>
     );
   }

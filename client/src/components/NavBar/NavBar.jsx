@@ -1,29 +1,33 @@
 // Modules
 import React from 'react';
-import './NavBar.css';
-
-import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reactstrap';
+import { connect } from 'react-redux';
 
 // Css...
+import './NavBar.css';
+import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reactstrap';
 
 // Actions & Constant
 
-export class NavBar extends React.Component {
+export class NavBarToBeConnected extends React.Component {
 
     logOut = () => {
         //todo : appeler action log out & redirection page sign in
     };
 
     render() {
-        const { changeMode, incomingFrom, logOut } = this.props;
+        const {
+          user,
+          changeMode,
+          logOut,
+        } = this.props;
         return (
             <Navbar expand="md">
-                {(incomingFrom === "LoginPage") ?
+                {(user.member) ?
                     <NavbarBrand href="/">Prello</NavbarBrand>
                     :
                     <NavbarBrand href="/home">Prello</NavbarBrand>
                 }
-                { (incomingFrom === "LoginPage") ?
+                {(user.member) ?
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
@@ -50,3 +54,13 @@ export class NavBar extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state, props) => ({
+  user: state.user
+});
+const mapDispatchToProps = (dispatch) => ({});
+
+export const NavBar = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)( NavBarToBeConnected )
