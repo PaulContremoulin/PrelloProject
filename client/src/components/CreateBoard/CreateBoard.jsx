@@ -61,7 +61,7 @@ export class CreateBoardToBeConnected extends React.Component {
         createBoard(name, idOrganization, desc, memberships, prefs)
             .then(res => {
                 console.log("ok");
-                //this.props.addBoard(res)
+                this.props.addBoard(res)
                 this.closeModal()
             })
             .catch(
