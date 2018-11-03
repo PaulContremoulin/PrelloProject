@@ -50,11 +50,8 @@ export class LoginToBeConnected extends React.Component {
         const username = this.state.username,
             password = this.state.password;
         loginUser(username, password)
-            .then(res => {
-                this.props.setLogin(res)
-                console.log("account good")
-                history.push('/home')
-            })
+            .then(res => ( res.status < 400 ) ? this.props.setLogin(res.data.member) : Promise.reject("Error") )
+            .then( () => history.push('/home') )
             .catch(
                 this.handleReset()
             )

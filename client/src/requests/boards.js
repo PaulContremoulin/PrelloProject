@@ -2,20 +2,22 @@ import axios from 'axios';
 
 /**
  * @desc create a new boards in the database
- * @param { String } tokenUser
+ * @param { String } username
  * @param { String } name
- * @param { String } color
- * @param { String } description
+ * @param { String } idOrganization
+ * @param { String } desc
+ * @param {[String]} memberships
  * @return status code
  */
-export function createBoard(tokenUser, name, color, description) {
+export function createBoard(username, name, idOrganization, desc, memberships) {
     return new Promise((resolve, reject) =>
     {
-        axios.post(process.env.API_URL + '/api/boards', {
-            tokenUser,
+        axios.post(process.env.REACT_APP_API_URL + '/api/boards', {
+            username,
             name,
-            color,
-            description,
+            idOrganization,
+            desc,
+            memberships,
         })
             .then(response => {
                 const res = response.data

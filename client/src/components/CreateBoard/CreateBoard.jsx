@@ -18,8 +18,10 @@ export class CreateBoardToBeConnected extends React.Component {
             'open': false,
             'visible': false,
             'name': '',
+            'idOrganization': '',
+            'desc': '',
+            'memberships': [''],
             'color': '',
-            'description': '',
         }
     }
 
@@ -31,8 +33,10 @@ export class CreateBoardToBeConnected extends React.Component {
         this.setState({
             open: false,
             'name':'',
+            'idOrganization': null,
+            'desc':'',
+            'memberships': [''],
             'color':'',
-            'description':'',
         })
     }
 
@@ -49,13 +53,14 @@ export class CreateBoardToBeConnected extends React.Component {
         e.preventDefault();
         const name = this.state.name,
             color = this.state.color,
-            description = this.state.description,
-            tokenUser = this.props.user.login.token;
-        alert(tokenUser);
-        /*
-        createBoard(tokenUser, name, color, description)
+            desc = this.state.desc,
+            idOrganization = this.state.idOrganization,
+            memberships = this.state.memberships,
+            username = this.props.user.login.username;
+        createBoard(username, name, idOrganization, desc, memberships)
          .then(res => {
-                this.props.addBoard(res)
+             console.log("ok");
+             //this.props.addBoard(res)
                 this.closeModal()
          })
          .catch(
@@ -65,7 +70,7 @@ export class CreateBoardToBeConnected extends React.Component {
                  'color':'',
                  'description':'',
              })
-         )*/
+         )
     };
 
     onDismiss = () => {

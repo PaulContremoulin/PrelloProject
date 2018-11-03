@@ -16,8 +16,7 @@ export function loginUser(username, password) {
             password,
         })
             .then(response => {
-                const res = response.data
-                resolve(res)
+                resolve(response)
             })
             .catch(error => {
                 reject(error)
