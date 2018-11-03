@@ -36,6 +36,7 @@ describe('PRELLO SERVER API TEST', function() {
         require('./api/auth.test')(app, options);
         require('./api/boards.test')(app, options);
         require('./api/members.test')(app, options);
+        require('./api/lists.test')(app, options);
     });
 
 });

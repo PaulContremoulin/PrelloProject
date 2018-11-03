@@ -1,0 +1,2 @@
+
+let canUpdate = function
