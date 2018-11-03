@@ -26,6 +26,7 @@ export class Registration extends React.Component {
         "organisation" : "",
         "allFieldsFilled" : true,
         "passwordsMatch" : true,
+        "passwordIsValid" : true,
         "emailIsValid" : true
       }
   }
@@ -44,8 +45,10 @@ export class Registration extends React.Component {
       this.setState({ allFieldsFilled: true, passwordsMatch: false });
     } else if ( !state.emailIsValid ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: true });
-    } else {
+    } else if ( !state.passwordIsValid ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true });
+    } else {
+      this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true, passwordIsValid: true });
       this.changeStep();
     }
   }
@@ -82,6 +85,15 @@ export class Registration extends React.Component {
     }
   }
 
+  validatePassword = (e) => {
+    const pswdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/g;
+    if (pswdRegex.test(e.target.value)) {
+      this.setState({ passwordIsValid: true, passwordA: e.target.value })
+    } else {
+      this.setState({ passwordIsValid: false, passwordA: e.target.value })
+    }
+  }
+
   onDismiss = (element) => {
       this.setState({
           [element]: true
@@ -102,6 +114,10 @@ export class Registration extends React.Component {
               </Alert>
               <Alert color="danger" isOpen={!this.state.passwordsMatch} toggle={() =>this.onDismiss("passwordsMatch") }>
                   The passwords do not match.
+              </Alert>
+              <Alert color="danger" isOpen={!this.state.passwordIsValid} toggle={() =>this.onDismiss("passwordIsValid") }>
+                The password must contain at least 1 letter and 1 digit.
+                The password must be at least 8 characters long.
               </Alert>
               <Alert color="danger" isOpen={!this.state.emailIsValid} toggle={() =>this.onDismiss("emailIsValid") }>
                   The email is not valid.
@@ -169,7 +185,7 @@ export class Registration extends React.Component {
                                 name="passwordA"
                                 placeholder="Password"
                                 required={true}
-                                onBlur={( event ) => this.handleOnBlur( event, "passwordA" )}
+                                onBlur={( event ) => this.validatePassword( event )}
                             />
                         </FormGroup>
                       </Col>
