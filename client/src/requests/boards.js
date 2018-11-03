@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { postRequest } from './genericRequest';
 
 /**
  * @desc create a new boards in the database
@@ -12,7 +12,7 @@ import axios from 'axios';
 export function createBoard(username, name, idOrganization, desc, memberships) {
     return new Promise((resolve, reject) =>
     {
-        axios.post(process.env.REACT_APP_API_URL + '/api/boards', {
+        postRequest( '/api/boards', {
             username,
             name,
             idOrganization,

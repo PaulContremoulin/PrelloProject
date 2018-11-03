@@ -38,9 +38,9 @@ export class Registration extends React.Component {
   }
 
   changeToStepTwo = (state) => {
-    if ( state.username == "" || state.firstName == "" || state.lastName == "" || state.email == "" || state.passwordA == "" || state.passwordB == "") {
+    if ( state.username === "" || state.firstName === "" || state.lastName === "" || state.email === "" || state.passwordA === "" || state.passwordB === "") {
       this.setState({ allFieldsFilled: false });
-    } else if ( state.passwordA != state.passwordB ) {
+    } else if ( state.passwordA !== state.passwordB ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: false });
     } else if ( !state.emailIsValid ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: true });
@@ -62,8 +62,9 @@ export class Registration extends React.Component {
           firstName = this.state.firstName,
           lastName = this.state.lastName,
           email = this.state.email,
-          passwordA = this.state.passwordA;
-     registerUser(username, firstName, lastName, email, passwordA);
+          passwordA = this.state.passwordA
+          organisation = this.state.organisation;
+     registerUser(username, firstName, lastName, email, passwordA, organisation);
     const { onClick } = this.props;
     onClick();
    }

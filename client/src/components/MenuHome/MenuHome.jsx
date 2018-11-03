@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './MenuHome.css';
-import { Button, Col, Row } from 'reactstrap';
+import { Button } from 'reactstrap';
 
 
 // Css...

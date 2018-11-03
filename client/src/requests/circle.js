@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { postRequest } from './genericRequest';
 
 /**
 *
@@ -7,7 +7,7 @@ export const addCircleToDB = (
   userId,
   circleName
 ) => (
-  axios.post( process.env.API_URL+'/api/circle/', {
+  postRequest( '/api/circle/', {
     userId,
     circleName
   })

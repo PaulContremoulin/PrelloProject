@@ -1,10 +1,9 @@
 // Modules
 import React from 'react';
-import { connect } from "react-redux";
 import Popup from "reactjs-popup";
 
 // Css
-import {Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
+import {Button, Row, Col, Form, FormGroup, Input, Alert} from 'reactstrap';
 
 // Actions & Constant
 
@@ -17,7 +16,6 @@ export class AddCircle extends React.Component {
             'alertVisible': false,
             'name': '',
         }
-        const { addCircle, addCircleToDB } = this.props;
     }
 
     openModal (){
@@ -34,9 +32,9 @@ export class AddCircle extends React.Component {
 
     submitForm(e) {
         e.preventDefault();
-        this.addCircleToDB(this.state.name)
+        this.props.addCircleToDB(this.state.name)
          .then(res => {
-                this.addCircle(res.data.circleId, this.state.name)
+                this.props.addCircle(res.data.circleId, this.state.name)
                 this.closeModal()
          })
          .catch(
@@ -58,7 +56,6 @@ export class AddCircle extends React.Component {
     };
 
     render() {
-        const { name, color } = this.state;
         return (
             <div>
               <Button color="primary"  onClick={ () => this.openModal() }>+</Button>

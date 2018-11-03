@@ -1,10 +1,9 @@
 // Modules
 import React from 'react';
-import { connect } from "react-redux";
 import Popup from "reactjs-popup";
 
 // Css
-import {Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
+import {Button, Row, Col, Form, FormGroup, Input, Alert} from 'reactstrap';
 
 // Actions & Constant
 
@@ -17,7 +16,6 @@ export class AddTeam extends React.Component {
             'alertVisible': false,
             'name': '',
         }
-        const { addTeam, addTeamToDB } = this.props;
     }
 
     openModal (){
@@ -34,9 +32,9 @@ export class AddTeam extends React.Component {
 
     submitForm(e) {
         e.preventDefault();
-        this.addTeamToDB(this.state.name)
+        this.props.addTeamToDB(this.state.name)
          .then(res => {
-                this.addTeam(res.data.teamId, this.state.name)
+                this.props.addTeam(res.data.teamId, this.state.name)
                 this.closeModal()
          })
          .catch(
@@ -58,7 +56,6 @@ export class AddTeam extends React.Component {
     };
 
     render() {
-        const { name, color } = this.state;
         return (
             <div>
               <Button color="primary"  onClick={ () => this.openModal() }>+</Button>
@@ -69,7 +66,7 @@ export class AddTeam extends React.Component {
               >
                   <Col>
                       <h2 align="center">Add a team</h2>
-                      <Alert color="info" isOpen={this.state.visible} toggle={ () => this.onDismiss() }>
+                      <Alert color="info" isOpen={this.state.alertVisible} toggle={ () => this.onDismiss() }>
                           There was an error. The team could not be created.
                       </Alert>
                       <Form className="form" onSubmit={ (e) => this.submitForm(e) }>

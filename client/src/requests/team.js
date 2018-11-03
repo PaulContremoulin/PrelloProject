@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { postRequest } from './genericRequest';
 
 /**
 *
@@ -7,7 +7,7 @@ export const addTeamToDB = (
   userId,
   teamName
 ) => (
-  axios.post( process.env.API_URL+'/api/team/', {
+  postRequest( '/api/team/', {
     userId,
     teamName
   })
