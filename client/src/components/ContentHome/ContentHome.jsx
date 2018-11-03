@@ -24,10 +24,10 @@ export class ContentHomeToBeConnected extends React.Component {
                 </Container>
                 <Container className="contentBoard">
                     <Row>
-                        <Col>
+                        <Col md="3">
                             {this.props.boards.map(board => {
                                     return(
-                                        <CardBoard board={board}/>
+                                        <CardBoard board={board} key={ board._id }/>
                                     )
                                 })}
                         </Col>

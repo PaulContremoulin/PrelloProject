@@ -1,6 +1,6 @@
 // Modules
 import React from 'react';
-import {Container, Row, Col, Alert} from 'reactstrap';
+import {Card, CardBody, CardTitle} from 'reactstrap';
 
 // Css...
 
@@ -11,7 +11,11 @@ export class CardBoard extends React.Component {
     render() {
         return (
             <div>
-                <h2>{this.props.board.name}</h2>
+                <Card>
+                    <CardBody>
+                        <CardTitle>{this.props.board.name}</CardTitle>
+                    </CardBody>
+                </Card>
             </div>
         )
     }

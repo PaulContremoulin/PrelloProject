@@ -25,7 +25,7 @@ export const addBoard =  (data) => {
             _id: data._id,
             name: data.name,
             color: data.prefs.background,
-            description: data.desc,
+            desc: data.desc,
         }
     }
 };
