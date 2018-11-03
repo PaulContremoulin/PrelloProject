@@ -1,7 +1,6 @@
 // Modules
 import React from 'react';
-import {Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
-import Popup from "reactjs-popup";
+import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 
 // Css
 import './CreateBoard.css';
@@ -32,6 +31,7 @@ export class CreateBoardToBeConnected extends React.Component {
     closeModal () {
         this.setState({
             open: false,
+            'visible': false,
             'name':'',
             'idOrganization': null,
             'desc':'',
@@ -69,7 +69,7 @@ export class CreateBoardToBeConnected extends React.Component {
                     visible: true,
                     'name':'',
                     'color':'',
-                    'description':'',
+                    'desc':'',
                 })
             )
     };
@@ -84,18 +84,14 @@ export class CreateBoardToBeConnected extends React.Component {
         const { name, color, desc } = this.state;
         return (
             <div>
-                <Button className="button" onClick={() => this.openModal() }> Add a board </Button>
-                <Popup
-                    open={this.state.open}
-                    closeOnDocumentClick
-                    onClose={() =>this.closeModal() }
-                >
-                    <Col>
-                        <h2 align="center">Add a board</h2>
-                        <Alert color="danger" isOpen={this.state.visible} toggle={() =>this.onDismiss() }>
-                            The board was not able to be created
-                        </Alert>
-                        <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+                <Button className="button" onClick={() => this.openModal()}> Add a board </Button>
+                <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
+                    <ModalHeader toggle={() =>this.closeModal()}>Add a board</ModalHeader>
+                    <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+                        <ModalBody>
+                            <Alert color="danger" isOpen={this.state.visible} toggle={() =>this.onDismiss() }>
+                                The board was not able to be created
+                            </Alert>
                             <Row>
                                 <Col sm="12" md="8">
                                     <FormGroup>
@@ -141,17 +137,13 @@ export class CreateBoardToBeConnected extends React.Component {
                                     </FormGroup>
                                 </Col>
                             </Row>
-                            <Row className="text-center">
-                                <Col>
-                                    <Button onClick={() =>this.closeModal() }>Return</Button>
-                                </Col>
-                                <Col className="text-center">
-                                    <Button type="submit">Create</Button>
-                                </Col>
-                            </Row>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="secondary" onClick={() =>this.closeModal() }>Return</Button>
+                                <Button color="primary" type="submit">Create</Button>
+                            </ModalFooter>
                         </Form>
-                    </Col>
-                </Popup>
+                    </Modal>
             </div>
         )
     }
