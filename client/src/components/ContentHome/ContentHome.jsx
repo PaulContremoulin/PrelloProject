@@ -24,6 +24,7 @@ export class ContentHomeToBeConnected extends React.Component {
                     </Row>
                 </Container>
                 <Container className="contentBoard">
+                    { (this.props.boards.length > 0) ?
                     <Row>
                         <Col md="3">
                             {this.props.boards.map(board => {
@@ -33,6 +34,15 @@ export class ContentHomeToBeConnected extends React.Component {
                                 })}
                         </Col>
                     </Row>
+                    :
+                    <Row>
+                        <Col>
+                            <Alert>
+                                You didn't have a board !
+                            </Alert>
+                        </Col>
+                    </Row>
+                    }
                     <Row>
                         <Col>
                             <CreateBoard/>

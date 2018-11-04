@@ -1,6 +1,8 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
+import {history} from '../../history';
+import {logOut} from "../../actions/signActions";
 
 // Css...
 import './NavBar.css';
@@ -11,6 +13,8 @@ import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reac
 export class NavBarToBeConnected extends React.Component {
 
     logOut = () => {
+        this.props.logOut();
+        history.push('/');
         //todo : appeler action log out & redirection page sign in
     };
 
@@ -18,7 +22,6 @@ export class NavBarToBeConnected extends React.Component {
         const {
           user,
           changeMode,
-          logOut,
         } = this.props;
         return (
             <Navbar expand="md">
@@ -58,7 +61,9 @@ export class NavBarToBeConnected extends React.Component {
 const mapStateToProps = (state, props) => ({
   user: state.user
 });
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+    logOut: () => dispatch( logOut()),
+});
 
 export const NavBar = connect(
     mapStateToProps,
