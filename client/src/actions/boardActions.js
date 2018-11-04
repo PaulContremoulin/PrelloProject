@@ -21,12 +21,7 @@ export const ADD_BOARD= "ADD_BOARD" ;
 export const addBoard =  (data) => {
     return {
         type: ADD_BOARD,
-        board: {
-            _id: data._id,
-            name: data.name,
-            color: data.prefs.background,
-            desc: data.desc,
-        }
+        board: data,
     }
 };
 
