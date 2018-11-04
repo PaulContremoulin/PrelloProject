@@ -7,14 +7,11 @@ import {Board} from '../../components/Board/Board';
 import { logOut } from '../../actions/signActions.js';
 
 // Css
-import { Row, Col } from 'reactstrap';
 
 export const BoardPageToBeConnected = ({}) => (
     <div className="BoardPage">
       <NavBar incomingFrom="BoardPage" logOut={ logOut } />
-      <Row>
-        <Board />
-      </Row>
+      <Board style={{"height": "100%"}} />
     </div>
 )
 
