@@ -24,27 +24,15 @@ export class ContentHomeToBeConnected extends React.Component {
                     </Row>
                 </Container>
                 <Container className="contentBoard">
-                    { (this.props.boards.length > 0) ?
                     <Row>
                             {this.props.boards.map(board => {
                                     return(
-                                        <Col sm="3">
+                                        <Col className="displayBoard" sm="3">
                                             <CardBoard board={board} key={ board._id }/>
                                         </Col>
                                     )
                                 })}
-                    </Row>
-                    :
-                    <Row>
-                        <Col>
-                            <Alert color="primary">
-                                You didn't have a board !
-                            </Alert>
-                        </Col>
-                    </Row>
-                    }
-                    <Row>
-                        <Col>
+                        <Col className="displayBoard" sm="3">
                             <CreateBoard/>
                         </Col>
                     </Row>

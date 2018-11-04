@@ -10,10 +10,8 @@ export class CardBoard extends React.Component {
 
     render() {
         return (
-            <Card>
-                <CardBody>
+            <Card body>
                     <CardTitle>{this.props.board.name}</CardTitle>
-                </CardBody>
             </Card>
         )
     }
