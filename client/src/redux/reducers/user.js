@@ -32,20 +32,13 @@ import { SET_LOGIN, LOG_OUT } from "../../actions/signActions";
 */
 
 // Set the database current user object
-const login = ( state = {}, action ) => {
+export const user = ( state = {}, action ) => {
   switch( action.type ){
     case SET_LOGIN :
-      return action.login ;
+      return action.user ;
     case LOG_OUT :
       return {} ;
     default:
       return state ;
   }
 };
-
-// combineReducers is a redux function which associate object key with a reducers
-// It return a reducer responsible for this sub-state
-// combineReducers got others untold subtilities
-export const user = combineReducers({
-  login
-});

@@ -2,7 +2,7 @@
 import React from 'react';
 import './Registration.css';
 import { registerUser } from '../../../requests/registration';
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import Octicon from 'react-octicon'
 
 // Css...
@@ -26,6 +26,7 @@ export class Registration extends React.Component {
         "organisation" : "",
         "allFieldsFilled" : true,
         "passwordsMatch" : true,
+        "passwordIsValid" : true,
         "emailIsValid" : true
       }
   }
@@ -38,14 +39,16 @@ export class Registration extends React.Component {
   }
 
   changeToStepTwo = (state) => {
-    if ( state.username == "" || state.firstName == "" || state.lastName == "" || state.email == "" || state.passwordA == "" || state.passwordB == "") {
+    if ( state.username === "" || state.firstName === "" || state.lastName === "" || state.email === "" || state.passwordA === "" || state.passwordB === "") {
       this.setState({ allFieldsFilled: false });
-    } else if ( state.passwordA != state.passwordB ) {
+    } else if ( state.passwordA !== state.passwordB ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: false });
     } else if ( !state.emailIsValid ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: true });
-    } else {
+    } else if ( !state.passwordIsValid ) {
       this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true });
+    } else {
+      this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true, passwordIsValid: true });
       this.changeStep();
     }
   }
@@ -62,8 +65,9 @@ export class Registration extends React.Component {
           firstName = this.state.firstName,
           lastName = this.state.lastName,
           email = this.state.email,
-          passwordA = this.state.passwordA;
-     registerUser(username, firstName, lastName, email, passwordA);
+          passwordA = this.state.passwordA,
+          organisation = this.state.organisation;
+     registerUser(username, firstName, lastName, email, passwordA, organisation);
     const { onClick } = this.props;
     onClick();
    }
@@ -81,6 +85,20 @@ export class Registration extends React.Component {
     }
   }
 
+  validatePassword = (e) => {
+    const pswdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/g;
+    if (pswdRegex.test(e.target.value)) {
+      this.setState({ passwordIsValid: true, passwordA: e.target.value })
+    } else {
+      this.setState({ passwordIsValid: false, passwordA: e.target.value })
+    }
+  }
+
+  onDismiss = (element) => {
+      this.setState({
+          [element]: true
+      });
+  };
 
   render() {
     const { stepOne, stepTwo } = this.state;
@@ -91,10 +109,23 @@ export class Registration extends React.Component {
           <Row>
             <Col className="Registration" md={{ size: 6, offset: 3 }}>
               <h2 align="center">Sign Up</h2>
-              <Row>
-                <Form className="form" onSubmit={this.handleSubmit}>
-                  { (stepOne && !stepTwo) ? (
-                      <div>
+              <Alert color="danger" isOpen={!this.state.allFieldsFilled} toggle={() =>this.onDismiss("allFieldsFilled") }>
+                  You need to fill all fields.
+              </Alert>
+              <Alert color="danger" isOpen={!this.state.passwordsMatch} toggle={() =>this.onDismiss("passwordsMatch") }>
+                  The passwords do not match.
+              </Alert>
+              <Alert color="danger" isOpen={!this.state.passwordIsValid} toggle={() =>this.onDismiss("passwordIsValid") }>
+                The password must contain at least 1 letter and 1 digit.
+                The password must be at least 8 characters long.
+              </Alert>
+              <Alert color="danger" isOpen={!this.state.emailIsValid} toggle={() =>this.onDismiss("emailIsValid") }>
+                  The email is not valid.
+              </Alert>
+              <Form className="form" onSubmit={this.handleSubmit}>
+                { (stepOne && !stepTwo) ? (
+                    <div>
+                      <Col>
                         <Row>
                           <Col md="6">
                             <FormGroup>
@@ -121,98 +152,82 @@ export class Registration extends React.Component {
                             </FormGroup>
                           </Col>
                         </Row>
-                        <Row>
-                          <Col>
-                            <FormGroup>
-                                <Label>Username</Label>
-                                <Input
-                                    type="text"
-                                    name="username"
-                                    placeholder="Username"
-                                    required={true}
-                                    onBlur={( event ) => this.handleOnBlur( event, "username" )}
-                                />
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                          <Row>
-                            <Col>
-                              <FormGroup>
-                                  <Label>Email</Label>
-                                  <Input
-                                      type="email"
-                                      name="email"
-                                      placeholder="Email"
-                                      required={true}
-                                      onBlur={( event ) => this.validateEmail( event )}
-                                  />
-                              </FormGroup>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <FormGroup>
-                                  <Label for="firstPassword">Password</Label>
-                                  <Input
-                                      type="password"
-                                      name="passwordA"
-                                      placeholder="Password"
-                                      required={true}
-                                      onBlur={( event ) => this.handleOnBlur( event, "passwordA" )}
-                                  />
-                              </FormGroup>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                                <FormGroup>
-                                    <Label for="secondPassword">Confirm Password</Label>
-                                    <Input
-                                        type="password"
-                                        name="passwordB"
-                                        placeholder="Confirm Password"
-                                        required={true}
-                                        onBlur={ ( event ) => this.handleOnBlur( event, "passwordB" ) }
-                                    />
-                                </FormGroup>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col className="text-center">
-                                <Button className="btnSign" onClick={ () => this.changeToStepTwo(this.state) }>Sign Up</Button>
-                            </Col>
-                        </Row>
-                      </div>
-                    ) : (
-                      <div>
-                        <Col>
+                      </Col>
+                      <Col>
+                        <FormGroup>
+                            <Label>Username</Label>
+                            <Input
+                                type="text"
+                                name="username"
+                                placeholder="Username"
+                                required={true}
+                                onBlur={( event ) => this.handleOnBlur( event, "username" )}
+                            />
+                        </FormGroup>
+                      </Col>
+                      <Col>
+                        <FormGroup>
+                            <Label>Email</Label>
+                            <Input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                required={true}
+                                onBlur={( event ) => this.validateEmail( event )}
+                            />
+                        </FormGroup>
+                      </Col>
+                      <Col>
+                        <FormGroup>
+                            <Label for="firstPassword">Password</Label>
+                            <Input
+                                type="password"
+                                name="passwordA"
+                                placeholder="Password"
+                                required={true}
+                                onBlur={( event ) => this.validatePassword( event )}
+                            />
+                        </FormGroup>
+                      </Col>
+                      <Col>
                           <FormGroup>
-                              <Label>Organisation</Label>
+                              <Label for="secondPassword">Confirm Password</Label>
                               <Input
-                                  type="text"
-                                  name="organisation"
-                                  onBlur={( event ) => this.handleOnBlur( event, "organisation" )}
+                                  type="password"
+                                  name="passwordB"
+                                  placeholder="Confirm Password"
+                                  required={true}
+                                  onBlur={ ( event ) => this.handleOnBlur( event, "passwordB" ) }
                               />
                           </FormGroup>
                       </Col>
-                          <Row>
-                      <Col md="6" className="text-center">
-                        <Button className="btnSign">Sign Up</Button>
+                      <Col className="text-center">
+                          <Button className="btnSign" onClick={ () => this.changeToStepTwo(this.state) }>Sign Up</Button>
                       </Col>
-                      <Col md="6" className="text-center">
-                        <Button className="btnReturn" onClick={ () => this.changeStep() }>Return</Button>
-                      </Col>
-                          </Row>
                     </div>
-                  )}
-                  </Form>
-                </Row>
-                { this.state.allFieldsFilled ? null :
-                  <Col className="text-center"><span> You need to fill all fields </span></Col> }
-                { this.state.passwordsMatch ? null :
-                  <Col className="text-center"><span> The passwords do not match </span></Col> }
-                { this.state.emailIsValid ? null :
-                  <Col className="text-center"><span> The email is not valid </span></Col> }
+                  ) : (
+                    <div>
+                      <Col>
+                        <FormGroup>
+                            <Label>Organisation</Label>
+                            <Input
+                                type="text"
+                                name="organisation"
+                                onBlur={( event ) => this.handleOnBlur( event, "organisation" )}
+                            />
+                        </FormGroup>
+                    </Col>
+                        <Row>
+                    <Col md="6" className="text-center">
+                      <Button className="btnSign">Sign Up</Button>
+                    </Col>
+                    <Col md="6" className="text-center">
+                      <Button className="btnReturn" onClick={ () => this.changeStep() }>Return</Button>
+                    </Col>
+                        </Row>
+                  </div>
+                )}
+                </Form>
                 { (stepOne && !stepTwo) ? (
                   <div>
                     <Row>

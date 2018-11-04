@@ -1,15 +1,18 @@
 // Modules
 import React from 'react';
-import {Container, Row, Col} from 'reactstrap';
+import {Container, Row, Col, Alert} from 'reactstrap';
 
 // Css...
 import './ContentHome.css';
 
 // Actions & Constant
 import {CreateBoard} from "../CreateBoard/CreateBoard";
+import {connect} from "react-redux";
+import {CardBoard} from "../CardBoard/CardBoard";
+import {getBoardsUser} from "../../requests/boards";
+import {fetchBoards} from "../../actions/boardActions";
 
-export class ContentHome extends React.Component {
-
+export class ContentHomeToBeConnected extends React.Component {
     render() {
         return (
             <div>
@@ -22,16 +25,14 @@ export class ContentHome extends React.Component {
                 </Container>
                 <Container className="contentBoard">
                     <Row>
-                        <Col className="displayBoard" md="2">
-                            Display Board
-                        </Col>
-                        <Col className="displayBoard" md="2">
-                            Display Board
-                        </Col>
-                        <Col className="displayBoard" md="2">
-                            Display Board
-                        </Col>
-                        <Col md="2">
+                            {this.props.boards.map(board => {
+                                    return(
+                                        <Col className="displayBoard" xs={12} sm={6} md={3}>
+                                            <CardBoard board={board} key={ board._id }/>
+                                        </Col>
+                                    )
+                                })}
+                        <Col className="displayBoard" xs={12} sm={6} md={3}>
                             <CreateBoard/>
                         </Col>
                     </Row>
@@ -39,6 +40,24 @@ export class ContentHome extends React.Component {
             </div>
         )
     }
+
+    componentDidMount() {
+        getBoardsUser(this.props.user.member._id)
+            .then(res => {this.props.fetchBoards(res.data)})
+            .catch(error => {console.log(error)})
+    }
 }
 
+const mapStateToProps = ( state, props ) => ({
+    user : state.user,
+    boards: state.boards,
+});
 
+const mapDispatchToProps = ( dispatch ) => ({
+    fetchBoards: (res) => dispatch( fetchBoards(res)),
+});
+
+export const ContentHome = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)( ContentHomeToBeConnected );

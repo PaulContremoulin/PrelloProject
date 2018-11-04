@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { postRequest } from './genericRequest';
 
 /**
 * @desc add a new user to the database
@@ -14,14 +14,16 @@ export const registerUser = (
   firstName,
   lastName,
   email,
-  password
+  password,
+  organisation = ""
 ) => (
-  axios.post( process.env.API_URL+'/api/signup/', {
+  postRequest( '/api/signup/', {
     username,
     firstName,
     lastName,
     email,
     password,
+    organisation
   })
-  .then( response => response.data )
+  .then( response => console.log(response) || response.data )
 )

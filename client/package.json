@@ -17,6 +17,7 @@
     "history": "^4.7.2",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.4",
+    "query-string": "^6.2.0",
     "react": "^16.6.0",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-grid": "^1.0.0",

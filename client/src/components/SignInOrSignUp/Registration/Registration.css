@@ -20,11 +20,11 @@
  }
 
 .btnSign {
-    background-color: #6495ED;
+   background-color: #6495ED;
 }
 
 .btnSign:hover {
-    background-color: #4169E1;
+   background-color: #4169E1;
 }
 
 .btnGithub {
@@ -34,4 +34,8 @@
 
 .btnReturn {
     background-color: red;
+}
+
+.text-center {
+   margin-top: 10px;
 }

@@ -1,20 +1,44 @@
-import axios from 'axios';
-import {addBoard} from '../actions/boardActions';
+import { postRequest, getRequest } from './genericRequest';
 
 /**
  * @desc create a new boards in the database
  * @param { String } name
- * @param { String } color
+ * @param { String } idOrganization
+ * @param { String } desc
+ * @param {[String]} memberships
+ * @param {{String}} prefs
  * @return status code
  */
-
-export const createBoard = (
-    name,
-    color
-) => (
-    axios.post( process.env.API_URL + '/api/login/', {
-        name,
-        color,
+export function createBoard(name, idOrganization, desc, memberships, prefs) {
+    return new Promise((resolve, reject) =>
+    {
+        postRequest( '/api/boards', {
+            name: name,
+            idOrganization: idOrganization,
+            desc: desc,
+            memberships: memberships,
+            prefs: prefs,
+        })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            })
     })
-        .then( response => { addBoard(response.data) })
-)
+}
+
+export function getBoardsUser(idUser) {
+    return new Promise((resolve, reject) =>
+    {
+        getRequest( '/api/members/'+idUser+'/boards')
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
+

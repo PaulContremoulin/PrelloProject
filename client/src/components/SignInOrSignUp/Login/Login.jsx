@@ -1,8 +1,8 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
-
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
+import {history} from '../../../history';
 // Css...
 import './Login.css';
 import Octicon from 'react-octicon';
@@ -11,15 +11,15 @@ import Octicon from 'react-octicon';
 import {loginUser} from "../../../requests/login";
 import {setLogin} from "../../../actions/signActions";
 
+
 export class LoginToBeConnected extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            'badAccount': false,
             'username': '',
             'password': '',
-            'goodAccount': true,
         };
-        this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange = async (event) => {
@@ -33,8 +33,15 @@ export class LoginToBeConnected extends React.Component {
 
     handleReset = () => {
         this.setState({
+            'badAccount': true,
             'username': '',
             'password': '',
+        });
+    };
+
+    onDismiss = () => {
+        this.setState({
+            'badAccount': false
         });
     };
 
@@ -43,25 +50,25 @@ export class LoginToBeConnected extends React.Component {
         const username = this.state.username,
             password = this.state.password;
         loginUser(username, password)
-            .then(res => {
-                this.props.setLogin(res)
-                //Todo : change page vers home
-            })
+            .then(res => ( res.status < 400 ) ? this.props.setLogin(res.data) : Promise.reject("Error") )
+            .then( () => history.push('/home') )
             .catch(
-                this.state.goodAccount = false,
                 this.handleReset()
             )
     };
 
     render() {
-        const {username, password} = this.state;
-        const {onClick} = this.props;
+        const {username, password, badAccount} = this.state;
+        const {onClick, toggleResetPswd} = this.props;
         return (
             <Container>
                 <Row>
                     <Col className="Login" md={{size: 6, offset: 3}}>
                         <h2 align="center">Sign In</h2>
                         <Form className="form" onSubmit={(e) => this.submitForm(e)}>
+                            <Alert color="danger" isOpen={badAccount} toggle={() =>this.onDismiss() }>
+                                Error, bad account
+                            </Alert>
                             <Col>
                                 <FormGroup>
                                     <Label>Username</Label>
@@ -87,8 +94,6 @@ export class LoginToBeConnected extends React.Component {
                                         onChange={(e) => this.handleChange(e)}
                                     />
                                 </FormGroup>
-                                {this.state.goodAccount ? null :
-                                    <Col className="text-center"><span> Error, bad account </span></Col>}
                             </Col>
                             <Col className="text-center">
                                 <Button className="btnSign" type="submit">Sign In</Button>
@@ -102,6 +107,11 @@ export class LoginToBeConnected extends React.Component {
                         <Row>
                             <Col className="text-center">
                                 <Button color="link" onClick={onClick}>Create an account</Button>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="text-center">
+                                <Button color="link" onClick={toggleResetPswd}>Forgotten password ?</Button>
                             </Col>
                         </Row>
                     </Col>
@@ -120,5 +130,3 @@ export const Login = connect(
     mapStateToProps,
     mapDispatchToProps
 )( LoginToBeConnected )
-
-

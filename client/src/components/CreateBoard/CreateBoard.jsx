@@ -1,7 +1,6 @@
 // Modules
 import React from 'react';
-import {Button, Row, Col, Form, FormGroup, Label, Input} from 'reactstrap';
-import Popup from "reactjs-popup";
+import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 
 // Css
 import './CreateBoard.css';
@@ -11,26 +10,32 @@ import {createBoard} from "../../requests/boards";
 import { connect } from "react-redux";
 import {addBoard} from "../../actions/boardActions";
 
-export class CreateBoard extends React.Component {
+export class CreateBoardToBeConnected extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            open: false,
+            'open': false,
+            'visible': false,
             'name': '',
+            'idOrganization': null,
+            'desc': '',
+            'memberships': [],
             'color': '',
         }
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
     openModal (){
         this.setState({ open: true })
     }
+
     closeModal () {
         this.setState({
             open: false,
+            'visible': false,
             'name':'',
+            'idOrganization': null,
+            'desc':'',
+            'memberships': [],
             'color':'',
         })
     }
@@ -47,41 +52,60 @@ export class CreateBoard extends React.Component {
     submitForm(e) {
         e.preventDefault();
         const name = this.state.name,
-            color = this.state.color;
-        console.log(this.state.name+"/"+this.state.color)
-        createBoard(name, color)
-        // .then(response => )
-        // .catch( err => )
+            desc = this.state.desc,
+            idOrganization = this.state.idOrganization,
+            memberships = this.state.memberships;
+        const prefs = {
+            'background': this.state.color,
+        };
+        createBoard(name, idOrganization, desc, memberships, prefs)
+            .then(res => {
+                this.props.addBoard(res.data)
+                this.closeModal()
+            })
+            .catch(
+                this.setState({
+                    visible: true,
+                    'name':'',
+                    'color':'',
+                    'desc':'',
+                })
+            )
+    };
+
+    onDismiss = () => {
+        this.setState({
+            visible: false
+        });
     };
 
     render() {
-        const { name, color } = this.state;
+        const { name, color, desc } = this.state;
         return (
             <div>
-                <Button className="button" onClick={this.openModal}> Add a board </Button>
-                <Popup
-                    open={this.state.open}
-                    closeOnDocumentClick
-                    onClose={this.closeModal}
-                >
-                    <Col>
-                        <h2 align="center">Add a board</h2>
-                        <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+                <Button className="button" onClick={() => this.openModal()}> Add a board </Button>
+                <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
+                    <ModalHeader toggle={() =>this.closeModal()}>Add a board</ModalHeader>
+                    <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+                        <ModalBody>
+                            <Alert color="danger" isOpen={this.state.visible} toggle={() =>this.onDismiss() }>
+                                The board was not able to be created
+                            </Alert>
                             <Row>
-                                <Col sm="12" md="6">
+                                <Col sm="12" md="8">
                                     <FormGroup>
-                                        <Label>Board's name</Label>
+                                        <Label>Name</Label>
                                         <Input
                                             type="text"
                                             name="name"
-                                            placeholder="Board's name"
+                                            placeholder="Enter a name"
                                             value={ name }
                                             required={true}
                                             onChange={ (e) => this.handleChange(e)}
                                         />
                                     </FormGroup>
                                 </Col>
-                                <Col sm="12" md="6">
+                                <Col sm="12" md="2">
                                     <FormGroup>
                                         <Label for="exampleColor">Color</Label>
                                         <Input
@@ -99,30 +123,40 @@ export class CreateBoard extends React.Component {
                             <Row>
                                 <Col>
                                     <FormGroup>
-                                        <Label>Add a team</Label>
-                                        <Input type="select" name="select" id="select">
-                                            <option>Team 1</option>
-                                            <option>Team 2</option>
-                                            <option>Team 3</option>
-                                            <option>Team 4</option>
-                                            <option>Team 5</option>
-                                        </Input>
+                                        <Label>Description</Label>
+                                        <Input
+                                            type="textarea"
+                                            name="desc"
+                                            id="exampleText"
+                                            placeholder="Enter a description"
+                                            value={ desc }
+                                            required={true}
+                                            onChange={ (e) => this.handleChange(e)}
+                                        />
                                     </FormGroup>
                                 </Col>
                             </Row>
-                            <Row className="text-center">
-                                <Col>
-                                    <Button onClick={this.closeModal}>Return</Button>
-                                </Col>
-                                <Col className="text-center">
-                                    <Button type="submit">Create</Button>
-                                </Col>
-                            </Row>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="secondary" onClick={() =>this.closeModal() }>Return</Button>
+                                <Button color="primary" type="submit">Create</Button>
+                            </ModalFooter>
                         </Form>
-                    </Col>
-                </Popup>
+                    </Modal>
             </div>
         )
     }
 }
 
+const mapStateToProps = ( state, props ) => ({
+    user : state.user,
+});
+
+const mapDispatchToProps = ( dispatch ) => ({
+    addBoard: (res) => dispatch( addBoard(res)),
+});
+
+export const CreateBoard = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)( CreateBoardToBeConnected );
