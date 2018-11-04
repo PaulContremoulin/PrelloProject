@@ -14,7 +14,6 @@ export class Account extends React.Component {
                 <Container className="contentHome">
                     <Row>
                         <Col>
-                            Firstname
                         </Col>
                     </Row>
                 </Container>

@@ -1,17 +1,3 @@
 .contentHome {
     margin-top: 10px;
 }
-
-.contentBoard {
-    margin-top: 10px;
-    padding: 1em;
-    border: 2px solid #d3d3d3;
-    border-radius: .5em;
-}
-
-.displayBoard {
-    padding: 1em;
-    border: 2px solid #d3d3d3;
-    border-radius: .5em;
-    margin-right: 5px;
-}

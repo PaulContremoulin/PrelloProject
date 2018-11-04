@@ -10,13 +10,11 @@ export class CardBoard extends React.Component {
 
     render() {
         return (
-            <div>
-                <Card>
-                    <CardBody>
-                        <CardTitle>{this.props.board.name}</CardTitle>
-                    </CardBody>
-                </Card>
-            </div>
+            <Card>
+                <CardBody>
+                    <CardTitle>{this.props.board.name}</CardTitle>
+                </CardBody>
+            </Card>
         )
     }
 }
