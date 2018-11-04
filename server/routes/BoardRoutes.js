@@ -4,10 +4,10 @@ let Board = require('./../models/Board');
 let Member = require('./../models/Member');
 let List = require('./../models/List');
 let debug = require('debug')('app:board');
-let mongoose = require('mongoose');
+let boardAccess = require('./../middlewares/boardAccess');
 
 /**
- * This function comment is parsed by doctrine
+ * Create a board
  * @route POST /boards
  * @group board - Operations about boards
  * @param {NewBoard.model} board.body.required - board's information.
@@ -21,7 +21,7 @@ router.post('/', function(req, res) {
 
     let newBoard = new Board(req.body);
 
-    newBoard.addMember(req.user._id, "admin", true);
+    newBoard.createOrUpdateMember(req.user._id, "admin", true);
 
     // Validate the board
     newBoard.validate(function (error) {
@@ -46,7 +46,7 @@ router.post('/', function(req, res) {
 });
 
 /**
- * This function comment is parsed by doctrine
+ * Get a board by id
  * @route GET /boards/{id}
  * @group board - Operations about boards
  * @param {string} id.path.required - board's id.
@@ -56,23 +56,19 @@ router.post('/', function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id', function(req, res) {
-
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-        return res.status(404).end();
-    }
+router.get('/:id', boardAccess.readRights(), function(req, res) {
 
     req.query._id = req.params.id;
 
     Board.findById(req.query, function (err, board) {
         if (err) return res.status(404).end();
         if (!board) return res.status(404).end();
-        res.status(200).json(board);
+        return res.status(200).json(board);
     });
 });
 
 /**
- * This function comment is parsed by doctrine
+ * Create a list on the board
  * @route POST /boards/{id}/lists
  * @group board - Operations about boards
  * @param {string} id.path.required - board's id.
@@ -83,11 +79,7 @@ router.get('/:id', function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/:id/lists', function(req, res) {
-
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-        return res.status(404).end();
-    }
+router.post('/:id/lists', boardAccess.updateRights(), function(req, res) {
 
     req.body.idBoard = req.params.id;
 
@@ -113,7 +105,7 @@ router.post('/:id/lists', function(req, res) {
 
 
 /**
- * This function comment is parsed by doctrine
+ * Get lists of the board
  * @route GET /boards/{id}/lists
  * @group board - Operations about boards
  * @param {string} id.path.required - board's id.
@@ -123,11 +115,8 @@ router.post('/:id/lists', function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id/lists', function(req, res) {
+router.get('/:id/lists', boardAccess.readRights(), function(req, res) {
 
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-        return res.status(404).end();
-    }
     Board.findById(req.params.id, function (err, board) {
         if (err) return res.status(404).end();
         if (!board) return res.status(404).end();
@@ -140,6 +129,40 @@ router.get('/:id/lists', function(req, res) {
                 return res.status(400).end();
             }
             return res.status(200).json(list)
+        });
+    });
+});
+
+/**
+ * Add the member at the board (or update role)
+ * @route POST /boards/{id}/members/{id}
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @param {string} idMember.path.required - board's id.
+ * @param {string} type.query.required - role assigned (observer - admin - normal).
+ * @returns {code} 200 - List object
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.put('/:id/members/:idMember', boardAccess.updateRights(), function(req, res) {
+
+    let board = req.board;
+    let type = req.query.type ? req.query.type : 'observer';
+
+    if((type === 'admin' && !board.isAdminMember(req.user.id))
+        || (type !== 'admin' && board.nbAdmin() <= 1 && req.user.id === req.params.idMember)){
+        return res.status(403).send('Forbidden');
+    }
+
+    board.createOrUpdateMember(req.params.idMember, type);
+
+    board.validate(function (err) {
+        if(err) return res.status(400).send(err);
+        board.save(function (err) {
+            if(err) return res.status(500).send('Internal error');
+            return res.status(200).json(board);
         });
     });
 });

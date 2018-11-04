@@ -151,7 +151,7 @@ memberSchema.methods.generateResetPasswordToken = function() {
  * @returns {boolean} true if the password is modified successfully, false if the password can't be modified (old password wrong)
  */
 memberSchema.methods.setPassword = function(password) {
-    if(!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/g)) return false
+    if(!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/)) return false
     this.salt = crypto.getSalt();
     this.hash = crypto.sha512(password, this.salt).passwordHash;
     return true
