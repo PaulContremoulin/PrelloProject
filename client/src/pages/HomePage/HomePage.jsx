@@ -15,10 +15,10 @@ export const HomePageToBeConnected = ({ logOut }) => (
     <div>
         <NavBar incomingFrom="HomePage" logOut={ logOut } />
             <Row>
-                <Col className="menu" md="3">
+                <Col className="menu" xs={5} sm={3}>
                     <MenuHome/>
                 </Col>
-                <Col md="8">
+                <Col xs={7} sm={8}>
                     <ContentHome/>
                 </Col>
             </Row>

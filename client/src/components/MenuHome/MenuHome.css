@@ -3,8 +3,9 @@
     background-color: #eee;
 }
 
-.margin {
+.title {
     margin-top: 10px;
+    margin-left: 10px;
 }
 
 .vertical-menu a {

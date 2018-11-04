@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './MenuHome.css';
-import { Col, Row } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 
 
 // Css...
@@ -18,29 +18,29 @@ import { addTeamToDB } from "../../requests/team";
 export const MenuHomeToBeConnected = ({ user, circles, teams, addCircle, addTeam }) => (
     <div className="vertical-menu">
         <Row>
-            <Col sm={{ size: 10, offset: 1 }}>
-          <h3 className="margin">Boards</h3>
-          <a href="#">Personnal's Boards</a>
-          <h3>Circles
-            <AddCircle
-              addCircle={ (circleId, circleName) => addCircle(circleId, circleName) }
-              addCircleToDB={ (circleName) => addCircleToDB( user.userId , circleName ) }
-            />
-          </h3>
-          {
-            // circles.map(( circle ) => <a href="#">circle.circleName</a> )
-            // .reduce(( childArray, child ) => childArray.concat( child ), [])
-          }
-          <h3>Teams
-            <AddTeam
-              addTeam={ (teamId, teamName) => addTeam(teamId, teamName) }
-              addTeamToDB={ (teamName) => addTeamToDB( user.userId , teamName ) }
-            />
-          </h3>
-          {
-            // teams.map(( team ) => <a href="#">team.teamName</a> )
-            // .reduce(( childArray, child ) => childArray.concat( child ), [])
-          }
+            <Col>
+              <h3 className="title">Boards</h3>
+              <a href="#">Personnal's Boards</a>
+              <h3 className="title">Circles
+                <AddCircle
+                  addCircle={ (circleId, circleName) => addCircle(circleId, circleName) }
+                  addCircleToDB={ (circleName) => addCircleToDB( user.userId , circleName ) }
+                />
+              </h3>
+              {
+                // circles.map(( circle ) => <a href="#">circle.circleName</a> )
+                // .reduce(( childArray, child ) => childArray.concat( child ), [])
+              }
+              <h3 className="title">Teams
+                <AddTeam
+                  addTeam={ (teamId, teamName) => addTeam(teamId, teamName) }
+                  addTeamToDB={ (teamName) => addTeamToDB( user.userId , teamName ) }
+                />
+              </h3>
+              {
+                // teams.map(( team ) => <a href="#">team.teamName</a> )
+                // .reduce(( childArray, child ) => childArray.concat( child ), [])
+              }
             </Col>
         </Row>
     </div>

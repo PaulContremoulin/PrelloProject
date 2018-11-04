@@ -45,7 +45,7 @@ export class NavBarToBeConnected extends React.Component {
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink className="helpNavItem" href="/account" >My account</NavLink>
+                            <NavLink className="helpNavItem" href="#" >My account</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink className="helpNavItem" href="/" onClick={ () => logOut() } >Log out</NavLink>
