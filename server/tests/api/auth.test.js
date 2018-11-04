@@ -36,10 +36,28 @@ module.exports = function (app, options) {
                     .set('Content-Type', 'application/json')
                     .send({
                         username: 'PaulC',
-                        lastName: 'moulinex',
+                        lastName: 'Contre',
                         firstName: 'Paul',
                         password: '789zer2e',
-                        email: 'paul.peter@mail.com'
+                        email: 'paul.contre@mail.com'
+                    })
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a OK response - 3nd member registration', function (done) {
+                request(app)
+                    .post('/api/signup')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        username: 'JulienD',
+                        lastName: 'Donnard',
+                        firstName: 'Julien',
+                        password: '789z9@e2e',
+                        email: 'ju.do@mail.com'
                     })
                     .expect(200)
                     .end(function (err, res) {
@@ -135,16 +153,16 @@ module.exports = function (app, options) {
                     .end(function (err, res) {
                         if (err) return done(err);
                         res.body.member.should.exist;
+                        res.body.token.should.exist;
                         res.body.member.should.not.have.key('hash');
                         res.body.member.should.not.have.key('salt');
-                        res.body.token.should.exist;
                         options.token = res.body.token;
                         options.member = res.body.member;
                         done();
                     });
             });
 
-            it('should send back a OK response (successful login) - 2nd user', function (done) {
+            it('should send back a OK response (successful login) - 2nd user - unauthorized role', function (done) {
                 request(app)
                     .post('/api/login')
                     .set('Content-Type', 'application/json')
@@ -161,6 +179,29 @@ module.exports = function (app, options) {
                         res.body.token.should.exist;
                         options.tokenUnauthorized = res.body.token;
                         options.memberUnauthorized = res.body.member;
+                        done();
+                    });
+            });
+
+
+
+            it('should send back a OK response (successful login) - 3nd user - friend role', function (done) {
+                request(app)
+                    .post('/api/login')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        username: 'JulienD',
+                        password: '789z9@e2e'
+                    })
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.member.should.exist;
+                        res.body.member.should.not.have.key('hash');
+                        res.body.member.should.not.have.key('salt');
+                        res.body.token.should.exist;
+                        options.tokenFreinds = res.body.token;
+                        options.memberFreinds = res.body.member;
                         done();
                     });
             });

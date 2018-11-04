@@ -1,53 +1,44 @@
 let Board = require('./../models/Board');
-let Member = require('./../models/Member');
 let List = require('./../models/List');
 let debug = require('debug')('app:listAccess');
 
-let canUpdate = function() {
-    return function(req, res, next) {
-        List.findById(req.params.id, function(err, list) {
-            if(err) return res.status(404).send('Not found');
-            if(!list) return res.status(404).send('Not found');
-
-            Board.findOne({'_id' : list.idBoard, 'memberships.idMember' : req.user.id},
-                {'memberships.$': 1}, (err, board) => {
-                if(err) debug(err);
-                if(!board || !board.memberships[0]) return res.status(403).send('Forbidden.');
-                let member = board.memberships[0];
-                if(!member || (member.memberType !== 'admin' && member.memberType !== 'normal')){
-                    return res.status(403).send('Forbidden.');
-                }
-                req.list = list;
-                req.user.access = member;
-                return next();
-            })
-        });
-    };
+let findListAndBoard = function(req, res, next) {
+    List.findById(req.params.id)
+        .populate('idBoard')
+        .exec(function (err, list) {
+            if (err) debug(err)
+            if (!list) return res.status(404).send('Not found');
+            if (!list.idBoard) return res.status(404).send('Associate board not found.');
+            req.list = list;
+            next();
+    });
 };
 
-let canRead = function() {
-    return function(req, res, next) {
-        List.findById(req.params.id, function(err, list) {
-            if(err) return res.status(404).send('Not found');
-            if(!list) return res.status(404).send('Not found');
-
-            Board.findOne({'_id' : list.idBoard,'memberships.idMember' : req.user.id},
-                {'memberships.$': 1}, (err, board) => {
-                    if(err) debug(err);
-                    if(!board || !board.memberships[0]) return res.status(403).send('Forbidden.');
-                    let member = board.memberships[0];
-                    if(!member || (member.memberType !== 'admin' && member.memberType !== 'normal' && member.memberType !== 'observer')){
-                        return res.status(403).send('Forbidden.');
-                    }
-                    req.list = list;
-                    req.user.access = member;
-                    return next();
-                })
+let updateRights = function() {
+    return function (req, res, next) {
+        findListAndBoard(req, res, function () {
+            let board = req.list.idBoard;
+            let member = req.user.id;
+            if (!board.isNormalMember(member) && !board.isAdminMember(member)) return res.status(403).send('Forbidden.');
+            req.user.access = true;
+            return next();
         });
-    };
+    }
+};
+
+let readRights = function() {
+    return function (req, res, next) {
+        findListAndBoard(req, res, function () {
+            let board = req.list.idBoard;
+            let member = req.user.id;
+            if (!board.getMember(member)) return res.status(403).send('Forbidden.');
+            req.user.access = true;
+            return next();
+        });
+    }
 };
 
 module.exports = ListAccess = {
-    canUpdate : canUpdate,
-    canRead : canRead
+    updateRights : updateRights,
+    readRights : readRights
 };

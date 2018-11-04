@@ -15,7 +15,8 @@ let listSchema = new Schema({
         },
         idBoard : {
             required  : true,
-            type      : Schema.Types.ObjectId
+            type      : Schema.Types.ObjectId,
+            ref : 'Board'
         },
         pos : {
             required  : true,

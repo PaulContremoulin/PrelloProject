@@ -42,10 +42,12 @@ const authRouter = require('./routes/AuthRoutes');
 const memberRouter = require('./routes/MemberRoutes');
 const boardRouter = require('./routes/BoardRoutes');
 const ListRoutes = require('./routes/ListRoutes');
+const CardRoutes = require('./routes/CardRoutes');
 
 app.use('/api', indexRouter);
 app.use('/api', authRouter);
 app.use('/api/members', memberRouter);
 app.use('/api/boards', passport.authenticate('jwt', { session: false }), boardRouter);
 app.use('/api/lists', passport.authenticate('jwt', { session: false }), ListRoutes);
+app.use('/api/cards', passport.authenticate('jwt', { session: false }), CardRoutes);
 module.exports = app;

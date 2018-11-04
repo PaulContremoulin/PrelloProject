@@ -95,7 +95,7 @@ router.post('/:id/password/reset', function(req, res) {
 
     Member.findOne({ _id : req.params.id, resetPass : { token : req.token }}, function (err, member) {
         if(err) {
-            debug('members/:id/password/reset error : ' + err)
+            debug('members/:id/password/reset error : ' + err);
             return res.status(500).end();
         }
         if(!member) return res.status(404).end();

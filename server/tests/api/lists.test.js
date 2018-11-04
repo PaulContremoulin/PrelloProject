@@ -38,27 +38,6 @@ module.exports = function (app, options) {
 
             it('should send back a OK response - Member can closed the list with his/her rights', function (done) {
                 request(app)
-                    .put('/api/lists/' + options.list._id +'/closed?value=true')
-                    .set('Authorization', 'Bearer ' + options.token)
-                    .set('Content-Type', 'application/json')
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) return done(err);
-                        request(app)
-                            .get('/api/lists/' + options.list._id)
-                            .set('Authorization', 'Bearer ' + options.token)
-                            .set('Content-Type', 'application/json')
-                            .expect(200)
-                            .end(function (err, res) {
-                                if (err) return done(err);
-                                res.body.closed.should.be.equal(true);
-                                done();
-                            });
-                    });
-            });
-
-            it('should send back a OK response - Member can open the list with his/her rights', function (done) {
-                request(app)
                     .put('/api/lists/' + options.list._id +'/closed?value=false')
                     .set('Authorization', 'Bearer ' + options.token)
                     .set('Content-Type', 'application/json')
@@ -78,9 +57,30 @@ module.exports = function (app, options) {
                     });
             });
 
-            it('should send back a FORBIDDEN response - Member can\'t closed / open the list with his/her rights', function (done) {
+            it('should send back a OK response - Member can open the list with his/her rights', function (done) {
                 request(app)
                     .put('/api/lists/' + options.list._id +'/closed?value=true')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/lists/' + options.list._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.closed.should.be.equal(true);
+                                done();
+                            });
+                    });
+            });
+
+            it('should send back a FORBIDDEN response - Member can\'t closed / open the list with his/her rights', function (done) {
+                request(app)
+                    .put('/api/lists/' + options.list._id +'/closed?value=false')
                     .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
                     .set('Content-Type', 'application/json')
                     .expect(403)
@@ -93,7 +93,7 @@ module.exports = function (app, options) {
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) return done(err);
-                                res.body.closed.should.be.equal(false);
+                                res.body.closed.should.be.equal(true);
                                 done();
                             });
                     });
