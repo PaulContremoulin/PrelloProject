@@ -96,7 +96,7 @@ router.post('/auth/forgot/password', function(req, res) {
         if(err) return res.status(400).send('Invalid email.');
         if(!member) return res.status(404).end();
 
-        let resetUrl = req.body.callback + '/members/' + member._id + '/password/reset?token=' + member.generateResetPasswordToken();
+        let resetUrl = req.body.callback + '/login/reset/' + member._id + '/password?token=' + member.generateResetPasswordToken();
 
         mail.resetPasswordMessage(member, resetUrl, function(err){
             if(err){
