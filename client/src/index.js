@@ -22,7 +22,7 @@ ReactDOM.render(
                 <Route exact path="/" component={LoginPage}/>
                 <Route path="/home" component={HomePage}/>
                 <Route path="/account" component={AccountPage}/>
-                <Route path='/change/password' component={ChangePswd}/>
+                <Route path='/login/reset/:idmembre/password' component={ChangePswd}/>
             </div>
         </Router>
     </Provider>

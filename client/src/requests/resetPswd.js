@@ -4,14 +4,11 @@ import axios from "axios/index";
 export const changePswd = (
     tokenUser,
     newPswd,
+    iduser,
 ) => (
-    //todo : change request
-    axios.post( process.env.REACT_APP_API_URL+'/api/',
+    axios.post( process.env.REACT_APP_API_URL+'/api/members/'+iduser+'/password/reset?token=' + tokenUser,
         {
-            newPswd,
-        },
-        {
-            headers : { Authorization: 'Bearer '+ tokenUser},
+            newPswd
         })
         .then(response => response.data)
 );
