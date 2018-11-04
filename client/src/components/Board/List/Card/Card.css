@@ -1,3 +1,7 @@
 .CardCeption {
   margin-bottom: 10px !important;
 }
+
+.BtnUpdateCard {
+  float: "right" !important;
+}

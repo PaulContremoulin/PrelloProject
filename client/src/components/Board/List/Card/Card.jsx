@@ -13,7 +13,7 @@ export const CardComponent = ({ card, openModal }) => (
         <Card className="CardCeption" onClick={() => openModal()}>
           <CardTitle>
             {card.cardName}
-            <Button outline color="secondary" type="button"><Octicon name="pencil"/></Button>
+            <Button className="BtnUpdateCard" outline color="secondary" type="button"><Octicon name="pencil"/></Button>
           </CardTitle>
         </Card>
       </Row>
