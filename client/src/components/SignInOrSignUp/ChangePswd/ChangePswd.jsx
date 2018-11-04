@@ -9,6 +9,7 @@ import './ChangePswd.css';
 
 // Actions & Constant
 import {NavBar} from "../../NavBar/NavBar";
+import { changePswd } from "../../../requests/resetPswd";
 
 export class ChangePswd extends React.Component {
 
@@ -19,6 +20,7 @@ export class ChangePswd extends React.Component {
             "newPasswordConfirm": "",
             "passwordsMatch" : true,
             "passwordIsValid" : true,
+            "changePasswordGood":true,
         }
     }
 
@@ -40,10 +42,13 @@ export class ChangePswd extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if( this.state.newPassword !== this.state.newPasswordConfirm) {
-            this.setState({ passwordsMatch: false });
+            this.setState({
+                passwordsMatch: false,
+            });
         } else {
-            //todo : envoyer le mdp au back
-            history.push('/');
+            changePswd(qs.parse(this.props.location.search).token, this.state.newPassword)
+                .then(res => (res.status < 400) ? history.push('/') : this.setState({ changePasswordGood: false }))
+                .catch(this.setState({ changePasswordGood: false }))
         }
     };
 
@@ -60,9 +65,6 @@ export class ChangePswd extends React.Component {
     render() {
         const parsed = qs.parse(this.props.location.search);
         const token = parsed.token;
-        console.log(parsed);
-        console.log(parsed.token !== undefined);
-        //const token = parsed.token;
         return (
             <div>
                 <NavBar changepswd="true"/>
@@ -72,6 +74,10 @@ export class ChangePswd extends React.Component {
                             <Col className="ResetPswd" md={{size: 6, offset: 3}}>
                                 <h2 align="center">Reset password</h2>
                                 <Form className="form" onSubmit={this.handleSubmit}>
+                                    <Alert color="danger" isOpen={!this.state.changePasswordGood}
+                                           toggle={() => this.onDismiss("changePasswordGood")}>
+                                        Reset password is not good, start again !
+                                    </Alert>
                                     <Alert color="danger" isOpen={!this.state.passwordsMatch}
                                            toggle={() => this.onDismiss("passwordsMatch")}>
                                         The passwords do not match.
