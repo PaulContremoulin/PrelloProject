@@ -13,6 +13,7 @@ import { history } from './history';
 import LoginPage from './pages/LoginPage/LoginPage';
 import {HomePage} from './pages/HomePage/HomePage';
 import {AccountPage} from './pages/AccountPage/AccountPage';
+import {ChangePswd} from "./components/SignInOrSignUp/ChangePswd/ChangePswd";
 
 ReactDOM.render(
     <Provider store={store}>
@@ -21,6 +22,7 @@ ReactDOM.render(
                 <Route exact path="/" component={LoginPage}/>
                 <Route path="/home" component={HomePage}/>
                 <Route path="/account" component={AccountPage}/>
+                <Route path='/change/password' component={ChangePswd}/>
             </div>
         </Router>
     </Provider>

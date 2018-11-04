@@ -1,6 +1,6 @@
 // Modules
 import React from 'react';
-import {Card, CardHeader, CardTitle, CardBody} from 'reactstrap';
+import {Card, CardHeader, CardTitle, CardBody, CardText} from 'reactstrap';
 
 // Css...
 
@@ -12,7 +12,7 @@ export class CardBoard extends React.Component {
         return (
             <Card style={{ backgroundColor: this.props.board.color}}>
                 <CardBody>
-                    <CardTitle>{this.props.board.name}</CardTitle>
+                    <CardText>{this.props.board.name}</CardText>
                 </CardBody>
             </Card>
         )

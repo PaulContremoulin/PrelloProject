@@ -86,7 +86,7 @@ export class Registration extends React.Component {
   }
 
   validatePassword = (e) => {
-    const pswdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/g;
+    const pswdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/g;
     if (pswdRegex.test(e.target.value)) {
       this.setState({ passwordIsValid: true, passwordA: e.target.value })
     } else {

@@ -15,13 +15,13 @@ export class NavBarToBeConnected extends React.Component {
     logOut = () => {
         this.props.logOut();
         history.push('/');
-        //todo : appeler action log out & redirection page sign in
     };
 
     render() {
         const {
           user,
           changeMode,
+            changepswd
         } = this.props;
         return (
             <Navbar expand="md">
@@ -30,7 +30,7 @@ export class NavBarToBeConnected extends React.Component {
                     :
                     <NavbarBrand href="/home">Prello</NavbarBrand>
                 }
-                {!(user.member) ?
+                {!(user.member) && !(changepswd==="true") &&
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
@@ -41,7 +41,8 @@ export class NavBarToBeConnected extends React.Component {
                         </NavItem>
                     </Nav>
                 </Collapse>
-                :
+                }
+                {(user.member) && !(changepswd==="true") &&
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
