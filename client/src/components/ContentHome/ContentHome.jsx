@@ -27,12 +27,12 @@ export class ContentHomeToBeConnected extends React.Component {
                     <Row>
                             {this.props.boards.map(board => {
                                     return(
-                                        <Col className="displayBoard" sm="3">
+                                        <Col className="displayBoard" sm={3}>
                                             <CardBoard board={board} key={ board._id }/>
                                         </Col>
                                     )
                                 })}
-                        <Col className="displayBoard" sm="3">
+                        <Col className="displayBoard" sm={3}>
                             <CreateBoard/>
                         </Col>
                     </Row>

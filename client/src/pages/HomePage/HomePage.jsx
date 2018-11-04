@@ -12,10 +12,10 @@ import './HomePage.css';
 import { Row, Col } from 'reactstrap';
 
 export const HomePageToBeConnected = ({ logOut }) => (
-    <div className="HomePage">
+    <div>
         <NavBar incomingFrom="HomePage" logOut={ logOut } />
             <Row>
-                <Col md="3">
+                <Col className="menu" md="3">
                     <MenuHome/>
                 </Col>
                 <Col md="8">

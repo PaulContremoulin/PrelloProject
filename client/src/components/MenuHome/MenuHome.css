@@ -1,6 +1,10 @@
 .vertical-menu {
-    min-height: 100%;
+    height: 100vh;
     background-color: #eee;
+}
+
+.margin {
+    margin-top: 10px;
 }
 
 .vertical-menu a {
