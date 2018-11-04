@@ -20,7 +20,7 @@ export class CreateBoardToBeConnected extends React.Component {
             'idOrganization': null,
             'desc': '',
             'memberships': [],
-            'color': '',
+            'color': '#000000',
         }
     }
 
