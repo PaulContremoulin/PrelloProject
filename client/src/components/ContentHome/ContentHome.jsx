@@ -42,6 +42,7 @@ export class ContentHomeToBeConnected extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props.user.token);
         getBoardsUser(this.props.user.member._id)
             .then(res => {this.props.fetchBoards(res.data)})
             .catch(error => {console.log(error)})

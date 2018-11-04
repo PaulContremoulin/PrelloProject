@@ -9,7 +9,7 @@ import './ChangePswd.css';
 
 // Actions & Constant
 import {NavBar} from "../../NavBar/NavBar";
-import { changePswd } from "../../../requests/resetPswd";
+import { changePswd, checkToken } from "../../../requests/resetPswd";
 
 export class ChangePswd extends React.Component {
 
@@ -21,6 +21,7 @@ export class ChangePswd extends React.Component {
             "passwordsMatch" : true,
             "passwordIsValid" : true,
             "changePasswordGood":true,
+            "tokenValid": true,
         }
     }
 
@@ -63,13 +64,11 @@ export class ChangePswd extends React.Component {
     };
 
     render() {
-        const parsed = qs.parse(this.props.location.search);
-        const token = parsed.token;
         return (
             <div>
                 <NavBar changepswd="true"/>
                 <Container>
-                    {(token !== undefined) ?
+                    {(this.state.tokenValid) ?
                         <Row>
                             <Col className="ResetPswd" md={{size: 6, offset: 3}}>
                                 <h2 align="center">Reset password</h2>
@@ -129,6 +128,14 @@ export class ChangePswd extends React.Component {
                 </Container>
             </div>
         );
+    }
+
+    componentDidMount() {
+        const token = qs.parse(this.props.location.search).token;
+        const idMembre = this.props.match.params.idmembre;
+        checkToken(token, idMembre)
+            .then(res => res.status > 400 ? this.setState({tokenValid:false}) : this.setState({tokenValid:true}))
+            .catch(this.setState({tokenValid:false}))
     }
 
 }

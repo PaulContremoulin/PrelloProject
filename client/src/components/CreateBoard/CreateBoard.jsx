@@ -20,7 +20,7 @@ export class CreateBoardToBeConnected extends React.Component {
             'idOrganization': null,
             'desc': '',
             'memberships': [],
-            'color': '',
+            'color': '#000000',
         }
     }
 
@@ -36,7 +36,7 @@ export class CreateBoardToBeConnected extends React.Component {
             'idOrganization': null,
             'desc':'',
             'memberships': [],
-            'color':'',
+            'color':'#000000',
         })
     }
 
@@ -67,7 +67,7 @@ export class CreateBoardToBeConnected extends React.Component {
                 this.setState({
                     visible: true,
                     'name':'',
-                    'color':'',
+                    'color':'#000000',
                     'desc':'',
                 })
             )
