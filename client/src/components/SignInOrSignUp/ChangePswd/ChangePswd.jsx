@@ -46,7 +46,7 @@ export class ChangePswd extends React.Component {
                 passwordsMatch: false,
             });
         } else {
-            changePswd(qs.parse(this.props.location.search).token, this.state.newPassword)
+            changePswd(qs.parse(this.props.location.search).token, this.state.newPassword, this.props.match.params.idmembre)
                 .then(res => (res.status < 400) ? history.push('/') : this.setState({ changePasswordGood: false }))
                 .catch(this.setState({ changePasswordGood: false }))
         }
