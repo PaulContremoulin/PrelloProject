@@ -1,4 +1,3 @@
-import { postRequest } from './genericRequest';
 import axios from "axios/index";
 
 export const changePswd = (
@@ -10,7 +9,7 @@ export const changePswd = (
         {
             newPswd
         })
-        .then(response => response.data)
+        .then(response => response)
 );
 
 export const checkToken = (
@@ -18,16 +17,18 @@ export const checkToken = (
         iduser,
 ) => (
     axios.get( process.env.REACT_APP_API_URL+'/api/members/'+iduser+'/password/reset?token='+tokenUser)
-        .then(response => response.data)
+        .then(response => response)
 );
 
 export const resetPswd = (
-  email
+  email,
+  callback
 ) => (
-  postRequest( '/auth/login/forgot/password', {
-    email
+  axios.post( process.env.REACT_APP_API_URL+'/api/auth/forgot/password', {
+    email,
+      callback
   })
-  .then( response => console.log(response) || response.data )
+  .then( response => response )
 );
 
 

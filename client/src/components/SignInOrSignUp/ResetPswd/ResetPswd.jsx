@@ -15,16 +15,16 @@ export class ResetPswd extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-        "email": "",
-        "emailIsSent": false,
-        "emailNotFound" : false
+        'email': "",
+        'emailIsSent': false,
+        'emailNotFound' : false
       }
   }
 
    handleSubmit = (event) => {
      event.preventDefault();
      const email = this.state.email
-     resetPswd(email)
+     resetPswd(email,'http://localhost:3000')
      .then( res => (res.status < 400) ? this.setState({ emailIsSent: true, emailNotFound: false }) : this.setState({ emailNotFound: true }) )
      .catch( err => console.log(err) )
    }
@@ -33,7 +33,7 @@ export class ResetPswd extends React.Component {
    handleChange = async (event) => {
        const value = event.target.value;
        this.setState({
-           "email": value,
+           'email': value,
        });
    };
 
