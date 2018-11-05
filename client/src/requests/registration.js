@@ -15,7 +15,8 @@ export const registerUser = (
   lastName,
   email,
   password,
-  organisation = ""
+  organisation = "",
+  callback
 ) => (
   postRequest( '/api/signup/', {
     username,
@@ -23,7 +24,8 @@ export const registerUser = (
     lastName,
     email,
     password,
-    organisation
+    organisation,
+      callback
   })
   .then( response => console.log(response) || response.data )
 )

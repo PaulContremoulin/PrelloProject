@@ -67,7 +67,7 @@ export class Registration extends React.Component {
           email = this.state.email,
           passwordA = this.state.passwordA,
           organisation = this.state.organisation;
-     registerUser(username, firstName, lastName, email, passwordA, organisation);
+     registerUser(username, firstName, lastName, email, passwordA, organisation, process.env.REACT_APP_FRONT_URL);
     const { onClick } = this.props;
     onClick();
    }

@@ -23,8 +23,8 @@ export class ResetPswd extends React.Component {
 
    handleSubmit = (event) => {
      event.preventDefault();
-     const email = this.state.email
-     resetPswd(email,'http://localhost:3000')
+     const email = this.state.email;
+     resetPswd(email,process.env.REACT_APP_FRONT_URL)
      .then( res => (res.status < 400) ? this.setState({ emailIsSent: true, emailNotFound: false }) : this.setState({ emailNotFound: true }) )
      .catch( err => console.log(err) )
    }
