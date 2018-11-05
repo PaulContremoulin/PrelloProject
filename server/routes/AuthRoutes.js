@@ -41,8 +41,9 @@ router.post('/signup', function(req, res, next) {
  * @group auth - Operations about authentication
  * @param {Creadential.model} credentials.body.required - user's credentials.
  * @returns {Member.model} 200 - user info object and token object
- * @returns {Error}  400 - bad request, one of fields is invalid
+ * @returns {Error}  400 - Bad request, one of fields is invalid
  * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, confirm your email before
  * @returns {Error}  default - Unexpected error
  */
 router.post('/login', passport.authenticate('local', {session: false}), function(req, res) {
@@ -78,11 +79,11 @@ router.get('/auth/github/callback',
 
 /**
  * Send a email at the member to reset his/her password
- * @route GET /auth/login/forgot/password
+ * @route POST /auth/forgot/password
  * @group auth - Operations about authentication
  * @param {string} email.body.required - member's email
  * @param {string} callback.body.required - the url to call in the email (token will be attached with member id)
- * @returns {code} 200 - user info object and token object
+ * @returns {code} 202 - user info object and token object
  * @returns {Error} 400 - Bad request (email or callback url missing / invalid)
  * @returns {Error} 404 - Not found (member not found)
  * @returns {Error} default - Unexpected error

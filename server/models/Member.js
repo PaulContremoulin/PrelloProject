@@ -41,10 +41,6 @@ let memberSchema = new Schema({
         default : [],
         required : true
     },
-    circles : {
-        type : [circlesSchema],
-        default : []
-    },
     idOrganizations: {
         type : [Schema.Types.ObjectId],
         default : [],
@@ -86,7 +82,7 @@ let memberSchema = new Schema({
     },
     oauth: {
         github : String
-    },
+    }
 },
 {
     versionKey: false
@@ -114,11 +110,6 @@ memberSchema.pre('validate', function(next) {
     return next();
 });
 
-/**
- * Add a new circle
- * @param name, the name of the circle
- * @param boards, the array of boards id attached at this circle
- */
 memberSchema.methods.addCircle = function(name, boards) {
     let idBoards;
     boards ? idBoards = boards : idBoards = [];

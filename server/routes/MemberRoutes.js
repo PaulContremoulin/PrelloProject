@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let Board = require('./../models/Board');
 let Member = require('./../models/Member');
+let Circle = require('./../models/Circle');
 let debug = require('debug')('app:members');
 let mongoose = require('mongoose');
 const passport = require('passport');
@@ -34,7 +35,6 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), function(re
 
 });
 
-
 /**
  * Get all member's boards for the member's id given
  * @route GET /members/{id}/boards
@@ -48,10 +48,6 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), function(re
  * @security JWT
  */
 router.get('/:id/boards', passport.authenticate('jwt', { session: false }), function(req, res) {
-
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-        return res.status(404).end();
-    }
 
     Member.findById(req.params.id, function (err, member) {
         if(err) {
@@ -85,28 +81,49 @@ router.get('/:id/boards', passport.authenticate('jwt', { session: false }), func
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/:id/circles', function(req, res) {
+router.post('/:id/circles', passport.authenticate('jwt', { session: false }), function(req, res) {
 
     Member.findById(req.params.id, function (err, member) {
-        if(err) debug('members/:id/circles error : ' + err)
+        if(err) debug('members/:id/circles error : ' + err);
         if(!member) return res.status(404).end();
 
-        member.addCircle(req.body.name, req.body.idBoards);
+        let circle = new Circle({
+            name : req.body.name,
+            idMember : mongoose.Types.ObjectId(req.user.id)
+        });
 
-        member.validate(function (err) {
+        circle.validate(function (err) {
             if(err) return res.status(400).send(err);
-            // save the user
-            member.save(function (err) {
+            // save the circle
+            circle.save(function (err) {
                 if (err) {
                     debug('members/:id/circles error : ' + err);
                     return res.status(500).end();
                 }
-                return res.status(200).json(member);
+                return res.status(200).json(circle);
             });
         });
     });
 });
 
+/**
+ * Get user's circles
+ * @route GET /members/{id}/circles
+ * @group members - Operations about members
+ * @returns {Circle} 200 - User's circle
+ * @returns {Error}  403 - Forbidden, token expired or not exist
+ * @returns {Error}  404 - Member not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/circles', passport.authenticate('jwt', { session: false }), function(req, res) {
+
+    Circle.find({ idMmeber : req.params.id }, function (err, circle) {
+        if(err) debug('members/:id/circles error : ' + err);
+        if(!circle) return res.status(404).end();
+        return res.status(200).json(circle);
+    });
+});
 
 /**
  * The the member's password with the new password given, if the token is valid
@@ -124,10 +141,10 @@ router.post('/:id/circles', function(req, res) {
  */
 router.post('/:id/password/reset', function(req, res) {
 
-    if(!req.params.token) return res.status(400).send('No token given.');
+    if(!req.query.token) return res.status(400).send('No token given.');
     if(!req.body.password) return res.status(400).send('No password given.');
 
-    Member.findOne({ _id : req.params.id, resetPass : { token : req.token }}, function (err, member) {
+    Member.findOne({ _id : req.params.id, resetPass : { token : req.query.token }}, function (err, member) {
         if(err) {
             debug('members/:id/password/reset error : ' + err);
             return res.status(500).end();
