@@ -4,8 +4,6 @@ let jwt = require('jsonwebtoken');
 let shortid = require('shortid');
 let uniqueValidator = require('mongoose-unique-validator');
 let mongooseHidden = require('mongoose-hidden')()
-let jwt = require('jsonwebtoken');
-var shortid = require('shortid');
 let idValidator = require('mongoose-id-validator');
 
 let Schema = mongoose.Schema;

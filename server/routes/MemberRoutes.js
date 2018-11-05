@@ -71,7 +71,7 @@ router.get('/:id/boards', token, function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/:id/circles', passport.authenticate('jwt', { session: false }), function(req, res) {
+router.post('/:id/circles', token, function(req, res) {
 
     Member.findById(req.params.id, function (err, member) {
         if(err) debug('members/:id/circles error : ' + err);
@@ -106,7 +106,7 @@ router.post('/:id/circles', passport.authenticate('jwt', { session: false }), fu
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id/circles', passport.authenticate('jwt', { session: false }), function(req, res) {
+router.get('/:id/circles', token, function(req, res) {
 
     Circle.find({ idMmeber : req.params.id }, function (err, circle) {
         if(err) debug('members/:id/circles error : ' + err);
