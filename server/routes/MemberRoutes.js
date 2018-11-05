@@ -42,23 +42,26 @@ router.get('/:id', token, function(req, res) {
  */
 router.get('/:id/boards', token, function(req, res) {
 
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(404).end();
     }
 
     Member.findById(req.params.id, function (err, member) {
-        if(err) debug('members/:id error : ' + err);
-        if(!member) return res.status(404).end();
+        if (err) debug('members/:id error : ' + err);
+        if (!member) return res.status(404).end();
 
-        req.query._id = { $in: member.idBoards};
+        req.query._id = {$in: member.idBoards};
 
-        Board.find(req.query, function(err, board){
-                if(err) {
-                    debug('members/:id error : ' + err)
-                    return res.status(500).end();
-                }
-                return res.status(200).json(board)
-            });
+        Board.find(req.query, function (err, board) {
+            if (err) {
+                debug('members/:id error : ' + err)
+                return res.status(500).end();
+            }
+            return res.status(200).json(board)
+        });
+
+    });
+});
 
 /**
  * Add a circle
@@ -76,12 +79,12 @@ router.get('/:id/boards', token, function(req, res) {
 router.post('/:id/circles', token, function(req, res) {
 
     let circle = new Circle({
-        name : req.body.name,
-        idMember : req.params.id
+        name: req.body.name,
+        idMember: req.params.id
     });
     circle.validate(function (err) {
-        if(err)
-            return res.status(400).json({message : err._message});
+        if (err)
+            return res.status(400).json({message: err._message});
         circle.save(function (err) {
             if (err) {
                 debug('members/:id/circles error : ' + err);
@@ -90,6 +93,8 @@ router.post('/:id/circles', token, function(req, res) {
             return res.status(200).json(circle);
         });
     });
+
+});
 
 /**
  * Get user's circles
