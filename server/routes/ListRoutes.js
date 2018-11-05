@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let List = require('./../models/List');
 let listAccess = require('./../middlewares/ListAccess');
-
+let debug = require('debug')('app:lists');
 
 /**
  * Get a list
@@ -21,8 +21,8 @@ router.get('/:id', listAccess.readRights(), function(req, res) {
     req.body._id = req.params.id
 
     List.findOne(req.body, function (err, list) {
-        if (err) return res.status(404).send('Not found');
-        if (!list) return res.status(404).send('Not found');
+        if (err) debug('lists/:id error : ' + err);
+        if (!list) return res.status(404).json({message : 'List not found'});
         return res.status(200).json(list);
     });
 
@@ -43,14 +43,19 @@ router.get('/:id', listAccess.readRights(), function(req, res) {
  * @security JWT
  */
 router.put('/:id/closed', listAccess.updateRights(), function(req, res) {
-    if(!req.query.value) res.status(400).send('Value missing.')
+
+    if(!req.query.value) res.status(400).json({message:'Value is missing'});
+
     let list = req.list;
     list.closed = req.query.value;
 
     list.validate(function (err) {
-        if(err) return res.status(400).send(err);
+        if(err) return res.status(400).json({message:err._message});
         list.save(function (err) {
-            if(err) return res.status(500).send('Internal error');
+            if(err) {
+                debug('lists/:id error : ' + err);
+                return res.status(500).send('Unexpected internal error');
+            }
             return res.status(200).end();
         });
     });
@@ -71,15 +76,17 @@ router.put('/:id/closed', listAccess.updateRights(), function(req, res) {
  * @security JWT
  */
 router.put('/:id/name', listAccess.updateRights(), function(req, res) {
-    if(!req.query.value) res.status(400).send('Value missing.')
+    if(!req.query.value)
+        res.status(400).json({message:'Value is missing'});
+
     let list = req.list;
     list.name = req.query.value;
 
     list.validate(function (err) {
-        if(err) return res.status(400).send(err);
+        if(err) return res.status(400).json({message:err._message});
         list.save(function (err) {
-            if(err) return res.status(500).send('Internal error');
-            return res.status(200).end();
+            if(err) return res.status(500).json({message:'Unexpected internal errror'});
+            return res.status(200).json({message : 'Name updated successfully'});
         });
     });
 });
@@ -99,16 +106,17 @@ router.put('/:id/name', listAccess.updateRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.put('/:id/name', listAccess.updateRights(), function(req, res) {
-    if(!req.query.value) res.status(400).send('Value missing.')
+router.put('/:id/pos', listAccess.updateRights(), function(req, res) {
+    if(!req.query.value) res.status(400).json({message:'Value is missing'});
+
     let list = req.list;
     list.post = req.query.value;
 
     list.validate(function (err) {
-        if(err) return res.status(400).send(err);
+        if(err) return res.status(400).json({message:err._message});
         list.save(function (err) {
             if(err) return res.status(500).send('Internal error');
-            return res.status(200).end();
+            return res.status(200).josn({message:'Position updated successfully'});
         });
     });
 });

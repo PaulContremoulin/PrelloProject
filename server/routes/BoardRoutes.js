@@ -23,22 +23,18 @@ router.post('/', function(req, res) {
 
     newBoard.createOrUpdateMember(req.user._id, "admin", true);
 
-    // Validate the board
-    newBoard.validate(function (error) {
-        if (error) return res.status(400).json(error);
-        // Save the board
+    newBoard.validate(function (err) {
+        if (err) return res.status(400).json({message : err._message});
         newBoard.save(function (err) {
             if (err) {
-                debug('Error in Saving board: ' + err);
-                return res.status(400).json(err);
+                debug('POST boards/ error : ' + err);
+                return res.status(400).json({message : err._message});
             }
-            debug('Board Registration successful');
-
             Member.findByIdAndUpdate(
                 { _id: req.user._id},
                 { $push: { idBoards: newBoard._id } },
                 function (err) {
-                    if (err) return res.status(500).end();
+                    if (err) return res.status(500).json({message : 'Unexpected internal error'});
                     return res.status(201).json(newBoard);
                 });
         });
@@ -61,8 +57,8 @@ router.get('/:id', boardAccess.readRights(), function(req, res) {
     req.query._id = req.params.id;
 
     Board.findById(req.query, function (err, board) {
-        if (err) return res.status(404).end();
-        if (!board) return res.status(404).end();
+        if (err) debug('GET boards/:id error : ' + err);
+        if (!board) return res.status(404).json({message : 'Board not found'});
         return res.status(200).json(board);
     });
 });
@@ -84,19 +80,19 @@ router.post('/:id/lists', boardAccess.updateRights(), function(req, res) {
     req.body.idBoard = req.params.id;
 
     Board.findById(req.params.id, function (err, board) {
-        if (err) return res.status(404).end();
-        if (!board) return res.status(404).end();
+        if (err) debug('POST boards/:id/lists error : ' + err);
+        if (!board)
+            return res.status(404).json({message:'Board not found'});
+
         let newList = new List(req.body);
-        // Validate the list
-        newList.validate(function (error) {
-            if (error) return res.status(400).json(error);
-            // Save the board
+        newList.validate(function (err) {
+            if (err) return res.status(400).json({message:err._message});
+
             newList.save(function (err) {
                 if (err) {
-                    debug('Error in Saving list: ' + err);
-                    throw err;
+                    debug('POST boards/:id/lists error : ' + err);
+                    return res.status(500).json({message:'Unexpected internal error'});
                 }
-                debug('List Registration successful');
                 res.status(201).json(newList);
             });
         });
@@ -118,15 +114,15 @@ router.post('/:id/lists', boardAccess.updateRights(), function(req, res) {
 router.get('/:id/lists', boardAccess.readRights(), function(req, res) {
 
     Board.findById(req.params.id, function (err, board) {
-        if (err) return res.status(404).end();
-        if (!board) return res.status(404).end();
+        if (err) debug('GET boards/:id/lists error : ' + err);
+        if (!board) return res.status(404).json({message:'Board not found'});
 
         req.query.idBoard = board._id;
 
         List.find(req.query, function(err, list){
             if(err) {
-                debug('members/:id error : ' + err)
-                return res.status(400).end();
+                debug('GET boards/:id/lists error : ' + err)
+                return res.status(500).json({message:'Unexpected internal error'});
             }
             return res.status(200).json(list)
         });
@@ -153,15 +149,15 @@ router.put('/:id/members/:idMember', boardAccess.updateRights(), function(req, r
 
     if((type === 'admin' && !board.isAdminMember(req.user.id))
         || (type !== 'admin' && board.nbAdmin() <= 1 && req.user.id === req.params.idMember)){
-        return res.status(403).send('Forbidden');
+        return res.status(403).json({message : 'Can not set the role of the last administrator'});
     }
 
     board.createOrUpdateMember(req.params.idMember, type);
 
     board.validate(function (err) {
-        if(err) return res.status(400).send(err);
+        if(err) return res.status(400).json({message:err._message});
         board.save(function (err) {
-            if(err) return res.status(500).send('Internal error');
+            if(err) return res.status(500).json({message:'Unexpected internal error'});
             return res.status(200).json(board);
         });
     });
