@@ -18,17 +18,16 @@ let mongoose = require('mongoose');
  * @security JWT
  */
 router.post('/', CardAccess.createRights(), function(req, res) {
+
     let newCard = new Card(req.body);
-    // Validate the card
-    newCard.validate(function (error) {
-        if (error) return res.status(400).json(error);
-        // Save the card
+
+    newCard.validate(function (err) {
+        if (err) return res.status(400).json({message : err._message});
         newCard.save(function (err) {
             if (err) {
-                debug('Error in Saving card: ' + err);
-                return res.status(500).json(err);
+                debug('POST cards error : ' + err);
+                return res.status(500).json({message : 'Unexpected internal error'});
             }
-            debug('Card Registration successful');
             return res.status(201).json(newCard);
         });
     });
@@ -48,8 +47,8 @@ router.post('/', CardAccess.createRights(), function(req, res) {
 router.get('/:id', CardAccess.readRights(), function(req, res) {
 
     Card.findById(req.params.id, function(err, card){
-        if(err) debug('Error in GET cards/:id');
-        if(!card) return res.status(404).send('Card not found');
+        if(err) debug('GET cards/:id error : ' + err);
+        if(!card) return res.status(404).json({message:'Card not found'});
         return res.status(200).json(card);
     });
 });
@@ -83,8 +82,11 @@ router.put('/:id', CardAccess.updateRights(), function(req, res) {
     card.validate(function (err) {
         if(err) return res.status(400).send(err);
         card.save(function (err) {
-            if(err) return res.status(500).send('Internal error');
-            return res.status(200).end();
+            if(err) {
+                debug('PUT cards/:id error : ' + err)
+                return res.status(500).json({message:'Unexpected internal error'});
+            }
+            return res.status(200).json({message:'Card updated successfully'});
         });
     });
 });
@@ -102,25 +104,21 @@ router.put('/:id', CardAccess.updateRights(), function(req, res) {
  */
 router.post('/:id/idMembers', CardAccess.updateRights(), function(req, res) {
 
-    if(!mongoose.Types.ObjectId.isValid(req.query.value)){
-        return res.status(404).end();
-    }
-
-    if(!req.query.value) return res.status(400).send('Member id missing');
+    if(!req.query.value) return res.status(400).json({message:'Member id missing'});
 
     let card = req.card;
-
     let newMember = card.idList.idBoard.getMember(req.query.value);
 
-    if(!newMember) return res.status(403).send('Member doesn\'t belong at the board');
+    if(!newMember)
+        return res.status(403).json({message : 'Member does not belong to the associated board'});
 
     card.createOrUpdateMember(newMember.idMember);
 
     card.validate(function (err) {
-        if(err) return res.status(400).send(err);
+        if(err) return res.status(400).json({message : err._message});
         card.save(function (err) {
-            if(err) return res.status(500).send('Internal error');
-            return res.status(200).end();
+            if(err) return res.status(500).json({message:'Unexpected internal error'});
+            return res.status(200).json({message : 'Member added successfully at the card'});
         });
     });
 });

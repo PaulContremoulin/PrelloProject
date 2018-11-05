@@ -1,9 +1,10 @@
 let mongoose = require('mongoose');
 let crypto = require('../config/crypto');
-var uniqueValidator = require('mongoose-unique-validator');
-let mongooseHidden = require('mongoose-hidden')()
 let jwt = require('jsonwebtoken');
-var shortid = require('shortid');
+let shortid = require('shortid');
+let uniqueValidator = require('mongoose-unique-validator');
+let mongooseHidden = require('mongoose-hidden')()
+let idValidator = require('mongoose-id-validator');
 
 let Schema = mongoose.Schema;
 
@@ -156,6 +157,11 @@ memberSchema.methods.setPassword = function(password) {
     this.hash = crypto.sha512(password, this.salt).passwordHash;
     return true
 };
+
+memberSchema.methods.passwordTokenExpired = function(){
+    return !this.resetPass || !this.resetPass.token || this.resetPass.expire < Math.floor(Date.now() / 1000)
+};
+
 
 /**
  * Json object that describe the user's payload
