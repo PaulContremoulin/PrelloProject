@@ -93,11 +93,11 @@ router.post('/:id/password/reset', function(req, res) {
     if(!req.query.token) return res.status(400).send('No token given.');
     if(!req.body.password) return res.status(400).send('No password given.');
 
-    Member.findOne({ _id : req.params.id, resetPass : { token : req.query.token }}, function (err, member) {
+    Member.findById({ _id : req.params.id, resetPass : { token : req.query.token }}, function (err, member) {
         if(err) debug('members/:id/password/reset error : ' + err);
         if(!member) return res.status(404).end();
 
-        if(member.resetPass.expire < Date.now()) return res.status(403).send('Reset password token expired.');
+        if(member.resetPass.expire < Math.floor(Date.now() / 1000)) return res.status(403).send('Reset password token expired.');
 
         member.setPassword(req.body.password);
 
@@ -130,12 +130,12 @@ router.post('/:id/password/reset', function(req, res) {
  */
 router.get('/:id/password/reset', function(req, res) {
     if(!req.query.token) return res.status(400).send('No token given.');
-    Member.findOne({ _id : req.params.id, loginType: "password", resetPass : { token : req.query.token }}, function (err, member) {
+    Member.findById({ _id : req.params.id, loginType: "password", resetPass : { token : req.query.token }}, function (err, member) {
         if(err) {
             debug('members/:id/password/reset error : ' + err)
             return res.status(500).end();
         }
-        if(!member) return res.status(404).end('No member found');
+        if(!member) return res.status(404).end('No member found + ');
         if(member.resetPass.expire < Date.now()) return res.status(403).send('Reset password token expired.');
         return res.status(200).end();
     });
