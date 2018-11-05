@@ -90,10 +90,10 @@ router.get('/:id/boards', passport.authenticate('jwt', { session: false }), func
  */
 router.post('/:id/password/reset', function(req, res) {
 
-    if(!req.params.token) return res.status(400).send('No token given.');
+    if(!req.query.token) return res.status(400).send('No token given.');
     if(!req.body.password) return res.status(400).send('No password given.');
 
-    Member.findOne({ _id : req.params.id, resetPass : { token : req.token }}, function (err, member) {
+    Member.findOne({ _id : req.params.id, resetPass : { token : req.query.token }}, function (err, member) {
         if(err) {
             debug('members/:id/password/reset error : ' + err);
             return res.status(500).end();
