@@ -16,6 +16,7 @@ export class LoginToBeConnected extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            'emailNoConfirmed': false,
             'badAccount': false,
             'username': '',
             'password': '',
@@ -41,6 +42,7 @@ export class LoginToBeConnected extends React.Component {
 
     onDismiss = () => {
         this.setState({
+            'emailNoConfirmed': false,
             'badAccount': false
         });
     };
@@ -50,15 +52,24 @@ export class LoginToBeConnected extends React.Component {
         const username = this.state.username,
             password = this.state.password;
         loginUser(username, password)
-            .then(res => ( res.status < 400 ) ? this.props.setLogin(res.data) : Promise.reject("Error") )
+            .then(res => {( res.status < 400) ? this.props.setLogin(res.data) : Promise.reject("Error")})
             .then( () => history.push('/home') )
-            .catch(
-                this.handleReset()
-            )
+            .catch(err => {
+                if (err.response.status === 403) {
+                    this.setState({
+                        'emailNoConfirmed': true,
+                        'badAccount': false,
+                        'username': '',
+                        'password': '',
+                    });
+                } else {
+                    this.handleReset()
+                }
+            })
     };
 
     render() {
-        const {username, password, badAccount} = this.state;
+        const {username, password, badAccount, emailNoConfirmed} = this.state;
         const {onClick, toggleResetPswd} = this.props;
         return (
             <Container>
@@ -68,6 +79,9 @@ export class LoginToBeConnected extends React.Component {
                         <Form className="form" onSubmit={(e) => this.submitForm(e)}>
                             <Alert color="danger" isOpen={badAccount} toggle={() =>this.onDismiss() }>
                                 Error, bad account
+                            </Alert>
+                            <Alert color="info" isOpen={emailNoConfirmed} toggle={() =>this.onDismiss() }>
+                                Please check your mailbox to confirm your email !
                             </Alert>
                             <Col>
                                 <InputGroup>
