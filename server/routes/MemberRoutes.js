@@ -135,7 +135,7 @@ router.get('/:id/password/reset', function(req, res) {
             debug('members/:id/password/reset error : ' + err)
             return res.status(500).end();
         }
-        if(!member) return res.status(404).end();
+        if(!member) return res.status(404).end('No member found');
         if(member.resetPass.expire < Date.now()) return res.status(403).send('Reset password token expired.');
         return res.status(200).end();
     });
