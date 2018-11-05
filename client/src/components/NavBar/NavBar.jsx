@@ -5,6 +5,7 @@ import {history} from '../../history';
 import {logOut} from "../../actions/signActions";
 
 // Css...
+import logo from '../../assets/prello_logo.png';
 import './NavBar.css';
 import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reactstrap';
 
@@ -15,6 +16,14 @@ export class NavBarToBeConnected extends React.Component {
     logOut = () => {
         this.props.logOut();
         history.push('/');
+    };
+
+    redirectionMain = () => {
+        history.push('/')
+    };
+
+    redirectionHome = () => {
+        history.push('/home')
     };
 
     redirectionLogin = () => {
@@ -33,9 +42,9 @@ export class NavBarToBeConnected extends React.Component {
         return (
             <Navbar expand="md">
                 {!(user.member) ?
-                    <NavbarBrand href="#">Prello</NavbarBrand>
+                    <NavbarBrand><a href="#" onClick={() => this.redirectionMain()}><img src={logo} style={{width:100, marginTop: -5}} /></a></NavbarBrand>
                     :
-                    <NavbarBrand href="#">Prello</NavbarBrand>
+                    <NavbarBrand><a href="#" onClick={() => this.redirectionHome()}><img src={logo} style={{width:100, marginTop: -5}} /></a></NavbarBrand>
                 }
                 {!(user.member) && !(changepswd==="true") &&
                 <Collapse navbar>
