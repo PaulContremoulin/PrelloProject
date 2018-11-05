@@ -1,5 +1,5 @@
 .navbar {
-    background-color: #6495ED;
+    background-color: black;
 }
 
 .navbar-brand {
@@ -16,4 +16,18 @@
 
 .helpNavItem:hover {
     color: gainsboro;
+}
+
+.signUp {
+    color: white;
+    border: 1px outset dodgerblue;
+    border-radius: 8px;
+    background-color: dodgerblue;
+}
+
+.signIn {
+    color: black;
+    border: 1px outset white;
+    border-radius: 8px;
+    background-color: white;
 }

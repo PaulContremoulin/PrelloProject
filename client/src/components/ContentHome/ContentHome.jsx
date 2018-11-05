@@ -7,10 +7,15 @@ import './ContentHome.css';
 
 // Actions & Constant
 import {CreateBoard} from "../CreateBoard/CreateBoard";
+import {CreateCircle} from "../CreateCircle/CreateCircle";
 import {connect} from "react-redux";
 import {CardBoard} from "../CardBoard/CardBoard";
+import {CardCircle} from "../CardCircle/CardCircle";
 import {getBoardsUser} from "../../requests/boards";
+import {getCirclesUser} from "../../requests/circle";
 import {fetchBoards} from "../../actions/boardActions";
+import {fetchCircles} from "../../actions/circleActions";
+
 
 export class ContentHomeToBeConnected extends React.Component {
     render() {
@@ -42,19 +47,26 @@ export class ContentHomeToBeConnected extends React.Component {
     }
 
     componentDidMount() {
-        getBoardsUser(this.props.user.member._id)
-            .then(res => {this.props.fetchBoards(res.data)})
-            .catch(error => {console.log(error)})
+       getBoardsUser(this.props.user._id)
+         .then(res => {this.props.fetchBoards(res.data)})
+           .catch(error => {console.log(error)});
+       getCirclesUser(this.props.user._id)
+         .then(res => {this.props.fetchCircles(res.data)})
+           .catch(error => {console.log(error)})
     }
 }
 
 const mapStateToProps = ( state, props ) => ({
     user : state.user,
+    member : state.member,
     boards: state.boards,
+    circles: state.circles,
 });
 
 const mapDispatchToProps = ( dispatch ) => ({
     fetchBoards: (res) => dispatch( fetchBoards(res)),
+    fetchCircles: (res) => dispatch( fetchCircles(res)),
+
 });
 
 export const ContentHome = connect(

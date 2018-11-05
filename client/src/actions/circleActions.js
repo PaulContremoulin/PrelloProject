@@ -17,9 +17,10 @@ export const ADD_CIRCLE = 'ADD_CIRCLE';
  * @desc fetch all circles of the user
  * @return FETCH_CIRCLES action
  */
-export const fetch_circles = () => {
+export const fetchCircles = (circles) => {
     return {
-        type: FETCH_CIRCLES
+        type: FETCH_CIRCLES,
+        circles
     }
 };
 

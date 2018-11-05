@@ -1,7 +1,7 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
+import { Container, Row, Col, Form, FormGroup, Label, InputGroup, InputGroupAddon, InputGroupText, Input, Button, Alert } from 'reactstrap';
 import {history} from '../../../history';
 // Css...
 import './Login.css';
@@ -64,14 +64,14 @@ export class LoginToBeConnected extends React.Component {
             <Container>
                 <Row>
                     <Col className="Login" md={{size: 6, offset: 3}}>
-                        <h2 align="center">Sign In</h2>
+                        <h2 align="left">Sign In</h2>
                         <Form className="form" onSubmit={(e) => this.submitForm(e)}>
                             <Alert color="danger" isOpen={badAccount} toggle={() =>this.onDismiss() }>
                                 Error, bad account
                             </Alert>
                             <Col>
-                                <FormGroup>
-                                    <Label>Username</Label>
+                                <InputGroup>
+                                    <InputGroupAddon addonType={"prepend"}><Octicon name="person" className={"icon"}/></InputGroupAddon>
                                     <Input
                                         type="text"
                                         name="username"
@@ -80,11 +80,12 @@ export class LoginToBeConnected extends React.Component {
                                         required={true}
                                         onChange={(e) => this.handleChange(e)}
                                     />
-                                </FormGroup>
+                                </InputGroup>
                             </Col>
+                            < br />
                             <Col>
                                 <FormGroup>
-                                    <Label>Password</Label>
+                                    <Label><Octicon name="key" className={"icon"}/>
                                     <Input
                                         type="password"
                                         name="password"
@@ -92,7 +93,7 @@ export class LoginToBeConnected extends React.Component {
                                         value={password}
                                         required={true}
                                         onChange={(e) => this.handleChange(e)}
-                                    />
+                                    /></Label>
                                 </FormGroup>
                             </Col>
                             <Col className="text-center">
