@@ -16,21 +16,26 @@ let Member = require('./../models/Member');
  * @returns {Error}  default - Unexpected error
  */
 router.post('/signup', function(req, res, next) {
+
     passport.authenticate('signup', {session: false}, function (err, member, info) {
         if (err) {
-            debug(err)
-            return res.status(500);
+            debug('POST /signup error : ' + err);
+            return res.status(500).json({message : 'Unexpected internal error'});
         }
-        if (!member) return res.status(400).send(info);
+        if (!member) return res.status(400).json({message : info});
+
         let confirmUrl = process.env.HOST + ':' + process.env.PORT + '/api/members/' + member._id + '/email/confirm?token=' + member.tokenConfirm;
+
         if(req.body.callback) confirmUrl += '&callback=' + req.body.callback;
+
         if(process.env.NODE_ENV === 'test') return res.status(200).end();
+
         mail.confirmEmailMessage(member, confirmUrl, function(err){
             if(err) {
                 debug(err);
-                return res.status(500).end();
+                return res.status(500).json({message:'Error during the sending of the confirmation email'});
             }
-            return res.status(200).end();
+            return res.status(200).json({message : 'Successful registration'});
         });
     })(req, res, next);
 });
@@ -48,8 +53,10 @@ router.post('/signup', function(req, res, next) {
  */
 router.post('/login', passport.authenticate('local', {session: false}), function(req, res) {
     const member = req.user;
-    if(!member.confirmed && process.env.NODE_ENV !== 'test') return res.status(403).send('Confirm your email address before.')
-    return res.json({member, token : member.generateJWT()});
+    if(!member.confirmed && process.env.NODE_ENV !== 'test')
+        return res.status(403).json({message : 'Confirm your email address before login'});
+    else
+        return res.json({member, token : member.generateJWT()});
 });
 
 /**
@@ -71,7 +78,6 @@ router.get('/auth/github', passport.authenticate('github'));
 router.get('/auth/github/callback',
     passport.authenticate('github', { session: false }),
     function(req, res) {
-        // Successful authentication
         const member = req.user;
         return res.json({member, token : member.generateJWT()});
     });
@@ -90,22 +96,22 @@ router.get('/auth/github/callback',
  */
 router.post('/auth/forgot/password', function(req, res) {
 
-    if(!req.body.email) return res.status(400).send('Email is missing.');
-    if(!req.body.callback) return res.status(400).send('Url callback is missing.');
+    if(!req.body.email) return res.status(400).json({message:'Email missing'});
+    if(!req.body.callback) return res.status(400).json({message:'Url callback missing'});
 
     Member.findOne({email : req.body.email}, function(err, member) {
-        if(err) return res.status(400).send('Invalid email.');
-        if(!member) return res.status(404).end();
+        if(err) debug('POST /auth/forgot/password error : ' + err)
+        if(!member) return res.status(404).json({message:'Not account found'});
 
         let resetUrl = req.body.callback + '/login/reset/' + member._id + '/password?token=' + member.generateResetPasswordToken();
 
         mail.resetPasswordMessage(member, resetUrl, function(err){
             if(err){
-                debug('Error when sending reset password : ' + err.message);
-                return res.status(500).end();
+                debug('POST /auth/forgot/password error : ' + err);
+                return res.status(500).json({message:'Error during the sending of the confirmation email'});
             }
             member.save();
-            return res.status(202).end();
+            return res.status(202).json({message:'Email reset password sent successfully'});
         });
     });
 });
