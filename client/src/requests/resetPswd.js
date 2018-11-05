@@ -2,12 +2,12 @@ import axios from "axios/index";
 
 export const changePswd = (
     tokenUser,
-    newPswd,
+    password,
     iduser,
 ) => (
     axios.post( process.env.REACT_APP_API_URL+'/api/members/'+iduser+'/password/reset?token='+tokenUser,
         {
-            newPswd
+            password : password,
         })
         .then(response => response)
 );
