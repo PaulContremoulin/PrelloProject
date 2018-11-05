@@ -4,8 +4,10 @@ var uniqueValidator = require('mongoose-unique-validator');
 let mongooseHidden = require('mongoose-hidden')()
 let jwt = require('jsonwebtoken');
 var shortid = require('shortid');
+let idValidator = require('mongoose-id-validator');
 
 let Schema = mongoose.Schema;
+let circlesSchema = require('./Circle');
 
 let memberSchema = new Schema({
     username: {
@@ -31,9 +33,17 @@ let memberSchema = new Schema({
         type      : String
     },
     idBoards: {
-        type : [Schema.Types.ObjectId],
+        type : [{
+            type : Schema.Types.ObjectId,
+            required : true,
+            ref : 'Board'
+        }],
         default : [],
         required : true
+    },
+    circles : {
+        type : [circlesSchema],
+        default : []
     },
     idOrganizations: {
         type : [Schema.Types.ObjectId],
@@ -83,6 +93,7 @@ let memberSchema = new Schema({
 });
 
 memberSchema.plugin(uniqueValidator);
+memberSchema.plugin(idValidator);
 memberSchema.plugin(mongooseHidden,
     { hidden:
             {
@@ -102,6 +113,20 @@ memberSchema.pre('validate', function(next) {
     }
     return next();
 });
+
+/**
+ * Add a new circle
+ * @param name, the name of the circle
+ * @param boards, the array of boards id attached at this circle
+ */
+memberSchema.methods.addCircle = function(name, boards) {
+    let idBoards;
+    boards ? idBoards = boards : idBoards = [];
+    this.circles.push({
+        name : name,
+        idBoards : idBoards
+    })
+};
 
 /**
  * give the user's fullName

@@ -69,10 +69,44 @@ router.get('/:id/boards', passport.authenticate('jwt', { session: false }), func
                 }
                 return res.status(200).json(board)
             });
-
     });
-
 });
+
+/**
+ * Add a circle
+ * @route POST /members/{id}/circles
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id.
+ * @param {Circle} circle.body.required - the circle to add
+ * @returns {Circle} 201 - Circle created successfully
+ * @returns {Error}  400 - Bad request, token no provided
+ * @returns {Error}  403 - Forbidden, token expired or not exist
+ * @returns {Error}  404 - Member not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.post('/:id/circles', function(req, res) {
+
+    Member.findById(req.params.id, function (err, member) {
+        if(err) debug('members/:id/circles error : ' + err)
+        if(!member) return res.status(404).end();
+
+        member.addCircle(req.body.name, req.body.idBoards);
+
+        member.validate(function (err) {
+            if(err) return res.status(400).send(err);
+            // save the user
+            member.save(function (err) {
+                if (err) {
+                    debug('members/:id/circles error : ' + err);
+                    return res.status(500).end();
+                }
+                return res.status(200).json(member);
+            });
+        });
+    });
+});
+
 
 /**
  * The the member's password with the new password given, if the token is valid
