@@ -4,7 +4,7 @@ let Board = require('./../models/Board');
 let Member = require('./../models/Member');
 let List = require('./../models/List');
 let debug = require('debug')('app:board');
-let boardAccess = require('./../middlewares/boardAccess');
+let boardAccess = require('./../middlewares/BoardAccess');
 
 /**
  * Create a board

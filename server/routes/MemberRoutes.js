@@ -94,10 +94,7 @@ router.post('/:id/password/reset', function(req, res) {
     if(!req.body.password) return res.status(400).send('No password given.');
 
     Member.findOne({ _id : req.params.id, resetPass : { token : req.query.token }}, function (err, member) {
-        if(err) {
-            debug('members/:id/password/reset error : ' + err);
-            return res.status(500).end();
-        }
+        if(err) debug('members/:id/password/reset error : ' + err);
         if(!member) return res.status(404).end();
 
         if(member.resetPass.expire < Date.now()) return res.status(403).send('Reset password token expired.');
@@ -132,7 +129,7 @@ router.post('/:id/password/reset', function(req, res) {
  * @security JWT
  */
 router.get('/:id/password/reset', function(req, res) {
-    if(!req.params.token) return res.status(400).send('No token given.');
+    if(!req.query.token) return res.status(400).send('No token given.');
     Member.findOne({ _id : req.params.id, loginType: "password", resetPass : { token : req.token }}, function (err, member) {
         if(err) {
             debug('members/:id/password/reset error : ' + err)
