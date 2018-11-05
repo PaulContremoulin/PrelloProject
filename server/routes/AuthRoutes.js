@@ -78,7 +78,7 @@ router.get('/auth/github/callback',
 
 /**
  * Send a email at the member to reset his/her password
- * @route GET /auth/login/forgot/password
+ * @route POST /auth/forgot/password
  * @group auth - Operations about authentication
  * @param {string} email.body.required - member's email
  * @param {string} callback.body.required - the url to call in the email (token will be attached with member id)
