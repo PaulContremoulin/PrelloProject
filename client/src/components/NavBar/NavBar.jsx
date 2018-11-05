@@ -17,25 +17,34 @@ export class NavBarToBeConnected extends React.Component {
         history.push('/');
     };
 
+    redirectionLogin = () => {
+        history.push('/')
+    };
+
+    redirectionRegistration = () => {
+        history.push('/registration')
+    };
+
     render() {
         const {
-          user,
-          changeMode,
+            user,
             changepswd
         } = this.props;
         return (
             <Navbar expand="md">
-                {
-                    !(user.member) ? <NavbarBrand href="/">Prello</NavbarBrand> : <NavbarBrand href="/home">Prello</NavbarBrand>
+                {!(user.member) ?
+                    <NavbarBrand href="#">Prello</NavbarBrand>
+                    :
+                    <NavbarBrand href="#">Prello</NavbarBrand>
                 }
                 {!(user.member) && !(changepswd==="true") &&
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink className="signUp" href="#" onClick={ () => changeMode(true) }>Sign Up</NavLink>
+                            <NavLink className="helpNavItem" href="#" onClick={ () => this.redirectionRegistration() }>Sign Up</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink className="signIn" href="#" onClick={ () => changeMode(false) } >Sign In</NavLink>
+                            <NavLink className="helpNavItem" href="#" onClick={ () => this.redirectionLogin() } >Sign In</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
@@ -58,7 +67,7 @@ export class NavBarToBeConnected extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  user: state.user
+    user: state.user
 });
 const mapDispatchToProps = (dispatch) => ({
     logOut: () => dispatch( logOut()),

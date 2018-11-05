@@ -1,7 +1,7 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Row, Col, Form, FormGroup, Label, InputGroup, InputGroupAddon, InputGroupText, Input, Button, Alert } from 'reactstrap';
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import {history} from '../../../history';
 // Css...
 import './Login.css';
@@ -16,7 +16,6 @@ export class LoginToBeConnected extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'emailNoConfirmed': false,
             'badAccount': false,
             'username': '',
             'password': '',
@@ -42,50 +41,44 @@ export class LoginToBeConnected extends React.Component {
 
     onDismiss = () => {
         this.setState({
-            'emailNoConfirmed': false,
             'badAccount': false
         });
     };
 
-    submitForm(e) {
+    redirectionRegistration = () => {
+        history.push('/registration')
+    };
+
+    redirectionResetPassword = () => {
+        history.push('/reset/password')
+    };
+
+    submitForm = (e) => {
         e.preventDefault();
         const username = this.state.username,
             password = this.state.password;
         loginUser(username, password)
-            .then(res => {( res.status < 400) ? this.props.setLogin(res.data) : Promise.reject("Error")})
+            .then(res => ( res.status < 400 ) ? this.props.setLogin(res.data) : Promise.reject("Error") )
             .then( () => history.push('/home') )
-            .catch(err => {
-                if (err.response.status === 403) {
-                    this.setState({
-                        'emailNoConfirmed': true,
-                        'badAccount': false,
-                        'username': '',
-                        'password': '',
-                    });
-                } else {
-                    this.handleReset()
-                }
-            })
+            .catch(
+                this.handleReset()
+            )
     };
 
     render() {
-        const {username, password, badAccount, emailNoConfirmed} = this.state;
-        const {onClick, toggleResetPswd} = this.props;
+        const {username, password, badAccount} = this.state;
         return (
             <Container>
                 <Row>
                     <Col className="Login" md={{size: 6, offset: 3}}>
-                        <h2 align="left">Sign In</h2>
+                        <h2 align="center">Sign In</h2>
                         <Form className="form" onSubmit={(e) => this.submitForm(e)}>
                             <Alert color="danger" isOpen={badAccount} toggle={() =>this.onDismiss() }>
                                 Error, bad account
                             </Alert>
-                            <Alert color="info" isOpen={emailNoConfirmed} toggle={() =>this.onDismiss() }>
-                                Please check your mailbox to confirm your email !
-                            </Alert>
                             <Col>
-                                <InputGroup>
-                                    <InputGroupAddon addonType={"prepend"}><Octicon name="person" className={"icon"}/></InputGroupAddon>
+                                <FormGroup>
+                                    <Label>Username</Label>
                                     <Input
                                         type="text"
                                         name="username"
@@ -94,12 +87,11 @@ export class LoginToBeConnected extends React.Component {
                                         required={true}
                                         onChange={(e) => this.handleChange(e)}
                                     />
-                                </InputGroup>
+                                </FormGroup>
                             </Col>
-                            < br />
                             <Col>
                                 <FormGroup>
-                                    <Label><Octicon name="key" className={"icon"}/>
+                                    <Label>Password</Label>
                                     <Input
                                         type="password"
                                         name="password"
@@ -107,7 +99,7 @@ export class LoginToBeConnected extends React.Component {
                                         value={password}
                                         required={true}
                                         onChange={(e) => this.handleChange(e)}
-                                    /></Label>
+                                    />
                                 </FormGroup>
                             </Col>
                             <Col className="text-center">
@@ -121,12 +113,12 @@ export class LoginToBeConnected extends React.Component {
                         </Row>
                         <Row>
                             <Col className="text-center">
-                                <Button color="link" onClick={onClick}>Create an account</Button>
+                                <Button color="link" onClick={() => this.redirectionRegistration()} >Create an account</Button>
                             </Col>
                         </Row>
                         <Row>
                             <Col className="text-center">
-                                <Button color="link" onClick={toggleResetPswd}>Forgotten password ?</Button>
+                                <Button color="link" onClick={() => this.redirectionResetPassword()}>Forgotten password ?</Button>
                             </Col>
                         </Row>
                     </Col>
@@ -138,7 +130,7 @@ export class LoginToBeConnected extends React.Component {
 
 const mapStateToProps = (state, props) => ({});
 const mapDispatchToProps = (dispatch) => ({
-  setLogin: (res) => dispatch( setLogin(res)),
+    setLogin: (res) => dispatch( setLogin(res)),
 });
 
 export const Login = connect(

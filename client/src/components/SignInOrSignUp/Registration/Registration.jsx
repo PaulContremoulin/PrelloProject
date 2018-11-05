@@ -4,7 +4,7 @@ import './Registration.css';
 import { registerUser } from '../../../requests/registration';
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import Octicon from 'react-octicon'
-
+import {history} from '../../../history';
 // Css...
 
 // Actions & Constant
@@ -15,8 +15,6 @@ export class Registration extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-        "stepOne" : true,
-        "stepTwo" : false,
         "username" : "",
         "firstName" : "",
         "lastName" : "",
@@ -31,28 +29,6 @@ export class Registration extends React.Component {
       }
   }
 
-  changeStep = () => {
-    this.setState({
-      stepOne: !this.state.stepOne,
-      stepTwo: !this.state.stepTwo
-    })
-  }
-
-  changeToStepTwo = (state) => {
-    if ( state.username === "" || state.firstName === "" || state.lastName === "" || state.email === "" || state.passwordA === "" || state.passwordB === "") {
-      this.setState({ allFieldsFilled: false });
-    } else if ( state.passwordA !== state.passwordB ) {
-      this.setState({ allFieldsFilled: true, passwordsMatch: false });
-    } else if ( !state.emailIsValid ) {
-      this.setState({ allFieldsFilled: true, passwordsMatch: true });
-    } else if ( !state.passwordIsValid ) {
-      this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true });
-    } else {
-      this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true, passwordIsValid: true });
-      this.changeStep();
-    }
-  }
-
   setStateElement = (element, value) => {
     this.setState({
       [ element ]: value
@@ -60,16 +36,26 @@ export class Registration extends React.Component {
   }
 
    handleSubmit = event => {
-     event.preventDefault();
-     const username = this.state.username,
-          firstName = this.state.firstName,
-          lastName = this.state.lastName,
-          email = this.state.email,
-          passwordA = this.state.passwordA,
-          organisation = this.state.organisation;
-     registerUser(username, firstName, lastName, email, passwordA, organisation, process.env.REACT_APP_FRONT_URL);
-    const { onClick } = this.props;
-    onClick();
+       event.preventDefault();
+       if ( this.state.username === "" || this.state.firstName === "" || this.state.lastName === "" || this.state.email === "" || this.state.passwordA === "" || this.state.passwordB === "") {
+           this.setState({ allFieldsFilled: false });
+       } else if ( this.state.passwordA !== this.state.passwordB ) {
+           this.setState({ allFieldsFilled: true, passwordsMatch: false });
+       } else if ( !this.state.emailIsValid ) {
+           this.setState({ allFieldsFilled: true, passwordsMatch: true });
+       } else if ( !this.state.passwordIsValid ) {
+           this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true });
+       } else {
+           this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true, passwordIsValid: true });
+           const username = this.state.username,
+               firstName = this.state.firstName,
+               lastName = this.state.lastName,
+               email = this.state.email,
+               passwordA = this.state.passwordA,
+               organisation = this.state.organisation;
+           registerUser(username, firstName, lastName, email, passwordA, organisation, process.env.REACT_APP_FRONT_URL);
+           history.push('/');
+       }
    }
 
    handleOnBlur = ( event, element ) => {
@@ -100,9 +86,11 @@ export class Registration extends React.Component {
       });
   };
 
+  redirectionLogin = () => {
+      history.push('/')
+  }
+
   render() {
-    const { stepOne, stepTwo } = this.state;
-    const { onClick } = this.props;
     return (
       <div>
         <Container>
@@ -122,9 +110,7 @@ export class Registration extends React.Component {
               <Alert color="danger" isOpen={!this.state.emailIsValid} toggle={() =>this.onDismiss("emailIsValid") }>
                   The email is not valid.
               </Alert>
-              <Form className="form" onSubmit={this.handleSubmit}>
-                { (stepOne && !stepTwo) ? (
-                    <div>
+              <Form className="form" onSubmit={(e) => this.handleSubmit(e)}>
                       <Col>
                         <Row>
                           <Col md="6">
@@ -201,35 +187,21 @@ export class Registration extends React.Component {
                               />
                           </FormGroup>
                       </Col>
-                      <Col className="text-center">
-                          <Button className="btnSign" onClick={ () => this.changeToStepTwo(this.state) }>Sign Up</Button>
-                      </Col>
-                    </div>
-                  ) : (
-                    <div>
-                      <Col>
-                        <FormGroup>
-                            <Label>Organisation</Label>
-                            <Input
-                                type="text"
-                                name="organisation"
-                                onBlur={( event ) => this.handleOnBlur( event, "organisation" )}
-                            />
-                        </FormGroup>
+                        <Col>
+                            <FormGroup>
+                                <Label>Organisation</Label>
+                                <Input
+                                    type="text"
+                                    name="organisation"
+                                    placeholder="Enter your organisation"
+                                    onBlur={( event ) => this.handleOnBlur( event, "organisation" )}
+                                />
+                            </FormGroup>
+                        </Col>
+                    <Col className="text-center">
+                      <Button className="btnSign" type="submit">Sign Up</Button>
                     </Col>
-                        <Row>
-                    <Col md="6" className="text-center">
-                      <Button className="btnSign">Sign Up</Button>
-                    </Col>
-                    <Col md="6" className="text-center">
-                      <Button className="btnReturn" onClick={ () => this.changeStep() }>Return</Button>
-                    </Col>
-                        </Row>
-                  </div>
-                )}
                 </Form>
-                { (stepOne && !stepTwo) ? (
-                  <div>
                     <Row>
                       <Col className="text-center">
                           <Button className="btnGithub"><Octicon name="mark-github"/> Sign Up with Github</Button>
@@ -237,11 +209,9 @@ export class Registration extends React.Component {
                     </Row>
                     <Row>
                       <Col className="text-center">
-                          <Button color="link" onClick={ onClick }>Sign In</Button>
+                          <Button color="link" onClick={ () => this.redirectionLogin() }>Sign In</Button>
                       </Col>
                     </Row>
-                  </div>
-                ) : null }
               </Col>
             </Row>
           </Container>

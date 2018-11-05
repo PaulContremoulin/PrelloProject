@@ -43,9 +43,12 @@ export class ResetPswd extends React.Component {
        });
    };
 
+   redirectionLogin = () => {
+       history.push('/')
+   };
+
   render() {
     const { email, emailIsSent, emailNotFound } = this.state;
-    const { toggleResetPswd } = this.props;
     return (
       <div>
         <Container>
@@ -78,7 +81,7 @@ export class ResetPswd extends React.Component {
               </Form>
             <Row>
               <Col className="text-center">
-                  <Button color="link" onClick={toggleResetPswd}>Return to Sign In</Button>
+                  <Button color="link" onClick={() => this.redirectionLogin()}>Return to Sign In</Button>
               </Col>
             </Row>
             </Col>

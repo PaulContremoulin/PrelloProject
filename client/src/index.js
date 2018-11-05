@@ -12,6 +12,8 @@ import 'react-bootstrap/dist/react-bootstrap.min';
 import { history } from './history';
 //Pages
 import LoginPage from './pages/LoginPage/LoginPage';
+import {ResetPswdPage} from "./pages/ResetPswdPage/ResetPswdPage";
+import {RegistrationPage} from "./pages/RegistrationPage/RegistrationPage";
 import {HomePage} from './pages/HomePage/HomePage';
 import {AccountPage} from './pages/AccountPage/AccountPage';
 import {ChangePswd} from "./components/SignInOrSignUp/ChangePswd/ChangePswd";
@@ -23,6 +25,8 @@ ReactDOM.render(
         <Router history={history}>
             <div>
                 <Route exact path="/" component={LoginPage}/>
+                <Route path="/registration" component={RegistrationPage}/>
+                <Route path="/reset/password" component={ResetPswdPage}/>
                 <Route path="/home" component={HomePage}/>
                 <Route path="/account" component={AccountPage}/>
                 <Route path='/login/reset/:idmembre/password' component={ChangePswd}/>

@@ -1,19 +1,23 @@
 .Login {
     text-align: left;
     padding: 1em;
-    border: 2px solid black;
+    margin: 1em;
+    border: 2px solid #d3d3d3;
+    border-radius: .5em;
     vertical-align: middle;
-    margin: 40px auto 1em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
 }
 
- .form {
-     padding: 1em;
- }
+.form {
+    padding: 1em;
+}
 
- label {
-     display: flex;
-     font-weight: 600;
- }
+label {
+    display: flex;
+    font-weight: 600;
+}
 
 .btnSign {
     background-color: #6495ED;
@@ -23,55 +27,11 @@
     background-color: #4169E1;
 }
 
- .btnGithub {
-     background-color: white;
-     color : black;
- }
-
-* {box-sizing: border-box;}
-
-/* Style the input container */
-.input-container {
-    display: flex;
-    width: 100%;
-    margin-bottom: 15px;
+.btnGithub {
+    background-color: white;
+    color : black;
 }
 
-/* Style the input fields */
-.input-field {
-    width: 100%;
-    padding: 10px;
-    outline: none;
-}
-
-.input-field:focus {
-    border: 2px solid dodgerblue;
-}
-
-/* Set a style for the submit button */
-
-.btn:hover {
-    opacity: 1;
-}
-
-
-InputGroup.propTypes {
-    tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
-    size: PropTypes.string;
-    className: PropTypes.string
-}
-
-InputGroupAddOn.propTypes {
-    tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
-    addonType: PropTypes.oneOf(['prepend', 'append']).isRequired;
-    className: PropTypes.string
-}
-
-InputGroupButton.propTypes {
-    tag: PropTypes.oneOfType([PropTypes . func, PropTypes . string ]);
-    addonType: PropTypes.oneOf([ 'prepend', 'append' ]).isRequired;
-    children: PropTypes.node;
-    groupClassName: PropTypes.string;
-    groupAttributes: PropTypes.object;
-    className: PropTypes.string
+.text-center {
+    margin-top: 10px;
 }
