@@ -25,19 +25,17 @@ export class NavBarToBeConnected extends React.Component {
         } = this.props;
         return (
             <Navbar expand="md">
-                {!(user.member) ?
-                    <NavbarBrand href="/">Prello</NavbarBrand>
-                    :
-                    <NavbarBrand href="/home">Prello</NavbarBrand>
+                {
+                    !(user.member) ? <NavbarBrand href="/">Prello</NavbarBrand> : <NavbarBrand href="/home">Prello</NavbarBrand>
                 }
                 {!(user.member) && !(changepswd==="true") &&
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink className="helpNavItem" href="#" onClick={ () => changeMode(true) }>Sign Up</NavLink>
+                            <NavLink className="signUp" href="#" onClick={ () => changeMode(true) }>Sign Up</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink className="helpNavItem" href="#" onClick={ () => changeMode(false) } >Sign In</NavLink>
+                            <NavLink className="signIn" href="#" onClick={ () => changeMode(false) } >Sign In</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
