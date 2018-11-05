@@ -44,7 +44,7 @@ export class ResetPswd extends React.Component {
    };
 
    redirectionLogin = () => {
-       history.push('/')
+       history.push('/login')
    };
 
   render() {

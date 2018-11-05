@@ -48,7 +48,7 @@ export class ChangePswd extends React.Component {
             });
         } else {
             changePswd(qs.parse(this.props.location.search).token, this.state.newPassword, this.props.match.params.idmembre)
-                .then(res => (res.status < 400) ? history.push('/') : this.setState({ changePasswordGood: false }))
+                .then(res => (res.status < 400) ? history.push('/login') : this.setState({ changePasswordGood: false }))
                 .catch(this.setState({ changePasswordGood: false }))
         }
     };

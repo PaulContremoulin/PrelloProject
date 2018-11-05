@@ -87,7 +87,7 @@ export class Registration extends React.Component {
   };
 
   redirectionLogin = () => {
-      history.push('/')
+      history.push('/login')
   }
 
   render() {

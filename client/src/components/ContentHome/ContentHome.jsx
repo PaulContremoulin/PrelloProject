@@ -47,10 +47,10 @@ export class ContentHomeToBeConnected extends React.Component {
     }
 
     componentDidMount() {
-       getBoardsUser(this.props.user._id)
+       getBoardsUser(this.props.user.member._id)
          .then(res => {this.props.fetchBoards(res.data)})
            .catch(error => {console.log(error)});
-       getCirclesUser(this.props.user._id)
+       getCirclesUser(this.props.user.member._id)
          .then(res => {this.props.fetchCircles(res.data)})
            .catch(error => {console.log(error)})
     }
@@ -58,7 +58,6 @@ export class ContentHomeToBeConnected extends React.Component {
 
 const mapStateToProps = ( state, props ) => ({
     user : state.user,
-    member : state.member,
     boards: state.boards,
     circles: state.circles,
 });

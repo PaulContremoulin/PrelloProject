@@ -18,7 +18,7 @@ export class NavBarToBeConnected extends React.Component {
     };
 
     redirectionLogin = () => {
-        history.push('/')
+        history.push('/login')
     };
 
     redirectionRegistration = () => {
