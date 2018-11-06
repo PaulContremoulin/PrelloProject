@@ -10,6 +10,7 @@ export const ADD_LIST= "ADD_LIST" ;
 export const ADD_CARD= "ADD_CARD" ;
 export const MOVE_LIST= "MOVE_LIST" ;
 export const MOVE_CARD= "MOVE_CARD" ;
+export const MOVE_CARD_FROM_LIST= "MOVE_CARD_FROM_LIST" ;
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -110,11 +111,23 @@ export const moveList = (listId, index) => {
 /**
 * @desc
 */
-export const moveCard = (cardId, index) => {
+export const moveCard = (list, indexOfList) => {
   return {
       type: MOVE_CARD,
+      list,
+      indexOfList,
+  }
+};
+
+/**
+* @desc
+*/
+export const moveCardFromList = (cardId, index) => {
+  return {
+      type: MOVE_CARD_FROM_LIST,
       card: {
-        cardId
+        cardId,
+        index
       }
   }
 };

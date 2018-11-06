@@ -107,12 +107,16 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
           listName: action.list.listName,
           cards: []
         }
-      ] ;
+      ];
     case ADD_CARD :
       return state.map(
         // list => (list.listId === action.list.listId) ? list( list, action ) : list
         list => (list.listId === action.list.listId) ? { ...list, cards: [...list.cards, action.card] } : list
       );
+    case MOVE_CARD : // cardId, listId, indexOfcard
+    return state.map(
+      (list, index) => (index == action.indexOfList) ? action.list : list
+    )
     default:
       return state ;
   }

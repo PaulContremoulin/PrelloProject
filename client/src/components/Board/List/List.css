@@ -8,5 +8,6 @@
   line-height: 20px;
   vertical-align: top;
   white-space: nowrap;
+  margin-left: 4px;
   height: 100% !important;
 }

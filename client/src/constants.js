@@ -45,7 +45,7 @@ export const DEFAULT_BOARD = {
   boardTeam: {},
   guests: [],
   lists: [
-    {listId: 1, listName: "Prello", cards: [{cardId: 1, cardName: "AWI"}, {cardId: 2, cardName: "WI"}]},
+    {listId: 1, listName: "Prello", cards: [{cardId: 10, cardName: "AWI"}, {cardId: 12, cardName: "WI"}]},
     {listId: 2, listName: "Main", cards: [{cardId: 3, cardName: "AWI"}, {cardId: 4, cardName: "WI"}]},
     {listId: 3, listName: "Castle", cards: [{cardId: 5, cardName: "AWI"}, {cardId: 6, cardName: "WI"}]}
   ],
@@ -67,3 +67,17 @@ export const DEFAULT_LIST = {
   pos: 0,
   idBoard: "",
 };
+
+export const RESULT = {
+    draggableId: 'task-1',
+    type: 'TYPE',
+    reason: 'DROP',
+    source: {
+        droppableId: 'column-1',
+        index: 0,
+    },
+    destination: {
+        droppableId: 'column-1',
+        index: 1,
+    },
+}

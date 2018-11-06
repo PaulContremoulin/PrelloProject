@@ -1,5 +1,11 @@
 .CardCeption {
   margin-bottom: 10px !important;
+  padding: 8px;
+  width: 256px !important;
+  margin-right: 15px;
+  margin-top: 8px;
+  margin-bottom: 0;
+  margin-left: 21px !important;
 }
 
 .BtnUpdateCard {
