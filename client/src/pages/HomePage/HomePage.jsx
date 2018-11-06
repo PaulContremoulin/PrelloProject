@@ -1,18 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+// Components & Actions
 import {NavBar} from '../../components/NavBar/NavBar'
 import {MenuHome} from '../../components/MenuHome/MenuHome';
 import {ContentHome} from '../../components/ContentHome/ContentHome';
-import './HomePage.css';
-import { Container, Row, Col } from 'reactstrap';
+import { logOut } from '../../actions/signActions.js';
 
-export const HomePage = () => (
-    <div className="HomePage">
-        <NavBar incomingFrom="HomePage" />
+// Css
+import './HomePage.css';
+import { Row, Col } from 'reactstrap';
+
+export const HomePageToBeConnected = ({ logOut }) => (
+    <div>
+        <NavBar incomingFrom="HomePage" logOut={ logOut } />
             <Row>
-                <Col md="3">
+                <Col className="menu" xs={5} sm={3}>
                     <MenuHome/>
                 </Col>
-                <Col md="8">
+                <Col xs={7} sm={8}>
                     <ContentHome/>
                 </Col>
             </Row>
@@ -21,4 +27,13 @@ export const HomePage = () => (
 
 // TODO : Store in home page what content to show in ContentHome. I.e "personnal boards".
 
-export default HomePage;
+const mapStateToProps = ( state, props ) => ({})
+
+const mapDispatchToProps = ( dispatch ) => ({
+  logOut: () => dispatch( logOut() ),
+})
+
+export const HomePage = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)( HomePageToBeConnected );

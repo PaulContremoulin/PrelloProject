@@ -1,29 +1,36 @@
 // Modules
 import React from 'react';
-import './NavBar.css';
-
-import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reactstrap';
+import { connect } from 'react-redux';
+import {history} from '../../history';
+import {logOut} from "../../actions/signActions";
 
 // Css...
+import './NavBar.css';
+import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reactstrap';
 
 // Actions & Constant
 
-export class NavBar extends React.Component {
+export class NavBarToBeConnected extends React.Component {
 
     logOut = () => {
-        //todo : appeler action log out & redirection page sign in
+        this.props.logOut();
+        history.push('/');
     };
 
     render() {
-        const { changeMode, incomingFrom } = this.props;
+        const {
+          user,
+          changeMode,
+            changepswd
+        } = this.props;
         return (
             <Navbar expand="md">
-                {(incomingFrom === "LoginPage") ?
+                {!(user.member) ?
                     <NavbarBrand href="/">Prello</NavbarBrand>
                     :
                     <NavbarBrand href="/home">Prello</NavbarBrand>
                 }
-                { (incomingFrom === "LoginPage") ?
+                {!(user.member) && !(changepswd==="true") &&
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
@@ -34,14 +41,15 @@ export class NavBar extends React.Component {
                         </NavItem>
                     </Nav>
                 </Collapse>
-                :
+                }
+                {(user.member) && !(changepswd==="true") &&
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink className="helpNavItem" href="/account" >My account</NavLink>
+                            <NavLink className="helpNavItem" href="#" >My account</NavLink>
                         </NavItem>
                         <NavItem>
-                            <Button onClick={this.logOut}>Log out</Button>
+                            <NavLink className="helpNavItem" href="/" onClick={ () => logOut() } >Log out</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
@@ -50,3 +58,15 @@ export class NavBar extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state, props) => ({
+  user: state.user
+});
+const mapDispatchToProps = (dispatch) => ({
+    logOut: () => dispatch( logOut()),
+});
+
+export const NavBar = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)( NavBarToBeConnected )

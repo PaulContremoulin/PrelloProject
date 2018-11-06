@@ -1,0 +1,21 @@
+.boardNavBar {
+  background-color: #ffffff;
+}
+
+.boardTitle {
+    color: black;
+}
+.boardTitle:hover {
+    color: black;
+}
+
+.boardMenu {
+    color : black;
+}
+
+.BoardMenu {
+    text-align: left;
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
+}

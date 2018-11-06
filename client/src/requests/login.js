@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { postRequest } from './genericRequest';
 
 /**
  * @desc check if the user can be connect
@@ -10,13 +10,12 @@ import axios from 'axios';
 export function loginUser(username, password) {
     return new Promise((resolve, reject) =>
     {
-        axios.post(process.env.REACT_APP_API_URL + '/api/login/', {
+        postRequest( '/api/login/', {
             username,
             password,
         })
             .then(response => {
-                const res = response.data
-                resolve(res)
+                resolve(response)
             })
             .catch(error => {
                 reject(error)

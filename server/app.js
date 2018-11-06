@@ -10,8 +10,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan-debug');
 const passport = require('passport');
+const token = require('./middlewares/TokenAccess');
 const dotenv = require('dotenv');
-var cors = require('cors');
+const cors = require('cors');
 
 // Initialization
 const app = express();
@@ -41,10 +42,13 @@ const indexRouter = require('./routes/IndexRoutes');
 const authRouter = require('./routes/AuthRoutes');
 const memberRouter = require('./routes/MemberRoutes');
 const boardRouter = require('./routes/BoardRoutes');
+const ListRoutes = require('./routes/ListRoutes');
+const CardRoutes = require('./routes/CardRoutes');
 
 app.use('/api', indexRouter);
 app.use('/api', authRouter);
 app.use('/api/members', memberRouter);
-app.use('/api/boards', passport.authenticate('jwt', { session: false }), boardRouter);
-
+app.use('/api/boards', token, boardRouter);
+app.use('/api/lists', token, ListRoutes);
+app.use('/api/cards', token, CardRoutes);
 module.exports = app;

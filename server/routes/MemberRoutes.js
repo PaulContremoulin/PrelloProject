@@ -4,7 +4,7 @@ let Board = require('./../models/Board');
 let Member = require('./../models/Member');
 let debug = require('debug')('app:members');
 let mongoose = require('mongoose');
-const passport = require('passport');
+let token = require('./../middlewares/TokenAccess');
 
 /**
  * Get the member attached at the id given
@@ -17,18 +17,11 @@ const passport = require('passport');
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id', passport.authenticate('jwt', { session: false }), function(req, res) {
-
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-        return res.status(404).end();
-    }
+router.get('/:id', token, function(req, res) {
 
     Member.findById(req.params.id, function (err, member) {
-        if(err) {
-            debug('members/:id error : ' + err)
-            return res.status(404).end();
-        }
-        if(!member) return res.status(404).end();
+        if(err) debug('members/:id error : ' + err)
+        if(!member) return res.status(404).json({ message:'Member not found'});
         return res.status(200).json(member);
     });
 
@@ -47,31 +40,80 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), function(re
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id/boards', passport.authenticate('jwt', { session: false }), function(req, res) {
+router.get('/:id/boards', token, function(req, res) {
 
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(404).end();
     }
 
     Member.findById(req.params.id, function (err, member) {
-        if(err) {
-            debug('members/:id error : ' + err)
-            return res.status(500).end();
-        }
-        if(!member) return res.status(404).end();
+        if (err) debug('members/:id error : ' + err);
+        if (!member) return res.status(404).end();
 
-        req.query._id = { $in: member.idBoards};
+        req.query._id = {$in: member.idBoards};
 
-        Board.find(req.query, function(err, board){
-                if(err) {
-                    debug('members/:id error : ' + err)
-                    return res.status(500).end();
-                }
-                return res.status(200).json(board)
-            });
+        Board.find(req.query, function (err, board) {
+            if (err) {
+                debug('members/:id error : ' + err)
+                return res.status(500).end();
+            }
+            return res.status(200).json(board)
+        });
 
     });
+});
 
+/**
+ * Add a circle
+ * @route POST /members/{id}/circles
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id.
+ * @param {Circle} circle.body.required - the circle to add
+ * @returns {Circle} 201 - Circle created successfully
+ * @returns {Error}  400 - Bad request, token no provided
+ * @returns {Error}  403 - Forbidden, token expired or not exist
+ * @returns {Error}  404 - Member not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.post('/:id/circles', token, function(req, res) {
+
+    let circle = new Circle({
+        name: req.body.name,
+        idMember: req.params.id
+    });
+    circle.validate(function (err) {
+        if (err)
+            return res.status(400).json({message: err._message});
+        circle.save(function (err) {
+            if (err) {
+                debug('members/:id/circles error : ' + err);
+                return res.status(500).end();
+            }
+            return res.status(200).json(circle);
+        });
+    });
+
+});
+
+/**
+ * Get user's circles
+ * @route GET /members/{id}/circles
+ * @group members - Operations about members
+ * @returns {Circle} 200 - User's circle
+ * @returns {Error}  403 - Forbidden, token expired or not exist
+ * @returns {Error}  404 - Member not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/circles', token, function(req, res) {
+    Circle.find({ idMember : req.params.id }, function (err, circle) {
+        if(err) debug('members/:id/circles error : ' + err);
+        if(!circle)
+            return res.status(404).json({message : "Member not found."});
+        else
+            return res.status(200).json(circle);
+    });
 });
 
 /**
@@ -90,29 +132,29 @@ router.get('/:id/boards', passport.authenticate('jwt', { session: false }), func
  */
 router.post('/:id/password/reset', function(req, res) {
 
-    if(!req.params.token) return res.status(400).send('No token given.');
-    if(!req.body.password) return res.status(400).send('No password given.');
+    if(!req.query.token) return res.status(400).json({message :'Token is missing'});
+    if(!req.body.password) return res.status(400).json({message :'Password is missing'});
 
-    Member.findOne({ _id : req.params.id, resetPass : { token : req.token }}, function (err, member) {
-        if(err) {
-            debug('members/:id/password/reset error : ' + err)
-            return res.status(500).end();
-        }
-        if(!member) return res.status(404).end();
+    Member.findOne({ _id : req.params.id, loginType : "password", 'resetPass.token' : req.query.token}
+    , function (err, member) {
+        if(err) debug('members/:id/password/reset error : ' + err);
+        if(!member)
+            return res.status(404).json({message :'Member is not found'});
+        if(member.passwordTokenExpired())
+            return res.status(403).json({message :'Expired password reset token'});
+        if(!member.setPassword(req.body.password))
+            return res.status(400).json({message :'The password given is invalid. (Minimum eight characters, at least one letter, one number and one special char'});
 
-        if(member.resetPass.expire < Date.now()) return res.status(403).send('Reset password token expired.');
-
-        member.setPassword(req.body.password);
+        member.set('resetPass', undefined);
 
         member.validate(function (err) {
-            if(err) return res.status(400).send(err);
-            // save the user
+            if(err) return res.status(400).json({message : err._message});
             member.save(function (err) {
                 if (err) {
                     debug('Error in Saving user: ' + err);
-                    throw err;
+                    return res.status(500).json({message : 'Unexpected internal server error'});
                 }
-                return res.status(200).end();
+                return res.status(200).json({massage:'Password has been reset successfully'});
             });
         });
     });
@@ -132,15 +174,17 @@ router.post('/:id/password/reset', function(req, res) {
  * @security JWT
  */
 router.get('/:id/password/reset', function(req, res) {
-    if(!req.params.token) return res.status(400).send('No token given.');
-    Member.findOne({ _id : req.params.id, loginType: "password", resetPass : { token : req.token }}, function (err, member) {
-        if(err) {
+    if(!req.query.token)
+        return res.status(400).json({message : 'Token is missing'});
+    Member.findOne({ _id : req.params.id, loginType : "password", 'resetPass.token' : req.query.token }, function (err, member) {
+        if(err)
             debug('members/:id/password/reset error : ' + err)
-            return res.status(500).end();
-        }
-        if(!member) return res.status(404).end();
-        if(member.resetPass.expire < Date.now()) return res.status(403).send('Reset password token expired.');
-        return res.status(200).end();
+        if(!member)
+            return res.status(404).json({message:'Member not found'});
+        if(member.passwordTokenExpired())
+            return res.status(403).json({message:'Expired password reset token'});
+        else
+            return res.status(200).json({message:'Valid password reset token'});
     });
 });
 
@@ -160,33 +204,33 @@ router.get('/:id/password/reset', function(req, res) {
  * @security JWT
  */
 router.get('/:id/email/confirm', function(req, res) {
-    if(!req.query.token) return res.status(400).send('No token given.');
-    Member.findOne({_id : req.params.id}, function (err, member) {
-        if(err) {
+    if(!req.query.token)
+        return res.status(400).json({message : 'Token missing'});
+    Member.findById(req.params.id, function (err, member) {
+        if(err)
             debug('members/:id/email/confirm error : ' + err);
-            return res.status(500).end();
-        }
-        if(!member) return res.status(404).end();
-        if(member.confirmed || !member.tokenConfirm) return res.status(403).send('User already confirmed his/her email address');
-        if(member.tokenConfirm !== req.query.token) return res.status(403).send('Invalid token.');
+        if(!member)
+            return res.status(404).json({message : 'Member not found'});
+        if(member.confirmed || !member.tokenConfirm)
+            return res.status(403).json({message : 'User already confirmed his/her email address'});
+        if(member.tokenConfirm !== req.query.token)
+            return res.status(403).json({message : 'Token given invalid'});
 
         member.set('confirmed', true);
         member.set('tokenConfirm', undefined);
 
         member.validate(function (err) {
-            if (err) {
-                debug('members/:id/email/confirm error : ' + err);
-                return res.status(500).end();
-            }
-            // save the user
+            if(err) return res.status(400).json({message : err._message});
+
             member.save(function (err) {
                 if (err) {
-                    debug('Error in Saving user: ' + err);
-                    throw err;
+                    debug('members/:id/email/confirm error : ' + err);
+                    return res.status(500).json({message : 'Unexpected internal server error'});
                 }
-                debug('User email confirmed successfully');
-                if(req.query.callback) return res.redirect(req.query.callback);
-                return res.status(200).send('Email confirmed successfully');
+                if(req.query.callback)
+                    return res.redirect(req.query.callback);
+                else
+                    return res.status(200).json({message : 'Email successfully confirmed'});
             });
         });
     });

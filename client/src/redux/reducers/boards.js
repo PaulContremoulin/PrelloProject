@@ -6,7 +6,6 @@
  */
 import { ADD_BOARD, FETCH_BOARD } from "../../actions/boardActions";
 
-
 /******************************************************************************/
 /******************************* BOARDS REDUCERS ********************************/
 /******************************************************************************/
@@ -29,14 +28,13 @@ import { ADD_BOARD, FETCH_BOARD } from "../../actions/boardActions";
  *   if the given previous state is undefined, you should initialize it
  */
 
-export default function boardsReducer(state = [], action) {
+export const boards = (state = [], action) => {
     switch (action.type) {
         case ADD_BOARD:
-            return [...state, action.payload];
+            return [...state, action.board];
         case FETCH_BOARD:
             return action.boards;
         default:
             return state;
     }
 };
-

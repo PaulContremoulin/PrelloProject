@@ -34,6 +34,29 @@ module.exports = function (app, options) {
                     });
             });
 
+            it('should send back a CREATED response - Board creation', function (done) {
+                request(app)
+                    .post('/api/boards')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        name: "BoardName",
+                        prefs: {
+                            background: "#000000"
+                        }
+                    })
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.name.should.equal("BoardName");
+                        res.body.prefs.background.should.equal("#000000");
+                        res.body.memberships.should.be.instanceof(Array).and.have.length(1);
+                        options.memberUnauthorized.board = res.body;
+                        done();
+                    });
+            });
+
+
             it('should send back a UNAUTHORIZED response - Board creation with no valid token', function (done) {
                 request(app)
                     .post('/api/boards')
@@ -127,6 +150,67 @@ module.exports = function (app, options) {
 
         });
 
+        describe('PUT /api/boards/:id/members/:idMember - Board add member', function () {
+
+            it('should send back a OK response - Freind member added', function (done) {
+                request(app)
+                    .put('/api/boards/' + options.board._id + '/members/' + options.memberFreinds._id + '?type=normal')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/boards/' + options.board._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.memberships.should.be.instanceof(Array).and.have.length(2);
+                                done();
+                            });
+                    });
+            });
+
+            it('should send back a FORBIDDEN response - Friend add itself with admin rights', function (done) {
+                request(app)
+                    .put('/api/boards/' + options.board._id + '/members/' + options.memberFreinds._id + '?type=admin')
+                    .set('Authorization', 'Bearer ' + options.tokenFreinds)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a FORBIDDEN response - Administrator downgrade his rights (1 admin on the board)', function (done) {
+                request(app)
+                    .put('/api/boards/' + options.board._id + '/members/' + options.member._id + '?type=normal')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a OK response - Member up admin right to  member added', function (done) {
+                request(app)
+                    .put('/api/boards/' + options.board._id + '/members/' + options.memberFreinds._id + '?type=admin')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+        });
+
         describe('POST /api/boards/:id/lists - Create a list for the board', function () {
 
             it('should send back a CREATE response - List created', function (done) {
@@ -144,6 +228,23 @@ module.exports = function (app, options) {
                         res.body.name.should.equal("ListName");
                         res.body.pos.should.equal(123);
                         res.body.idBoard.should.be.equal(options.board._id);
+                        options.list = res.body;
+                        done();
+                    });
+            });
+
+            it('should send back a UNAUTHORIZED response - List created with unauthorized user', function (done) {
+                request(app)
+                    .post('/api/boards/' + options.board._id + '/lists')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        name: "ListName",
+                        pos : 123
+                    })
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
                         done();
                     });
             });
@@ -201,6 +302,22 @@ module.exports = function (app, options) {
                     });
             });
 
+            it('should send back a CREATE response - List created by another member of the board', function (done) {
+                request(app)
+                    .post('/api/boards/' + options.board._id + '/lists')
+                    .set('Authorization', 'Bearer ' + options.tokenFreinds)
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        name: "ListName4",
+                        pos : 123
+                    })
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
         });
 
 
@@ -214,15 +331,24 @@ module.exports = function (app, options) {
                     .expect(200)
                     .end(function (err, res) {
                         if (err) return done(err);
-                        res.body.should.be.instanceof(Array).and.have.length(2);
+                        res.body.should.be.instanceof(Array).and.have.length(3);
                         done();
                     });
             });
-        });
 
-        describe('GET /api/boards/:id/lists - GET lists for the board with name "ListName"', function () {
+            it('should send back a FORBIDDEN response - Invalid user want get the board', function (done) {
+                request(app)
+                    .get('/api/boards/' + options.board._id + '/lists')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
 
-            it('should send back a OK response - Lists got', function (done) {
+            it('should send back a OK response -  lists for the board with name "ListName"', function (done) {
                 request(app)
                     .get('/api/boards/' + options.board._id + '/lists?name=ListName')
                     .set('Authorization', 'Bearer ' + options.token)
@@ -234,8 +360,8 @@ module.exports = function (app, options) {
                         done();
                     });
             });
-        });
 
+        });
 
     });
 

@@ -3,8 +3,13 @@
 /** Action types
  * Action types are constants string meant to explains reducer which treatments are needed.
  */
+ export const FETCH_BOARD = 'FETCH_BOARD';
 export const ADD_BOARD= "ADD_BOARD" ;
-export const FETCH_BOARD = 'FETCH_BOARD';
+export const SET_BOARD= "SET_BOARD" ;
+export const ADD_LIST= "ADD_LIST" ;
+export const ADD_CARD= "ADD_CARD" ;
+export const MOVE_LIST= "MOVE_LIST" ;
+export const MOVE_CARD= "MOVE_CARD" ;
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -21,11 +26,7 @@ export const FETCH_BOARD = 'FETCH_BOARD';
 export const addBoard =  (data) => {
     return {
         type: ADD_BOARD,
-        payload: {
-            _id: data._id,
-            name: data.name,
-            color: data.color
-        }
+        board: data,
     }
 };
 
@@ -41,3 +42,69 @@ export const fetchBoards = (boards) => {
     }
 };
 
+/**
+ * @desc
+ * @param board
+ * @return SET_BOARD action
+ */
+export const setBoard = (board) => {
+    return {
+        type: SET_BOARD,
+        board
+    }
+};
+
+
+
+/**
+* @desc
+*/
+export const addList = (listName) => {
+  return {
+      type: ADD_LIST,
+      list: {
+        listName
+      }
+  }
+};
+
+
+/**
+* @desc
+*/
+export const addCard = (cardName, listId) => {
+  return {
+      type: ADD_CARD,
+      card: {
+        cardName
+      },
+      list: {
+        listId
+      }
+  }
+};
+
+/**
+* @desc
+*/
+export const moveList = (listId, index) => {
+  return {
+      type: MOVE_LIST,
+      list: {
+        listId
+      }
+  }
+};
+
+
+/**
+* @desc
+*/
+export const moveCard = (cardId, index) => {
+  return {
+      type: MOVE_CARD,
+      card: {
+        cardId
+      }
+  }
+};

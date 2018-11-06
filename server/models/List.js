@@ -1,5 +1,5 @@
 let mongoose = require('mongoose');
-
+let Board = require('./../models/Board');
 let Schema = mongoose.Schema;
 
 let listSchema = new Schema({
@@ -15,7 +15,8 @@ let listSchema = new Schema({
         },
         idBoard : {
             required  : true,
-            type      : Schema.Types.ObjectId
+            type      : Schema.Types.ObjectId,
+            ref : 'Board'
         },
         pos : {
             required  : true,
