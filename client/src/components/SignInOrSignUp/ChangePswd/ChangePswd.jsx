@@ -25,12 +25,28 @@ export class ChangePswd extends React.Component {
         }
     }
 
+    handleReset = () => {
+        this.setState({
+            'newPassword': "",
+            'newPasswordConfirm': "",
+        });
+    };
+
+    handleChange = async (event) => {
+        const {target} = event;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const {name} = target;
+        this.setState({
+            [name]: value,
+        });
+    };
+
     validatePassword = (e) => {
         const pswdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/g;
         if (pswdRegex.test(e.target.value)) {
-            this.setState({ passwordIsValid: true, newPassword: e.target.value })
+            this.setState({ passwordIsValid: true})
         } else {
-            this.setState({ passwordIsValid: false, newPassword: e.target.value })
+            this.setState({ passwordIsValid: false})
         }
     }
 
@@ -43,13 +59,14 @@ export class ChangePswd extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if( this.state.newPassword !== this.state.newPasswordConfirm) {
+            this.handleReset();
             this.setState({
                 passwordsMatch: false,
             });
         } else {
             changePswd(qs.parse(this.props.location.search).token, this.state.newPassword, this.props.match.params.idmembre)
-                .then(res => (res.status < 400) ? history.push('/login') : this.setState({ changePasswordGood: false }))
-                .catch(this.setState({ changePasswordGood: false }))
+                .then(res => (res.status === 200) ? history.push('/login') : this.setState({ changePasswordGood: false, newPassword:"", newPasswordConfirm:"" }))
+                .catch(this.setState({ changePasswordGood: false, newPassword:"", newPasswordConfirm:"" }))
         }
     };
 
@@ -64,6 +81,7 @@ export class ChangePswd extends React.Component {
     };
 
     render() {
+        const {newPassword, newPasswordConfirm} = this.state;
         return (
             <div>
                 <NavBar changepswd="true"/>
@@ -93,7 +111,9 @@ export class ChangePswd extends React.Component {
                                                 type="password"
                                                 name="newPassword"
                                                 placeholder="New Password"
+                                                value={newPassword}
                                                 required={true}
+                                                onChange={(e) => this.handleChange(e)}
                                                 onBlur={(event) => this.validatePassword(event)}
                                             />
                                         </FormGroup>
@@ -105,8 +125,9 @@ export class ChangePswd extends React.Component {
                                                 type="password"
                                                 name="newPasswordConfirm"
                                                 placeholder="Confirm New Password"
+                                                value={newPasswordConfirm}
                                                 required={true}
-                                                onBlur={(event) => this.handleOnBlur(event, "newPasswordConfirm")}
+                                                onChange={(e) => this.handleChange(e)}
                                             />
                                         </FormGroup>
                                     </Col>
@@ -134,7 +155,7 @@ export class ChangePswd extends React.Component {
         const token = qs.parse(this.props.location.search).token;
         const idMembre = this.props.match.params.idmembre;
         checkToken(token, idMembre)
-            .then(res => res.status > 400 ? this.setState({tokenValid:false}) : this.setState({tokenValid:true}))
+            .then(res => res.status === 200 ? this.setState({tokenValid:true}) : this.setState({tokenValid:false}))
             .catch(this.setState({tokenValid:false}))
     }
 

@@ -25,8 +25,8 @@ export class ResetPswd extends React.Component {
      event.preventDefault();
      const email = this.state.email;
      resetPswd(email,process.env.REACT_APP_FRONT_URL+'/')
-     .then( res => (res.status < 400) ? this.setState({ emailIsSent: true, emailNotFound: false }) : this.setState({ emailNotFound: true }) )
-     .catch( err => console.log(err) )
+     .then( res => (res.status === 202) ? this.setState({ emailIsSent: true, emailNotFound: false }) : this.setState({ emailNotFound: true, email:"" }) )
+     .catch( err => this.setState({ emailNotFound: true, email:"" }) )
    }
 
 
@@ -34,12 +34,6 @@ export class ResetPswd extends React.Component {
        const value = event.target.value;
        this.setState({
            'email': value,
-       });
-   };
-
-   onDismiss = (element) => {
-       this.setState({
-           [element]: false
        });
    };
 
@@ -55,10 +49,10 @@ export class ResetPswd extends React.Component {
           <Row>
             <Col className="ResetPswd" md={{ size: 6, offset: 3 }}>
               <h2 align="center">Reset password</h2>
-              <Alert color="success" isOpen={emailIsSent} toggle={() =>this.onDismiss(emailIsSent) }>
+              <Alert color="success" isOpen={emailIsSent} toggle={() =>this.setState({emailIsSent:false}) }>
                   The link has been sent !
               </Alert>
-              <Alert color="danger" isOpen={emailNotFound} toggle={() =>this.onDismiss(emailNotFound) }>
+              <Alert color="danger" isOpen={emailNotFound} toggle={() =>this.setState({emailNotFound:false}) }>
                   Account not found !
               </Alert>
               <Form className="form" onSubmit={this.handleSubmit}>

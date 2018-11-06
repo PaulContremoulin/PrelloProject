@@ -1,34 +1,50 @@
-import axios from "axios/index";
+import { postRequest, getRequest } from './genericRequest';
 
+/**
+ * @desc change password of the user in the database
+ * @param { String } tokenUser
+ * @param { String } password
+ * @param { String } iduser
+ * @return status code
+ */
 export const changePswd = (
     tokenUser,
     password,
     iduser,
 ) => (
-    axios.post( process.env.REACT_APP_API_URL+'/api/members/'+iduser+'/password/reset?token='+tokenUser,
-        {
-            password : password,
-        })
-        .then(response => response)
+    postRequest('/api/members/'+iduser+'/password/reset?token='+tokenUser, {password})
+        .then( response => response )
+        .catch(err => err.response)
 );
 
+/**
+ * @desc check if the token is valid
+ * @param { String } tokenUser
+ * @param { String } iduser
+ * @return status code
+ */
 export const checkToken = (
     tokenUser,
         iduser,
 ) => (
-    axios.get( process.env.REACT_APP_API_URL+'/api/members/'+iduser+'/password/reset?token='+tokenUser)
-        .then(response => response)
+    getRequest('/api/members/'+iduser+'/password/reset?token='+tokenUser)
+        .then( response => response )
+        .catch(err => err.response)
 );
 
+/**
+ * @desc send a email to reset password
+ * @param { String } email
+ * @param { String } callback
+ * @return status code
+ */
 export const resetPswd = (
   email,
   callback
 ) => (
-  axios.post( process.env.REACT_APP_API_URL+'/api/auth/forgot/password', {
-    email,
-      callback
-  })
-  .then( response => response )
+  postRequest('/api/auth/forgot/password', {email, callback})
+      .then( response => response )
+      .catch(err => err.response)
 );
 
 
