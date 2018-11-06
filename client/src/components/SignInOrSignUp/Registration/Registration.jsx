@@ -25,7 +25,11 @@ export class Registration extends React.Component {
         "allFieldsFilled" : true,
         "passwordsMatch" : true,
         "passwordIsValid" : true,
-        "emailIsValid" : true
+        "emailIsValid" : true,
+          "emailExist" : false,
+          "usernameExist" : false,
+          "emailUsernameExist": false,
+          "badRequest": false
       }
   }
 
@@ -33,17 +37,32 @@ export class Registration extends React.Component {
     this.setState({
       [ element ]: value
     })
-  }
+  };
 
-   handleSubmit = event => {
-       event.preventDefault();
+  resetInput = () => {
+      this.setState({
+          "passwordA" : "",
+          "passwordB" : "",
+          "allFieldsFilled" : true,
+          "passwordsMatch" : true,
+          "passwordIsValid" : true,
+          "emailIsValid" : true,
+      })
+  };
+
+   handleSubmit = (e) => {
+       e.preventDefault();
        if ( this.state.username === "" || this.state.firstName === "" || this.state.lastName === "" || this.state.email === "" || this.state.passwordA === "" || this.state.passwordB === "") {
+           this.resetInput();
            this.setState({ allFieldsFilled: false });
        } else if ( this.state.passwordA !== this.state.passwordB ) {
+           this.resetInput();
            this.setState({ allFieldsFilled: true, passwordsMatch: false });
        } else if ( !this.state.emailIsValid ) {
+           this.resetInput();
            this.setState({ allFieldsFilled: true, passwordsMatch: true });
        } else if ( !this.state.passwordIsValid ) {
+           this.resetInput();
            this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true });
        } else {
            this.setState({ allFieldsFilled: true, passwordsMatch: true, emailIsValid: true, passwordIsValid: true });
@@ -53,37 +72,83 @@ export class Registration extends React.Component {
                email = this.state.email,
                passwordA = this.state.passwordA,
                organisation = this.state.organisation;
-           registerUser(username, firstName, lastName, email, passwordA, organisation, process.env.REACT_APP_FRONT_URL);
-           history.push('/');
+           registerUser(username, firstName, lastName, email, passwordA, organisation, process.env.REACT_APP_FRONT_URL+'/login')
+               .then(res => {
+                   if (res.status === 200) {
+                       history.push('/login');
+                   } else if (res.status === 400) {
+                       if ((res.data.message.message.errors.username !== undefined) && (res.data.message.message.errors.email !== undefined)) {
+                           this.resetInput();
+                           this.setState({
+                               usernameExist: false,
+                               emailExist: false,
+                               badRequest: false,
+                               emailUsernameExist: true
+                           });
+                       } else if (res.data.message.message.errors.email !== undefined) {
+                           this.resetInput();
+                           this.setState({
+                               emailExist: true,
+                               usernameExist: false,
+                               badRequest: false,
+                               emailUsernameExist: false
+                           });
+                       } else if (res.data.message.message.errors.username !== undefined) {
+                           this.resetInput();
+                           this.setState({
+                               emailExist: false,
+                               usernameExist: true,
+                               badRequest: false,
+                               emailUsernameExist: false
+                           });
+                       } else {
+                           this.resetInput();
+                           this.setState({
+                               emailExist: false,
+                               usernameExist: false,
+                               badRequest: true,
+                               emailUsernameExist: false
+                           });
+                       }
+                   } else if (res.status === 204) {
+                       console.log("ok");
+                   } else {
+                       this.resetInput();
+                       this.setState({emailExist:false, usernameExist:false, badRequest:true, emailUsernameExist:false});
+                   }
+               })
+               .catch(err => {
+                   this.resetInput();
+                   this.setState({emailExist:false, usernameExist:false, badRequest:true, emailUsernameExist:false});
+               })
        }
    }
 
-   handleOnBlur = ( event, element ) => {
-     this.setStateElement( element, event.target.value );
-   }
+    handleChange = async (event) => {
+        const {target} = event;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const {name} = target;
+        this.setState({
+            [name]: value,
+        });
+    };
 
    validateEmail = (e) => {
     const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (emailRex.test(e.target.value)) {
-        this.setState({ emailIsValid: true, email: e.target.value })
+        this.setState({ emailIsValid: true })
     } else {
-      this.setState({ emailIsValid: false, email: e.target.value })
+      this.setState({ emailIsValid: false })
     }
   }
 
   validatePassword = (e) => {
     const pswdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/g;
     if (pswdRegex.test(e.target.value)) {
-      this.setState({ passwordIsValid: true, passwordA: e.target.value })
+      this.setState({ passwordIsValid: true })
     } else {
-      this.setState({ passwordIsValid: false, passwordA: e.target.value })
+      this.setState({ passwordIsValid: false })
     }
-  }
-
-  onDismiss = (element) => {
-      this.setState({
-          [element]: true
-      });
   };
 
   redirectionLogin = () => {
@@ -91,25 +156,38 @@ export class Registration extends React.Component {
   }
 
   render() {
+      const {firstName, lastName, username, email, passwordA, passwordB, organisation} = this.state;
     return (
       <div>
         <Container>
           <Row>
             <Col className="Registration" md={{ size: 6, offset: 3 }}>
               <h2 align="center">Sign Up</h2>
-              <Alert color="danger" isOpen={!this.state.allFieldsFilled} toggle={() =>this.onDismiss("allFieldsFilled") }>
+              <Alert color="danger" isOpen={!this.state.allFieldsFilled} toggle={() =>this.setState({allFieldsFilled:true}) }>
                   You need to fill all fields.
               </Alert>
-              <Alert color="danger" isOpen={!this.state.passwordsMatch} toggle={() =>this.onDismiss("passwordsMatch") }>
+              <Alert color="danger" isOpen={!this.state.passwordsMatch} toggle={() =>this.setState({passwordsMatch:true}) }>
                   The passwords do not match.
               </Alert>
-              <Alert color="danger" isOpen={!this.state.passwordIsValid} toggle={() =>this.onDismiss("passwordIsValid") }>
+              <Alert color="danger" isOpen={!this.state.passwordIsValid} toggle={() =>this.setState({passwordIsValid:true}) }>
                 The password must contain at least 1 letter and 1 digit.
                 The password must be at least 8 characters long.
               </Alert>
-              <Alert color="danger" isOpen={!this.state.emailIsValid} toggle={() =>this.onDismiss("emailIsValid") }>
+              <Alert color="danger" isOpen={!this.state.emailIsValid} toggle={() =>this.setState({emailIsValid:true}) }>
                   The email is not valid.
               </Alert>
+                <Alert color="danger" isOpen={(this.state.emailUsernameExist)} toggle={() =>this.setState({emailUsernameExist:false}) }>
+                    Email and username already exists !
+                </Alert>
+                <Alert color="danger" isOpen={this.state.emailExist} toggle={() => this.setState({emailExist:false}) }>
+                    Email already exists !
+                </Alert>
+                <Alert color="danger" isOpen={this.state.usernameExist} toggle={() => this.setState({usernameExist:false}) }>
+                    Username already exists !
+                </Alert>
+                <Alert color="danger" isOpen={this.state.badRequest} toggle={() => this.setState({badRequest:false}) }>
+                    Error, registration doesn't work !
+                </Alert>
               <Form className="form" onSubmit={(e) => this.handleSubmit(e)}>
                       <Col>
                         <Row>
@@ -118,10 +196,11 @@ export class Registration extends React.Component {
                                 <Label>First name</Label>
                                 <Input
                                     type="text"
-                                    name="firstname"
+                                    name="firstName"
                                     placeholder="First name"
+                                    value={firstName}
                                     required={true}
-                                    onBlur={( event ) => this.handleOnBlur( event, "firstName" )}
+                                    onChange={(e) => this.handleChange(e)}
                                 />
                             </FormGroup>
                           </Col>
@@ -130,10 +209,11 @@ export class Registration extends React.Component {
                                 <Label>Last name</Label>
                                 <Input
                                     type="text"
-                                    name="lastname"
+                                    name="lastName"
                                     placeholder="Last name"
+                                    value={lastName}
                                     required={true}
-                                    onBlur={( event ) => this.handleOnBlur( event, "lastName" )}
+                                    onChange={(e) => this.handleChange(e)}
                                 />
                             </FormGroup>
                           </Col>
@@ -146,8 +226,10 @@ export class Registration extends React.Component {
                                 type="text"
                                 name="username"
                                 placeholder="Username"
+                                value={username}
+                                invalid={this.state.usernameExist || this.state.emailUsernameExist}
                                 required={true}
-                                onBlur={( event ) => this.handleOnBlur( event, "username" )}
+                                onChange={(e) => this.handleChange(e)}
                             />
                         </FormGroup>
                       </Col>
@@ -158,7 +240,10 @@ export class Registration extends React.Component {
                                 type="email"
                                 name="email"
                                 placeholder="Email"
+                                value={email}
+                                invalid={this.state.emailExist || this.state.emailUsernameExist}
                                 required={true}
+                                onChange={(e) => this.handleChange(e)}
                                 onBlur={( event ) => this.validateEmail( event )}
                             />
                         </FormGroup>
@@ -170,7 +255,10 @@ export class Registration extends React.Component {
                                 type="password"
                                 name="passwordA"
                                 placeholder="Password"
+                                value={passwordA}
+                                invalid={!this.state.passwordIsValid || !this.state.passwordsMatch}
                                 required={true}
+                                onChange={(e) => this.handleChange(e)}
                                 onBlur={( event ) => this.validatePassword( event )}
                             />
                         </FormGroup>
@@ -182,8 +270,10 @@ export class Registration extends React.Component {
                                   type="password"
                                   name="passwordB"
                                   placeholder="Confirm Password"
+                                  value={passwordB}
+                                  invalid={!this.state.passwordsMatch}
                                   required={true}
-                                  onBlur={ ( event ) => this.handleOnBlur( event, "passwordB" ) }
+                                  onChange={(e) => this.handleChange(e)}
                               />
                           </FormGroup>
                       </Col>
@@ -194,7 +284,8 @@ export class Registration extends React.Component {
                                     type="text"
                                     name="organisation"
                                     placeholder="Enter your organisation"
-                                    onBlur={( event ) => this.handleOnBlur( event, "organisation" )}
+                                    value={organisation}
+                                    onChange={(e) => this.handleChange(e)}
                                 />
                             </FormGroup>
                         </Col>
