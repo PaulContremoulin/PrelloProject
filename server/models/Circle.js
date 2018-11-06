@@ -29,7 +29,7 @@ circleSchema.plugin(arrayUniquePlugin);
  * @param idBoard, the board'id to add
  */
 circleSchema.methods.addBoard = function(idBoard){
-    this.idMembers.push(idBoard);
+    this.idBoards.push(idBoard);
 };
 
 /**
@@ -37,7 +37,7 @@ circleSchema.methods.addBoard = function(idBoard){
  * @param idBoard, the board'id to remove
  */
 circleSchema.methods.removeBoard = function(idBoard){
-    this.idMembers.remove(idBoard);
+    this.idBoards.remove(idBoard);
 };
 
 let Circle = mongoose.model('Circle', circleSchema);

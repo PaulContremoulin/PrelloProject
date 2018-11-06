@@ -143,7 +143,7 @@ module.exports = function (app, options) {
         describe('POST /api/circles/:id/boards - Post a board into circle by id', function () {
             it('should send back a CREATED response - Member add a board to his circles', function (done) {
                 request(app)
-                    .post('/api/circles/' + options.member.circle._id + '/boards/' + options.board._id)
+                    .post('/api/circles/' + options.member.circle._id + '/boards?idBoard=' + options.board._id)
                     .set('Authorization', 'Bearer ' + options.token)
                     .set('Content-Type', 'application/json')
                     .expect(201)
@@ -153,7 +153,80 @@ module.exports = function (app, options) {
                         done();
                     });
             });
+
+            it('should send back a BAD REQUEST response - Board\'s id missing', function (done) {
+                request(app)
+                    .post('/api/circles/' + options.member.circle._id + '/boards')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a BAD REQUEST response - Board\'s id wrong', function (done) {
+                request(app)
+                    .post('/api/circles/' + options.member.circle._id + '/boards?idBoard=z6af4azf46zaf')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
         });
+
+        describe('DELETE /api/circles/:id/boards /:idBoard - Delete a board into circle by id', function () {
+            it('should send back a OK response - Board deleted', function (done) {
+                request(app)
+                    .delete('/api/circles/' + options.member.circle._id + '/boards/' + options.board._id)
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/circles/' + options.member.circle._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.idBoards.should.be.instanceof(Array).and.have.length(0);
+                                done();
+                            });
+                    });
+            });
+        });
+
+        describe('DELETE /api/circles/:id - Delete a circle by id', function () {
+            it('should send back a OK response - Circle deleted', function (done) {
+                request(app)
+                    .delete('/api/circles/' + options.member.circle._id)
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/members/' + options.member._id + '/circles')
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.should.be.instanceof(Array).and.have.length(0);
+                                done();
+                            });
+                    });
+            });
+        });
+
+
 
     });
 };

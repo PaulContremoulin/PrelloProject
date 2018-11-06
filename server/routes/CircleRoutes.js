@@ -1,9 +1,10 @@
 let express = require('express');
 let router = express.Router();
 let Circle = require('./../models/Circle');
-let debug = require('debug')('app:members');
+let debug = require('debug')('app:circles');
 let token = require('./../middlewares/TokenAccess');
 let circleAccess = require('./../middlewares/CircleAccess');
+let mongoose = require('mongoose');
 
 /**
  * Get circle
@@ -33,12 +34,18 @@ router.get('/:id', token, circleAccess.readRights(), function(req, res) {
  */
 router.post('/:id/boards', token,  circleAccess.updateRights(), function(req, res) {
 
+    if(!mongoose.Types.ObjectId.isValid(req.query.idBoard))
+        return res.status(400).json({message:'Board\'s id missing or wrong'});
+
     let circle = req.circle;
     circle.addBoard(req.query.idBoard);
     circle.validate(function(err){
        if(err) return res.status(400).json({message:err._message});
        circle.save(function(err){
-           if(err) return res.status(500).json({message:'Unexpected internal error'});
+           if(err) {
+               debug(err);
+               return res.status(500).json({message:'Unexpected internal error'});
+           }
            return res.status(201).json(circle);
        });
     });
@@ -57,7 +64,10 @@ router.post('/:id/boards', token,  circleAccess.updateRights(), function(req, re
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/:id/boards/:idBoard', token,  circleAccess.updateRights(), function(req, res) {
+router.delete('/:id/boards/:idBoard', token, circleAccess.updateRights(), function(req, res) {
+
+    if(!mongoose.Types.ObjectId.isValid(req.params.idBoard))
+        return res.status(400).json({message:'Board\'s id missing or wrong'});
 
     let circle = req.circle;
     circle.removeBoard(req.params.idBoard);
@@ -85,13 +95,10 @@ router.post('/:id/boards/:idBoard', token,  circleAccess.updateRights(), functio
  */
 router.delete('/:id', token,  circleAccess.updateRights(), function(req, res) {
     let circle = req.circle;
-    circle.removeBoard(req.params.idBoard);
-    circle.validate(function(err){
-        if(err) return res.status(400).json({message:err._message});
-        circle.save(function(err){
-            if(err) return res.status(500).json({message:'Unexpected internal error'});
-            return res.status(200).json({'message' : 'Board deleted successfully'});
-        });
+    circle.remove();
+    circle.save(function(err){
+        if(err) return res.status(500).json({message:'Unexpected internal error'});
+        return res.status(200).json({'message' : 'Circle deleted successfully'});
     });
 });
 
