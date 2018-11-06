@@ -110,15 +110,6 @@ memberSchema.pre('validate', function(next) {
     return next();
 });
 
-memberSchema.methods.addCircle = function(name, boards) {
-    let idBoards;
-    boards ? idBoards = boards : idBoards = [];
-    this.circles.push({
-        name : name,
-        idBoards : idBoards
-    })
-};
-
 /**
  * give the user's fullName
  * @returns {string} the user fullName

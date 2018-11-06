@@ -23,12 +23,21 @@ let circleSchema = new Schema({
 
 circleSchema.plugin(arrayUniquePlugin);
 //circleSchema.plugin(idValidator);
+
 /**
- * Add a new circle
+ * Add a board
  * @param idBoard, the board'id to add
  */
 circleSchema.methods.addBoard = function(idBoard){
     this.idMembers.push(idBoard);
+};
+
+/**
+ * Remove a board
+ * @param idBoard, the board'id to remove
+ */
+circleSchema.methods.removeBoard = function(idBoard){
+    this.idMembers.remove(idBoard);
 };
 
 let Circle = mongoose.model('Circle', circleSchema);

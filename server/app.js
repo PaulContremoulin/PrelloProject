@@ -44,11 +44,13 @@ const memberRouter = require('./routes/MemberRoutes');
 const boardRouter = require('./routes/BoardRoutes');
 const ListRoutes = require('./routes/ListRoutes');
 const CardRoutes = require('./routes/CardRoutes');
+const CircleRoutes = require('./routes/CircleRoutes');
 
 app.use('/api', indexRouter);
 app.use('/api', authRouter);
-app.use('/api/members', memberRouter);
+app.use('/api/members', token, memberRouter);
 app.use('/api/boards', token, boardRouter);
 app.use('/api/lists', token, ListRoutes);
 app.use('/api/cards', token, CardRoutes);
+app.use('/api/circles', token, CircleRoutes);
 module.exports = app;
