@@ -13,7 +13,7 @@ describe('PRELLO SERVER API TEST', function() {
     let options = {}
     let server;
 
-    this.timeout(10000); // Delay to start the server
+    this.timeout(100000); // Delay to start the server
 
     // Called once before any of the tests in this block begin.
     before(function (done) {
@@ -38,6 +38,7 @@ describe('PRELLO SERVER API TEST', function() {
         require('./api/members.test')(app, options);
         require('./api/lists.test')(app, options);
         require('./api/cards.test')(app, options);
+        require('./api/circles.test')(app, options);
     });
 
 });

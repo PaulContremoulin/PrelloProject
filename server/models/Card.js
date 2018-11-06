@@ -1,4 +1,5 @@
 let mongoose = require('mongoose');
+let idValidator = require('mongoose-id-validator');
 
 let Schema = mongoose.Schema;
 
@@ -35,6 +36,8 @@ let cardSchema = new Schema({
     {
         versionKey: false
     });
+
+cardSchema.plugin(idValidator);
 
 cardSchema.methods.createOrUpdateMember = function(memberId) {
     if(!this.idMembers.find( mId => mId.equals(memberId))) this.idMembers.push(memberId);

@@ -1,7 +1,6 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 let arrayUniquePlugin = require('mongoose-unique-array');
-let idValidator = require('mongoose-id-validator');
 
 let circleSchema = new Schema({
         name : {
@@ -23,14 +22,22 @@ let circleSchema = new Schema({
     });
 
 circleSchema.plugin(arrayUniquePlugin);
-circleSchema.plugin(idValidator);
+//circleSchema.plugin(idValidator);
 
 /**
- * Add a new circle
+ * Add a board
  * @param idBoard, the board'id to add
  */
 circleSchema.methods.addBoard = function(idBoard){
-    this.idMembers.push(idBoard);
+    this.idBoards.push(idBoard);
+};
+
+/**
+ * Remove a board
+ * @param idBoard, the board'id to remove
+ */
+circleSchema.methods.removeBoard = function(idBoard){
+    this.idBoards.remove(idBoard);
 };
 
 let Circle = mongoose.model('Circle', circleSchema);
