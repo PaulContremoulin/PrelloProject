@@ -127,7 +127,7 @@ export class Registration extends React.Component {
                     <div>
                       <Col>
                         <Row>
-                          <Col md="6">
+                          <Col>
                             <FormGroup>
                                 <Label>First name</Label>
                                 <Input
@@ -139,7 +139,7 @@ export class Registration extends React.Component {
                                 />
                             </FormGroup>
                           </Col>
-                          <Col md="6">
+                          <Col>
                             <FormGroup>
                                 <Label>Last name</Label>
                                 <Input

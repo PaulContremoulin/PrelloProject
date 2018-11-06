@@ -1,3 +1,7 @@
+/**
+* Thoses exported constants can be used across the whole application
+* Changing a constant can imply a big loss of legacy compatibility
+*/
 
 
 // Default user schema

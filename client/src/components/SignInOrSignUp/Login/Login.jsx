@@ -9,6 +9,7 @@ import Octicon from 'react-octicon';
 
 // Actions & Constant
 import {loginUser} from "../../../requests/login";
+import {signInGithub} from "../../../requests/registration";
 import {setLogin} from "../../../actions/signActions";
 
 
@@ -57,6 +58,7 @@ export class LoginToBeConnected extends React.Component {
             )
     };
 
+
     render() {
         const {username, password, badAccount} = this.state;
         const {onClick, toggleResetPswd} = this.props;
@@ -101,7 +103,7 @@ export class LoginToBeConnected extends React.Component {
                         </Form>
                         <Row>
                             <Col className="text-center">
-                                <Button className="btnGithub"><Octicon name="mark-github"/> Sign In with Github</Button>
+                                <Button className="btnGithub" href="http://localhost:5000/api/auth/github" ><Octicon name="mark-github"/> Sign In with Github</Button>
                             </Col>
                         </Row>
                         <Row>
@@ -120,7 +122,7 @@ export class LoginToBeConnected extends React.Component {
         );
     }
 }
-
+// onClick={ () => signInGithub() }
 const mapStateToProps = (state, props) => ({});
 const mapDispatchToProps = (dispatch) => ({
   setLogin: (res) => dispatch( setLogin(res)),
