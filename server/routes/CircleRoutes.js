@@ -85,7 +85,7 @@ router.delete('/:id/boards/:idBoard', token, circleAccess.updateRights(), functi
  * Remove a circle
  * @route DELETE /circles/{id}
  * @group circles - Operations about circles
- * @param {string} id.path.required - Circle's id o remove
+ * @param {string} id.param.required - Circle's id to remove
  * @returns {Circle} 200 - Circle deleted successfully
  * @returns {Error}  401 - Unauthorized, user not authenticate
  * @returns {Error}  403 - Forbidden, Forbidden access for this credentials
