@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react'
+import {isLogged} from "./headers";
 
 //Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,20 +20,26 @@ import {HomePage} from './pages/HomePage/HomePage';
 import {AccountPage} from './pages/AccountPage/AccountPage';
 import {ChangePswd} from "./components/SignInOrSignUp/ChangePswd/ChangePswd";
 import {BoardPage} from './pages/BoardPage/BoardPage';
+import {PageNoFound} from "./pages/PageNoFound/PageNoFound";
+
+console.log(isLogged());
 
 ReactDOM.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Router history={history}>
             <div className="index">
-                <Route exact path="/" component={MainPage}/>
-                <Route exact path="/login" component={LoginPage}/>
-                <Route exact path="/registration" component={RegistrationPage}/>
-                <Route exact path="/reset/password" component={ResetPswdPage}/>
-                <Route exact path="/home" component={HomePage}/>
-                <Route exact path="/account" component={AccountPage}/>
-                <Route exact path="/login/reset/:idmembre/password" component={ChangePswd}/>
-                <Route exact path="/board" component={BoardPage}/>
+                <Switch>
+                    <Route exact path='/' component={MainPage}/>
+                    <Route exact path='/login' component={LoginPage}/>
+                    <Route exact path='/registration' component={RegistrationPage}/>
+                    <Route exact path='/reset/password' component={ResetPswdPage}/>
+                    <Route exact path='/home' render={() => (!isLogged() ? (<Redirect to="/"/>) : (<HomePage />))}/>
+                    <Route exact path='/account' render={() => (!isLogged() ? (<Redirect to="/"/>) : (<AccountPage />))}/>
+                    <Route exact path='/login/reset/:idmembre/password' component={ChangePswd}/>
+                    <Route exact path='/board' render={() => (!isLogged() ? (<Redirect to="/"/>) : (<BoardPage />))}/>
+                    <Route component={PageNoFound}/>
+                </Switch>
             </div>
         </Router>
       </PersistGate>

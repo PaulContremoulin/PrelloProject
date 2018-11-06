@@ -31,6 +31,7 @@ export class MainPage extends React.Component {
                         <Col className="contentLeft" xs={12} sm={{size:5, offset:1}}>
                             <h1 className="content"> Ready ?</h1>
                             <Button onClick={() => this.redirectionRegistration()}>Create your account</Button>
+                            <Button onClick={() => this.redirectionLogin()}>Log In</Button>
                         </Col>
                     </Row>
                 </Container>
