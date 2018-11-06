@@ -76,15 +76,11 @@ export class ChangePswd extends React.Component {
         })
     };
 
-    handleOnBlur = ( event, element ) => {
-        this.setStateElement( element, event.target.value );
-    };
-
     render() {
         const {newPassword, newPasswordConfirm} = this.state;
         return (
             <div>
-                <NavBar changepswd="true"/>
+                <NavBar noLink="true"/>
                 <Container>
                     {(this.state.tokenValid) ?
                         <Row>

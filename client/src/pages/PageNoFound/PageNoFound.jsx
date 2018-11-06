@@ -18,10 +18,10 @@ export class PageNoFound extends React.Component {
     render() {
         return (
             <div className="PageNoFound">
-                <NavBar/>
+                <NavBar noLink="true"/>
                 <div className="text-center">
                     <h1>404</h1>
-                    <h2>Oops, This Page No Found!</h2>
+                    <h2>Oops, This Page Not Found!</h2>
                 </div>
                 <div className="text-center">
                     <Button onClick={() => this.redirectionHome()}>Go back Home</Button>

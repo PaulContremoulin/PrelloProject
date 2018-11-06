@@ -41,7 +41,7 @@ export class NavBarToBeConnected extends React.Component {
     render() {
         const {
             user,
-            changepswd
+            noLink
         } = this.props;
         return (
             <Navbar expand="md">
@@ -50,7 +50,7 @@ export class NavBarToBeConnected extends React.Component {
                     :
                     <NavbarBrand><img onClick={() => this.redirectionHome()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
                 }
-                {!(user.member) && !(changepswd==="true") &&
+                {!(user.member) && !(noLink==="true") &&
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
@@ -62,7 +62,7 @@ export class NavBarToBeConnected extends React.Component {
                     </Nav>
                 </Collapse>
                 }
-                {(user.member) && !(changepswd==="true") &&
+                {(user.member) && !(noLink==="true") &&
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
