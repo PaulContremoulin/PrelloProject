@@ -7,18 +7,10 @@ import { postRequest } from './genericRequest';
  * @return status code
  */
 
-export function loginUser(username, password) {
-    return new Promise((resolve, reject) =>
-    {
-        postRequest( '/api/login/', {
-            username,
-            password,
-        })
-            .then(response => {
-                resolve(response)
-            })
-            .catch(error => {
-                reject(error)
-            })
-    })
-}
+export const loginUser = (
+    username,
+    password,
+) => ( postRequest( '/api/login/', {username, password})
+        .then( response => response )
+        .catch(err => err.response)
+)

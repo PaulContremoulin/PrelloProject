@@ -17,6 +17,7 @@ export class LoginToBeConnected extends React.Component {
         super(props);
         this.state = {
             'badAccount': false,
+            'emailConfirmed': true,
             'username': '',
             'password': '',
         };
@@ -33,15 +34,8 @@ export class LoginToBeConnected extends React.Component {
 
     handleReset = () => {
         this.setState({
-            'badAccount': true,
             'username': '',
             'password': '',
-        });
-    };
-
-    onDismiss = () => {
-        this.setState({
-            'badAccount': false
         });
     };
 
@@ -58,23 +52,37 @@ export class LoginToBeConnected extends React.Component {
         const username = this.state.username,
             password = this.state.password;
         loginUser(username, password)
-            .then(res => ( res.status < 400 ) ? this.props.setLogin(res.data) : Promise.reject("Error") )
-            .then( () => history.push('/home') )
-            .catch(
-                this.handleReset()
-            )
+            .then(res => {
+                if (res.status === 200) {
+                    this.props.setLogin(res.data);
+                    history.push('/home')
+                } else if (res.status === 403) {
+                    this.handleReset();
+                    this.setState({emailConfirmed:false, badAccount:false});
+                } else {
+                    this.handleReset();
+                    this.setState({emailConfirmed:true, badAccount:true});
+                }
+            })
+            .catch(err => {
+                this.handleReset();
+                this.setState({emailConfirmed:true, badAccount:true});
+            })
     };
 
     render() {
-        const {username, password, badAccount} = this.state;
+        const {username, password, badAccount, emailConfirmed} = this.state;
         return (
             <Container>
                 <Row>
                     <Col className="Login" md={{size: 6, offset: 3}}>
                         <h2 align="center">Sign In</h2>
                         <Form className="form" onSubmit={(e) => this.submitForm(e)}>
-                            <Alert color="danger" isOpen={badAccount} toggle={() =>this.onDismiss() }>
+                            <Alert color="danger" isOpen={badAccount} toggle={() =>this.setState({badAccount: false}) }>
                                 Error, bad account
+                            </Alert>
+                            <Alert color="danger" isOpen={!emailConfirmed} toggle={() =>this.setState({emailConfirmed: true}) }>
+                                Confirm your email address before login
                             </Alert>
                             <Col>
                                 <FormGroup>
