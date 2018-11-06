@@ -24,15 +24,15 @@ ReactDOM.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Router history={history}>
-            <div>
+            <div className="index">
                 <Route exact path="/" component={MainPage}/>
-                <Route path="/login" component={LoginPage}/>
-                <Route path="/registration" component={RegistrationPage}/>
-                <Route path="/reset/password" component={ResetPswdPage}/>
-                <Route path="/home" component={HomePage}/>
-                <Route path="/account" component={AccountPage}/>
-                <Route path='/login/reset/:idmembre/password' component={ChangePswd}/>
-                <Route path="/board" component={BoardPage}/>
+                <Route exact path="/login" component={LoginPage}/>
+                <Route exact path="/registration" component={RegistrationPage}/>
+                <Route exact path="/reset/password" component={ResetPswdPage}/>
+                <Route exact path="/home" component={HomePage}/>
+                <Route exact path="/account" component={AccountPage}/>
+                <Route exact path="/login/reset/:idmembre/password" component={ChangePswd}/>
+                <Route exact path="/board" component={BoardPage}/>
             </div>
         </Router>
       </PersistGate>

@@ -26,10 +26,10 @@ export class MainPage extends React.Component {
                 <Container>
                     <Row>
                         <Col className="contentRight" xs={12} sm={6}>
-                            <h1 className="title">Prello is a collaboration tool that organizes your projects into boards.</h1>
+                            <h1 className="content">Prello is a collaboration tool that organizes your projects into boards.</h1>
                         </Col>
                         <Col className="contentLeft" xs={12} sm={{size:5, offset:1}}>
-                            <h1 className="title"> Ready ?</h1>
+                            <h1 className="content"> Ready ?</h1>
                             <Button onClick={() => this.redirectionRegistration()}>Create your account</Button>
                         </Col>
                     </Row>

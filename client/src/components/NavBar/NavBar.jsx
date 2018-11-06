@@ -34,6 +34,10 @@ export class NavBarToBeConnected extends React.Component {
         history.push('/registration')
     };
 
+    redirectionAccount = () => {
+        history.push('/account')
+    };
+
     render() {
         const {
             user,
@@ -44,7 +48,7 @@ export class NavBarToBeConnected extends React.Component {
                 {!(user.member) ?
                     <NavbarBrand><img onClick={() => this.redirectionMain()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
                     :
-                    <NavbarBrand><img onClick={() => this.redirectionMain()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
+                    <NavbarBrand><img onClick={() => this.redirectionHome()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
                 }
                 {!(user.member) && !(changepswd==="true") &&
                 <Collapse navbar>
@@ -62,7 +66,7 @@ export class NavBarToBeConnected extends React.Component {
                 <Collapse navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink className="helpNavItem" href="#" >My account</NavLink>
+                            <NavLink className="helpNavItem" href="#" onClick={() => this.redirectionAccount()}>My account</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink className="helpNavItem" href="#" onClick={ () => this.logOut() } >Log out</NavLink>
