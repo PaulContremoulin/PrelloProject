@@ -1,9 +1,9 @@
 // Modules
 import React from 'react';
 import ReactLoading from 'react-loading';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Button } from 'reactstrap';
 
-import history from '../../history';
+import { history } from '../../history';
 
 // constants and actions
 import {setLogin} from "../../actions/signActions";
@@ -32,7 +32,7 @@ export default class GithubPage extends React.Component  {
         <div className="GithubPage">
           <Row>
             <Col>
-              <ReactLoading type={"spinningBubbles"} color={"#1a1a1a"} height={'5%'} width={'50%'} />
+              <ReactLoading type={"spinningBubbles"} color={"#1a1a1a"} height={'5%'} width={'5%'} />
             </Col>
           </Row>
         </div>
