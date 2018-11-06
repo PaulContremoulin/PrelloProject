@@ -1,0 +1,17 @@
+.title {
+    margin-top: 20px;
+    color: ghostwhite;
+}
+
+.MainPage {
+    background-color: #99c2ff;
+    height: 100vh;
+}
+
+.contentRight {
+    margin-top: 100px;
+}
+
+.contentLeft {
+    margin-top: 100px;
+}

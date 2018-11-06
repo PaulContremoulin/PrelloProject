@@ -42,9 +42,9 @@ export class NavBarToBeConnected extends React.Component {
         return (
             <Navbar expand="md">
                 {!(user.member) ?
-                    <NavbarBrand><a href="#" onClick={() => this.redirectionMain()}><img src={logo} style={{width:100, marginTop: -5}} /></a></NavbarBrand>
+                    <NavbarBrand><img onClick={() => this.redirectionMain()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
                     :
-                    <NavbarBrand><a href="#" onClick={() => this.redirectionHome()}><img src={logo} style={{width:100, marginTop: -5}} /></a></NavbarBrand>
+                    <NavbarBrand><img onClick={() => this.redirectionMain()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
                 }
                 {!(user.member) && !(changepswd==="true") &&
                 <Collapse navbar>
