@@ -7,14 +7,16 @@ import { history } from '../../history';
 
 // constants and actions
 import {setLogin} from "../../actions/signActions";
+import {NavBar} from "../../components/NavBar/NavBar";
 
 // Css...
 import "./GithubPage.css"
 
 // Requests
 import { githubAuth } from "../../requests/githubAuth";
+import {connect} from "react-redux";
 
-export default class GithubPage extends React.Component  {
+export class GithubPageToBeConnected extends React.Component  {
     constructor(props) {
         super(props);
     }
@@ -22,21 +24,38 @@ export default class GithubPage extends React.Component  {
     componentDidMount() {
       const code = this.props.location.search.split("?code=")[1];
       githubAuth(code)
-      .then(res => ( res.status < 400 ) ? setLogin(res.data.member) : Promise.reject("Error") )
-      .then( () => history.push('/home') )
-      .catch( err => console.log(err) || history.push('/') )
+          .then(res => {
+              if (res.status === 200) {
+                  this.props.setLogin(res.data);
+                  history.push('/home');
+              } else {
+                  history.push('login');
+              }
+          })
+          .catch(res => {
+              history.push('login');
+          })
     }
 
     render() {
       return (
         <div className="GithubPage">
-          <Row>
-            <Col>
-              <ReactLoading type={"spinningBubbles"} color={"#1a1a1a"} height={'5%'} width={'5%'} />
-            </Col>
-          </Row>
+            <NavBar noLink="true"/>
+              <div>
+                  <ReactLoading className="load" type={"spinningBubbles"} color={"#1a1a1a"} height={'5%'} width={'5%'} />
+              </div>
         </div>
       )
     }
 
 }
+
+const mapStateToProps = (state, props) => ({});
+const mapDispatchToProps = (dispatch) => ({
+    setLogin: (res) => dispatch( setLogin(res)),
+});
+
+export const GithubPage = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)( GithubPageToBeConnected )

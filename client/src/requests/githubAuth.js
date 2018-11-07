@@ -1,9 +1,14 @@
-import axios from 'axios';
+import { getRequest } from './genericRequest';
 
 /**
-*/
+ * @desc github authentication
+ * @param { String } code
+ * @return status code
+ */
 export const githubAuth = (
-  code
+    code
 ) => (
-  axios.get( process.env.REACT_APP_API_URL+'/api/auth/github/callback?code=' + code )
-)
+    getRequest('/api/auth/github/callback?code=' + code )
+        .then( response => response )
+        .catch(err => err.response)
+);
