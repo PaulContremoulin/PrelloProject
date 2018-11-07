@@ -7,6 +7,7 @@ let debug = require('debug')('app:members');
 let mongoose = require('mongoose');
 let token = require('./../middlewares/TokenAccess');
 let memberAccess = require('./../middlewares/MemberAccess');
+
 /**
  * Get the member attached at the id given
  * @route GET /members/{id}

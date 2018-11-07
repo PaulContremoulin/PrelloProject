@@ -5,6 +5,7 @@ let Member = require('./../models/Member');
 let List = require('./../models/List');
 let debug = require('debug')('app:board');
 let boardAccess = require('./../middlewares/BoardAccess');
+const token = require('./../middlewares/TokenAccess');
 
 /**
  * Create a board
@@ -17,7 +18,7 @@ let boardAccess = require('./../middlewares/BoardAccess');
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/', function(req, res) {
+router.post('/', token, function(req, res) {
 
     let newBoard = new Board(req.body);
 
@@ -52,7 +53,7 @@ router.post('/', function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id', boardAccess.readRights(), function(req, res) {
+router.get('/:id', token, boardAccess.readRights(), function(req, res) {
 
     req.query._id = req.params.id;
 
@@ -75,7 +76,7 @@ router.get('/:id', boardAccess.readRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/:id/lists', boardAccess.updateRights(), function(req, res) {
+router.post('/:id/lists', token, boardAccess.updateRights(), function(req, res) {
 
     req.body.idBoard = req.params.id;
 
@@ -111,7 +112,7 @@ router.post('/:id/lists', boardAccess.updateRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id/lists', boardAccess.readRights(), function(req, res) {
+router.get('/:id/lists', token, boardAccess.readRights(), function(req, res) {
 
     Board.findById(req.params.id, function (err, board) {
         if (err) debug('GET boards/:id/lists error : ' + err);
@@ -142,7 +143,7 @@ router.get('/:id/lists', boardAccess.readRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.put('/:id/members/:idMember', boardAccess.updateRights(), function(req, res) {
+router.put('/:id/members/:idMember', token, boardAccess.updateRights(), function(req, res) {
 
     let board = req.board;
     let type = req.query.type ? req.query.type : 'observer';

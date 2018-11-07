@@ -4,6 +4,7 @@ let Card = require('./../models/Card');
 let debug = require('debug')('app:card');
 let CardAccess = require('./../middlewares/CardAccess');
 let mongoose = require('mongoose');
+const token = require('./../middlewares/TokenAccess');
 
 /**
  * Create a card
@@ -17,7 +18,7 @@ let mongoose = require('mongoose');
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/', CardAccess.createRights(), function(req, res) {
+router.post('/', token, CardAccess.createRights(), function(req, res) {
 
     let newCard = new Card(req.body);
 
@@ -44,7 +45,7 @@ router.post('/', CardAccess.createRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id', CardAccess.readRights(), function(req, res) {
+router.get('/:id', token, CardAccess.readRights(), function(req, res) {
 
     Card.findById(req.params.id, function(err, card){
         if(err) debug('GET cards/:id error : ' + err);
@@ -69,7 +70,7 @@ router.get('/:id', CardAccess.readRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.put('/:id', CardAccess.updateRights(), function(req, res) {
+router.put('/:id', token, CardAccess.updateRights(), function(req, res) {
 
     let card = req.card;
 
@@ -102,7 +103,7 @@ router.put('/:id', CardAccess.updateRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/:id/idMembers', CardAccess.updateRights(), function(req, res) {
+router.post('/:id/idMembers', token, CardAccess.updateRights(), function(req, res) {
 
     if(!req.query.value) return res.status(400).json({message:'Member id missing'});
 

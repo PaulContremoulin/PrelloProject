@@ -3,6 +3,7 @@ let router = express.Router();
 let List = require('./../models/List');
 let listAccess = require('./../middlewares/ListAccess');
 let debug = require('debug')('app:lists');
+const token = require('./../middlewares/TokenAccess');
 
 /**
  * Get a list
@@ -16,7 +17,7 @@ let debug = require('debug')('app:lists');
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id', listAccess.readRights(), function(req, res) {
+router.get('/:id', token, listAccess.readRights(), function(req, res) {
 
     req.body._id = req.params.id
 
@@ -42,7 +43,7 @@ router.get('/:id', listAccess.readRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.put('/:id/closed', listAccess.updateRights(), function(req, res) {
+router.put('/:id/closed', token, listAccess.updateRights(), function(req, res) {
 
     if(!req.query.value) res.status(400).json({message:'Value is missing'});
 
@@ -75,7 +76,7 @@ router.put('/:id/closed', listAccess.updateRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.put('/:id/name', listAccess.updateRights(), function(req, res) {
+router.put('/:id/name', token, listAccess.updateRights(), function(req, res) {
     if(!req.query.value)
         res.status(400).json({message:'Value is missing'});
 
@@ -106,7 +107,7 @@ router.put('/:id/name', listAccess.updateRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.put('/:id/pos', listAccess.updateRights(), function(req, res) {
+router.put('/:id/pos', token, listAccess.updateRights(), function(req, res) {
     if(!req.query.value) res.status(400).json({message:'Value is missing'});
 
     let list = req.list;
