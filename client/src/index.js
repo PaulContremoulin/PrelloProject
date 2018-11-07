@@ -22,6 +22,7 @@ import {ChangePswd} from "./components/SignInOrSignUp/ChangePswd/ChangePswd";
 import {BoardPage} from './pages/BoardPage/BoardPage';
 import {PageNoFound} from "./pages/PageNoFound/PageNoFound";
 import {GithubPage} from "./pages/GithubPage/GithubPage";
+import {CirclePage} from "./pages/CirclePage/CirclePage";
 
 console.log(isLogged());
 
@@ -38,6 +39,7 @@ ReactDOM.render(
                     <Route exact path='/home' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<HomePage />))}/>
                     <Route exact path='/account' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<AccountPage />))}/>
                     <Route exact path='/login/reset/:idmembre/password' component={ChangePswd}/>
+                    <Route exact path='/circle/:namecircle' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<CirclePage />))}/>
                     <Route exact path='/board' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<BoardPage />))}/>
                     <Route path='/login/github' component={GithubPage}/>
                     <Route component={PageNoFound}/>
