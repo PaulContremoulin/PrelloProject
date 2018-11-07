@@ -3,18 +3,13 @@ import {getRequest, postRequest} from './genericRequest';
 /**
 *
 */
-export const addCircleToDB = (
+export const createCircle = (
   userId,
-  circleName
+  name
 ) => (
-  postRequest( '/api/circle/', {
-    userId,
-    circleName
-  })
-  .then( response => response.data )
-      /*
-  .catch( error => {code: error.code, message: error.message} )
-  */
+  postRequest( '/api/members/'+userId+'/circles?name='+name)
+  .then( response => response )
+  .catch( error => error.response )
 )
 
 export function getCirclesUser(idUser) {
@@ -30,16 +25,10 @@ export function getCirclesUser(idUser) {
     })
 }
 
-export function createCircle() { //TODO : precise what a circle need
-    return new Promise((resolve, reject) =>
-    {
-        postRequest( '/api/circles', { // val: var
-        })
-            .then(response => {
-                resolve(response)
-            })
-            .catch(error => {
-                reject(error)
-            })
-    })
-}
+export const getBoardsCircle = (
+    circleid
+) => (
+    getRequest( '/api/circles/'+circleid)
+        .then( response => response )
+        .catch( error => error.response )
+)

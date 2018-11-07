@@ -5,6 +5,7 @@
  */
 export const FETCH_CIRCLES = 'FETCH_CIRCLES';
 export const ADD_CIRCLE = 'ADD_CIRCLE';
+export const SET_CIRCLE = 'SET_CIRCLE';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -28,12 +29,17 @@ export const fetchCircles = (circles) => {
  * @desc add a circle
  * @return ADD_CIRCLE action
  */
-export const addCircle = (circleId, circleName) => {
+export const addCircle = (data) => {
     return {
         type: ADD_CIRCLE,
-        circle: {
-          circleId: circleId,
-          circleName: circleName
-        }
+        circle: data
+    }
+};
+
+
+export const setCircle = (circle) => {
+    return {
+        type: SET_CIRCLE,
+        circle
     }
 };

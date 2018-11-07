@@ -2,59 +2,88 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import './MenuHome.css';
-import {Row, Col} from 'reactstrap';
-
+import {Row, Col, ListGroup, ListGroupItem} from 'reactstrap';
+import {history} from "../../history";
 
 // Css...
 
 // Actions & Constant
 import {CreateCircle} from "../CreateCircle/CreateCircle";
-import {addCircle} from "../../actions/circleActions";
-import {addCircleToDB} from "../../requests/circle";
-import {AddTeam} from "../AddTeam/AddTeam";
-import {addTeam} from "../../actions/teamActions";
-import {addTeamToDB} from "../../requests/team";
+import {fetchCircles} from "../../actions/circleActions";
+import {getCirclesUser} from "../../requests/circle";
+import {getBoardsCircle} from "../../requests/circle";
+import {setCircle} from "../../actions/circleActions";
 
-export const MenuHomeToBeConnected = ({user, circles, teams, addCircle, addTeam}) => (
-    <div className="vertical-menu">
-        <Row>
-            <Col>
-                <h3 className="title">Boards</h3>
-                <a href="#">Personnal's Boards</a>
-                <h3 className="title">Circles<CreateCircle
-                        addCircle={(circleId, circleName) => addCircle(circleId, circleName)}
-                        addCircleToDB={(circleName) => addCircleToDB(user.userId, circleName)}
-                    />
 
-                </h3>
-                {
-                    // circles.map(( circle ) => <a href="#">circle.circleName</a> )
-                    // .reduce(( childArray, child ) => childArray.concat( child ), [])
+export class MenuHomeToBeConnected extends React.Component {
+
+    redirectionCircle = (id, name) => {
+        getBoardsCircle(id)
+            .then(res => {
+                if(res.status === 200){
+                    /*
+                    console.log(res.data);
+                    this.props.setCircle(res.data);
+                    */
+                    history.push('/circle/'+name);
+                } else {
+                    console.log("error");
                 }
-                <h3 className="title">Teams
-                    <AddTeam
-                        addTeam={(teamId, teamName) => addTeam(teamId, teamName)}
-                        addTeamToDB={(teamName) => addTeamToDB(user.userId, teamName)}
-                    />
-                </h3>
-                {
-                    // teams.map(( team ) => <a href="#">team.teamName</a> )
-                    // .reduce(( childArray, child ) => childArray.concat( child ), [])
-                }
-            </Col>
-        </Row>
-    </div>
-)
+            })
+            .catch(error => {console.log(error)});
+    };
+
+    redirectionBoardPersonnal = () => {
+        history.push('/home');
+    };
+
+    render() {
+        return (
+            <div className="vertical-menu">
+                <Row>
+                    <Col xs={12}>
+                        <h3 className="title">Boards</h3>
+                    </Col>
+                    <Col xs={12}>
+                        <ListGroup>
+                            <ListGroupItem tag="a" onClick={() => this.redirectionBoardPersonnal()} action>Personnal's boards</ListGroupItem>
+                        </ListGroup>
+                    </Col>
+                    <Col xs={8} sm={4}>
+                        <h3 className="title">Circles</h3>
+                    </Col>
+                    <Col xs={2} sm={8}>
+                        <CreateCircle/>
+                    </Col>
+                    <Col xs={12}>
+                        <ListGroup>
+                            {this.props.circles.map(circle => {
+                                return (
+                                    <ListGroupItem tag="a" onClick={() => this.redirectionCircle(circle._id, circle.name)} action>{circle.name}</ListGroupItem>
+                                )
+                            })}
+                        </ListGroup>
+                    </Col>
+                </Row>
+            </div>
+        )
+    }
+
+    componentDidMount() {
+        getCirclesUser(this.props.user.member._id)
+            .then(res => {this.props.fetchCircles(res.data)})
+            .catch(error => {console.log(error)})
+    }
+}
 
 const mapStateToProps = (state, props) => ({
     user: state.user,
     circles: state.circles,
-    teams: state.teams,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    addCircle: (circleId, circleName) => dispatch(addCircle(circleId, circleName)),
-    addTeam: (teamId, teamName) => dispatch(addTeam(teamId, teamName)),
+    fetchCircles: (res) => dispatch( fetchCircles(res)),
+    setCircle: (res) => dispatch( setCircle(res)),
 })
 
 export const MenuHome = connect(

@@ -34,7 +34,7 @@ import { FETCH_CIRCLES, ADD_CIRCLE } from "../../actions/circleActions";
 export const circles = ( state = [], action ) => {
   switch( action.type ){
     case FETCH_CIRCLES :
-      return state;
+      return action.circles;
     case ADD_CIRCLE :
       return [
         ...state,
