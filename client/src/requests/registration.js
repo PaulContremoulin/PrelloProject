@@ -1,5 +1,5 @@
 import { postRequest } from './genericRequest';
-
+import { axios } from 'axios';
 /**
 * @desc add a new user to the database
 * @param { String } username
