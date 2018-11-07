@@ -5,7 +5,7 @@
  */
 export const FETCH_CIRCLES = 'FETCH_CIRCLES';
 export const ADD_CIRCLE = 'ADD_CIRCLE';
-export const SET_CIRCLE = 'SET_CIRCLE';
+export const FETCH_CIRCLE = 'FETCH_CIRCLE';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -39,7 +39,7 @@ export const addCircle = (data) => {
 
 export const setCircle = (circle) => {
     return {
-        type: SET_CIRCLE,
+        type: FETCH_CIRCLE,
         circle
     }
 };

@@ -6,6 +6,7 @@ import {Container, Row, Col, Alert} from 'reactstrap';
 
 // Actions & Constant
 import {connect} from "react-redux";
+import {CardBoard} from "../CardBoard/CardBoard";
 
 export class ContentCircleToBeConnected extends React.Component {
     render() {
@@ -14,13 +15,19 @@ export class ContentCircleToBeConnected extends React.Component {
                 <Container className="contentHome">
                     <Row>
                         <Col>
-                            <h2>Personnal's Boards</h2>
+                            <h2>{this.props.circle.name}</h2>
                         </Col>
                     </Row>
                 </Container>
                 <Container className="contentBoard">
                     <Row>
-                        <h1>ok</h1>
+                        {this.props.circle.idBoards.map(board => {
+                            return(
+                                <Col className="displayBoard" xs={12} sm={6} md={3}>
+                                    <CardBoard board={board} key={ board._id }/>
+                                </Col>
+                            )
+                        })}
                     </Row>
                 </Container>
             </div>
