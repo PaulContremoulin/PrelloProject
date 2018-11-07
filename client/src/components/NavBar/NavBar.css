@@ -1,0 +1,19 @@
+.navbar {
+    background-color: #6495ED;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+.navbar-brand:hover {
+    color: white;
+}
+
+.helpNavItem {
+    color : white;
+}
+
+.helpNavItem:hover {
+    color: gainsboro;
+}

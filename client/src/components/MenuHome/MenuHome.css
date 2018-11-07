@@ -1,0 +1,27 @@
+.vertical-menu {
+    height: 100vh;
+    background-color: #eee;
+}
+
+.title {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.vertical-menu a {
+    color: black;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+}
+
+.vertical-menu a:hover {
+    background-color: #ccc;
+}
+
+.vertical-menu a.active {
+    background-color: #4CAF50;
+    color: white;
+}

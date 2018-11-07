@@ -1,5 +1,15 @@
 import { combineReducers } from "redux";
-import visibilityFilter from "./visibilityFilter";
-import todos from "./todos";
 
-export default combineReducers({ todos, visibilityFilter });
+import { user } from './user';
+import { boards } from './boards';
+import { board } from './board';
+import { teams } from './teams';
+import { circles } from './circles';
+
+export default combineReducers({
+    user,
+    boards,
+    board,
+    teams,
+    circles
+});

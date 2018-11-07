@@ -1,20 +1,56 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+/**
+* @organization POLYTECH
+* @author PAUL CONTREMOULIN
+* @project PRELLO
+*/
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// Dependencies
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan-debug');
+const passport = require('passport');
+const dotenv = require('dotenv');
+const cors = require('cors');
 
-var app = express();
-
-app.use(logger('dev'));
+// Initialization
+const app = express();
+app.use(cors())
+app.use(logger('app:api', 'dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
 
-app.use('/api/', indexRouter);
-app.use('/api/users', usersRouter);
+// Environment configuration
+const environmentPath = path.resolve('./environments/.' + app.get('env') + '.env' );
+dotenv.config({ path: environmentPath});
+
+// Database & passport require
+require('./config/database');
+require('./config/passport');
+
+// Swagger
+const expressSwagger = require('express-swagger-generator')(app);
+const confSwagger = require('./config/swagger');
+expressSwagger(confSwagger.options);
+
+// Routes
+const indexRouter = require('./routes/IndexRoutes');
+const authRouter = require('./routes/AuthRoutes');
+const memberRouter = require('./routes/MemberRoutes');
+const boardRouter = require('./routes/BoardRoutes');
+const ListRoutes = require('./routes/ListRoutes');
+const CardRoutes = require('./routes/CardRoutes');
+const CircleRoutes = require('./routes/CircleRoutes');
+
+app.use('/api', indexRouter);
+app.use('/api', authRouter);
+app.use('/api/members', memberRouter);
+app.use('/api/boards', boardRouter);
+app.use('/api/lists', ListRoutes);
+app.use('/api/cards', CardRoutes);
+app.use('/api/circles', CircleRoutes);
 
 module.exports = app;

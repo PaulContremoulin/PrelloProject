@@ -1,0 +1,13 @@
+.List {
+  color: rgb(23, 57, 77);
+  background-color: #dfe3e6;
+  display: inline-block;
+  font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  vertical-align: top;
+  white-space: nowrap;
+  margin-left: 4px;
+  height: 100% !important;
+}
