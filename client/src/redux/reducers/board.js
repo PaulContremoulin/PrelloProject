@@ -11,6 +11,7 @@ import { combineReducers } from 'redux';
 import { DEFAULT_BOARD } from '../../constants';
 
 import { SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIST } from '../../actions/boardActions';
+import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE } from '../../actions/cardActions';
 
 
 /******************************************************************************/
@@ -121,10 +122,38 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
       )
     case MOVE_LIST : //
       return action.lists
+    case CARD_SET_NAME :
+    case CARD_SET_DUE :
+    case CARD_SET_DESC :
+    case CARD_SET_CLOSED :
+      return state.map(
+        (list, index) => !(list.id == action.list.id) ? list :
+        {
+          ...list,
+          cards: list.cards.map(
+            (cardObj, index) => card( cardObj, action )
+          )
+        }
+      )
     default:
       return state ;
   }
 };
+
+const card = ( state = {}, action ) => {
+  switch (action.type) {
+  case CARD_SET_NAME :
+    return (action.card.id === state.id ) ? { ...state, name: action.card.name } : state
+  case CARD_SET_DUE :
+    return (action.card.id === state.id ) ? { ...state, name: action.card.due } : state
+  case CARD_SET_DESC :
+    return (action.card.id === state.id ) ? { ...state, name: action.card.desc } : state
+  case CARD_SET_CLOSED :
+    return (action.card.id === state.id ) ? { ...state, name: action.card.closed } : state
+  default:
+    return state ;
+  }
+}
 
 
 // combineReducers is a redux function which associate object key with a reducers

@@ -13,8 +13,7 @@ import {addList, moveList, addCard, moveCard, moveCardFromList} from '../../acti
 import { Container, Row, Col, CardDeck } from 'reactstrap';
 import './Board.css';
 
-const ContainerBoard = styled.div`
-`;
+const ContainerBoard = styled.div``;
 
 export class BoardToBeConnected extends React.Component {
   constructor(props) {
@@ -104,10 +103,11 @@ export class BoardToBeConnected extends React.Component {
               onDragEnd={ this.onDragEnd }
             >
             <Droppable droppableId="allLists" direction="horizontal" type="list" >
-              {(provided) =>
+              {(provided, snapshot) =>
                 <ContainerBoard
                 {...provided.droppableProps}
                 ref={provided.innerRef}
+                isDragging={ snapshot.isDragging }
                 >
                 <CardDeck style={{"width": (board.lists.length+1)*300 + "px"}}>
                     {board.lists.map( (list, index) => (

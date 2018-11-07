@@ -31,7 +31,7 @@ export class CardComponent extends React.Component {
   }
 
   render() {
-    const { card, index, openModal } = this.props;
+    const { card, index, listId, openModal } = this.props;
     const { open } = this.state;
     return(
       <div className="Card">
@@ -58,7 +58,7 @@ export class CardComponent extends React.Component {
               </ContainerCard>
             }
           </Draggable>
-          <CardModal card={card} open={open} closeModal={() => this.closeModal()} />
+          <CardModal listId={listId} card={card} open={open} closeModal={() => this.closeModal()} />
         </Row>
       </div>
     )

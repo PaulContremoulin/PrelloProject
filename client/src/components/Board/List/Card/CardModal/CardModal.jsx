@@ -28,7 +28,7 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlur = (event) => {
     const newName = event.target.value;
     if (newName !== this.props.card.name) {
-      this.props.setName( 1, 1, newName ); // Todo
+      this.props.setName( this.props.listId, this.props.card.id, newName ); // Todo
     }
     this.setState({ openInputHeader: false })
   }
@@ -42,6 +42,7 @@ export class CardModalToBeConnected extends React.Component {
       const {
         card,
         open,
+        listId,
         closeModal,
       } = this.props;
       return (
@@ -66,7 +67,7 @@ export class CardModalToBeConnected extends React.Component {
                   <h6>Deadline : </h6>
                 </Row>
                 <Row>
-                  <Col className="SideModalCol" md="4">
+                  <Col className="SideModalCol" md="3">
                     <Row className="SideModalRow">
                       <Button color="secondary">Deadline</Button>
                     </Row>
@@ -88,12 +89,13 @@ export class CardModalToBeConnected extends React.Component {
                       <h4>Members : </h4>
                     </Row>
                     <Row className="MainModalRow">
-                      <h4>Description : {card.desc}</h4>
-                    </Row>
-                    <Row className="MainModalRow">
-                      <h4>Add a comment : </h4>
+                      <h4>Description :  </h4>
+                      <p>{card.desc}</p>
                     </Row>
                   </Col>
+                </Row>
+                <Row className="MainModalRow">
+                  <h4>Add a comment : </h4>
                 </Row>
               </ModalBody>
               <ModalFooter>

@@ -11,7 +11,7 @@ import {CreateCircle} from "../CreateCircle/CreateCircle";
 import {connect} from "react-redux";
 import {CardBoard} from "../CardBoard/CardBoard";
 import {CardCircle} from "../CardCircle/CardCircle";
-import {getBoardsUser} from "../../requests/boards";
+import {getBoardsUser, getListsOfBoard} from "../../requests/boards";
 import {getCirclesUser} from "../../requests/circle";
 import {fetchBoards, setBoard} from "../../actions/boardActions";
 import {fetchCircles} from "../../actions/circleActions";
@@ -35,6 +35,7 @@ export class ContentHomeToBeConnected extends React.Component {
                                     return(
                                         <Col className="displayBoard" xs={12} sm={6} md={3} key={ board._id }>
                                             <CardBoard board={board} setBoard={() => setBoard(board)} />
+                                            <button type="button" onClick={ () => getListsOfBoard(board._id, true)} >get</button>
                                         </Col>
                                     )
                                 })}

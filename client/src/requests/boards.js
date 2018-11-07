@@ -41,4 +41,11 @@ export function getBoardsUser(idUser) {
     })
 }
 
+  // export function getBoardById(idBoard) {
+  //   return getRequest('/api/boards/' + idBoard)
+  //   .then( res => res )
+  // }
 
+  export function getListsOfBoard(idBoard, withCards = false, archived = false) {
+      return getRequest('/api/boards/' + idBoard + '/lists/?cards=' + withCards)
+  }

@@ -51,7 +51,7 @@ export class List extends React.Component {
                 <Card className="List" style={{"width": "272px", "margin-left": "8px"}}>{
                   list.cards.map( (card, index) => (
                     <div key={index}>
-                      <CardComponent card={card} index={index} />
+                      <CardComponent listId={list.id} card={card} index={index} />
                     </div>
                   ) )
                 }{provided.placeholder}
