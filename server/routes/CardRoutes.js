@@ -23,7 +23,7 @@ router.post('/', token, CardAccess.createRights(), function(req, res) {
     let newCard = new Card(req.body);
 
     newCard.validate(function (err) {
-        if (err) return res.status(400).json({message : err._message});
+        if (err) return res.status(400).json({message : err.message});
         newCard.save(function (err) {
             if (err) {
                 debug('POST cards error : ' + err);

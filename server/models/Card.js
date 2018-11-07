@@ -20,6 +20,11 @@ let cardSchema = new Schema({
             ref : 'List',
             required : true
         },
+        idBoard : {
+            required  : true,
+            type      : Schema.Types.ObjectId,
+            ref : 'Board'
+        },
         idMembers : {
             type : [{
                 type : mongoose.Schema.ObjectId,
