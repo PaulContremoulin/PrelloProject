@@ -29,9 +29,13 @@ export class MainPage extends React.Component {
                             <h1 className="content">Prello is a collaboration tool that organizes your projects into boards.</h1>
                         </Col>
                         <Col className="contentLeft" xs={12} sm={{size:5, offset:1}}>
-                            <h1 className="content"> Ready ?</h1>
-                            <Button onClick={() => this.redirectionRegistration()}>Create your account</Button>
-                            <Button onClick={() => this.redirectionLogin()}>Log In</Button>
+                            <Col>
+                                <h1 className="content"> Ready ?</h1>
+                                <Button onClick={() => this.redirectionRegistration()}>Create your account</Button>
+                            </Col>
+                            <Col>
+                                <Button className="buttonLog" onClick={() => this.redirectionLogin()}>Log In</Button>
+                            </Col>
                         </Col>
                     </Row>
                 </Container>
