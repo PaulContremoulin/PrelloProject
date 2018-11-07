@@ -64,7 +64,7 @@ router.get('/:id/boards', token, memberAccess.readRights(), function(req, res) {
  * @route POST /members/{id}/circles
  * @group members - Operations about members
  * @param {string} id.path.required - member's id.
- * @param {Circle} circle.body.required - the circle to add
+ * @param {string} name.param.required - circle's name.
  * @returns {Circle} 201 - Circle created successfully
  * @returns {Error}  400 - Bad request, token no provided
  * @returns {Error}  403 - Forbidden, token expired or not exist

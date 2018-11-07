@@ -82,14 +82,15 @@ router.post('/:id/lists', token, boardAccess.updateRights(), function(req, res) 
 
     req.body.idBoard = req.params.id;
 
-    Board.findById(req.params.id, function (err, board) {
+    Board.findById(req.params.id)
+        .exec(function (err, board) {
         if (err) debug('POST boards/:id/lists error : ' + err);
         if (!board)
             return res.status(404).json({message:'Board not found'});
 
         let newList = new List(req.body);
         newList.validate(function (err) {
-            if (err) return res.status(400).json({message:err._message});
+            if (err) return res.status(400).json({message:err.message});
 
             newList.save(function (err) {
                 if (err) {
@@ -115,20 +116,20 @@ router.post('/:id/lists', token, boardAccess.updateRights(), function(req, res) 
  * @security JWT
  */
 router.get('/:id/lists', token, boardAccess.readRights(), function(req, res) {
-
-    Board.findById(req.params.id, function (err, board) {
-        if (err) debug('GET boards/:id/lists error : ' + err);
-        if (!board) return res.status(404).json({message:'Board not found'});
-
-        req.query.idBoard = board._id;
-
-        List.find(req.query, function(err, list){
-            if(err) {
-                debug('GET boards/:id/lists error : ' + err)
-                return res.status(500).json({message:'Unexpected internal error'});
-            }
-            return res.status(200).json(list)
-        });
+    req.query.idBoard = req.board._id;
+    var oppenCard = false;
+    if(req.query.cards){
+        if(req.query.cards === 'open') oppenCard = true;
+        delete req.query.cards;
+    }
+    var query = List.find(req.query);
+    if(oppenCard) query.populate('cards');
+    query.exec(function(err, lists){
+        if(err) {
+            debug('GET boards/:id/lists error : ' + err)
+            return res.status(500).json({message:'Unexpected internal error'});
+        }
+        return res.status(200).json(lists)
     });
 });
 

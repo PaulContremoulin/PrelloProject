@@ -24,8 +24,15 @@ let listSchema = new Schema({
         }
     },
     {
+        toJSON: { virtuals: true },
         versionKey: false
     });
+
+listSchema.virtual('cards', {
+    ref: 'Card', // The model to use
+    localField: '_id', // Find people where `localField`
+    foreignField: 'idList' // is equal to `foreignField`
+});
 
 //boardSchema.plugin(uniqueValidator);
 
