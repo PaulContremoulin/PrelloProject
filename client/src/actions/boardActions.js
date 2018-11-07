@@ -59,6 +59,7 @@ export const fetchBoards = (boards) => {
  * @return SET_BOARD action
  */
 export const setBoard = (board) => {
+    console.log(board);
     return {
         type: SET_BOARD,
         board
@@ -70,27 +71,39 @@ export const setBoard = (board) => {
 /**
 * @desc
 */
-export const addList = (listName) => {
+export const addList = (listName, boardId) => {
   return {
       type: ADD_LIST,
       list: {
-        listName
+        id: "" + Math.floor(Math.random() * Math.floor(99999)),
+        name: listName,
+        close: false,
+        idBoard: boardId,
+        pos: Math.floor(Math.random() * Math.floor(99999)),
+        subscribed: false,
+        cards: []
       }
   }
 };
-
 
 /**
 * @desc
 */
 export const addCard = (cardName, listId) => {
+  console.log(cardName, listId);
   return {
       type: ADD_CARD,
       card: {
-        cardName
+        id: "" + Math.floor(Math.random() * Math.floor(9999999999)),
+        name: cardName,
+        closed: false,
+        desc: "",
+        due: null,
+        dueComplete: false,
+        pos: Math.floor(Math.random() * Math.floor(9999999999)),
       },
       list: {
-        listId
+        id: listId
       }
   }
 };
@@ -98,12 +111,10 @@ export const addCard = (cardName, listId) => {
 /**
 * @desc
 */
-export const moveList = (listId, index) => {
+export const moveList = (lists) => {
   return {
       type: MOVE_LIST,
-      list: {
-        listId
-      }
+      lists
   }
 };
 
@@ -122,12 +133,15 @@ export const moveCard = (list, indexOfList) => {
 /**
 * @desc
 */
-export const moveCardFromList = (cardId, index) => {
+export const moveCardFromList = (startList, indexStart, endList, indexEnd) => {
+  console.log(startList);
+  console.log(endList);
+  console.log(indexStart, indexEnd);
   return {
       type: MOVE_CARD_FROM_LIST,
-      card: {
-        cardId,
-        index
-      }
+      startList: startList,
+      endList: endList,
+      indexStart,
+      indexEnd
   }
 };

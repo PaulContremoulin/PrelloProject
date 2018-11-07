@@ -10,10 +10,9 @@ import './CardModal.css';
 export class CardModal extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
     }
 
-//     cardId : ID
+// cardId : ID
 // cardName : String
 // index : Int
 // associatedMembers : [ userId ]
@@ -22,11 +21,11 @@ export class CardModal extends React.Component {
 // comments : [ Comment ]
 
     render() {
-        const { card, open, openModal, closeModal } = this.props;
+        const { card, open, closeModal } = this.props;
         return (
             <div>
-              <Modal isOpen={open} toggle={() =>closeModal() } centered={true}>
-                <ModalHeader toggle={() =>closeModal()}>{card.cardName}</ModalHeader>
+              <Modal isOpen={open} toggle={() => closeModal() } centered={true}>
+                <ModalHeader toggle={() => closeModal()}>{card.name}</ModalHeader>
                 <ModalBody>
                   <Row>
                     <Col className="SideModalCol" md="4">
@@ -63,7 +62,7 @@ export class CardModal extends React.Component {
                   </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="secondary" onClick={() =>closeModal() }>Return</Button>
+                    <Button color="secondary" onClick={() => closeModal() }>Return</Button>
                 </ModalFooter>
               </Modal>
             </div>

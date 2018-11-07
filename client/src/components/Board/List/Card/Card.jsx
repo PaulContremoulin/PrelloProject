@@ -2,6 +2,7 @@ import React from 'react';
 import { Draggable } from "react-beautiful-dnd";
 
 // Components & Actions
+import { CardModal } from './CardModal/CardModal';
 
 // Css
 import { Container, Row, Col, Card, CardText, CardTitle, CardBody, Button } from 'reactstrap';
@@ -12,31 +13,97 @@ import styled from 'styled-components';
 const ContainerCard = styled.div`
 `;
 
-export const CardComponent = ({ card, index, openModal }) => (
-  <div className="Card">
-    <Row>
-      <Draggable
-        draggableId={card.cardId.toString()}
-        index={index}
-      >
-        {(provided) =>
-          <ContainerCard
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            ref={provided.innerRef}
+export class CardComponent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: false
+    }
+  }
+
+
+  openModal = () => {
+      this.setState({ open: true })
+  }
+
+  closeModal = () => {
+      this.setState({ open: false })
+  }
+
+  render() {
+    const { card, index, openModal } = this.props;
+    const { open } = this.state;
+    return(
+      <div className="Card">
+        <Row>
+          <Draggable
+            draggableId={card.id.toString()}
+            index={index}
           >
-            <Card
-              className="CardCeption"
-              onClick={() => openModal()}
-            >
-              <CardTitle>
-                {card.cardName}
-                <Button className="BtnUpdateCard" outline color="secondary" type="button"><Octicon name="pencil"/></Button>
-              </CardTitle>
-            </Card>
-          </ContainerCard>
-        }
-      </Draggable>
-    </Row>
-  </div>
-)
+            {(provided) =>
+              <ContainerCard
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                ref={provided.innerRef}
+              >
+                <Card
+                  className="CardCeption"
+                  onClick={() => this.openModal()}
+                >
+                  <CardTitle>
+                    {card.name}
+
+                  </CardTitle>
+                </Card>
+              </ContainerCard>
+            }
+          </Draggable>
+          <CardModal card={card} open={open} closeModal={() => this.closeModal()} />
+        </Row>
+      </div>
+    )
+  }
+}
+// <Button className="BtnUpdateCard" outline color="secondary" type="button"><Octicon name="pencil"/></Button>
+/*
+  id string
+  The ID of the card
+
+  checkItemStates array
+
+  closed boolean
+  Whether the card is closed (archived). Note: Archived lists and boards do not cascade archives to cards. A card can have closed: false but be on an archived board.
+
+  desc string
+  The description for the card. Up to 16384 chars.
+
+  due date
+  The due date on the card, if one exists
+
+  dueComplete boolean
+  Whether the due date has been marked complete
+
+  idBoard string
+  The ID of the board the card is on
+
+  idChecklists array of strings
+  An array of checklist IDs that are on this card
+
+  idLabels array of strings
+  An array of label IDs that are on this card
+
+  idList string
+  The ID of the list the card is in
+
+  idMembers array of strings
+  An array of member IDs that are on this card
+
+  labels array of Labels
+  Array of label objects on this card
+
+  name string
+  Name of the card
+
+  pos float
+  Position of the card in the list
+*/

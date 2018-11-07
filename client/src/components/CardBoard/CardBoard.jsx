@@ -1,18 +1,25 @@
 // Modules
 import React from 'react';
-import {Card, CardHeader, CardTitle, CardBody, CardText} from 'reactstrap';
+import { history } from '../../history';
 
 // Css...
+import {Card, CardHeader, CardTitle, CardBody, CardText} from 'reactstrap';
 
 // Actions & Constant
 
 export class CardBoard extends React.Component {
 
+    goToBoard = () => {
+      this.props.setBoard();
+      history.push('/board');
+    }
+
     render() {
+      const { board, setBoard } = this.props;
         return (
-            <Card style={{ backgroundColor: this.props.board.color}}>
+            <Card style={{ backgroundColor: board.color}} onClick={ () => this.goToBoard() }>
                 <CardBody>
-                    <CardText>{this.props.board.name}</CardText>
+                    <CardText>{board.name}</CardText>
                 </CardBody>
             </Card>
         )

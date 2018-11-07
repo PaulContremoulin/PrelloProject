@@ -38,19 +38,28 @@ export const DEFAULT_USER = {
 * labelNames	LabelNames{...}
 */
 export const DEFAULT_BOARD = {
-  boardId: "default",
-  boardName: "My first board name",
-  color: "white",
-  creator: "default",
-  boardTeam: {},
-  guests: [],
+  _id: "default",
+  name: "My first board name",
+  idOrganization: "default",
+  desc: "myfirstBoard",
+  closed: false,
+  memberships: [],
   lists: [
-    {listId: 1, listName: "Prello", cards: [{cardId: 10, cardName: "AWI"}, {cardId: 12, cardName: "WI"}]},
-    {listId: 2, listName: "Main", cards: [{cardId: 3, cardName: "AWI"}, {cardId: 4, cardName: "WI"}]},
-    {listId: 3, listName: "Castle", cards: [{cardId: 5, cardName: "AWI"}, {cardId: 6, cardName: "WI"}]}
+    {id: 1, name: "Prello", cards: [{id: 10, name: "AWI"}, {id: 12, name: "WI"}]},
+    {id: 2, name: "Main", cards: [{id: 3, name: "AWI"}, {id: 4, name: "WI"}]},
+    {id: 3, name: "Castle", cards: [{id: 5, name: "AWI"}, {id: 6, name: "WI"}]}
   ],
-  tags: {},
 };
+/*
+_id: "5be29595dadfa448f6c4b220"
+closed: false​
+desc: "for test"​
+idOrganization: null​
+labelNames: Object { green: "", yellow: "", orange: "", … }​
+memberships: Array [ {…} ]
+​name: "test"​
+prefs: Object { background: "#000000" }
+*/
 
 
 // Default list schema
@@ -62,10 +71,12 @@ export const DEFAULT_BOARD = {
 * idBoard	string, the ID of the board the list is on
 */
 export const DEFAULT_LIST = {
+  id: "default",
   name: "",
   closed: false,
   pos: 0,
   idBoard: "",
+  cards: []
 };
 
 export const RESULT = {
@@ -80,4 +91,54 @@ export const RESULT = {
         droppableId: 'column-1',
         index: 1,
     },
+}
+
+/*
+  id string
+  The ID of the card
+
+  closed boolean
+  Whether the card is closed (archived). Note: Archived lists and boards do not cascade archives to cards. A card can have closed: false but be on an archived board.
+
+  desc string
+  The description for the card. Up to 16384 chars.
+
+  due date
+  The due date on the card, if one exists
+
+  dueComplete boolean
+  Whether the due date has been marked complete
+
+  idBoard string
+  The ID of the board the card is on
+
+  idChecklists array of strings
+  An array of checklist IDs that are on this card
+
+  idLabels array of strings
+  An array of label IDs that are on this card
+
+  idList string
+  The ID of the list the card is in
+
+  idMembers array of strings
+  An array of member IDs that are on this card
+
+  labels array of Labels
+  Array of label objects on this card
+
+  name string
+  Name of the card
+
+  pos float
+  Position of the card in the list
+*/
+export const DEFAULT_CARD = {
+  id: "default",
+  closed: false,
+  desc: "",
+  due: "",
+  dueComplete: false,
+  name: "default",
+  pos: 0
 }

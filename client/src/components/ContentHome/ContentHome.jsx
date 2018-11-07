@@ -13,12 +13,13 @@ import {CardBoard} from "../CardBoard/CardBoard";
 import {CardCircle} from "../CardCircle/CardCircle";
 import {getBoardsUser} from "../../requests/boards";
 import {getCirclesUser} from "../../requests/circle";
-import {fetchBoards} from "../../actions/boardActions";
+import {fetchBoards, setBoard} from "../../actions/boardActions";
 import {fetchCircles} from "../../actions/circleActions";
 
 
 export class ContentHomeToBeConnected extends React.Component {
     render() {
+        const { setBoard } = this.props;
         return (
             <div>
                 <Container className="contentHome">
@@ -32,8 +33,8 @@ export class ContentHomeToBeConnected extends React.Component {
                     <Row>
                             {this.props.boards.map(board => {
                                     return(
-                                        <Col className="displayBoard" xs={12} sm={6} md={3}>
-                                            <CardBoard board={board} key={ board._id }/>
+                                        <Col className="displayBoard" xs={12} sm={6} md={3} key={ board._id }>
+                                            <CardBoard board={board} setBoard={() => setBoard(board)} />
                                         </Col>
                                     )
                                 })}
@@ -65,7 +66,7 @@ const mapStateToProps = ( state, props ) => ({
 const mapDispatchToProps = ( dispatch ) => ({
     fetchBoards: (res) => dispatch( fetchBoards(res)),
     fetchCircles: (res) => dispatch( fetchCircles(res)),
-
+    setBoard: (board) => dispatch( setBoard(board)),
 });
 
 export const ContentHome = connect(
