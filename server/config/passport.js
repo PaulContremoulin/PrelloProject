@@ -10,7 +10,7 @@ let Member = require('../models/Member');
 
 passport.use('local', new LocalStrategy(
     function(username, password, done) {
-        Member.findOne({ username: username }, function (err, user) {
+        Member.findOne({ username: username, loginType:'password' }, function (err, user) {
             if (err) { return done(err); }
             if (!user) {
                 debug('Incorrect username.')

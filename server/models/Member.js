@@ -69,12 +69,10 @@ let memberSchema = new Schema({
         required : true
     },
     hash: {
-        type : String,
-        required : [true, 'Password isn\'t valid']
+        type : String
     },
     salt: {
-        type : String,
-        required : [true, 'Password isn\'t valid']
+        type : String
     },
     resetPass : {
         token : String,
