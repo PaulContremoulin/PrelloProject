@@ -4,6 +4,7 @@ let debug = require('debug')('app:circleAccess');
 let findCircle = function(req, res, next) {
     Circle.findById(req.params.id)
         .populate('idMember')
+        .populate('idBoards')
         .exec(function (err, circle) {
             if (err) debug(err);
             if (!circle) return res.status(404).json({message:'Circle not found'});
