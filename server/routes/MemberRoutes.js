@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let Board = require('./../models/Board');
 let Member = require('./../models/Member');
+let Circle = require('./../models/Circle');
 let debug = require('debug')('app:members');
 let mongoose = require('mongoose');
 let token = require('./../middlewares/TokenAccess');
@@ -17,7 +18,7 @@ let token = require('./../middlewares/TokenAccess');
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id', token, function(req, res) {
+router.get('/:id', token, memberAccess.readRights(), function(req, res) {
 
     Member.findById(req.params.id, function (err, member) {
         if(err) debug('members/:id error : ' + err)
@@ -26,7 +27,6 @@ router.get('/:id', token, function(req, res) {
     });
 
 });
-
 
 /**
  * Get all member's boards for the member's id given
@@ -40,11 +40,7 @@ router.get('/:id', token, function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id/boards', token, function(req, res) {
-
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return res.status(404).end();
-    }
+router.get('/:id/boards', token, memberAccess.readRights(), function(req, res) {
 
     Member.findById(req.params.id, function (err, member) {
         if (err) debug('members/:id error : ' + err);
@@ -52,14 +48,13 @@ router.get('/:id/boards', token, function(req, res) {
 
         req.query._id = {$in: member.idBoards};
 
-        Board.find(req.query, function (err, board) {
-            if (err) {
-                debug('members/:id error : ' + err)
-                return res.status(500).end();
-            }
-            return res.status(200).json(board)
-        });
-
+        Board.find(req.query, function(err, board){
+                if(err) {
+                    debug('members/:id error : ' + err)
+                    return res.status(500).end();
+                }
+                return res.status(200).json(board)
+            });
     });
 });
 
@@ -76,24 +71,51 @@ router.get('/:id/boards', token, function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/:id/circles', token, function(req, res) {
+router.post('/:id/circles', token, memberAccess.updateRights(), function(req, res) {
 
-    let circle = new Circle({
-        name: req.body.name,
-        idMember: req.params.id
-    });
-    circle.validate(function (err) {
-        if (err)
-            return res.status(400).json({message: err._message});
-        circle.save(function (err) {
-            if (err) {
-                debug('members/:id/circles error : ' + err);
-                return res.status(500).end();
-            }
-            return res.status(200).json(circle);
+    if(!req.query.name) return res.status(400).json({message:'Name is missing'});
+
+    Member.findById(req.params.id, function (err, member) {
+        if(err) debug('members/:id/circles error : ' + err);
+        if(!member) return res.status(404).end();
+
+        let circle = new Circle({
+            name : req.query.name,
+            idMember : mongoose.Types.ObjectId(req.user.id)
+        });
+
+        circle.validate(function (err) {
+            if(err) return res.status(400).send(err);
+            // save the circle
+            circle.save(function (err) {
+                if (err) {
+                    debug('members/:id/circles error : ' + err);
+                    return res.status(500).end();
+                }
+                return res.status(201).json(circle);
+            });
         });
     });
+});
 
+/**
+ * Get user's circles
+ * @route GET /members/{id}/circles
+ * @group members - Operations about members
+ * @returns {Circle} 200 - User's circle
+ * @returns {Error}  403 - Forbidden, token expired or not exist
+ * @returns {Error}  404 - Member not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/circles', token, memberAccess.readRights(), function(req, res) {
+    Circle.find({ idMember : req.params.id }, function (err, circle) {
+        if(err) debug('members/:id/circles error : ' + err);
+        if(!circle)
+            return res.status(404).json({message : "Member not found."});
+        else
+            return res.status(200).json(circle);
+    });
 });
 
 /**

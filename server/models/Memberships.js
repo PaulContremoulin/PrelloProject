@@ -1,4 +1,5 @@
 let mongoose = require('mongoose');
+let idValidator = require('mongoose-id-validator');
 
 let Schema = mongoose.Schema;
 
@@ -23,6 +24,8 @@ let membershipSchema = new Schema({
     {
         versionKey: false
     });
+
+membershipSchema.plugin(idValidator);
 
 /**
  * Check if the user is admin

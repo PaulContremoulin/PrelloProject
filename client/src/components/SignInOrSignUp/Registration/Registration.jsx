@@ -191,7 +191,7 @@ export class Registration extends React.Component {
               <Form className="form" onSubmit={(e) => this.handleSubmit(e)}>
                       <Col>
                         <Row>
-                          <Col md="6">
+                          <Col>
                             <FormGroup>
                                 <Label>First name</Label>
                                 <Input
@@ -204,7 +204,7 @@ export class Registration extends React.Component {
                                 />
                             </FormGroup>
                           </Col>
-                          <Col md="6">
+                          <Col>
                             <FormGroup>
                                 <Label>Last name</Label>
                                 <Input
