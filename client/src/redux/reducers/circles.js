@@ -5,7 +5,7 @@
 * Action types are exported from the action source file
 * It's the best place to avoid circular dependencies
 */
-import { FETCH_CIRCLES, ADD_CIRCLE } from "../../actions/circleActions";
+import { FETCH_CIRCLES, ADD_CIRCLE, DELETE_CIRCLE } from "../../actions/circleActions";
 
 
 /******************************************************************************/
@@ -33,6 +33,9 @@ import { FETCH_CIRCLES, ADD_CIRCLE } from "../../actions/circleActions";
 // Set the database current user object
 export const circles = ( state = [], action ) => {
   switch( action.type ){
+      case DELETE_CIRCLE :
+          const circleId = action.circleId;
+          return state.filter(circle => circle._id !== circleId);
     case FETCH_CIRCLES :
       return action.circles;
     case ADD_CIRCLE :

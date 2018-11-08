@@ -10,9 +10,7 @@ import {CreateBoard} from "../CreateBoard/CreateBoard";
 import {connect} from "react-redux";
 import {CardBoard} from "../CardBoard/CardBoard";
 import {getBoardsUser} from "../../requests/boards";
-import {getCirclesUser} from "../../requests/circle";
 import {fetchBoards} from "../../actions/boardActions";
-import {fetchCircles} from "../../actions/circleActions";
 
 
 export class ContentHomeToBeConnected extends React.Component {
