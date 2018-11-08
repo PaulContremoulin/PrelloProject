@@ -8,7 +8,6 @@ import './ContentHome.css';
 
 // Actions & Constant
 import {CreateBoard} from "../CreateBoard/CreateBoard";
-import {CreateCircle} from "../CreateCircle/CreateCircle";
 import {connect} from "react-redux";
 import {CardBoard} from "../CardBoard/CardBoard";
 import {CardCircle} from "../CardCircle/CardCircle";
@@ -63,9 +62,6 @@ export class ContentHomeToBeConnected extends React.Component {
        getBoardsUser(this.props.user.member._id)
          .then(res => {this.props.fetchBoards(res.data)})
            .catch(error => {console.log(error)});
-       getCirclesUser(this.props.user.member._id)
-         .then(res => {this.props.fetchCircles(res.data)})
-           .catch(error => {console.log(error)})
     }
 }
 
@@ -79,6 +75,7 @@ const mapDispatchToProps = ( dispatch ) => ({
     fetchBoards: (res) => dispatch( fetchBoards(res)),
     fetchCircles: (res) => dispatch( fetchCircles(res)),
     setBoard: (board) => dispatch( setBoard(board)),
+
 });
 
 export const ContentHome = connect(

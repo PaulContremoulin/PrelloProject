@@ -191,7 +191,7 @@ export class Registration extends React.Component {
               <Form className="form" onSubmit={(e) => this.handleSubmit(e)}>
                       <Col>
                         <Row>
-                          <Col md="6">
+                          <Col>
                             <FormGroup>
                                 <Label>First name</Label>
                                 <Input
@@ -204,7 +204,7 @@ export class Registration extends React.Component {
                                 />
                             </FormGroup>
                           </Col>
-                          <Col md="6">
+                          <Col>
                             <FormGroup>
                                 <Label>Last name</Label>
                                 <Input
@@ -295,7 +295,7 @@ export class Registration extends React.Component {
                 </Form>
                     <Row>
                       <Col className="text-center">
-                          <Button className="btnGithub"><Octicon name="mark-github"/> Sign Up with Github</Button>
+                          <Button className="btnGithub" href="http://localhost:5000/api/auth/github"><Octicon name="mark-github"/> Sign Up with Github</Button>
                       </Col>
                     </Row>
                     <Row>

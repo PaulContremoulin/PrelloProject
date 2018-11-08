@@ -88,10 +88,6 @@ module.exports = function (app, options) {
                         done();
                     });
             });
-
-
         });
-
     });
-
-}
+};

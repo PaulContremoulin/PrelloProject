@@ -5,6 +5,7 @@ let Member = require('./../models/Member');
 let List = require('./../models/List');
 let debug = require('debug')('app:board');
 let boardAccess = require('./../middlewares/BoardAccess');
+const token = require('./../middlewares/TokenAccess');
 
 /**
  * Create a board
@@ -17,7 +18,7 @@ let boardAccess = require('./../middlewares/BoardAccess');
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/', function(req, res) {
+router.post('/', token, function(req, res) {
 
     let newBoard = new Board(req.body);
 
@@ -52,11 +53,13 @@ router.post('/', function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id', boardAccess.readRights(), function(req, res) {
+router.get('/:id', token, boardAccess.readRights(), function(req, res) {
 
     req.query._id = req.params.id;
 
-    Board.findById(req.query, function (err, board) {
+    Board.findById(req.query)
+        .populate('memberships.idMember', 'username firstName lastName')
+        .exec(function (err, board) {
         if (err) debug('GET boards/:id error : ' + err);
         if (!board) return res.status(404).json({message : 'Board not found'});
         return res.status(200).json(board);
@@ -75,18 +78,19 @@ router.get('/:id', boardAccess.readRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.post('/:id/lists', boardAccess.updateRights(), function(req, res) {
+router.post('/:id/lists', token, boardAccess.updateRights(), function(req, res) {
 
     req.body.idBoard = req.params.id;
 
-    Board.findById(req.params.id, function (err, board) {
+    Board.findById(req.params.id)
+        .exec(function (err, board) {
         if (err) debug('POST boards/:id/lists error : ' + err);
         if (!board)
             return res.status(404).json({message:'Board not found'});
 
         let newList = new List(req.body);
         newList.validate(function (err) {
-            if (err) return res.status(400).json({message:err._message});
+            if (err) return res.status(400).json({message:err.message});
 
             newList.save(function (err) {
                 if (err) {
@@ -111,21 +115,21 @@ router.post('/:id/lists', boardAccess.updateRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.get('/:id/lists', boardAccess.readRights(), function(req, res) {
-
-    Board.findById(req.params.id, function (err, board) {
-        if (err) debug('GET boards/:id/lists error : ' + err);
-        if (!board) return res.status(404).json({message:'Board not found'});
-
-        req.query.idBoard = board._id;
-
-        List.find(req.query, function(err, list){
-            if(err) {
-                debug('GET boards/:id/lists error : ' + err)
-                return res.status(500).json({message:'Unexpected internal error'});
-            }
-            return res.status(200).json(list)
-        });
+router.get('/:id/lists', token, boardAccess.readRights(), function(req, res) {
+    req.query.idBoard = req.board._id;
+    var oppenCard = false;
+    if(req.query.cards){
+        if(req.query.cards === 'open') oppenCard = true;
+        delete req.query.cards;
+    }
+    var query = List.find(req.query);
+    if(oppenCard) query.populate('cards');
+    query.exec(function(err, lists){
+        if(err) {
+            debug('GET boards/:id/lists error : ' + err)
+            return res.status(500).json({message:'Unexpected internal error'});
+        }
+        return res.status(200).json(lists)
     });
 });
 
@@ -142,7 +146,7 @@ router.get('/:id/lists', boardAccess.readRights(), function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */
-router.put('/:id/members/:idMember', boardAccess.updateRights(), function(req, res) {
+router.put('/:id/members/:idMember', token, boardAccess.updateRights(), function(req, res) {
 
     let board = req.board;
     let type = req.query.type ? req.query.type : 'observer';

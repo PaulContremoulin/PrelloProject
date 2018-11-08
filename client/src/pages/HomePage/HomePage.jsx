@@ -11,9 +11,9 @@ import { logOut } from '../../actions/signActions.js';
 import './HomePage.css';
 import { Row, Col } from 'reactstrap';
 
-export const HomePageToBeConnected = ({ logOut }) => (
+export const HomePageToBeConnected = () => (
     <div>
-        <NavBar incomingFrom="HomePage" logOut={ logOut } />
+        <NavBar/>
             <Row>
                 <Col className="menu" xs={5} sm={3}>
                     <MenuHome/>

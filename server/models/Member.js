@@ -7,6 +7,7 @@ let mongooseHidden = require('mongoose-hidden')()
 let idValidator = require('mongoose-id-validator');
 
 let Schema = mongoose.Schema;
+let circlesSchema = require('./Circle');
 
 let memberSchema = new Schema({
     username: {
@@ -32,7 +33,11 @@ let memberSchema = new Schema({
         type      : String
     },
     idBoards: {
-        type : [Schema.Types.ObjectId],
+        type : [{
+            type : Schema.Types.ObjectId,
+            required : true,
+            ref : 'Board'
+        }],
         default : [],
         required : true
     },
@@ -64,12 +69,10 @@ let memberSchema = new Schema({
         required : true
     },
     hash: {
-        type : String,
-        required : [true, 'Password isn\'t valid']
+        type : String
     },
     salt: {
-        type : String,
-        required : [true, 'Password isn\'t valid']
+        type : String
     },
     resetPass : {
         token : String,
@@ -77,13 +80,14 @@ let memberSchema = new Schema({
     },
     oauth: {
         github : String
-    },
+    }
 },
 {
     versionKey: false
 });
 
 memberSchema.plugin(uniqueValidator);
+memberSchema.plugin(idValidator);
 memberSchema.plugin(mongooseHidden,
     { hidden:
             {

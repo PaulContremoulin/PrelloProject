@@ -83,7 +83,7 @@ export class CreateBoardToBeConnected extends React.Component {
         const { name, color, desc } = this.state;
         return (
             <div>
-                <Button className="button" onClick={() => this.openModal()}> Add a board </Button>
+                <Button className="button" onClick={() => this.openModal()}> Create a new board </Button>
                 <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
                     <ModalHeader toggle={() =>this.closeModal()}>Add a board</ModalHeader>
                     <Form className="form" onSubmit={ (e) => this.submitForm(e) }>

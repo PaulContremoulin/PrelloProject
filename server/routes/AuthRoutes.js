@@ -46,8 +46,9 @@ router.post('/signup', function(req, res, next) {
  * @group auth - Operations about authentication
  * @param {Creadential.model} credentials.body.required - user's credentials.
  * @returns {Member.model} 200 - user info object and token object
- * @returns {Error}  400 - bad request, one of fields is invalid
+ * @returns {Error}  400 - Bad request, one of fields is invalid
  * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, confirm your email before
  * @returns {Error}  default - Unexpected error
  */
 router.post('/login', passport.authenticate('local', {session: false}), function(req, res) {
@@ -88,7 +89,7 @@ router.get('/auth/github/callback',
  * @group auth - Operations about authentication
  * @param {string} email.body.required - member's email
  * @param {string} callback.body.required - the url to call in the email (token will be attached with member id)
- * @returns {code} 200 - user info object and token object
+ * @returns {code} 202 - user info object and token object
  * @returns {Error} 400 - Bad request (email or callback url missing / invalid)
  * @returns {Error} 404 - Not found (member not found)
  * @returns {Error} default - Unexpected error
@@ -114,5 +115,32 @@ router.post('/auth/forgot/password', function(req, res) {
         });
     });
 });
+
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /auth/github
+ * @group auth - Operations about authentification
+ * @returns {code} 302 - Redirection on github Oauth authentication page
+ */
+router.get('/auth/github', passport.authenticate('github'));
+
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /auth/github/callback
+ * @group auth - Operations about authentification
+ * @param {string} code.param.required - github payload
+ * @returns {Member.model} 200 - user info object and token object
+ */
+router.get('/auth/github/callback',
+    passport.authenticate('github', { session: false }),
+    function(req, res) {
+        // Successful authentication
+        const member = req.user;
+        const token = jwt.sign({
+            exp: Math.floor(Date.now() / 1000) + (60 * 60),
+            data: req.user.payload()
+        }, process.env.JWT_SECRET);
+        return res.json({member, token});
+    });
 
 module.exports = router;
