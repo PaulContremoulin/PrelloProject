@@ -21,7 +21,6 @@
 * @desc
 */
 export const setName = (idList, idCard, name) => {
-  console.log(idList, idCard, name);
   return {
       type: CARD_SET_NAME,
       list: {
@@ -30,6 +29,56 @@ export const setName = (idList, idCard, name) => {
       card: {
         id: idCard,
         name
+      }
+  }
+};
+
+/**
+* @desc
+*/
+export const setDesc = (idList, idCard, desc) => {
+  return {
+      type: CARD_SET_DESC,
+      list: {
+        id: idList
+      },
+      card: {
+        id: idCard,
+        desc
+      }
+  }
+};
+
+
+/**
+* @desc
+*/
+export const setDue = (idList, idCard, due) => {
+  return {
+      type: CARD_SET_DUE,
+      list: {
+        id: idList
+      },
+      card: {
+        id: idCard,
+        due
+      }
+  }
+};
+
+
+/**
+* @desc
+*/
+export const setClosed = (idList, idCard, closed) => {
+  return {
+      type: CARD_SET_CLOSED,
+      list: {
+        id: idList
+      },
+      card: {
+        id: idCard,
+        closed
       }
   }
 };

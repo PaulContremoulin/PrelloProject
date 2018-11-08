@@ -49,3 +49,23 @@ export function getBoardsUser(idUser) {
   export function getListsOfBoard(idBoard, withCards = false, archived = false) {
       return getRequest('/api/boards/' + idBoard + '/lists/?cards=' + withCards)
   }
+
+  export function postListToBoard(listName, boardId) { // TODO: Generate Position
+      return postRequest('/api/boards/' + boardId + '/lists/', {
+        name: listName,
+        pos: 0
+      })
+  }
+
+  export function postCardToBoard(cardName, listId) { // TODO: Generate Position
+      return postRequest('/api/cards/', {
+        name: cardName,
+        pos: 0,
+        desc: "",
+        due: "",
+        dueComplete: false,
+        idList: listId,
+        idMembers: [],
+        idLabels: [],
+      })
+  }

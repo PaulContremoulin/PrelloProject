@@ -44,11 +44,7 @@ export const DEFAULT_BOARD = {
   desc: "myfirstBoard",
   closed: false,
   memberships: [],
-  lists: [
-    {id: 1, name: "Prello", cards: [{id: 10, name: "AWI"}, {id: 12, name: "WI"}]},
-    {id: 2, name: "Main", cards: [{id: 3, name: "AWI"}, {id: 4, name: "WI"}]},
-    {id: 3, name: "Castle", cards: [{id: 5, name: "AWI"}, {id: 6, name: "WI"}]}
-  ],
+  lists: [],
 };
 /*
 _id: "5be29595dadfa448f6c4b220"

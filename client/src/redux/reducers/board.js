@@ -12,6 +12,7 @@ import { DEFAULT_BOARD } from '../../constants';
 
 import { SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIST } from '../../actions/boardActions';
 import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE } from '../../actions/cardActions';
+import { LIST_SET_NAME } from '../../actions/listActions';
 
 
 /******************************************************************************/
@@ -40,6 +41,7 @@ import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE } from '../
 const _id = ( state = DEFAULT_BOARD._id, action ) => {
   switch ( action.type ) {
     case SET_BOARD :
+      console.log("I HAVE BEEN CALLED");
       return action.board._id ;
     default:
       return state ;
@@ -108,9 +110,13 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
           ...action.list
         }
       ];
+    case LIST_SET_NAME :
+      return state.map(
+        list => (list.id === action.list.id) ? {...list, name: action.list.name} : list
+      )
     case ADD_CARD :
       return state.map(
-        list => (list.id === action.list.id) ? { ...list, cards: [...list.cards, action.card] } : list
+        list => (list.id === action.card.idList) ? { ...list, cards: [...list.cards, action.card] } : list
       );
     case MOVE_CARD : // StartingList, indexOfList
       return state.map(

@@ -8,6 +8,9 @@ import {BoardMenu} from './BoardMenu/BoardMenu';
 import {List} from './List/List';
 import {AddList} from './AddList/AddList';
 import {addList, moveList, addCard, moveCard, moveCardFromList} from '../../actions/boardActions';
+import { setListName } from '../../actions/listActions';
+import { postListToBoard, postCardToBoard } from '../../requests/boards';
+import { changeListName } from '../../requests/lists';
 
 // Css
 import { Container, Row, Col, CardDeck } from 'reactstrap';
@@ -91,6 +94,25 @@ export class BoardToBeConnected extends React.Component {
     return;
   };
 
+  setNameOfList = (listId, listName) => {
+    changeListName(listId, listName)
+    .then( () => this.props.setListName(listId, listName) )
+  }
+
+  addCardToBoard = (cardName, listId) => { // pos to be added later
+    postCardToBoard(cardName, listId)
+    .then( newCard => {
+      this.props.addCard(newCard.data)
+    })
+  }
+
+  addListToBoard = (listName, boardId) => { // position to be added later
+    postListToBoard(listName, boardId)
+    .then( newList => {
+      this.props.addList(newList.data)
+    })
+  }
+
   render() {
     const { board, addList, moveList, addCard, moveCard } = this.props;
     return(
@@ -115,14 +137,15 @@ export class BoardToBeConnected extends React.Component {
                         <List
                           board={board}
                           list={list}
-                          addCard={addCard}
+                          addCard={(cardName, listId) => this.addCardToBoard(cardName, listId)}
                           moveList={moveList}
+                          setNameOfList= { (listName) => this.setNameOfList(list.id, listName) }
                           index={index}
                         />
                       </div>
                     ))
                     }
-                    <AddList addList={(listName) => addList(listName, board._id)}/>
+                    <AddList addList={(listName) => this.addListToBoard(listName, board._id)}/>
                   </CardDeck>
                   {provided.placeholder}
                   </ContainerBoard>
@@ -144,6 +167,7 @@ const mapDispatchToProps = ( dispatch ) => ({
   moveList: (newListOrder) => dispatch( moveList(newListOrder) ),
   addCard: (cardName, listId) => dispatch( addCard(cardName, listId) ),
   moveCard: (newList, indexOfList) => dispatch( moveCard(newList, indexOfList) ),
+  setListName: (listId, listName) => dispatch( setListName(listId, listName) ),
   moveCardFromList: (newListStart, indexOfListStart, newListEnd, indexOfListEnd) => dispatch( moveCardFromList(newListStart, indexOfListStart, newListEnd, indexOfListEnd) ),
 })
 

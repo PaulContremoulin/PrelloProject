@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
 import {Container, Row, Col, Alert} from 'reactstrap';
+import { history } from '../../history';
 
 // Css...
 import './ContentHome.css';
@@ -18,6 +19,17 @@ import {fetchCircles} from "../../actions/circleActions";
 
 
 export class ContentHomeToBeConnected extends React.Component {
+
+    goToPageBoard = (board) => {
+      getListsOfBoard(board._id, true)
+      .then( lists => {
+        const setupBoard = board;
+        setupBoard["lists"] = lists.data;
+        this.props.setBoard(setupBoard);
+      })
+      .then( () => history.push('/board'))
+    }
+
     render() {
         const { setBoard } = this.props;
         return (
@@ -34,8 +46,7 @@ export class ContentHomeToBeConnected extends React.Component {
                             {this.props.boards.map(board => {
                                     return(
                                         <Col className="displayBoard" xs={12} sm={6} md={3} key={ board._id }>
-                                            <CardBoard board={board} setBoard={() => setBoard(board)} />
-                                            <button type="button" onClick={ () => getListsOfBoard(board._id, true)} >get</button>
+                                            <CardBoard board={board} goToPageBoard={() => this.goToPageBoard(board)} />
                                         </Col>
                                     )
                                 })}

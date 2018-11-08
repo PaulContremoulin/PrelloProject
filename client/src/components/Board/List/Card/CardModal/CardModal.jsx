@@ -7,13 +7,16 @@ import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormG
 import './CardModal.css';
 
 // Actions & Constant
-import { setName } from '../../../../../actions/cardActions';
+import { setName, setDesc, setDue, setClosed } from '../../../../../actions/cardActions';
+import { changeCard } from '../../../../../requests/cards';
 
 export class CardModalToBeConnected extends React.Component {
   constructor(props) {
       super(props)
       this.state = {
-        openInputHeader: false
+        openInputHeader: false,
+        descInput: false,
+        dueDateInput: false,
       }
   }
 
@@ -25,16 +28,43 @@ export class CardModalToBeConnected extends React.Component {
 // checklists : [ Checklist ]
 // comments : [ Comment ]
 
-  handleOnBlur = (event) => {
+  handleOnBlurHeader = (event) => {
     const newName = event.target.value;
     if (newName !== this.props.card.name) {
-      this.props.setName( this.props.listId, this.props.card.id, newName ); // Todo
+      changeCard(this.props.card.id, { name: newName })
+      .then( () => this.props.setName( this.props.listId, this.props.card.id, newName ) )
     }
     this.setState({ openInputHeader: false })
   }
 
+  handleOnBlurDesc = (event) => {
+    const newDesc = event.target.value;
+    if (newDesc !== this.props.card.desc) {
+      changeCard(this.props.card.id, { desc: newDesc })
+      .then( () => this.props.setDesc( this.props.listId, this.props.card.id, newDesc ) )
+    }
+    this.setState({ descInput: false })
+  }
+
+  handleOnBlurDueDate = (event) => {
+    const newDate = event.target.value;
+    if (newDate !== this.props.card.due) {
+      changeCard(this.props.card.id, { due: newDate })
+      .then( () => this.props.setDue( this.props.listId, this.props.card.id, newDate ) )
+    }
+    this.setState({ dueDateInput: false })
+  }
+
   toggleInputHeader = () => {
     this.setState({ openInputHeader: true })
+  }
+
+  toggleDescInput = () => {
+    this.setState({ descInput : true })
+  }
+
+  toggleDueInput = () => {
+    this.setState({ dueDateInput : !this.state.dueDateInput })
   }
 
   render() {
@@ -56,7 +86,7 @@ export class CardModalToBeConnected extends React.Component {
                   placeholder="Card name"
                   required={true}
                   defaultValue={card.name}
-                  onBlur={(e) => this.handleOnBlur(e)}
+                  onBlur={(e) => this.handleOnBlurHeader(e)}
                 />
                 :
                 <span onClick={ () => this.toggleInputHeader() } >{card.name}</span>
@@ -64,12 +94,26 @@ export class CardModalToBeConnected extends React.Component {
               </ModalHeader>
               <ModalBody className="cardModalBody">
                 <Row className="MainModalRow">
-                  <h6>Deadline : </h6>
+                  {(card.due !== null && !this.state.dueDateInput) ? <h6>Due Date : {card.due}</h6> : null}
+                  {(this.state.dueDateInput) ?
+                    <div>
+                      <Label for="dueDate">Due date :</Label>
+                      <Input
+                      type="date"
+                      name="dueDate"
+                      id="dueDate"
+                      placeholder="date placeholder"
+                      onBlur={ (e) => this.handleOnBlurDueDate(e) }
+                      />
+                    </div>
+                    :
+                    null
+                  }
                 </Row>
                 <Row>
                   <Col className="SideModalCol" md="3">
                     <Row className="SideModalRow">
-                      <Button color="secondary">Deadline</Button>
+                      <Button color="secondary" onClick={ () => this.toggleDueInput() }>Deadline</Button>
                     </Row>
                     <Row className="SideModalRow">
                       <Button color="secondary">Add checkbox</Button>
@@ -83,19 +127,27 @@ export class CardModalToBeConnected extends React.Component {
                   </Col>
                   <Col md="8" className="MainModalCol">
                     <Row className="MainModalRow">
-                      <h4>Tags : </h4>
+                      <h4>Description :  </h4>
+                      {( this.state.descInput || (card.desc === "")) ?
+                        <Input
+                          type="text"
+                          name="desc"
+                          placeholder="description for your card"
+                          required={true}
+                          defaultValue={card.desc}
+                          onBlur={(e) => this.handleOnBlurDesc(e)}
+                        />
+                        :
+                        <p onClick={ () => this.toggleDescInput()}>{card.desc}</p>
+                      }
                     </Row>
                     <Row className="MainModalRow">
                       <h4>Members : </h4>
                     </Row>
                     <Row className="MainModalRow">
-                      <h4>Description :  </h4>
-                      <p>{card.desc}</p>
+                      <h4>Add a comment : </h4>
                     </Row>
                   </Col>
-                </Row>
-                <Row className="MainModalRow">
-                  <h4>Add a comment : </h4>
                 </Row>
               </ModalBody>
               <ModalFooter>
@@ -113,6 +165,9 @@ const mapStateToProps = ( state, props ) => ({
 
 const mapDispatchToProps = ( dispatch ) => ({
   setName: (idList, idCard, name) => dispatch( setName(idList, idCard, name) ),
+  setDesc: (idList, idCard, desc) => dispatch( setDesc(idList, idCard, desc) ),
+  setDue: (idList, idCard, due) => dispatch( setDue(idList, idCard, due) ),
+  setClosed: (idList, idCard, closed) => dispatch( setClosed(idList, idCard, closed) ),
 })
 
 export const CardModal = connect(

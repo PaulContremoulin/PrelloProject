@@ -59,7 +59,6 @@ export const fetchBoards = (boards) => {
  * @return SET_BOARD action
  */
 export const setBoard = (board) => {
-    console.log(board);
     return {
         type: SET_BOARD,
         board
@@ -71,15 +70,15 @@ export const setBoard = (board) => {
 /**
 * @desc
 */
-export const addList = (listName, boardId) => {
+export const addList = (list) => {
   return {
       type: ADD_LIST,
       list: {
-        id: "" + Math.floor(Math.random() * Math.floor(99999)),
-        name: listName,
-        close: false,
-        idBoard: boardId,
-        pos: Math.floor(Math.random() * Math.floor(99999)),
+        id: list._id,
+        name: list.name,
+        closed: list.closed,
+        idBoard: list.idBoard,
+        pos: list.pos,
         subscribed: false,
         cards: []
       }
@@ -89,24 +88,24 @@ export const addList = (listName, boardId) => {
 /**
 * @desc
 */
-export const addCard = (cardName, listId) => {
-  console.log(cardName, listId);
+export const addCard = (card) => {
   return {
       type: ADD_CARD,
       card: {
-        id: "" + Math.floor(Math.random() * Math.floor(9999999999)),
-        name: cardName,
-        closed: false,
-        desc: "",
-        due: null,
-        dueComplete: false,
-        pos: Math.floor(Math.random() * Math.floor(9999999999)),
-      },
-      list: {
-        id: listId
+        id: card._id,
+        name: card.name,
+        closed: card.closed,
+        desc: card.desc,
+        due: card.due,
+        dueComplete: card.dueComplete,
+        pos: card.pos,
+        idList: card.idList,
+        idMembers: card.idMembers,
+        idLabels: card.idLabels,
       }
   }
 };
+
 
 /**
 * @desc

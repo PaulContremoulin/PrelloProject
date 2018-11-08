@@ -7,7 +7,7 @@ import './List.css';
 import { AddCard } from './AddCard/AddCard';
 
 // Css
-import { Container, Row, Col, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap';
+import { Container, Row, Col, Card, CardText, CardBody, CardTitle, Button, Input } from 'reactstrap';
 import styled from 'styled-components';
 
 const ContainerList = styled.div`
@@ -26,12 +26,20 @@ export class List extends React.Component {
   constructor(props) {
       super(props)
       this.state = {
+        inputNameList: false
       }
   }
 
+  handleOnBlur = (event) => {
+    const newName = event.target.value;
+    if (newName !== this.props.list.name) {
+      this.props.setNameOfList( newName );
+    }
+    this.setState({ inputNameList: false })
+  }
 
   render() {
-    const { list, moveList, addCard, index } = this.props;
+    const { list, moveList, addCard, setNameOfList, index } = this.props;
     return (
       <Draggable draggableId={list.id} index={index} >
         {(provided) =>
@@ -39,7 +47,23 @@ export class List extends React.Component {
             {...provided.draggableProps}
             ref={provided.innerRef}
           >
-            <CardTitle className="ListTitle" {...provided.dragHandleProps}>{list.name}</CardTitle>
+            <CardTitle
+              className="ListTitle"
+              onClick={() => this.setState({ inputNameList: true })}
+              {...provided.dragHandleProps}
+            >
+              {(this.state.inputNameList) ?
+                <Input
+                  type="text"
+                  name="listName"
+                  required={true}
+                  defaultValue={list.name}
+                  onBlur={(e) => this.handleOnBlur(e)}
+                />
+                :
+                list.name
+              }
+              </CardTitle>
             <Droppable
               droppableId={list.id.toString()}
               type="card"
