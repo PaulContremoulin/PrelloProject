@@ -14,16 +14,13 @@ export class CirclePage extends React.Component {
 
     render() {
         return (
-            <div className="CirclePage">
-                <NavBar/>
-                <div className="homePage">
-                    <Col className="menu" xs={5} sm={3}>
-                        <MenuHome/>
-                    </Col>
-                    <Col xs={7} sm={8}>
-                        <ContentCircle/>
-                    </Col>
-                </div>
+            <div className="home">
+                <Col className="menu" xs={5} sm={3}>
+                    <MenuHome/>
+                </Col>
+                <Col xs={7} sm={9}>
+                    <ContentCircle/>
+                </Col>
             </div>
         )
     }

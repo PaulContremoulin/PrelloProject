@@ -12,16 +12,13 @@ import './HomePage.css';
 import { Row, Col } from 'reactstrap';
 
 export const HomePageToBeConnected = () => (
-    <div>
-        <NavBar/>
-        <div className="homePage">
+    <div className="home">
             <Col className="menu" xs={5} sm={3}>
                 <MenuHome/>
             </Col>
-            <Col xs={7} sm={8}>
+            <Col xs={7} sm={9}>
                 <ContentHome/>
             </Col>
-        </div>
     </div>
 )
 

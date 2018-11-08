@@ -5,7 +5,6 @@ import './ResetPswdPage.css';
 
 export const ResetPswdPage = () => (
     <div className="ResetPswdPage">
-        <NavBar/>
         <ResetPswd/>
     </div>
 )

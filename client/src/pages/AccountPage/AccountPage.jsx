@@ -7,18 +7,10 @@ import {Account} from '../../components/Account/Account'
 import { logOut } from '../../actions/signActions.js';
 
 // Css
-import { Container, Row, Col } from 'reactstrap';
+
 
 export const AccountPageToBeConnected = ({ logOut }) => (
     <div className="AccountPage">
-        <NavBar incomingFrom="HomePage" logOut={ logOut } />
-        <Container>
-            <Row>
-                <Col align="center">
-                    <h1>My account</h1>
-                </Col>
-            </Row>
-        </Container>
         <Account/>
     </div>
 )

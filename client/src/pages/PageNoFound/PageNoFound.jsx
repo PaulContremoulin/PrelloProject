@@ -18,7 +18,6 @@ export class PageNoFound extends React.Component {
     render() {
         return (
             <div className="PageNoFound">
-                <NavBar noLink="true"/>
                 <div className="text-center">
                     <h1>404</h1>
                     <h2>Oops, This Page Not Found!</h2>

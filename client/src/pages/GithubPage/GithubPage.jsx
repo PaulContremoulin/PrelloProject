@@ -40,7 +40,6 @@ export class GithubPageToBeConnected extends React.Component  {
     render() {
       return (
         <div className="GithubPage">
-            <NavBar noLink="true"/>
               <div>
                   <ReactLoading className="load" type={"spinningBubbles"} color={"#1a1a1a"} height={'5%'} width={'5%'} />
               </div>

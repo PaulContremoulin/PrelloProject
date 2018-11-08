@@ -5,7 +5,6 @@ import './RegistrationPage.css';
 
 export const RegistrationPage = () => (
     <div className="LoginPage">
-        <NavBar/>
         <Registration />
     </div>
 )
