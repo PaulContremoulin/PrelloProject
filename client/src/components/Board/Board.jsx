@@ -24,7 +24,7 @@ export class BoardToBeConnected extends React.Component {
   }
 
   onDragEnd = result => {
-    console.log(result);
+    // console.log(result);
     const { destination, source, draggableId, type } = result;
 
     // If the card hasnt been moved to a droppable position

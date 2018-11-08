@@ -41,7 +41,6 @@ import { LIST_SET_NAME } from '../../actions/listActions';
 const _id = ( state = DEFAULT_BOARD._id, action ) => {
   switch ( action.type ) {
     case SET_BOARD :
-      console.log("I HAVE BEEN CALLED");
       return action.board._id ;
     default:
       return state ;
@@ -149,13 +148,13 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
 const card = ( state = {}, action ) => {
   switch (action.type) {
   case CARD_SET_NAME :
-    return (action.card.id === state.id ) ? { ...state, name: action.card.name } : state
+    return (action.card.id === state._id ) ? { ...state, name: action.card.name } : state
   case CARD_SET_DUE :
-    return (action.card.id === state.id ) ? { ...state, name: action.card.due } : state
+    return (action.card.id === state._id ) ? { ...state, due: action.card.due } : state
   case CARD_SET_DESC :
-    return (action.card.id === state.id ) ? { ...state, name: action.card.desc } : state
+    return (action.card.id === state._id ) ? { ...state, desc: action.card.desc } : state
   case CARD_SET_CLOSED :
-    return (action.card.id === state.id ) ? { ...state, name: action.card.closed } : state
+    return (action.card.id === state._id ) ? { ...state, closed: action.card.closed } : state
   default:
     return state ;
   }

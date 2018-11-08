@@ -31,8 +31,9 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurHeader = (event) => {
     const newName = event.target.value;
     if (newName !== this.props.card.name) {
-      changeCardName(this.props.card.id, newName )
-      .then( () => this.props.setName( this.props.listId, this.props.card.id, newName ) )
+      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id
+      changeCardName(cardId, newName )
+      .then( () => this.props.setName( this.props.listId, cardId, newName ) )
     }
     this.setState({ openInputHeader: false })
   }
@@ -40,8 +41,9 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurDesc = (event) => {
     const newDesc = event.target.value;
     if (newDesc !== this.props.card.desc) {
-      changeCardDesc(this.props.card.id, newDesc )
-      .then( () => this.props.setDesc( this.props.listId, this.props.card.id, newDesc ) )
+      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id
+      changeCardDesc(cardId, newDesc )
+      .then( () => this.props.setDesc( this.props.listId, cardId, newDesc ) )
     }
     this.setState({ descInput: false })
   }
@@ -49,8 +51,9 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurDueDate = (event) => {
     const newDate = event.target.value;
     if (newDate !== this.props.card.due) {
-      changeCardDueDate(this.props.card.id, newDate )
-      .then( () => this.props.setDue( this.props.listId, this.props.card.id, newDate ) )
+      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id
+      changeCardDueDate(cardId, newDate )
+      .then( () => this.props.setDue( this.props.listId, cardId, newDate ) )
     }
     this.setState({ dueDateInput: false })
   }

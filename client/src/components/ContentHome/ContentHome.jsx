@@ -23,8 +23,6 @@ export class ContentHomeToBeConnected extends React.Component {
       .then( lists => {
         const setupBoard = board;
         setupBoard["lists"] = lists.data;
-        console.log(setupBoard);
-        console.log(lists);
         this.props.setBoard(setupBoard);
       })
       .then( () => history.push('/board'))

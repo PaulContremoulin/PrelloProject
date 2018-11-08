@@ -75,8 +75,8 @@ export class CreateCircleToBeConnected extends React.Component {
         const { name } = this.state;
         return (
             <div>
-                <div className="iconeAdd">
-                    <FontAwesomeIcon icon={faPlus} size="2x" onClick={() => this.openModal()}/>
+                <div className="iconAdd">
+                    <FontAwesomeIcon icon={faPlus} className="float-right"  size="1x" onClick={() => this.openModal()}/>
                 </div>
                     <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
                     <ModalHeader toggle={() =>this.closeModal()}>Add a Circle</ModalHeader>

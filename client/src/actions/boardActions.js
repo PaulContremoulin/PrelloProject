@@ -130,9 +130,9 @@ export const moveCard = (list, indexOfList) => {
 * @desc
 */
 export const moveCardFromList = (startList, indexStart, endList, indexEnd) => {
-  console.log(startList);
-  console.log(endList);
-  console.log(indexStart, indexEnd);
+  // console.log(startList);
+  // console.log(endList);
+  // console.log(indexStart, indexEnd);
   return {
       type: MOVE_CARD_FROM_LIST,
       startList: startList,

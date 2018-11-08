@@ -44,14 +44,8 @@ export class CardBoardToBeConnected extends React.Component {
             <div>
             <Card style={{ backgroundColor: this.props.board.color}}>
                 <CardHeader>
-                    <Row>
-                        <Col xs={9}>
-                            {this.props.board.name}
-                        </Col>
-                            <Col xs={1}>
-                                <Button onClick={this.toggle} close>+</Button>
-                            </Col>
-                    </Row>
+                        {this.props.board.name}
+                          <Button className="float-right" onClick={this.toggle} close>+</Button>
                 </CardHeader>
                 <CardBody onClick={ () => goToPageBoard() }>
                     <CardText>{this.props.board.desc}</CardText>
@@ -94,4 +88,3 @@ export const CardBoard = connect(
     mapStateToProps,
     mapDispatchToProps,
 )( CardBoardToBeConnected );
-
