@@ -116,7 +116,7 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
       )
     case ADD_CARD :
       return state.map(
-        list => (list.id === action.card.idList) ? { ...list, cards: [...list.cards, action.card] } : list
+        list => (list.id === action.card.idList) ? { ...list, cards: [...list.cards, { ...action.card, id: action.card._id }] } : list
       );
     case MOVE_CARD : // StartingList, indexOfList
       return state.map(

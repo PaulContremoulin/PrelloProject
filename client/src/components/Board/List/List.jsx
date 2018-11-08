@@ -72,12 +72,15 @@ export class List extends React.Component {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                <Card className="List" style={{"width": "272px", "margin-left": "8px"}}>{
+                <Card className="List" style={{"width": "272px", "margin-left": "8px"}}>
+                { (list.cards != null) ?
                   list.cards.map( (card, index) => (
                     <div key={index}>
                       <CardComponent listId={list.id} card={card} index={index} />
                     </div>
                   ) )
+                  :
+                  null
                 }{provided.placeholder}
                 <AddCard addCard={ (cardName) => addCard(cardName, list.id) } />
                 </Card>

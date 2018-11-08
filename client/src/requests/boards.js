@@ -47,7 +47,8 @@ export function getBoardsUser(idUser) {
   // }
 
   export function getListsOfBoard(idBoard, withCards = false, archived = false) {
-      return getRequest('/api/boards/' + idBoard + '/lists/?cards=' + withCards)
+      const cardsFilter = (withCards) ? "open" : "closed";
+      return getRequest('/api/boards/' + idBoard + '/lists/?cards=' + cardsFilter)
   }
 
   export function postListToBoard(listName, boardId) { // TODO: Generate Position
@@ -57,7 +58,7 @@ export function getBoardsUser(idUser) {
       })
   }
 
-  export function postCardToBoard(cardName, listId) { // TODO: Generate Position
+  export function postCardToBoard(cardName, listId, boardId) { // TODO: Generate Position
       return postRequest('/api/cards/', {
         name: cardName,
         pos: 0,
@@ -65,6 +66,7 @@ export function getBoardsUser(idUser) {
         due: "",
         dueComplete: false,
         idList: listId,
+        idBoard: boardId,
         idMembers: [],
         idLabels: [],
       })

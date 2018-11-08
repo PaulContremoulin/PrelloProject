@@ -37,7 +37,7 @@ export class CardComponent extends React.Component {
       <div className="Card">
         <Row>
           <Draggable
-            draggableId={card.id.toString()}
+            draggableId={card._id.toString()}
             index={index}
           >
             {(provided) =>

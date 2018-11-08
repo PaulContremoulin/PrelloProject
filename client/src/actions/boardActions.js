@@ -88,6 +88,7 @@ export const addCard = (card) => {
       type: ADD_CARD,
       card: {
         id: card._id,
+        _id: card._id,
         name: card.name,
         closed: card.closed,
         desc: card.desc,
@@ -95,6 +96,7 @@ export const addCard = (card) => {
         dueComplete: card.dueComplete,
         pos: card.pos,
         idList: card.idList,
+        idBoard: card.idBoard,
         idMembers: card.idMembers,
         idLabels: card.idLabels,
       }

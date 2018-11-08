@@ -99,8 +99,8 @@ export class BoardToBeConnected extends React.Component {
     .then( () => this.props.setListName(listId, listName) )
   }
 
-  addCardToBoard = (cardName, listId) => { // pos to be added later
-    postCardToBoard(cardName, listId)
+  addCardToBoard = (cardName, listId, boardId) => { // pos to be added later
+    postCardToBoard(cardName, listId, boardId)
     .then( newCard => {
       this.props.addCard(newCard.data)
     })
@@ -137,7 +137,7 @@ export class BoardToBeConnected extends React.Component {
                         <List
                           board={board}
                           list={list}
-                          addCard={(cardName, listId) => this.addCardToBoard(cardName, listId)}
+                          addCard={(cardName, listId) => this.addCardToBoard(cardName, listId, board._id)}
                           moveList={moveList}
                           setNameOfList= { (listName) => this.setNameOfList(list.id, listName) }
                           index={index}
@@ -165,7 +165,7 @@ const mapStateToProps = ( state, props ) => ({
 const mapDispatchToProps = ( dispatch ) => ({
   addList: (listName, boardId) => dispatch( addList(listName, boardId) ),
   moveList: (newListOrder) => dispatch( moveList(newListOrder) ),
-  addCard: (cardName, listId) => dispatch( addCard(cardName, listId) ),
+  addCard: (card) => dispatch( addCard(card) ),
   moveCard: (newList, indexOfList) => dispatch( moveCard(newList, indexOfList) ),
   setListName: (listId, listName) => dispatch( setListName(listId, listName) ),
   moveCardFromList: (newListStart, indexOfListStart, newListEnd, indexOfListEnd) => dispatch( moveCardFromList(newListStart, indexOfListStart, newListEnd, indexOfListEnd) ),
