@@ -1,6 +1,6 @@
 // Modules
 import React from 'react';
-import {Container, Row, Col, Button, ModalHeader, ModalBody, ModalFooter, Modal} from 'reactstrap';
+import {Container, Row, Col, Button, ModalHeader, ModalBody, ModalFooter, Modal, Alert} from 'reactstrap';
 import {history} from "../../history";
 
 // Css...
@@ -57,13 +57,18 @@ export class ContentCircleToBeConnected extends React.Component {
                 </Container>
                 <Container className="contentBoard">
                     <Row>
-                        {this.props.circle.idBoards.map(board => {
+                        {this.props.circle.idBoards.length !== 0 ? this.props.circle.idBoards.map(board => {
                             return(
                                 <Col className="displayBoard" xs={12} sm={6} md={3}>
                                     <CardBoardCircle board={board} key={ board._id } circle={this.props.circle}/>
                                 </Col>
                             )
-                        })}
+                        })
+                        :
+                            <Alert color="primary">
+                                {"Go to personnal's board to add boards in "+this.props.circle.name}
+                            </Alert>
+                        }
                     </Row>
                 </Container>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>

@@ -26,12 +26,11 @@ export class CardBoardCircleToBeConnected extends React.Component {
     };
 
     deleteBoard = (circleId, boardId) => {
-        //this.props.deleteBoardsCircle(boardId);
-        this.toggle();
         deleteBoardCircle(circleId, boardId)
             .then(res => {
                 if (res.status === 200) {
-                    alert("delete");
+                    this.props.deleteBoardsCircle(boardId);
+                    this.toggle();
                 } else {
                     console.log("error");
                 }

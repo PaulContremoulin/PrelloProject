@@ -4,7 +4,8 @@ export const circle = ( state = [], action ) => {
     switch( action.type ){
         case DELETE_BOARD_CIRCLE :
             const boardId = action.boardId;
-            return { circle: state.circle.filter(circle => circle.idBoards._id !== boardId)};
+            const newidBoards = state.idBoards.filter(board => board._id !== boardId);
+            return {...state,idBoards:newidBoards};
         case FETCH_CIRCLE :
             return action.circle;
         default:
