@@ -10,7 +10,6 @@ import { logOut } from '../../actions/signActions.js';
 
 export const BoardPageToBeConnected = ({}) => (
     <div className="BoardPage">
-      <NavBar incomingFrom="BoardPage" logOut={ logOut } />
       <Board style={{"height": "100%"}} />
     </div>
 )

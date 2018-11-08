@@ -5,7 +5,9 @@
  */
 export const FETCH_CIRCLES = 'FETCH_CIRCLES';
 export const ADD_CIRCLE = 'ADD_CIRCLE';
-export const SET_CIRCLE = 'SET_CIRCLE';
+export const FETCH_CIRCLE = 'FETCH_CIRCLE';
+export const DELETE_BOARD_CIRCLE = 'DELETE_BOARD_CIRCLE';
+export const DELETE_CIRCLE = 'DELETE_CIRCLE';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -32,14 +34,33 @@ export const fetchCircles = (circles) => {
 export const addCircle = (data) => {
     return {
         type: ADD_CIRCLE,
-        circle: data
+        circle: data,
+        meta: {
+            socket: {
+                channel: 'data:store'
+            }
+        }
     }
 };
 
 
 export const setCircle = (circle) => {
     return {
-        type: SET_CIRCLE,
+        type: FETCH_CIRCLE,
         circle
+    }
+};
+
+export const deleteBoardsCircle = (boardId) => {
+    return {
+        type: DELETE_BOARD_CIRCLE,
+        boardId: boardId,
+    }
+};
+
+export const deleteCircle = (circleId) => {
+    return {
+        type: DELETE_CIRCLE,
+        circleId: circleId,
     }
 };

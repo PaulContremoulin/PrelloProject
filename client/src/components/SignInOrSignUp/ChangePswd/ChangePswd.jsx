@@ -80,7 +80,6 @@ export class ChangePswd extends React.Component {
         const {newPassword, newPasswordConfirm} = this.state;
         return (
             <div>
-                <NavBar noLink="true"/>
                 <Container>
                     {(this.state.tokenValid) ?
                         <Row>

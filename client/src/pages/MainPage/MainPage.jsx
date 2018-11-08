@@ -22,7 +22,6 @@ export class MainPage extends React.Component {
     render() {
         return (
             <div className="MainPage">
-                <NavBar/>
                 <Container>
                     <Row>
                         <Col className="contentRight" xs={12} sm={6}>

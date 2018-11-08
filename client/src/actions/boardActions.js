@@ -45,11 +45,6 @@ export const fetchBoards = (boards) => {
     return {
         type: FETCH_BOARD,
         boards,
-        meta: {
-            socket: {
-                channel: 'data:store'
-            }
-        }
     }
 };
 

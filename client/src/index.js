@@ -12,6 +12,7 @@ import 'react-bootstrap/dist/react-bootstrap.min';
 
 import { history } from './history';
 //Pages
+import {NavBar} from "./components/NavBar/NavBar";
 import {MainPage} from "./pages/MainPage/MainPage";
 import LoginPage from './pages/LoginPage/LoginPage';
 import ResetPswdPage from "./pages/ResetPswdPage/ResetPswdPage";
@@ -31,6 +32,7 @@ ReactDOM.render(
       <PersistGate loading={null} persistor={persistor}>
         <Router history={history}>
             <div className="index">
+                <NavBar/>
                 <Switch>
                     <Route exact path='/' render={() => (isLogged() ? (<Redirect to="/home"/>) : (<MainPage />))}/>
                     <Route exact path='/login' render={() => (isLogged() ? (<Redirect to="/home"/>) : (<LoginPage />))}/>

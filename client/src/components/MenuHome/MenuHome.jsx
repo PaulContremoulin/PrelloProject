@@ -21,10 +21,7 @@ export class MenuHomeToBeConnected extends React.Component {
         getBoardsCircle(id)
             .then(res => {
                 if(res.status === 200){
-                    /*
-                    console.log(res.data);
                     this.props.setCircle(res.data);
-                    */
                     history.push('/circle/'+name);
                 } else {
                     console.log("error");
