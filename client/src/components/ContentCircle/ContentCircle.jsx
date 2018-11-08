@@ -10,6 +10,8 @@ import {connect} from "react-redux";
 import {CardBoardCircle} from "../CardBoardCircle/CardBoardCircle";
 import {deleteCircleRequest} from "../../requests/circle";
 import {deleteCircle} from "../../actions/circleActions";
+import {getListsOfBoard} from "../../requests/boards";
+import {setBoard} from "../../actions/boardActions";
 
 export class ContentCircleToBeConnected extends React.Component {
     constructor(props) {
@@ -42,6 +44,16 @@ export class ContentCircleToBeConnected extends React.Component {
             })
     };
 
+    goToPageBoard = (board) => {
+        getListsOfBoard(board._id, true)
+            .then( lists => {
+                const setupBoard = board;
+                setupBoard["lists"] = lists.data;
+                this.props.setBoard(setupBoard);
+            })
+            .then( () => history.push('/board'))
+    }
+
     render() {
         return (
             <div>
@@ -60,7 +72,7 @@ export class ContentCircleToBeConnected extends React.Component {
                         {this.props.circle.idBoards.length !== 0 ? this.props.circle.idBoards.map(board => {
                             return(
                                 <Col className="displayBoard" xs={12} sm={6} md={3}>
-                                    <CardBoardCircle board={board} key={ board._id } circle={this.props.circle}/>
+                                    <CardBoardCircle goToPageBoard={() => this.goToPageBoard(board)} board={board} key={ board._id } circle={this.props.circle}/>
                                 </Col>
                             )
                         })
@@ -90,6 +102,7 @@ const mapStateToProps = ( state, props ) => ({
 
 const mapDispatchToProps = ( dispatch ) => ({
     deleteCircle: (res) => dispatch(deleteCircle(res)),
+    setBoard: (board) => dispatch( setBoard(board)),
 });
 
 export const ContentCircle = connect(

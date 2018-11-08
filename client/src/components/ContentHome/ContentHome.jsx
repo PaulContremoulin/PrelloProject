@@ -10,7 +10,6 @@ import './ContentHome.css';
 import {CreateBoard} from "../CreateBoard/CreateBoard";
 import {connect} from "react-redux";
 import {CardBoard} from "../CardBoard/CardBoard";
-import {CardCircle} from "../CardCircle/CardCircle";
 import {getBoardsUser, getListsOfBoard} from "../../requests/boards";
 import {getCirclesUser} from "../../requests/circle";
 import {fetchBoards, setBoard} from "../../actions/boardActions";

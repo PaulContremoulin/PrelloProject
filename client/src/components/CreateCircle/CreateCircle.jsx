@@ -2,7 +2,7 @@
 import React from 'react';
 import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
 import './CreateCircle.css';
 
 // Actions & Constant
@@ -76,7 +76,7 @@ export class CreateCircleToBeConnected extends React.Component {
         return (
             <div>
                 <div className="iconeAdd">
-                    <FontAwesomeIcon icon={faPlusCircle} size="2x" onClick={() => this.openModal()}/>
+                    <FontAwesomeIcon icon={faPlus} size="2x" onClick={() => this.openModal()}/>
                 </div>
                     <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
                     <ModalHeader toggle={() =>this.closeModal()}>Add a Circle</ModalHeader>

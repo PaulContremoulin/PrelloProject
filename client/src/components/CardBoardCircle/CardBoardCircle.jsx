@@ -42,6 +42,7 @@ export class CardBoardCircleToBeConnected extends React.Component {
     };
 
     render() {
+        const {goToPageBoard } = this.props;
         return (
             <div>
                 <Card style={{ backgroundColor: this.props.board.color}}>
@@ -55,7 +56,7 @@ export class CardBoardCircleToBeConnected extends React.Component {
                             </Col>
                         </Row>
                     </CardHeader>
-                    <CardBody>
+                    <CardBody onClick={ () => goToPageBoard() }>
                         <CardText>{this.props.board.desc}</CardText>
                     </CardBody>
                 </Card>
