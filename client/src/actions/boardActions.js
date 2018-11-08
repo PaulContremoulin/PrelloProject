@@ -65,40 +65,50 @@ export const setBoard = (board) => {
 /**
 * @desc
 */
-export const addList = (listName) => {
+export const addList = (list) => {
   return {
       type: ADD_LIST,
       list: {
-        listName
+        id: list._id,
+        name: list.name,
+        closed: list.closed,
+        idBoard: list.idBoard,
+        pos: list.pos,
+        subscribed: false,
+        cards: []
       }
   }
 };
 
-
 /**
 * @desc
 */
-export const addCard = (cardName, listId) => {
+export const addCard = (card) => {
   return {
       type: ADD_CARD,
       card: {
-        cardName
-      },
-      list: {
-        listId
+        id: card._id,
+        name: card.name,
+        closed: card.closed,
+        desc: card.desc,
+        due: card.due,
+        dueComplete: card.dueComplete,
+        pos: card.pos,
+        idList: card.idList,
+        idMembers: card.idMembers,
+        idLabels: card.idLabels,
       }
   }
 };
 
+
 /**
 * @desc
 */
-export const moveList = (listId, index) => {
+export const moveList = (lists) => {
   return {
       type: MOVE_LIST,
-      list: {
-        listId
-      }
+      lists
   }
 };
 
@@ -117,12 +127,15 @@ export const moveCard = (list, indexOfList) => {
 /**
 * @desc
 */
-export const moveCardFromList = (cardId, index) => {
+export const moveCardFromList = (startList, indexStart, endList, indexEnd) => {
+  console.log(startList);
+  console.log(endList);
+  console.log(indexStart, indexEnd);
   return {
       type: MOVE_CARD_FROM_LIST,
-      card: {
-        cardId,
-        index
-      }
+      startList: startList,
+      endList: endList,
+      indexStart,
+      indexEnd
   }
 };

@@ -1,0 +1,19 @@
+.SideModalRow {
+  margin: 20px;
+}
+
+.SideModalCol {
+  border-top: 2px solid;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+  border-color: #d9d9d9;
+  border-radius: 8%;
+}
+
+.MainModalRow {
+  padding: 10px;
+}
+
+.cardModalBody {
+  background-color: #dfe3e6;
+}

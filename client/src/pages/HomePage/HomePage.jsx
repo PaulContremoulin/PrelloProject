@@ -22,7 +22,6 @@ export const HomePageToBeConnected = () => (
     </div>
 )
 
-// TODO : Store in home page what content to show in ContentHome. I.e "personnal boards".
 
 const mapStateToProps = ( state, props ) => ({})
 

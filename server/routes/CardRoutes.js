@@ -74,11 +74,11 @@ router.put('/:id', token, CardAccess.updateRights(), function(req, res) {
 
     let card = req.card;
 
-    (res.query.name) ? card.name = res.query.name : null;
-    (res.query.desc) ? card.desc = res.query.desc : null;
-    (res.query.closed) ? card.closed = res.query.closed : null;
-    (res.query.due) ? card.due = res.query.due : null;
-    (res.query.dueComplete) ? card.dueComplete = res.query.dueComplete : null;
+    (req.query.name) ? card.name = req.query.name : null;
+    (req.query.desc) ? card.desc = req.query.desc : null;
+    (req.query.closed) ? card.closed = req.query.closed : null;
+    (req.query.due) ? card.due = req.query.due : null;
+    (req.query.dueComplete) ? card.dueComplete = req.query.dueComplete : null;
 
     card.validate(function (err) {
         if(err) return res.status(400).send(err);

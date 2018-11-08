@@ -1,9 +1,7 @@
 // Modules
 import React from 'react';
+
 import {Card, ListGroupItem, ListGroup, CardHeader, Button, CardBody, CardText, Col, Row, Modal, ModalBody, ModalHeader} from 'reactstrap';
-
-// Css...
-
 // Actions & Constant
 import {addBoardCircle} from "../../requests/circle";
 import {deleteBoardsCircle} from "../../actions/circleActions";
@@ -39,7 +37,9 @@ export class CardBoardToBeConnected extends React.Component {
             })
     };
 
+
     render() {
+      const { board, goToPageBoard } = this.props;
         return (
             <div>
             <Card style={{ backgroundColor: this.props.board.color}}>
@@ -53,7 +53,7 @@ export class CardBoardToBeConnected extends React.Component {
                             </Col>
                     </Row>
                 </CardHeader>
-                <CardBody>
+                <CardBody onClick={ () => goToPageBoard() }>
                     <CardText>{this.props.board.desc}</CardText>
                 </CardBody>
             </Card>
@@ -94,3 +94,4 @@ export const CardBoard = connect(
     mapStateToProps,
     mapDispatchToProps,
 )( CardBoardToBeConnected );
+

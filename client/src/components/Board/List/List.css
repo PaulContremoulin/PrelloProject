@@ -9,5 +9,14 @@
   vertical-align: top;
   white-space: nowrap;
   margin-left: 4px;
+  width: 272px;
   height: 100% !important;
+}
+
+.ListTitle {
+  background-color: #cceeff;
+  padding: 8px;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+  margin-left: 12px;
 }
