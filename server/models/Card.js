@@ -39,10 +39,18 @@ let cardSchema = new Schema({
         }
     },
     {
+        toJSON: { virtuals: true },
         versionKey: false
     });
 
 cardSchema.plugin(idValidator);
+
+cardSchema.virtual('checklists', {
+    ref: 'Checklist', // The model to use
+    localField: '_id', // Find people where `localField`
+    foreignField: 'idCard' // is equal to `foreignField`
+});
+
 
 cardSchema.methods.createOrUpdateMember = function(memberId) {
     if(!this.idMembers.find( mId => mId.equals(memberId))) this.idMembers.push(memberId);

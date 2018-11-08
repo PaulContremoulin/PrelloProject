@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let Card = require('./../models/Card');
+let Checklist = require('./../models/Checklist');
 let debug = require('debug')('app:card');
 let CardAccess = require('./../middlewares/CardAccess');
 let mongoose = require('mongoose');
@@ -47,11 +48,13 @@ router.post('/', token, CardAccess.createRights(), function(req, res) {
  */
 router.get('/:id', token, CardAccess.readRights(), function(req, res) {
 
-    Card.findById(req.params.id, function(err, card){
-        if(err) debug('GET cards/:id error : ' + err);
-        if(!card) return res.status(404).json({message:'Card not found'});
-        return res.status(200).json(card);
-    });
+    Card.findById(req.params.id)
+        .populate('checklists')
+        .exec(function(err, card){
+            if(err) debug('GET cards/:id error : ' + err);
+            if(!card) return res.status(404).json({message:'Card not found'});
+            return res.status(200).json(card);
+        });
 });
 
 /**
@@ -84,7 +87,7 @@ router.put('/:id', token, CardAccess.updateRights(), function(req, res) {
         if(err) return res.status(400).send(err);
         card.save(function (err) {
             if(err) {
-                debug('PUT cards/:id error : ' + err)
+                debug('PUT cards/:id error : ' + err);
                 return res.status(500).json({message:'Unexpected internal error'});
             }
             return res.status(200).json({message:'Card updated successfully'});
@@ -96,6 +99,7 @@ router.put('/:id', token, CardAccess.updateRights(), function(req, res) {
  * Add a member to the card
  * @route POST /cards/:id/idMembers
  * @group card - Operations about cards
+ * @param {string} id.path.required - card's id
  * @param {string} value.query.required - member id to add
  * @returns {code} 200 - Card created
  * @returns {Error}  400 - bad request, one of fields is invalid
@@ -124,5 +128,56 @@ router.post('/:id/idMembers', token, CardAccess.updateRights(), function(req, re
     });
 });
 
+/**
+ * Add a checklist to the card
+ * @route POST /cards/:id/checklists
+ * @group card - Operations about cards
+ * @param {string} id.params.required - cards
+ * @param {Checklist.Model} checklist.body.required - checklist
+ * @returns {code} 200 - Checklist created
+ * @returns {Error}  400 - bad request, one of fields is invalid
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found, card not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.post('/:id/checklists', token, CardAccess.updateRights(), function(req, res) {
+
+    let card = req.card;
+    req.body.idBoard = card.idBoard;
+    req.body.idCard = card._id;
+    let newChecklist = new Checklist(req.body);
+
+    newChecklist.validate(function (err) {
+        if(err) return res.status(400).json({message : err});
+        newChecklist.save(function (err) {
+            if(err) return res.status(500).json({message:'Unexpected internal error'});
+            return res.status(200).json(newChecklist);
+        });
+    });
+});
+
+/**
+ * Get all checklists of the card
+ * @route GET /cards/:id/checklists
+ * @group card - Operations about cards
+ * @param {string} id.params.required - cards
+ * @returns {Array.<Checklist>} 200 - Array of checklists of the card
+ * @returns {Error}  400 - bad request, one of fields is invalid
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found, card not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/checklists', token, CardAccess.readRights(), function(req, res) {
+
+    Checklist.find({idCard : req.params.id})
+        .exec(function(err, checklists){
+            if(err) debug('GET cards/:id/checklists error : ' + err);
+            if(!checklists) return res.status(400).json({message:'Checklists not found'});
+            return res.status(200).json(checklists);
+        });
+
+});
 
 module.exports = router;
