@@ -8,7 +8,7 @@ import './CardModal.css';
 
 // Actions & Constant
 import { setName, setDesc, setDue, setClosed } from '../../../../../actions/cardActions';
-import { changeCard } from '../../../../../requests/cards';
+import { changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed } from '../../../../../requests/cards';
 
 export class CardModalToBeConnected extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurHeader = (event) => {
     const newName = event.target.value;
     if (newName !== this.props.card.name) {
-      changeCard(this.props.card.id, { name: newName })
+      changeCardName(this.props.card.id, newName )
       .then( () => this.props.setName( this.props.listId, this.props.card.id, newName ) )
     }
     this.setState({ openInputHeader: false })
@@ -40,7 +40,7 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurDesc = (event) => {
     const newDesc = event.target.value;
     if (newDesc !== this.props.card.desc) {
-      changeCard(this.props.card.id, { desc: newDesc })
+      changeCardDesc(this.props.card.id, newDesc )
       .then( () => this.props.setDesc( this.props.listId, this.props.card.id, newDesc ) )
     }
     this.setState({ descInput: false })
@@ -49,7 +49,7 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurDueDate = (event) => {
     const newDate = event.target.value;
     if (newDate !== this.props.card.due) {
-      changeCard(this.props.card.id, { due: newDate })
+      changeCardDueDate(this.props.card.id, newDate )
       .then( () => this.props.setDue( this.props.listId, this.props.card.id, newDate ) )
     }
     this.setState({ dueDateInput: false })
