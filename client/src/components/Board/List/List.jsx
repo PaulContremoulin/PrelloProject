@@ -1,68 +1,91 @@
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 // Components & Actions
 import {CardComponent} from './Card/Card';
 import './List.css';
-import { CardModal } from './CardModal/CardModal';
 import { AddCard } from './AddCard/AddCard';
 
 // Css
-import { Container, Row, Col, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap';
+import { Container, Row, Col, Card, CardText, CardBody, CardTitle, Button, Input } from 'reactstrap';
 import styled from 'styled-components';
 
 const ContainerList = styled.div`
-  width: "272px";
+  width: 272px;
   margin: 8px;
+  display: flex;
+  flex-direction: column;
 `;
 const TitleList = styled.h3``;
 const CardList = styled.div`
+  flex-grow: 1;
+  min-height: 100px;
 `;
 
 export class List extends React.Component {
   constructor(props) {
       super(props)
       this.state = {
-        open: false
+        inputNameList: false
       }
   }
 
-  openModal = () => {
-      this.setState({ open: true })
-  }
-
-  closeModal = () => {
-      this.setState({
-          open: false,
-      })
+  handleOnBlur = (event) => {
+    const newName = event.target.value;
+    if (newName !== this.props.list.name) {
+      this.props.setNameOfList( newName );
+    }
+    this.setState({ inputNameList: false })
   }
 
   render() {
-    const { list, moveList, addCard } = this.props;
-    console.log(list);
+    const { list, moveList, addCard, setNameOfList, index } = this.props;
     return (
-      <ContainerList>
-        <CardTitle style={{"margin-left": "10px"}}>{list.listName}</CardTitle>
-        <Droppable droppableId={list.listId.toString()}
-        >{(provided) =>
-          <CardList
+      <Draggable draggableId={list.id} index={index} >
+        {(provided) =>
+          <ContainerList
+            {...provided.draggableProps}
             ref={provided.innerRef}
-            {...provided.droppableProps}
           >
-            <Card className="List" style={{"width": "272px", "margin-left": "8px"}}>{
-              list.cards.map( (card, index) => (
-                <div key={index}>
-                  <CardComponent card={card} index={index} openModal={() => this.openModal()} />
-                  <CardModal card={card} open={this.state.open} openModal={() => this.openModal()} closeModal={() => this.closeModal()} />
-                </div>
-              ) )
-            }{provided.placeholder}
-            <AddCard addCard={ (cardName) => addCard(cardName) } />
-            </Card>
-          </CardList>
-        }</Droppable>
-      </ContainerList>
+            <CardTitle
+              className="ListTitle"
+              onClick={() => this.setState({ inputNameList: true })}
+              {...provided.dragHandleProps}
+            >
+              {(this.state.inputNameList) ?
+                <Input
+                  type="text"
+                  name="listName"
+                  required={true}
+                  defaultValue={list.name}
+                  onBlur={(e) => this.handleOnBlur(e)}
+                />
+                :
+                list.name
+              }
+              </CardTitle>
+            <Droppable
+              droppableId={list.id.toString()}
+              type="card"
+            >{(provided) =>
+              <CardList
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                <Card className="List" style={{"width": "272px", "margin-left": "8px"}}>{
+                  list.cards.map( (card, index) => (
+                    <div key={index}>
+                      <CardComponent listId={list.id} card={card} index={index} />
+                    </div>
+                  ) )
+                }{provided.placeholder}
+                <AddCard addCard={ (cardName) => addCard(cardName, list.id) } />
+                </Card>
+              </CardList>
+            }</Droppable>
+          </ContainerList>
+        }
+      </Draggable>
     )
   }
 }
-// TODO: Card modal ouvre la dernière modal créée.

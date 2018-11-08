@@ -15,7 +15,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 
 export const store = createStore(persistedReducer, applyMiddleware(socketMiddleware(socket)));
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 
 socket.on('data:store', function(action) {
    store.dispatch(action)

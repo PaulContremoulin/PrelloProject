@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
 import {Container, Row, Col, Alert} from 'reactstrap';
+import { history } from '../../history';
 
 // Css...
 import './ContentHome.css';
@@ -9,14 +10,27 @@ import './ContentHome.css';
 import {CreateBoard} from "../CreateBoard/CreateBoard";
 import {connect} from "react-redux";
 import {CardBoard} from "../CardBoard/CardBoard";
-import {getBoardsUser} from "../../requests/boards";
+import {CardCircle} from "../CardCircle/CardCircle";
+import {getBoardsUser, getListsOfBoard} from "../../requests/boards";
 import {getCirclesUser} from "../../requests/circle";
-import {fetchBoards} from "../../actions/boardActions";
+import {fetchBoards, setBoard} from "../../actions/boardActions";
 import {fetchCircles} from "../../actions/circleActions";
 
 
 export class ContentHomeToBeConnected extends React.Component {
+
+    goToPageBoard = (board) => {
+      getListsOfBoard(board._id, true)
+      .then( lists => {
+        const setupBoard = board;
+        setupBoard["lists"] = lists.data;
+        this.props.setBoard(setupBoard);
+      })
+      .then( () => history.push('/board'))
+    }
+
     render() {
+        const { setBoard } = this.props;
         return (
             <div>
                 <Container className="contentHome">
@@ -30,8 +44,8 @@ export class ContentHomeToBeConnected extends React.Component {
                     <Row>
                             {this.props.boards.map(board => {
                                     return(
-                                        <Col className="displayBoard" xs={12} sm={6} md={3}>
-                                            <CardBoard board={board} key={ board._id }/>
+                                        <Col className="displayBoard" xs={12} sm={6} md={3} key={ board._id }>
+                                            <CardBoard board={board} goToPageBoard={() => this.goToPageBoard(board)} />
                                         </Col>
                                     )
                                 })}
@@ -59,6 +73,8 @@ const mapStateToProps = ( state, props ) => ({
 
 const mapDispatchToProps = ( dispatch ) => ({
     fetchBoards: (res) => dispatch( fetchBoards(res)),
+    fetchCircles: (res) => dispatch( fetchCircles(res)),
+    setBoard: (board) => dispatch( setBoard(board)),
 
 });
 

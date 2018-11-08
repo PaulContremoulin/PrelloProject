@@ -10,7 +10,9 @@ import { combineReducers } from 'redux';
 
 import { DEFAULT_BOARD } from '../../constants';
 
-import { SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD } from '../../actions/boardActions';
+import { SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIST } from '../../actions/boardActions';
+import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE } from '../../actions/cardActions';
+import { LIST_SET_NAME } from '../../actions/listActions';
 
 
 /******************************************************************************/
@@ -36,60 +38,61 @@ import { SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD } from '../../actio
 */
 
 // boardId reducer
-const boardId = ( state = DEFAULT_BOARD.boardId, action ) => {
+const _id = ( state = DEFAULT_BOARD._id, action ) => {
   switch ( action.type ) {
     case SET_BOARD :
-      return action.board.boardId ;
+      console.log("I HAVE BEEN CALLED");
+      return action.board._id ;
     default:
       return state ;
   }
 };
 
 // boardName reducer
-const boardName = ( state = DEFAULT_BOARD.boardName, action ) => {
+const name = ( state = DEFAULT_BOARD.name, action ) => {
   switch ( action.type ) {
     case SET_BOARD :
-      return action.board.boardName ;
+      return action.board.name ;
     default:
       return state ;
   }
 }
 
 // color reducer
-const color = ( state = DEFAULT_BOARD.color, action ) => {
+const idOrganization = ( state = DEFAULT_BOARD.idOrganization, action ) => {
   switch ( action.type ) {
     case SET_BOARD :
-      return action.board.color ;
+      return action.board.idOrganization ;
     default:
       return state ;
   }
 };
 
 /// creator reducer
-const creator = ( state = DEFAULT_BOARD.creator, action ) => {
+const desc = ( state = DEFAULT_BOARD.desc, action ) => {
   switch ( action.type ) {
     case SET_BOARD :
-      return action.board.creator ;
+      return action.board.desc ;
     default:
       return state ;
   }
 };
 
 // boardTeam reducer
-const boardTeam = ( state = DEFAULT_BOARD.boardTeam, action ) => {
+const closed = ( state = DEFAULT_BOARD.closed, action ) => {
   switch ( action.type ) {
     case SET_BOARD :
-      return action.board.boardTeam ;
+      return action.board.closed ;
     default:
       return state ;
   }
 };
 
 // guests reducer
-const guests = ( state = DEFAULT_BOARD.guests, action ) => {
+const memberships = ( state = DEFAULT_BOARD.memberships, action ) => {
   switch ( action.type ) {
     case SET_BOARD :
-      return action.board.guests ;
+      return action.board.memberships ;
     default:
       return state ;
   }
@@ -99,50 +102,75 @@ const guests = ( state = DEFAULT_BOARD.guests, action ) => {
 const lists = ( state = DEFAULT_BOARD.lists, action ) => {
   switch ( action.type ) {
     case SET_BOARD :
-      return action.board.lists ;
+      return action.board.lists || [] ;
     case ADD_LIST :
       return [
         ...state,
         {
-          listName: action.list.listName,
-          cards: []
+          ...action.list
         }
       ];
+    case LIST_SET_NAME :
+      return state.map(
+        list => (list.id === action.list.id) ? {...list, name: action.list.name} : list
+      )
     case ADD_CARD :
       return state.map(
-        // list => (list.listId === action.list.listId) ? list( list, action ) : list
-        list => (list.listId === action.list.listId) ? { ...list, cards: [...list.cards, action.card] } : list
+        list => (list.id === action.card.idList) ? { ...list, cards: [...list.cards, action.card] } : list
       );
-    case MOVE_CARD : // cardId, listId, indexOfcard
-    return state.map(
-      (list, index) => (index == action.indexOfList) ? action.list : list
-    )
+    case MOVE_CARD : // StartingList, indexOfList
+      return state.map(
+        (list, index) => (index == action.indexOfList) ? action.list : list
+      )
+    case MOVE_CARD_FROM_LIST : // startList, indexStart, endList, indexEnd
+      return state.map(
+        (list, index) => (index == action.indexStart) ? action.startList : (index == action.indexEnd) ? action.endList : list
+      )
+    case MOVE_LIST : //
+      return action.lists
+    case CARD_SET_NAME :
+    case CARD_SET_DUE :
+    case CARD_SET_DESC :
+    case CARD_SET_CLOSED :
+      return state.map(
+        (list, index) => !(list.id == action.list.id) ? list :
+        {
+          ...list,
+          cards: list.cards.map(
+            (cardObj, index) => card( cardObj, action )
+          )
+        }
+      )
     default:
       return state ;
   }
 };
 
-// tags reducer
-const tags = ( state = DEFAULT_BOARD.tags, action ) => {
-  switch ( action.type ) {
-    case SET_BOARD :
-      return action.board.tags ;
-    default:
-      return state ;
+const card = ( state = {}, action ) => {
+  switch (action.type) {
+  case CARD_SET_NAME :
+    return (action.card.id === state.id ) ? { ...state, name: action.card.name } : state
+  case CARD_SET_DUE :
+    return (action.card.id === state.id ) ? { ...state, name: action.card.due } : state
+  case CARD_SET_DESC :
+    return (action.card.id === state.id ) ? { ...state, name: action.card.desc } : state
+  case CARD_SET_CLOSED :
+    return (action.card.id === state.id ) ? { ...state, name: action.card.closed } : state
+  default:
+    return state ;
   }
-};
+}
 
 
 // combineReducers is a redux function which associate object key with a reducers
 // It return a reducer responsible for this sub-state
 // combineReducers got others untold subtilities
 export const board = combineReducers({
-  boardId,
-  boardName,
-  color,
-  creator,
-  boardTeam,
-  guests,
+  _id,
+  name,
+  idOrganization,
+  closed,
+  desc,
+  memberships,
   lists,
-  tags,
 });
