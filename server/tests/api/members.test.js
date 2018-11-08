@@ -89,5 +89,58 @@ module.exports = function (app, options) {
                     });
             });
         });
+
+        describe('GET /api/members/search/:keywords - Get members by username', function () {
+
+            it('should send back a OK response - Get members for the username given (Two user exists)', function (done) {
+                request(app)
+                    .get('/api/members/search/j')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.should.be.instanceof(Array).and.have.length(2);
+                        done();
+                    });
+            });
+
+            it('should send back a OK response - Get members for the username given (one user exist)', function (done) {
+                request(app)
+                    .get('/api/members/search/john')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.should.be.instanceof(Array).and.have.length(1);
+                        done();
+                    });
+            });
+
+            it('should send back a OK response - Get members for the username given (no users, empty list)', function (done) {
+                request(app)
+                    .get('/api/members/search/dfg')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.should.be.instanceof(Array).and.have.length(0);
+                        done();
+                    });
+            });
+
+            it('should send back a UNAUTHORIZED response - Get members for the username given without token', function (done) {
+                request(app)
+                    .get('/api/members/search/dfg')
+                    .set('Content-Type', 'application/json')
+                    .expect(401)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+        });
     });
 };

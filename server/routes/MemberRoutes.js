@@ -30,6 +30,32 @@ router.get('/:id', token, memberAccess.readRights(), function(req, res) {
 });
 
 /**
+ * Get all members for keywords given on the username field
+ * @route GET /members/search/{keywords}
+ * @group members - Operations about members
+ * @param {string} keywords.path.required - username to search.
+ * @returns {Array.<String>} 200 - Member's information (limit to 10 members)
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/search/:keywords', token, function(req, res) {
+
+    Member.find(
+        {username : new RegExp('.*'+req.params.keywords+'.*', "i")},
+        {username : 1, _id : 1, email: 1})
+        .limit(10)
+        .exec(function (err, member) {
+            if(err) debug('members/:id error : ' + err)
+            if(!member) return res.status(404).json({ message:'Member not found'});
+            return res.status(200).json(member);
+        });
+
+});
+
+
+/**
  * Get all member's boards for the member's id given
  * @route GET /members/{id}/boards
  * @group members - Operations about members
