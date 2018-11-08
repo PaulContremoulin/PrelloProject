@@ -117,7 +117,7 @@ export class BoardToBeConnected extends React.Component {
     const { board, addList, moveList, addCard, moveCard } = this.props;
     return(
       <div className="Board">
-        <BoardMenu boardName={ board.name } />
+        <BoardMenu boardName={ board.name } boardId={board._id} />
           <div className="Lists">
             <DragDropContext
               onDragStart={() => {}}

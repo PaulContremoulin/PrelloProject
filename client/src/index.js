@@ -24,6 +24,8 @@ import {BoardPage} from './pages/BoardPage/BoardPage';
 import {PageNoFound} from "./pages/PageNoFound/PageNoFound";
 import {GithubPage} from "./pages/GithubPage/GithubPage";
 import {CirclePage} from "./pages/CirclePage/CirclePage";
+import {SettingsBoardPage} from "./pages/SettingsBoardPage/SettingsBoardPage";
+import {SettingsBoard} from "./components/SettingsBoard/SettingsBoard";
 
 console.log(isLogged());
 
@@ -43,6 +45,7 @@ ReactDOM.render(
                     <Route exact path='/login/reset/:idmembre/password' component={ChangePswd}/>
                     <Route exact path='/circle/:namecircle' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<CirclePage />))}/>
                     <Route exact path='/board' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<BoardPage />))}/>
+                    <Route exact path='/board/:idBoard/:boardName/settings' render={({match}) => (!isLogged() ? (<Redirect to="/login"/>) : (<SettingsBoard boardName={match.params.boardName} boardId={match.params.idBoard}/>))}/>
                     <Route path='/login/github' component={GithubPage}/>
                     <Route component={PageNoFound}/>
                 </Switch>
