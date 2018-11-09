@@ -41,6 +41,10 @@ export function getBoardsUser(idUser) {
     })
 }
 
+export function getMembersOfBoard(idBoard) {
+    return getRequest('/api/boards/'+idBoard+'/members')
+}
+
   // export function getBoardById(idBoard) {
   //   return getRequest('/api/boards/' + idBoard)
   //   .then( res => res )

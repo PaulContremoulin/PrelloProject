@@ -19,6 +19,7 @@
     "popper.js": "^1.14.4",
     "query-string": "^6.2.0",
     "react": "^16.6.0",
+    "react-autosuggest": "^9.4.2",
     "react-beautiful-dnd": "^9.0.2",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-grid": "^1.0.0",

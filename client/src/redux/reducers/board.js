@@ -10,7 +10,15 @@ import { combineReducers } from 'redux';
 
 import { DEFAULT_BOARD } from '../../constants';
 
-import { SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIST } from '../../actions/boardActions';
+import {
+    SET_BOARD,
+    ADD_LIST,
+    MOVE_LIST,
+    ADD_CARD,
+    MOVE_CARD,
+    MOVE_CARD_FROM_LIST,
+    SET_BOARD_MEMBERS
+} from '../../actions/boardActions';
 import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE } from '../../actions/cardActions';
 import { LIST_SET_NAME } from '../../actions/listActions';
 
@@ -90,10 +98,13 @@ const closed = ( state = DEFAULT_BOARD.closed, action ) => {
 // guests reducer
 const memberships = ( state = DEFAULT_BOARD.memberships, action ) => {
   switch ( action.type ) {
-    case SET_BOARD :
-      return action.board.memberships ;
-    default:
-      return state ;
+      case SET_BOARD :
+        return action.board.memberships;
+      case SET_BOARD_MEMBERS :
+        //console.log(action.listMembers);
+        return action.listMembers;
+      default:
+        return state ;
   }
 };
 
