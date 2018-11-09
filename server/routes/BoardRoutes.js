@@ -33,7 +33,7 @@ router.post('/', token, function(req, res) {
             }
             Member.findByIdAndUpdate(
                 { _id: req.user._id},
-                { $push: { idBoards: newBoard._id } },
+                { $addToSet: { idBoards: newBoard._id } },
                 function (err) {
                     if (err) return res.status(500).json({message : 'Unexpected internal error'});
                     return res.status(201).json(newBoard);
@@ -186,7 +186,13 @@ router.put('/:id/members/:idMember', token, boardAccess.updateRights(), function
         if(err) return res.status(400).json({message:err});
         board.save(function (err) {
             if(err) return res.status(500).json({message:'Unexpected internal error'});
-            return res.status(200).json(board);
+            Member.findByIdAndUpdate(
+                { _id: req.params.idMember},
+                { $addToSet: { idBoards: board._id } },
+                function (err) {
+                    if (err) return res.status(400).json({message : 'User already member'});
+                    return res.status(200).json(board);
+                });
         });
     });
 });

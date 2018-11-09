@@ -168,7 +168,46 @@ module.exports = function (app, options) {
                             .end(function (err, res) {
                                 if (err) return done(err);
                                 res.body.memberships.should.be.instanceof(Array).and.have.length(2);
-                                done();
+                                request(app)
+                                    .get('/api/members/' + options.memberFreinds._id)
+                                    .set('Authorization', 'Bearer ' + options.tokenFreinds)
+                                    .set('Content-Type', 'application/json')
+                                    .expect(200)
+                                    .end(function (err, res) {
+                                        res.body.idBoards.should.be.instanceof(Array).and.have.length(1);
+                                        if (err) return done(err);
+                                        done();
+                                    });
+                            });
+                    });
+            });
+
+            it('should send back a OK response - Add a member that already exis in the board but not added a second time', function (done) {
+                request(app)
+                    .put('/api/boards/' + options.board._id + '/members/' + options.memberFreinds._id + '?type=normal')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/boards/' + options.board._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.memberships.should.be.instanceof(Array).and.have.length(2);
+                                request(app)
+                                    .get('/api/members/' + options.memberFreinds._id)
+                                    .set('Authorization', 'Bearer ' + options.tokenFreinds)
+                                    .set('Content-Type', 'application/json')
+                                    .expect(200)
+                                    .end(function (err, res) {
+                                        res.body.idBoards.should.be.instanceof(Array).and.have.length(1);
+                                        if (err) return done(err);
+                                        done();
+                                    });
                             });
                     });
             });

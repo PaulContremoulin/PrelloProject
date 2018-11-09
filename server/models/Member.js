@@ -33,11 +33,12 @@ let memberSchema = new Schema({
         type      : String
     },
     idBoards: {
-        type : [{
-            type : Schema.Types.ObjectId,
-            required : true,
-            ref : 'Board'
-        }],
+        type : [
+            {
+                type : Schema.Types.ObjectId,
+                ref : 'Board'
+            }
+        ],
         default : [],
         required : true
     },
