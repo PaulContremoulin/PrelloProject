@@ -39,7 +39,7 @@ export class List extends React.Component {
   }
 
   render() {
-    const { list, moveList, addCard, setNameOfList, index } = this.props;
+    const { list, board, moveList, addCard, setNameOfList, index } = this.props;
     return (
       <Draggable draggableId={list.id} index={index} >
         {(provided) =>
@@ -75,6 +75,9 @@ export class List extends React.Component {
                 <Card className="List" style={{"width": "272px", "margin-left": "8px"}}>
                 { (list.cards != null) ?
                   list.cards.map( (card, index) => (
+                    (card.closed) ?
+                    null
+                    :
                     <div key={index}>
                       <CardComponent listId={list.id} card={card} index={index} />
                     </div>

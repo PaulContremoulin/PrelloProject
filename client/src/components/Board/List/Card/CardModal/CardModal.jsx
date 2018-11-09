@@ -7,8 +7,10 @@ import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormG
 import './CardModal.css';
 
 // Actions & Constant
-import { setName, setDesc, setDue, setClosed } from '../../../../../actions/cardActions';
+import { AddChecklist } from './AddChecklist/AddChecklist';
+import { setName, setDesc, setDue, setClosed, addChecklist } from '../../../../../actions/cardActions';
 import { changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed } from '../../../../../requests/cards';
+import { postChecklistToCard } from '../../../../../requests/checklists';
 
 export class CardModalToBeConnected extends React.Component {
   constructor(props) {
@@ -17,6 +19,7 @@ export class CardModalToBeConnected extends React.Component {
         openInputHeader: false,
         descInput: false,
         dueDateInput: false,
+        addChecklist: false,
       }
   }
 
@@ -31,7 +34,7 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurHeader = (event) => {
     const newName = event.target.value;
     if (newName !== this.props.card.name) {
-      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id
+      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
       changeCardName(cardId, newName )
       .then( () => this.props.setName( this.props.listId, cardId, newName ) )
     }
@@ -41,7 +44,7 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurDesc = (event) => {
     const newDesc = event.target.value;
     if (newDesc !== this.props.card.desc) {
-      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id
+      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
       changeCardDesc(cardId, newDesc )
       .then( () => this.props.setDesc( this.props.listId, cardId, newDesc ) )
     }
@@ -51,7 +54,7 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurDueDate = (event) => {
     const newDate = event.target.value;
     if (newDate !== this.props.card.due) {
-      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id
+      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
       changeCardDueDate(cardId, newDate )
       .then( () => this.props.setDue( this.props.listId, cardId, newDate ) )
     }
@@ -70,13 +73,34 @@ export class CardModalToBeConnected extends React.Component {
     this.setState({ dueDateInput : !this.state.dueDateInput })
   }
 
+  closeCard = () => {
+    const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+    changeCardClosed(cardId, true)
+    .then( () => this.props.setClosed( this.props.listId, cardId, true) )
+  }
+
+  // CHECKLISTS
+  toggleEditedChecklist = () => {
+    this.setState({ addChecklist: !this.state.addChecklist });
+  }
+
+  addChecklistToCard = (checklistName) => {
+    const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+    const boardId = this.props.boardId;
+    console.log(checklistName);
+    postChecklistToCard(checklistName, cardId, boardId)
+    .then( checklist => this.props.addChecklist(this.props.listId, cardId, checklist.data) )
+  }
+
   render() {
     const { openInputHeader } = this.state;
       const {
         card,
+        boardId,
         open,
         listId,
         closeModal,
+        addChecklist
       } = this.props;
       return (
           <div>
@@ -119,10 +143,10 @@ export class CardModalToBeConnected extends React.Component {
                       <Button color="secondary" onClick={ () => this.toggleDueInput() }>Deadline</Button>
                     </Row>
                     <Row className="SideModalRow">
-                      <Button color="secondary">Add checkbox</Button>
+                      <Button color="secondary" onClick={ () => this.toggleEditedChecklist() }>Add checklist</Button>
                     </Row>
                     <Row className="SideModalRow">
-                      <Button color="secondary">Archive</Button>
+                      <Button color="secondary" onClick={ () => this.closeCard() }>Archive</Button>
                     </Row>
                     <Row className="SideModalRow">
                       <Button color="danger">Delete</Button>
@@ -133,10 +157,9 @@ export class CardModalToBeConnected extends React.Component {
                       <h4>Description :  </h4>
                       {( this.state.descInput || (card.desc === "")) ?
                         <Input
-                          type="text"
+                          type="textarea"
                           name="desc"
                           placeholder="description for your card"
-                          required={true}
                           defaultValue={card.desc}
                           onBlur={(e) => this.handleOnBlurDesc(e)}
                         />
@@ -147,6 +170,25 @@ export class CardModalToBeConnected extends React.Component {
                     <Row className="MainModalRow">
                       <h4>Members : </h4>
                     </Row>
+                    {
+                      (card.checklists) ?
+                        <Row className="MainModalRow">
+                          <h4>Checklist : </h4>
+                          {card.checklists.map(
+                            (checklist, index) => <Row>{checklist.name}</Row>
+                          )}
+                        </Row>
+                        :
+                        null
+                    }
+                    {
+                      (this.state.addChecklist) ?
+                        <AddChecklist
+                          toggleEditedChecklist={() => this.toggleEditedChecklist()}
+                          addChecklist={ (checklistName) => { this.addChecklistToCard(checklistName) } }
+                        />
+                        : null
+                    }
                     <Row className="MainModalRow">
                       <h4>Add a comment : </h4>
                     </Row>
@@ -163,7 +205,7 @@ export class CardModalToBeConnected extends React.Component {
 }
 
 const mapStateToProps = ( state, props ) => ({
-
+  boardId: (state.board.id) ? state.board.id : state.board._id,
 })
 
 const mapDispatchToProps = ( dispatch ) => ({
@@ -171,6 +213,7 @@ const mapDispatchToProps = ( dispatch ) => ({
   setDesc: (idList, idCard, desc) => dispatch( setDesc(idList, idCard, desc) ),
   setDue: (idList, idCard, due) => dispatch( setDue(idList, idCard, due) ),
   setClosed: (idList, idCard, closed) => dispatch( setClosed(idList, idCard, closed) ),
+  addChecklist: (checklistName, idCard, idBoard) => dispatch( addChecklist(checklistName, idCard, idBoard) ),
 })
 
 export const CardModal = connect(
