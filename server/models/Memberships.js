@@ -22,6 +22,7 @@ let membershipSchema = new Schema({
         }
     },
     {
+        toJSON: { virtuals: true },
         versionKey: false
     });
 

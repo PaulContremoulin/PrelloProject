@@ -44,6 +44,7 @@ const boardRouter = require('./routes/BoardRoutes');
 const ListRoutes = require('./routes/ListRoutes');
 const CardRoutes = require('./routes/CardRoutes');
 const CircleRoutes = require('./routes/CircleRoutes');
+const ChecklistRoutes = require('./routes/ChecklistRoutes');
 
 app.use('/api', indexRouter);
 app.use('/api', authRouter);
@@ -52,5 +53,6 @@ app.use('/api/boards', boardRouter);
 app.use('/api/lists', ListRoutes);
 app.use('/api/cards', CardRoutes);
 app.use('/api/circles', CircleRoutes);
+app.use('/api/checklists', ChecklistRoutes);
 
 module.exports = app;

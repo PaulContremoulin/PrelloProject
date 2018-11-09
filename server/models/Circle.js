@@ -19,6 +19,7 @@ let circleSchema = new Schema({
         }]
     },
     {
+        toJSON: { virtuals: true },
         versionKey: false
     });
 

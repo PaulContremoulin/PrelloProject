@@ -58,7 +58,7 @@ router.get('/:id', token, boardAccess.readRights(), function(req, res) {
     req.query._id = req.params.id;
 
     Board.findById(req.query)
-        .populate('memberships.idMember', 'username firstName lastName')
+        .populate('memberships.idMember', '_id username firstName lastName')
         .exec(function (err, board) {
         if (err) debug('GET boards/:id error : ' + err);
         if (!board) return res.status(404).json({message : 'Board not found'});

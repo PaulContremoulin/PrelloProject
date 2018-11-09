@@ -83,6 +83,7 @@ let memberSchema = new Schema({
     }
 },
 {
+    toJSON: { virtuals: true },
     versionKey: false
 });
 
