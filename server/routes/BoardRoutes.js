@@ -151,10 +151,11 @@ router.put('/:id/members/:idMember', token, boardAccess.updateRights(), function
     let board = req.board;
     let type = req.query.type ? req.query.type : 'observer';
 
-    if((type === 'admin' && !board.isAdminMember(req.user.id))
-        || (type !== 'admin' && board.nbAdmin() <= 1 && req.user.id === req.params.idMember)){
+    if(type === 'admin' && !board.isAdminMember(req.user.id))
+        return res.status(403).json({message : 'Forbidden access'});
+
+    if(type !== 'admin' && board.nbAdmin() <= 1 && req.user.id === req.params.idMember)
         return res.status(403).json({message : 'Can not set the role of the last administrator'});
-    }
 
     board.createOrUpdateMember(req.params.idMember, type);
 
