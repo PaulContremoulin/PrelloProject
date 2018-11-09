@@ -82,6 +82,7 @@ let boardSchema = new Schema({
         }
     },
     {
+        toJSON: { virtuals: true },
         versionKey: false
     });
 

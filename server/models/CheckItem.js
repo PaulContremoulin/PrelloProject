@@ -2,16 +2,21 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let checkItemSchema = new Schema({
-        name: String,
+        name: {
+            type : String,
+            required : true,
+            minlength : 1
+        },
         idChecklist: {
             type: mongoose.Types.ObjectId,
-            ref: 'Checklist'
+            ref: 'Checklist',
+            required : true
         },
         state: {
             type : String,
             required : true,
             default : 'incomplete',
-            match : ['incomplete', 'completed']
+            enum: ['incomplete', 'completed']
         },
         pos: {
             type : Number,
@@ -19,6 +24,7 @@ let checkItemSchema = new Schema({
         }
     },
     {
+        toJSON: { virtuals: true },
         versionKey : false
     });
 

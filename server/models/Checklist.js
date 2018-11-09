@@ -1,15 +1,22 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
+require('./../models/CheckItem');
 
 let checklistSchema = new Schema({
-        name: String,
+        name: {
+            type : String,
+            required : true,
+            minlength : 1
+        },
         idBoard: {
             type: mongoose.Types.ObjectId,
-            ref: 'Board'
+            ref: 'Board',
+            required : true
         },
         idCard: {
             type: mongoose.Types.ObjectId,
-            ref: 'Card'
+            ref: 'Card',
+            required : true
         },
         pos: {
             type: Number,

@@ -39,6 +39,8 @@ router.post('/', token, CardAccess.createRights(), function(req, res) {
  * Get a card by id
  * @route GET /cards/:id
  * @group card - Operations about cards
+ * @param {string} id.path.required - card's id
+ * @param {string} checklists.query - card's checklist (value on "open" to display)
  * @returns {Card.model} 200 - Card
  * @returns {Error}  400 - bad request, one of fields is invalid
  * @returns {Error}  401 - Unauthorized, invalid credentials
@@ -48,9 +50,23 @@ router.post('/', token, CardAccess.createRights(), function(req, res) {
  */
 router.get('/:id', token, CardAccess.readRights(), function(req, res) {
 
-    Card.findById(req.params.id)
-        .populate('checklists')
-        .exec(function(err, card){
+    var openChecklist = false;
+    if(req.query.checklist){
+        if(req.query.checklist === 'open') openChecklist = true;
+        delete req.query.checklist;
+    }
+
+    req.query._id = req.params.id
+
+    let query = Card.findOne(req.query);
+    if(openChecklist) {
+        query.populate(
+            {
+                path: 'checklists',
+                populate: {path: 'checkItems'}
+            });
+    }
+    query.exec(function(err, card){
             if(err) debug('GET cards/:id error : ' + err);
             if(!card) return res.status(404).json({message:'Card not found'});
             return res.status(200).json(card);
@@ -133,7 +149,7 @@ router.post('/:id/idMembers', token, CardAccess.updateRights(), function(req, re
  * @route POST /cards/:id/checklists
  * @group card - Operations about cards
  * @param {string} id.params.required - cards
- * @param {Checklist.Model} checklist.body.required - checklist
+ * @param {Checklist.model} checklist.body.required - checklist
  * @returns {code} 200 - Checklist created
  * @returns {Error}  400 - bad request, one of fields is invalid
  * @returns {Error}  401 - Unauthorized, invalid credentials
@@ -152,7 +168,7 @@ router.post('/:id/checklists', token, CardAccess.updateRights(), function(req, r
         if(err) return res.status(400).json({message : err});
         newChecklist.save(function (err) {
             if(err) return res.status(500).json({message:'Unexpected internal error'});
-            return res.status(200).json(newChecklist);
+            return res.status(201).json(newChecklist);
         });
     });
 });
