@@ -48,6 +48,7 @@ export class SettingsBoardToBeConnected extends React.Component {
                 this.props.setBoard(newBoard[0]);
                 this.setState({isGood: true});
             }
+        }
     }
 }
 
