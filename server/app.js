@@ -20,7 +20,6 @@ app.use(logger('app:api', 'dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 // Environment configuration
@@ -54,5 +53,6 @@ app.use('/api/lists', ListRoutes);
 app.use('/api/cards', CardRoutes);
 app.use('/api/circles', CircleRoutes);
 app.use('/api/checklists', ChecklistRoutes);
+app.use('/', express.static(path.join(__dirname, 'public')));
 
 module.exports = app;
