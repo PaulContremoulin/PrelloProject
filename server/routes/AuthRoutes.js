@@ -24,9 +24,7 @@ router.post('/signup', function(req, res, next) {
         }
         if (!member) return res.status(400).json({message : info});
 
-        let confirmUrl = process.env.HOST + ':' + process.env.PORT + '/api/members/' + member._id + '/email/confirm?token=' + member.tokenConfirm;
-
-        if(req.body.callback) confirmUrl += '&callback=' + req.body.callback;
+        let confirmUrl = process.env.DOMAIN + '/api/members/' + member._id + '/email/confirm?token=' + member.tokenConfirm;
 
         if(process.env.NODE_ENV === 'test') return res.status(200).end();
 
