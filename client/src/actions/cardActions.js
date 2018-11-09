@@ -7,7 +7,7 @@
  export const CARD_SET_DESC = 'CARD_SET_DESC';
  export const CARD_SET_DUE = 'CARD_SET_DUE';
  export const CARD_SET_CLOSED = 'CARD_SET_CLOSED';
- // export const CARD_CHANGE_NAME = 'CARD_CHANGE_NAME';
+ export const CARD_ADD_CHECKLIST = 'CARD_ADD_CHECKLIST';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -29,6 +29,11 @@ export const setName = (idList, idCard, name) => {
       card: {
         id: idCard,
         name
+      },
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
       }
   }
 };
@@ -45,6 +50,11 @@ export const setDesc = (idList, idCard, desc) => {
       card: {
         id: idCard,
         desc
+      },
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
       }
   }
 };
@@ -62,6 +72,11 @@ export const setDue = (idList, idCard, due) => {
       card: {
         id: idCard,
         due
+      },
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
       }
   }
 };
@@ -79,6 +94,29 @@ export const setClosed = (idList, idCard, closed) => {
       card: {
         id: idCard,
         closed
+      },
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
       }
   }
 };
+
+export const addChecklist = (idList, idCard, checklist) => {
+  return {
+      type: CARD_ADD_CHECKLIST,
+      list: {
+        id: idList
+      },
+      card: {
+        id: idCard,
+        checklist
+      },
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
+      }
+  }
+}

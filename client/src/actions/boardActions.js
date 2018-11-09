@@ -85,41 +85,52 @@ export const editRoleMember = (member) => {
  * @desc
  */
 export const addList = (list) => {
-    return {
-        type: ADD_LIST,
-        list: {
-            id: list._id,
-            name: list.name,
-            closed: list.closed,
-            idBoard: list.idBoard,
-            pos: list.pos,
-            subscribed: false,
-            cards: []
-        }
-    }
+
+  return {
+      type: ADD_LIST,
+      list: {
+        id: list._id,
+        name: list.name,
+        closed: list.closed,
+        idBoard: list.idBoard,
+        pos: list.pos,
+        subscribed: false,
+        cards: []
+      },
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
+      }
+  }
 };
 
 /**
  * @desc
  */
 export const addCard = (card) => {
-    return {
-        type: ADD_CARD,
-        card: {
-            id: card._id,
-            _id: card._id,
-            name: card.name,
-            closed: card.closed,
-            desc: card.desc,
-            due: card.due,
-            dueComplete: card.dueComplete,
-            pos: card.pos,
-            idList: card.idList,
-            idBoard: card.idBoard,
-            idMembers: card.idMembers,
-            idLabels: card.idLabels,
-        }
-    }
+  return {
+      type: ADD_CARD,
+      card: {
+        id: card._id,
+        _id: card._id,
+        name: card.name,
+        closed: card.closed,
+        desc: card.desc,
+        due: card.due,
+        dueComplete: card.dueComplete,
+        pos: card.pos,
+        idList: card.idList,
+        idBoard: card.idBoard,
+        idMembers: card.idMembers,
+        idLabels: card.idLabels,
+      },
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
+      }
+  }
 };
 
 
@@ -127,10 +138,15 @@ export const addCard = (card) => {
  * @desc
  */
 export const moveList = (lists) => {
-    return {
-        type: MOVE_LIST,
-        lists
-    }
+  return {
+      type: MOVE_LIST,
+      lists,
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
+      }
+  }
 };
 
 
@@ -138,25 +154,35 @@ export const moveList = (lists) => {
  * @desc
  */
 export const moveCard = (list, indexOfList) => {
-    return {
-        type: MOVE_CARD,
-        list,
-        indexOfList,
-    }
+  return {
+      type: MOVE_CARD,
+      list,
+      indexOfList,
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
+      }
+  }
 };
 
 /**
  * @desc
  */
 export const moveCardFromList = (startList, indexStart, endList, indexEnd) => {
-    // console.log(startList);
-    // console.log(endList);
-    // console.log(indexStart, indexEnd);
-    return {
-        type: MOVE_CARD_FROM_LIST,
-        startList: startList,
-        endList: endList,
-        indexStart,
-        indexEnd
-    }
+  // console.log(startList);
+  // console.log(endList);
+  // console.log(indexStart, indexEnd);
+  return {
+      type: MOVE_CARD_FROM_LIST,
+      startList: startList,
+      endList: endList,
+      indexStart,
+      indexEnd,
+      meta: {
+          socket: {
+              channel: 'data:store'
+          }
+      }
+  }
 };
