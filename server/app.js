@@ -21,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Environment configuration
 const environmentPath = path.resolve('./environments/.' + app.get('env') + '.env' );
@@ -45,6 +46,7 @@ const CardRoutes = require('./routes/CardRoutes');
 const CircleRoutes = require('./routes/CircleRoutes');
 const ChecklistRoutes = require('./routes/ChecklistRoutes');
 
+// Serve the API
 app.use('/api', indexRouter);
 app.use('/api', authRouter);
 app.use('/api/members', memberRouter);
@@ -53,6 +55,10 @@ app.use('/api/lists', ListRoutes);
 app.use('/api/cards', CardRoutes);
 app.use('/api/circles', CircleRoutes);
 app.use('/api/checklists', ChecklistRoutes);
-app.use('/.*', express.static(path.join(__dirname, 'public')));
+
+//Serve the client
+app.get('/.*', function(req, res){
+    res.sendFile(__dirname + 'public/index.html');
+});
 
 module.exports = app;
