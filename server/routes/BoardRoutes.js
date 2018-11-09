@@ -158,7 +158,7 @@ router.get('/:id/lists', token, boardAccess.readRights(), function(req, res) {
 
 /**
  * Add the member at the board (or update role)
- * @route POST /boards/{id}/members/{id}
+ * @route PUT /boards/{id}/members/{id}
  * @group board - Operations about boards
  * @param {string} id.path.required - board's id.
  * @param {string} idMember.path.required - board's id.
