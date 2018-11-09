@@ -25,11 +25,11 @@ router.post('/', token, function(req, res) {
     newBoard.createOrUpdateMember(req.user._id, "admin", true);
 
     newBoard.validate(function (err) {
-        if (err) return res.status(400).json({message : err._message});
+        if (err) return res.status(400).json({message : err});
         newBoard.save(function (err) {
             if (err) {
                 debug('POST boards/ error : ' + err);
-                return res.status(400).json({message : err._message});
+                return res.status(400).json({message : err});
             }
             Member.findByIdAndUpdate(
                 { _id: req.user._id},
@@ -90,7 +90,7 @@ router.post('/:id/lists', token, boardAccess.updateRights(), function(req, res) 
 
         let newList = new List(req.body);
         newList.validate(function (err) {
-            if (err) return res.status(400).json({message:err.message});
+            if (err) return res.status(400).json({message:err});
 
             newList.save(function (err) {
                 if (err) {
@@ -159,7 +159,7 @@ router.put('/:id/members/:idMember', token, boardAccess.updateRights(), function
     board.createOrUpdateMember(req.params.idMember, type);
 
     board.validate(function (err) {
-        if(err) return res.status(400).json({message:err._message});
+        if(err) return res.status(400).json({message:err});
         board.save(function (err) {
             if(err) return res.status(500).json({message:'Unexpected internal error'});
             return res.status(200).json(board);

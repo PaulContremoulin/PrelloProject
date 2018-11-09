@@ -112,7 +112,7 @@ router.post('/:id/circles', token, memberAccess.updateRights(), function(req, re
         });
 
         circle.validate(function (err) {
-            if(err) return res.status(400).send(err);
+            if(err) return res.status(400).json({message:err});
             // save the circle
             circle.save(function (err) {
                 if (err) {
@@ -197,7 +197,7 @@ router.post('/:id/password/reset', function(req, res) {
         member.set('resetPass', undefined);
 
         member.validate(function (err) {
-            if(err) return res.status(400).json({message : err._message});
+            if(err) return res.status(400).json({message : err});
             member.save(function (err) {
                 if (err) {
                     debug('Error in Saving user: ' + err);
@@ -269,7 +269,7 @@ router.get('/:id/email/confirm', function(req, res) {
         member.set('tokenConfirm', undefined);
 
         member.validate(function (err) {
-            if(err) return res.status(400).json({message : err._message});
+            if(err) return res.status(400).json({message : err});
 
             member.save(function (err) {
                 if (err) {

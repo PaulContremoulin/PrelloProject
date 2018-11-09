@@ -40,7 +40,7 @@ router.post('/:id/boards', token,  circleAccess.updateRights(), function(req, re
     let circle = req.circle;
     circle.addBoard(req.query.idBoard);
     circle.validate(function(err){
-       if(err) return res.status(400).json({message:err._message});
+       if(err) return res.status(400).json({message:err});
        circle.save(function(err){
            if(err) {
                debug(err);
@@ -72,7 +72,7 @@ router.delete('/:id/boards/:idBoard', token, circleAccess.updateRights(), functi
     let circle = req.circle;
     circle.removeBoard(req.params.idBoard);
     circle.validate(function(err){
-        if(err) return res.status(400).json({message:err._message});
+        if(err) return res.status(400).json({message:err});
         circle.save(function(err){
             if(err) return res.status(500).json({message:'Unexpected internal error'});
             return res.status(200).json({'message' : 'Board deleted successfully'});

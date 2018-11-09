@@ -24,7 +24,7 @@ router.post('/', token, CardAccess.createRights(), function(req, res) {
     let newCard = new Card(req.body);
 
     newCard.validate(function (err) {
-        if (err) return res.status(400).json({message : err.message});
+        if (err) return res.status(400).json({message : err});
         newCard.save(function (err) {
             if (err) {
                 debug('POST cards error : ' + err);
@@ -100,7 +100,7 @@ router.put('/:id', token, CardAccess.updateRights(), function(req, res) {
     (req.query.dueComplete) ? card.dueComplete = req.query.dueComplete : null;
 
     card.validate(function (err) {
-        if(err) return res.status(400).send(err);
+        if(err) return res.status(400).json({message:err});
         card.save(function (err) {
             if(err) {
                 debug('PUT cards/:id error : ' + err);
@@ -136,7 +136,7 @@ router.post('/:id/idMembers', token, CardAccess.updateRights(), function(req, re
     card.createOrUpdateMember(newMember.idMember);
 
     card.validate(function (err) {
-        if(err) return res.status(400).json({message : err._message});
+        if(err) return res.status(400).json({message : err});
         card.save(function (err) {
             if(err) return res.status(500).json({message:'Unexpected internal error'});
             return res.status(200).json({message : 'Member added successfully at the card'});
