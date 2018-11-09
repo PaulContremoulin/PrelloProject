@@ -59,7 +59,10 @@ export class ContentHomeToBeConnected extends React.Component {
 
     componentDidMount() {
        getBoardsUser(this.props.user.member._id)
-         .then(res => {this.props.fetchBoards(res.data)})
+         .then(res => {
+             console.log(res.data);
+             this.props.fetchBoards(res.data)
+         })
            .catch(error => {console.log(error)});
     }
 }

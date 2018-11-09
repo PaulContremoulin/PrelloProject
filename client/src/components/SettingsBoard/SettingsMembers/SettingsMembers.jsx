@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
 import {Row, Button, Col, ListGroup, ListGroupItem} from 'reactstrap';
+import {AddMembers} from "../AddMembers/AddMembers";
 
 // Css...
 import './SettingsMembers.css';
@@ -21,7 +22,7 @@ export class SettingsMembersToBeConnected extends React.Component {
                 <Row>
                     <Col sm={{size:8, offset:2}}>
                         <h4 className="float-left"><FontAwesomeIcon icon={faUsers} size="1x"/> Members</h4>
-                        <Button className="float-right" color="secondary" size="sm">Add members</Button>
+                        <AddMembers/>
                     </Col>
                 </Row>
                 <Row>

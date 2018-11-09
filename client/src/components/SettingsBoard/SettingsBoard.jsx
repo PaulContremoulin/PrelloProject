@@ -8,30 +8,46 @@ import './SettingsBoard.css';
 import {TitleSettingsBoard} from "../../components/SettingsBoard/TitleSettingsBoard/TitleSettingsBoard";
 import {setBoard} from "../../actions/boardActions";
 import {SettingsMembers} from "./SettingsMembers/SettingsMembers";
+import {PageNoFound} from "../../pages/PageNoFound/PageNoFound";
 
 // Actions & Constant
 
 export class SettingsBoardToBeConnected extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            'isGood': true,
+        }
     }
+
+
 
     render() {
         return (
             <div className="SettingsBoard">
-                <Container>
-                    <TitleSettingsBoard boardName={this.props.board.name}/>
-                    <hr className="my-2" />
-                    <SettingsMembers/>
-                </Container>
+                {this.state.isGood ?
+                    <Container>
+                        <TitleSettingsBoard boardName={this.props.board.name}/>
+                        <hr className="my-2"/>
+                        <SettingsMembers/>
+                    </Container>
+                    :
+                    <PageNoFound/>
+                }
             </div>
         )
     }
 
     componentDidMount() {
         const idBoard = this.props.boardId;
-        const newBoard = this.props.boards.filter(board => board._id === idBoard);
-        this.props.setBoard(newBoard[0]);
+        if (this.props.board._id !== idBoard) {
+            const newBoard = this.props.boards.filter(board => board._id === idBoard);
+            if (newBoard.length === 0) {
+                this.setState({isGood: false});
+            } else {
+                this.props.setBoard(newBoard[0]);
+                this.setState({isGood: true});
+            }
     }
 }
 
