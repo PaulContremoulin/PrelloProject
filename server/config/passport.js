@@ -74,7 +74,7 @@ passport.use('signup', new LocalStrategy({
 passport.use(new GitHubStrategy({
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: process.env.DOMAIN + '/login/github'
+        callbackURL: 'http://' + process.env.DOMAIN + '/login/github'
     },
     function(accessToken, refreshToken, profile, cb) {
 
