@@ -57,7 +57,7 @@ app.use('/api/circles', CircleRoutes);
 app.use('/api/checklists', ChecklistRoutes);
 
 //Serve the client
-app.get('/*', function(req, res){
+app.use('/*', function(req, res){
     res.sendFile(__dirname + '/public/index.html');
 });
 
