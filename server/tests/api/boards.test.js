@@ -211,6 +211,59 @@ module.exports = function (app, options) {
 
         });
 
+        describe('GET /api/boards/:id/members - Board memberships', function () {
+
+            it('should send back a OK response - Board\'s members got', function (done) {
+                request(app)
+                    .get('/api/boards/' + options.board._id + '/members')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.should.be.instanceof(Array).and.have.length(2);
+                        res.body[0].memberType.should.be.equals('admin');
+                        res.body[0].idMember.username.should.be.equals(options.member.username);
+                        done();
+                    });
+            });
+
+            it('should send back a FORBIDDEN response - Board\'s members get by member without access', function (done) {
+                request(app)
+                    .get('/api/boards/' + options.board._id + '/members')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a NOT FOUND response - Board\'s members with wing id', function (done) {
+                request(app)
+                    .get('/api/boards/78' + options.board._id + '/members')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .expect(404)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a UNAUTHORIZED response - Board\'s members without token', function (done) {
+                request(app)
+                    .get('/api/boards/' + options.board._id + '/members')
+                    .set('Content-Type', 'application/json')
+                    .expect(401)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+        });
+
         describe('POST /api/boards/:id/lists - Create a list for the board', function () {
 
             it('should send back a CREATE response - List created', function (done) {

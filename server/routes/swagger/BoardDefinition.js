@@ -36,3 +36,10 @@
  * @property {string} memberType - the member type
  * @property {string} unconfirmed - the member confirmation (join board)
  */
+
+/**
+ * @typedef MembershipDetail
+ * @property {Member.model} idMember.required - the member id
+ * @property {string} memberType - the member type
+ * @property {string} unconfirmed - the member confirmation (join board)
+ */

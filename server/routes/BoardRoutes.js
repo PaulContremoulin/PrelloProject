@@ -67,6 +67,29 @@ router.get('/:id', token, boardAccess.readRights(), function(req, res) {
 });
 
 /**
+ * Get members of a board
+ * @route GET /boards/{id}/members
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @returns {MembershipDetail.model} 200 - Members object
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/members', token, boardAccess.readRights(), function(req, res) {
+
+    Board.findById(req.params.id, {_id : 1, memberships: 1})
+        .populate('memberships.idMember', 'username firstName lastName')
+        .exec(function (err, board) {
+            if (err) debug('GET boards/:id error : ' + err);
+            if (!board) return res.status(404).json({message : 'Board not found'});
+            return res.status(200).json(board.memberships);
+        });
+});
+
+/**
  * Create a list on the board
  * @route POST /boards/{id}/lists
  * @group board - Operations about boards
