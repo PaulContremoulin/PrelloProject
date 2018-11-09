@@ -1,55 +1,123 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
-import {Modal, ModalFooter, ModalBody, ModalHeader, Row, Button} from 'reactstrap';
+import Autosuggest from 'react-autosuggest';
+import {ListGroupItem, ListGroup, Modal, ModalFooter, ModalBody, ModalHeader, Row, Button, FormGroup, Form, Label, Input} from 'reactstrap';
+import {addMember} from "../../../requests/memberships";
 
 // Css...
 import './AddMembers.css';
 
 
 // Actions & Constant
+import {getMembersSearch} from "../../../requests/memberships";
+import {setBoardMembers} from "../../../actions/boardActions";
 
 export class AddMembersToBeConnected extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
+
         this.state = {
-            'open': false,
-            'visible': false,
+            value: '',
+            suggestions: [],
+            membersFind : [],
+
+    };
+    }
+
+    getSuggestions = (value) => {
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        return inputLength === 0 ? [] : this.state.membersFind.filter(member =>
+            member.username.toLowerCase().slice(0, inputLength) === inputValue
+        );
+    }
+
+
+    getMemberInDB = (value) => {
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+        if (inputLength !== 0) {
+            getMembersSearch(value)
+                .then(res => {
+                    if (res.status === 200) {
+                        console.log(res.data);
+                        this.setState({
+                            membersFind: res.data,
+                        })
+                    }
+                })
         }
     }
 
-    openModal (){
-        this.setState({ open: true })
+
+    getSuggestionValue = (suggestion) => {
+        return suggestion.username;
+    }
+
+    renderSuggestion = (suggestion) => {
+        return (
+            <div>{suggestion.username}</div>
+        );
+    }
+
+    onChange = (event, { newValue }) => {
+        this.setState({
+            value: newValue
+        });
+        this.getMemberInDB(newValue);
     };
 
-    closeModal () {
+    onSuggestionsFetchRequested = ({ value }) => {
         this.setState({
-            open: false,
-            'visible': false,
-            'name':'',
-        })
-    };
-
-    onDismiss = () => {
-        this.setState({
-            visible: false
+            suggestions: this.getSuggestions(value)
         });
     };
 
-    render() {
-        return (
-            <div className="SettingsBoard">
-                <Button className="float-right" color="secondary" size="sm" onClick={() => this.openModal()}>Add members</Button>
-                <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
-                    <ModalHeader toggle={() =>this.closeModal()}>Add Members</ModalHeader>
-                        <ModalBody>
+    onSuggestionsClearRequested = () => {
+        this.setState({
+            suggestions: []
+        });
+    };
 
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="secondary" onClick={() =>this.closeModal() }>Return</Button>
-                            <Button color="primary">Create</Button>
-                        </ModalFooter>
-                </Modal>
+    addMemberInDB = () => {
+        const idBoard = this.props.board._id;
+        console.log(idBoard);
+        const idUser = this.state.membersFind[0]._id;
+        addMember(idBoard, idUser, 'normal')
+            .then(res => {
+                if (res.status === 200){
+                    this.props.setBoardMembers(res.data.memberships);
+                } else {
+                    console.log("error");
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    }
+
+    render() {
+        const { value, suggestions } = this.state;
+        const inputProps = {
+            placeholder: "Add a new member",
+            value,
+            onChange: this.onChange
+        };
+        return (
+            <div>
+                <Row>
+                <Autosuggest
+                    suggestions={suggestions}
+                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                    getSuggestionValue={this.getSuggestionValue}
+                    renderSuggestion={this.renderSuggestion}
+                    inputProps={inputProps} />
+                <Button color="secondary" onClick={() => this.addMemberInDB()}>Add member</Button>
+                </Row>
             </div>
         )
     }
@@ -58,7 +126,9 @@ export class AddMembersToBeConnected extends React.Component {
 const mapStateToProps = (state, props) => ({
     board: state.board,
 });
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+    setBoardMembers: (res) => dispatch(setBoardMembers(res)),
+});
 
 export const AddMembers = connect(
     mapStateToProps,

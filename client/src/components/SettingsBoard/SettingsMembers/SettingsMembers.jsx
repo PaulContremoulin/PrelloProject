@@ -2,6 +2,7 @@
 import React from 'react';
 import {Row, Button, Col, ListGroup, ListGroupItem} from 'reactstrap';
 import {AddMembers} from "../AddMembers/AddMembers";
+import {ModifyRoleMember} from "./ModifyRoleMember/ModifyRoleMember";
 
 // Css...
 import './SettingsMembers.css';
@@ -22,7 +23,6 @@ export class SettingsMembersToBeConnected extends React.Component {
                 <Row>
                     <Col sm={{size:8, offset:2}}>
                         <h4 className="float-left"><FontAwesomeIcon icon={faUsers} size="1x"/> Members</h4>
-                        <AddMembers/>
                     </Col>
                 </Row>
                 <Row>
@@ -32,16 +32,24 @@ export class SettingsMembersToBeConnected extends React.Component {
                                 console.log(membership);
                                 return (
                                     <ListGroupItem>
-                                        <div className="float-left">
-                                            {membership.idMember}
-                                        </div>
-                                        <div className="float-right">
-                                            {membership.memberType}
-                                        </div>
+                                            <Row>
+                                            <Col xs={6} className="float-left">
+                                                {membership.idMember.username}
+                                            </Col>
+                                            <Col xs={4}>
+                                                {membership.memberType}
+                                            </Col>
+                                                {membership.idMember._id !== this.props.user.member.id &&
+                                                <Col xs={2}>
+                                                    <ModifyRoleMember member={membership}/>
+                                                </Col>
+                                                }
+                                            </Row>
                                         </ListGroupItem>
                                 )
                             })}
                         </ListGroup>
+                        <AddMembers/>
                     </Col>
                 </Row>
             </div>
@@ -51,6 +59,7 @@ export class SettingsMembersToBeConnected extends React.Component {
 
 const mapStateToProps = (state, props) => ({
     board: state.board,
+    user: state.user,
 });
 const mapDispatchToProps = (dispatch) => ({});
 

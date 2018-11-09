@@ -6,7 +6,8 @@ import {Container, Row} from 'reactstrap';
 // Css...
 import './SettingsBoard.css';
 import {TitleSettingsBoard} from "../../components/SettingsBoard/TitleSettingsBoard/TitleSettingsBoard";
-import {setBoard} from "../../actions/boardActions";
+import {setBoard ,setBoardMembers} from "../../actions/boardActions";
+import {getMembersOfBoard} from "../../requests/boards";
 import {SettingsMembers} from "./SettingsMembers/SettingsMembers";
 import {PageNoFound} from "../../pages/PageNoFound/PageNoFound";
 
@@ -49,6 +50,17 @@ export class SettingsBoardToBeConnected extends React.Component {
                 this.setState({isGood: true});
             }
         }
+        if (this.state.isGood) {
+            if (this.props.board.memberships.username === undefined) {
+                getMembersOfBoard(idBoard)
+                    .then(res => {
+                        console.log(res.data);
+                        this.props.setBoardMembers(res.data);
+                        console.log(this.props.board);
+                    })
+                    .catch(err => console.log(err))
+            }
+        }
     }
 }
 
@@ -59,6 +71,7 @@ const mapStateToProps = (state, props) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
     setBoard: (res) => dispatch(setBoard(res)),
+    setBoardMembers: (res) => dispatch(setBoardMembers(res)),
 });
 
 export const SettingsBoard = connect(
