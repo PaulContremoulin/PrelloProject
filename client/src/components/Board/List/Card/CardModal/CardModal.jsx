@@ -8,9 +8,10 @@ import './CardModal.css';
 
 // Actions & Constant
 import { AddChecklist } from './AddChecklist/AddChecklist';
-import { setName, setDesc, setDue, setClosed, addChecklist } from '../../../../../actions/cardActions';
+import { Checklist } from './Checklist/Checklist';
+import { setName, setDesc, setDue, setClosed, addChecklist, setChecklists } from '../../../../../actions/cardActions';
 import { changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed } from '../../../../../requests/cards';
-import { postChecklistToCard } from '../../../../../requests/checklists';
+import { postChecklistToCard, getChecklists } from '../../../../../requests/checklists';
 
 export class CardModalToBeConnected extends React.Component {
   constructor(props) {
@@ -21,6 +22,15 @@ export class CardModalToBeConnected extends React.Component {
         dueDateInput: false,
         addChecklist: false,
       }
+  }
+
+  componentDidMount() {
+    const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+    getChecklists(cardId)
+      .then(res => {
+        this.props.setChecklists(this.props.listId, cardId, res.data)
+      })
+        .catch(error => {console.log(error)});
   }
 
 // cardId : ID
@@ -172,12 +182,18 @@ export class CardModalToBeConnected extends React.Component {
                     </Row>
                     {
                       (card.checklists) ?
-                        <Row className="MainModalRow">
-                          <h4>Checklist : </h4>
-                          {card.checklists.map(
-                            (checklist, index) => <Row>{checklist.name}</Row>
-                          )}
-                        </Row>
+                        <div>
+                          <Row className="MainModalRow">
+                            <h4>Checklist : </h4>
+                          </Row>
+                          <Row className="MainModalRow">
+                            <Col>
+                            {card.checklists.map(
+                              (checklist, index) => <Checklist checklist={checklist} />
+                            )}
+                            </Col>
+                          </Row>
+                        </div>
                         :
                         null
                     }
@@ -214,6 +230,7 @@ const mapDispatchToProps = ( dispatch ) => ({
   setDue: (idList, idCard, due) => dispatch( setDue(idList, idCard, due) ),
   setClosed: (idList, idCard, closed) => dispatch( setClosed(idList, idCard, closed) ),
   addChecklist: (checklistName, idCard, idBoard) => dispatch( addChecklist(checklistName, idCard, idBoard) ),
+  setChecklists: (idList, idCard, checklists) => dispatch( setChecklists(idList, idCard, checklists) ),
 })
 
 export const CardModal = connect(
