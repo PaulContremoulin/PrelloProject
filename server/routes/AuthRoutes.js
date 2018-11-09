@@ -95,13 +95,12 @@ router.get('/auth/github/callback',
 router.post('/auth/forgot/password', function(req, res) {
 
     if(!req.body.email) return res.status(400).json({message:'Email missing'});
-    if(!req.body.callback) return res.status(400).json({message:'Url callback missing'});
 
     Member.findOne({email : req.body.email}, function(err, member) {
         if(err) debug('POST /auth/forgot/password error : ' + err)
         if(!member) return res.status(404).json({message:'Not account found'});
 
-        let resetUrl = req.body.callback + '/login/reset/' + member._id + '/password?token=' + member.generateResetPasswordToken();
+        let resetUrl = process.env.DOMAIN + '/login/reset/' + member._id + '/password?token=' + member.generateResetPasswordToken();
 
         mail.resetPasswordMessage(member, resetUrl, function(err){
             if(err){
