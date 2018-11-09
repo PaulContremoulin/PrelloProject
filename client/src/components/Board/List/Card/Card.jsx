@@ -31,7 +31,7 @@ export class CardComponent extends React.Component {
   }
 
   render() {
-    const { card, index, listId, openModal } = this.props;
+    const { card, board, index, listId, openModal } = this.props;
     const { open } = this.state;
     return(
       <div className="Card">

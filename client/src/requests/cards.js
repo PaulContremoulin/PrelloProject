@@ -14,5 +14,5 @@ import { putRequest, getRequest } from './genericRequest';
   }
 
   export function changeCardClosed(cardId, cardClosed) {
-      return putRequest('/api/cards/' + cardId + '/?closed' + cardClosed)
+      return putRequest('/api/cards/' + cardId + '/?closed=' + cardClosed)
   }
