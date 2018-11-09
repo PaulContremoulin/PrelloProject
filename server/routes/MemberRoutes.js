@@ -270,16 +270,12 @@ router.get('/:id/email/confirm', function(req, res) {
 
         member.validate(function (err) {
             if(err) return res.status(400).json({message : err});
-
             member.save(function (err) {
                 if (err) {
                     debug('members/:id/email/confirm error : ' + err);
                     return res.status(500).json({message : 'Unexpected internal server error'});
                 }
-                if(req.query.callback)
-                    return res.redirect(req.query.callback);
-                else
-                    return res.status(200).json({message : 'Email successfully confirmed'});
+                return res.redirect('/login');
             });
         });
     });
