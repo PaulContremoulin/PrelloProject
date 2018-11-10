@@ -35,11 +35,6 @@ export const addCircle = (data) => {
     return {
         type: ADD_CIRCLE,
         circle: data,
-        meta: {
-            socket: {
-                channel: 'data:store'
-            }
-        }
     }
 };
 

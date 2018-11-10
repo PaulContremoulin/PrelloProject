@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
-import {Row, Button, Col, Form} from 'reactstrap';
+import {Row, Button, Col, Form, InputGroup, InputGroupAddon} from 'reactstrap';
 import {addMember} from "../../../requests/memberships";
 
 // Css...
@@ -112,7 +112,7 @@ export class AddMembersToBeConnected extends React.Component {
             <div>
                 <Row>
                     <Form className="form" onSubmit={ (e) => this.addMemberInDB(e) }>
-                        <Col xs={8}>
+                        <InputGroup>
                             <Autosuggest className="inputAdd"
                                          suggestions={suggestions}
                                          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -120,10 +120,8 @@ export class AddMembersToBeConnected extends React.Component {
                                          getSuggestionValue={this.getSuggestionValue}
                                          renderSuggestion={this.renderSuggestion}
                                          inputProps={inputProps} />
-                        </Col>
-                        <Col xs={4}>
-                            <Button color="secondary" type="submit">Add member</Button>
-                        </Col>
+                            <InputGroupAddon addonType="append"><Button color="secondary" type="submit">Add member</Button></InputGroupAddon>
+                        </InputGroup>
                     </Form>
                 </Row>
             </div>

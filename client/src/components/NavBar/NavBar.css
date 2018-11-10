@@ -4,10 +4,7 @@
 
 .navbar-brand {
     color: white;
-}
-
-.navbar-brand:hover {
-    color: white;
+    cursor: pointer;
 }
 
 .helpNavItem {

@@ -1,7 +1,7 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
-import {Container, Row} from 'reactstrap';
+import {Container, Alert} from 'reactstrap';
 
 // Css...
 import './SettingsBoard.css';
@@ -9,7 +9,6 @@ import {TitleSettingsBoard} from "../../components/SettingsBoard/TitleSettingsBo
 import {setBoard ,setBoardMembers} from "../../actions/boardActions";
 import {getMembersOfBoard} from "../../requests/boards";
 import {SettingsMembers} from "./SettingsMembers/SettingsMembers";
-import {PageNoFound} from "../../pages/PageNoFound/PageNoFound";
 
 // Actions & Constant
 
@@ -33,7 +32,9 @@ export class SettingsBoardToBeConnected extends React.Component {
                         <SettingsMembers/>
                     </Container>
                     :
-                    <PageNoFound/>
+                    <Alert color="danger">
+                        You don't have permission to access on this board
+                    </Alert>
                 }
             </div>
         )
@@ -41,8 +42,9 @@ export class SettingsBoardToBeConnected extends React.Component {
 
     componentDidMount() {
         const idBoard = this.props.boardId;
-        if (this.props.board._id !== idBoard) {
-            const newBoard = this.props.boards.filter(board => board._id === idBoard);
+        const nameBoard = this.props.boardName;
+        if ((this.props.board._id !== idBoard) || (this.props.board.name !== nameBoard)) {
+            const newBoard = this.props.boards.filter(board => (board._id === idBoard) && (board.name === nameBoard));
             if (newBoard.length === 0) {
                 this.setState({isGood: false});
             } else {

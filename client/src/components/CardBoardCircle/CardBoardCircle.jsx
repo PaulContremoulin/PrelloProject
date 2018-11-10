@@ -42,13 +42,13 @@ export class CardBoardCircleToBeConnected extends React.Component {
     };
 
     render() {
-        const {goToPageBoard } = this.props;
+        const {goToPageBoard, board } = this.props;
         return (
             <div>
-                <Card style={{ backgroundColor: this.props.board.color}}>
+                <Card style={{ borderBottomColor: board.prefs.background, borderBottomWidth: 4}}>
                     <CardHeader>
-                          {this.props.board.name}
-                           <Button className="float-right" onClick={this.toggle} close />
+                        {this.props.board.name}
+                        <Button className="float-right" onClick={this.toggle} close />
                     </CardHeader>
                     <CardBody onClick={ () => goToPageBoard() }>
                         <CardText>{this.props.board.desc}</CardText>
