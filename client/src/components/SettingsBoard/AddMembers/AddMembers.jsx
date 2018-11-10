@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
-import {ListGroupItem, ListGroup, Modal, ModalFooter, ModalBody, ModalHeader, Row, Button, FormGroup, Form, Label, Input} from 'reactstrap';
+import {Row, Button, Col, Form} from 'reactstrap';
 import {addMember} from "../../../requests/memberships";
 
 // Css...
@@ -81,22 +81,27 @@ export class AddMembersToBeConnected extends React.Component {
         });
     };
 
-    addMemberInDB = () => {
+    addMemberInDB = (e) => {
+        e.preventDefault();
         const idBoard = this.props.board._id;
-        console.log(idBoard);
-        const idUser = this.state.membersFind[0]._id;
-        addMember(idBoard, idUser, 'normal')
-            .then(res => {
-                if (res.status === 200){
-                    this.props.setBoardMembers(res.data.memberships);
-                } else {
-                    console.log("error");
-                }
-            })
-            .catch(err => {
-                console.log(err)
-            })
-
+        const member = this.state.value;
+        const membFind = this.state.membersFind.filter(memb => memb.username === member);
+        console.log("1111111111111111111");
+        console.log(this.state.membersFind);
+        console.log(membFind);
+        if (membFind.length !== 0) {
+            addMember(idBoard, membFind[0]._id, 'normal')
+                .then(res => {
+                    if (res.status === 200) {
+                        this.props.setBoardMembers(res.data.memberships);
+                    } else {
+                        console.log("error");
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
     }
 
     render() {
@@ -109,14 +114,20 @@ export class AddMembersToBeConnected extends React.Component {
         return (
             <div>
                 <Row>
-                <Autosuggest
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    getSuggestionValue={this.getSuggestionValue}
-                    renderSuggestion={this.renderSuggestion}
-                    inputProps={inputProps} />
-                <Button color="secondary" onClick={() => this.addMemberInDB()}>Add member</Button>
+                    <Form className="form" onSubmit={ (e) => this.addMemberInDB(e) }>
+                    <Col xs={8}>
+                        <Autosuggest className="inputAdd"
+                            suggestions={suggestions}
+                            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                            getSuggestionValue={this.getSuggestionValue}
+                            renderSuggestion={this.renderSuggestion}
+                            inputProps={inputProps} />
+                    </Col>
+                    <Col xs={4}>
+                        <Button color="secondary" type="submit">Add member</Button>
+                    </Col>
+                    </Form>
                 </Row>
             </div>
         )

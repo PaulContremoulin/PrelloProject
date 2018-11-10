@@ -3,6 +3,7 @@ import React from 'react';
 import {Row, Button, Col, ListGroup, ListGroupItem} from 'reactstrap';
 import {AddMembers} from "../AddMembers/AddMembers";
 import {ModifyRoleMember} from "./ModifyRoleMember/ModifyRoleMember";
+import {DeleteMember} from "./DeleteMember/DeleteMember";
 
 // Css...
 import './SettingsMembers.css';
@@ -33,15 +34,20 @@ export class SettingsMembersToBeConnected extends React.Component {
                                 return (
                                     <ListGroupItem>
                                             <Row>
-                                            <Col xs={6} className="float-left">
+                                            <Col xs={5} className="float-left">
                                                 {membership.idMember.username}
                                             </Col>
-                                            <Col xs={4}>
+                                            <Col xs={3}>
                                                 {membership.memberType}
                                             </Col>
                                                 {membership.idMember._id !== this.props.user.member.id &&
                                                 <Col xs={2}>
                                                     <ModifyRoleMember member={membership}/>
+                                                </Col>
+                                                }
+                                                {membership.idMember._id !== this.props.user.member.id &&
+                                                <Col xs={2}>
+                                                    <DeleteMember/>
                                                 </Col>
                                                 }
                                             </Row>
