@@ -1,5 +1,6 @@
 // Modules
 import React from 'react';
+import './CardBoard.css';
 
 import {Card, ListGroupItem, ListGroup, CardHeader, Button, CardBody, CardText, Col, Row, Modal, ModalBody, ModalHeader} from 'reactstrap';
 // Actions & Constant
@@ -42,7 +43,7 @@ export class CardBoardToBeConnected extends React.Component {
       const { board, goToPageBoard } = this.props;
         return (
             <div>
-            <Card style={{ backgroundColor: this.props.board.color}}>
+            <Card style={{ borderBottomColor: board.prefs.background, borderBottomWidth: 4}}>
                 <CardHeader>
                         {this.props.board.name}
                           <Button className="float-right" onClick={this.toggle} close>+</Button>

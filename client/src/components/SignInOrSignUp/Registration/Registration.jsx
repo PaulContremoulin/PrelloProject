@@ -295,7 +295,7 @@ export class Registration extends React.Component {
                 </Form>
                     <Row>
                       <Col className="text-center">
-                          <Button className="btnGithub" href="http://localhost:5000/api/auth/github"><Octicon name="mark-github"/> Sign Up with Github</Button>
+                          <Button className="btnGithub" href="/api/auth/github"><Octicon name="mark-github"/> Sign Up with Github</Button>
                       </Col>
                     </Row>
                     <Row>

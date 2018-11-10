@@ -56,15 +56,6 @@ export class ContentHomeToBeConnected extends React.Component {
             </div>
         )
     }
-
-    componentDidMount() {
-       getBoardsUser(this.props.user.member._id)
-         .then(res => {
-             console.log(res.data);
-             this.props.fetchBoards(res.data)
-         })
-           .catch(error => {console.log(error)});
-    }
 }
 
 const mapStateToProps = ( state, props ) => ({

@@ -2,6 +2,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {Popover, PopoverBody, PopoverHeader, Button, ListGroup, ListGroupItem} from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 // Css...
 import './ModifyRoleMember.css';
@@ -43,7 +45,7 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
     render() {
         return (
             <div className="ModifyRoleMember">
-                <Button id={'Popover-' + this.props.member.idMember._id} className="float-right" onClick={this.toggle}>OK</Button>
+                <FontAwesomeIcon icon={faEdit} size="1x" id={'Popover-' + this.props.member.idMember._id} onClick={this.toggle} className="float-right"/>
                 <Popover placement="right" isOpen={this.state.popoverOpen} target={'Popover-' + this.props.member.idMember._id} toggle={this.toggle}>
                     <PopoverHeader>Change Role</PopoverHeader>
                     <PopoverBody>
@@ -51,7 +53,7 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
                             {this.state.roles.map(role => {
                                 if (role !== this.props.member.memberType) {
                                     return (
-                                        <ListGroupItem onClick={() => this.changeRole(role)}>
+                                        <ListGroupItem tag="a" href="" action onClick={() => this.changeRole(role)}>
                                             {role}
                                         </ListGroupItem>
                                     )

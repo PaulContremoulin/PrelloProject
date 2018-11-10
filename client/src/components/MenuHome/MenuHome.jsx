@@ -13,6 +13,8 @@ import {fetchCircles} from "../../actions/circleActions";
 import {getCirclesUser} from "../../requests/circle";
 import {getBoardsCircle} from "../../requests/circle";
 import {setCircle} from "../../actions/circleActions";
+import {getBoardsUser} from "../../requests/boards";
+import {fetchBoards} from "../../actions/boardActions";
 
 
 export class MenuHomeToBeConnected extends React.Component {
@@ -67,20 +69,39 @@ export class MenuHomeToBeConnected extends React.Component {
     }
 
     componentDidMount() {
-        getCirclesUser(this.props.user.member._id)
-            .then(res => {this.props.fetchCircles(res.data)})
-            .catch(error => {console.log(error)})
+        if (this.props.boards.length !== 0) {
+            getCirclesUser(this.props.user.member._id)
+                .then(res => {
+                    this.props.fetchCircles(res.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        }
+        if (this.props.circles.length !== 0) {
+            getBoardsUser(this.props.user.member._id)
+                .then(res => {
+                    console.log(res.data);
+                    this.props.fetchBoards(res.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        }
     }
 }
 
 const mapStateToProps = (state, props) => ({
     user: state.user,
     circles: state.circles,
+    boards: state.boards,
 })
 
 const mapDispatchToProps = (dispatch) => ({
     fetchCircles: (res) => dispatch( fetchCircles(res)),
     setCircle: (res) => dispatch( setCircle(res)),
+    fetchBoards: (res) => dispatch( fetchBoards(res)),
+
 })
 
 export const MenuHome = connect(
