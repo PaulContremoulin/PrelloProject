@@ -132,29 +132,38 @@ boardSchema.methods.isObserverMember = function(memberId){
  * Add a member to the board
  * @param idMember, the member id to add
  * @param memberType, the role assigned
- * @param unconfirmed, the  invitation confirmation
+ * @return the member added
  */
 boardSchema.methods.createOrUpdateMember = function(idMember, memberType) {
     let member = this.memberships.find( m => m.idMember.equals(idMember));
     if(member) {
         member.memberType = memberType;
+        return member;
     }else{
-        this.memberships.push({
+        member = {
             idMember: idMember,
             memberType: memberType,
             unconfirmed: true
-        });
+        };
+        this.memberships.push(member);
+        return member;
     }
 };
 
 /**
- * Add a member to the board
- * @param idMember, the member id to add
- * @param memberType, the role assigned
- * @param unconfirmed, the  invitation confirmation
+ * Get the number of admin on the board
+ * @return number the number of admin
  */
 boardSchema.methods.nbAdmin = function() {
     return this.memberships.filter( m => m.memberType === 'admin').length;
+};
+
+/**
+ * Get admins of the board
+ * @return an array of the admin members
+ */
+boardSchema.methods.getAdmins = function() {
+    return this.memberships.filter( m => m.memberType === 'admin');
 };
 
 
