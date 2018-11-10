@@ -5,7 +5,8 @@ import {history} from '../../history';
 
 import {logOut} from "../../actions/signActions";
 import {fetchBoards} from "../../actions/boardActions";
-import {fetchCircles} from "../../actions/circleActions";
+import {fetchCircles, setCircle} from "../../actions/circleActions";
+import {setBoard} from "../../actions/boardActions";
 
 // Css...
 import logo from '../../assets/prello_logo.png';
@@ -17,11 +18,28 @@ import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reac
 export class NavBarToBeConnected extends React.Component {
 
     logOut = () => {
+        /*
         const temp = [];
+        const board = {
+            _id: "",
+            name: "",
+            idOrganization: "",
+            closed: false,
+            desc: "",
+            memberships: [],
+            lists: [],
+        };
         this.props.fetchCircles(temp);
         this.props.fetchBoards(temp);
+        this.props.setBoard(board);
+        this.props.setCircle(temp);
+        */
         this.props.logOut();
         history.push('/');
+        console.log(this.props.circles);
+        console.log(this.props.circle);
+        console.log(this.props.boards);
+        console.log(this.props.board);
     };
 
     redirectionMain = () => {
@@ -89,12 +107,18 @@ export class NavBarToBeConnected extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-    user: state.user
+    user: state.user,
+    circle: state.circle,
+    circles: state.circles,
+    boards: state.boards,
+    board: state.board
 });
 const mapDispatchToProps = (dispatch) => ({
     logOut: () => dispatch( logOut()),
     fetchBoards: (res) => dispatch(fetchBoards(res)),
     fetchCircles: (res) => dispatch(fetchCircles(res)),
+    setBoard: (res) => dispatch(setBoard(res)),
+    setCircle: (res) => dispatch(setCircle(res)),
 });
 
 export const NavBar = connect(

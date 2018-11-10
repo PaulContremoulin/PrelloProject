@@ -20,6 +20,8 @@ import {fetchBoards} from "../../actions/boardActions";
 export class MenuHomeToBeConnected extends React.Component {
 
     redirectionCircle = (id, name) => {
+        console.log(this.props.circles);
+            console.log(this.props.boards);
         getBoardsCircle(id)
             .then(res => {
                 if(res.status === 200){
