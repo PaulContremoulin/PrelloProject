@@ -45,10 +45,10 @@ export function getMembersOfBoard(idBoard) {
     return getRequest('/api/boards/'+idBoard+'/members')
 }
 
-  // export function getBoardById(idBoard) {
-  //   return getRequest('/api/boards/' + idBoard)
-  //   .then( res => res )
-  // }
+  export function getBoardById(idBoard) {
+    return getRequest('/api/boards/' + idBoard)
+    .then( res => res )
+  }
 
   export function getListsOfBoard(idBoard, withCards = false, archived = false) {
       const cardsFilter = (withCards) ? "open" : "closed";

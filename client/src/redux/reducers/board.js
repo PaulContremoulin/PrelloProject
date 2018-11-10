@@ -60,7 +60,7 @@ const name = ( state = DEFAULT_BOARD.name, action ) => {
     }
 }
 
-// color reducer
+// organization reducer
 const idOrganization = ( state = DEFAULT_BOARD.idOrganization, action ) => {
     switch ( action.type ) {
         case SET_BOARD :
@@ -70,7 +70,17 @@ const idOrganization = ( state = DEFAULT_BOARD.idOrganization, action ) => {
     }
 };
 
-/// creator reducer
+// prefs reducer
+const prefs = ( state = DEFAULT_BOARD.prefs, action ) => {
+  switch ( action.type ) {
+    case SET_BOARD :
+      return action.board.prefs;
+    default:
+      return state ;
+  }
+};
+
+/// description reducer
 const desc = ( state = DEFAULT_BOARD.desc, action ) => {
     switch ( action.type ) {
         case SET_BOARD :
@@ -80,7 +90,7 @@ const desc = ( state = DEFAULT_BOARD.desc, action ) => {
     }
 };
 
-// boardTeam reducer
+// board closed reducer
 const closed = ( state = DEFAULT_BOARD.closed, action ) => {
     switch ( action.type ) {
         case SET_BOARD :

@@ -2,14 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import * as qs from 'query-string';
+import { history } from './history';
 
 // Components & Actions
+import { DEFAULT_BOARD } from '../../constants';
 import {BoardMenu} from './BoardMenu/BoardMenu';
 import {List} from './List/List';
 import {AddList} from './AddList/AddList';
-import {addList, moveList, addCard, moveCard, moveCardFromList} from '../../actions/boardActions';
+import {setBoard, addList, moveList, addCard, moveCard, moveCardFromList} from '../../actions/boardActions';
 import { setListName } from '../../actions/listActions';
-import { postListToBoard, postCardToBoard } from '../../requests/boards';
+import { postListToBoard, postCardToBoard, getListsOfBoard, getBoardById } from '../../requests/boards';
 import { changeListName } from '../../requests/lists';
 
 // Css
@@ -113,11 +116,30 @@ export class BoardToBeConnected extends React.Component {
     })
   }
 
+  componentDidMount() {
+    const { idBoard, boardName } = this.props.match.params;
+    if (board._id != idBoard) {
+      this.props.setBoard(DEFAULT_BOARD);
+    }
+    getBoardById(idBoard)
+    .then( boardfetch => {
+        const setupBoard = boardfetch.data;
+        getListsOfBoard(idBoard, true)
+          .then( lists => {
+            setupBoard["lists"] = lists.data;
+            this.props.setBoard(setupBoard);
+          })
+    })
+    .catch( err => history.push('/home'))
+
+  }
+
   render() {
     const { board, addList, moveList, addCard, moveCard } = this.props;
+    const color = board.prefs.background;
     return(
       <div className="Board">
-        <BoardMenu boardName={ board.name } boardId={board._id} />
+        <BoardMenu boardName={ board.name } boardId={board._id} style={{ "backgroundColor": color }}/>
           <div className="Lists">
             <DragDropContext
               onDragStart={() => {}}
@@ -163,6 +185,7 @@ const mapStateToProps = ( state, props ) => ({
 })
 
 const mapDispatchToProps = ( dispatch ) => ({
+  setBoard: (board) => dispatch( setBoard(board)),
   addList: (listName, boardId) => dispatch( addList(listName, boardId) ),
   moveList: (newListOrder) => dispatch( moveList(newListOrder) ),
   addCard: (card) => dispatch( addCard(card) ),
