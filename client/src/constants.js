@@ -37,9 +37,12 @@ export const DEFAULT_USER = {
 */
 export const DEFAULT_BOARD = {
   _id: "default",
-  name: "My first board name",
-  idOrganization: "default",
-  desc: "myfirstBoard",
+  name: " ",
+  idOrganization: " ",
+  prefs: {
+    background: "#ffffff"
+  },
+  desc: " ",
   closed: false,
   memberships: [],
   lists: [],
