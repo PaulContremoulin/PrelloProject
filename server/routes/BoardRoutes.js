@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let Board = require('./../models/Board');
 let Member = require('./../models/Member');
+let Membership = require('./../models/Memberships');
 let List = require('./../models/List');
 let debug = require('debug')('app:board');
 let boardAccess = require('./../middlewares/BoardAccess');
@@ -174,24 +175,29 @@ router.put('/:id/members/:idMember', token, boardAccess.updateRights(), function
     let board = req.board;
     let type = req.query.type ? req.query.type : 'observer';
 
-    if(type === 'admin' && !board.isAdminMember(req.user.id))
+    if((type === 'admin' && !board.isAdminMember(req.user.id)) || (type !== 'admin' && board.isAdminMember(req.params.idMember) && !board.isAdminMember(req.user.id)))
         return res.status(403).json({message : 'Forbidden access'});
 
-    if(type !== 'admin' && board.nbAdmin() <= 1 && req.user.id === req.params.idMember)
+    if(type !== 'admin' && board.nbAdmin() <= 1 && board.isAdminMember(req.params.idMember))
         return res.status(403).json({message : 'Can not set the role of the last administrator'});
 
-    board.createOrUpdateMember(req.params.idMember, type);
+    let membership = board.createOrUpdateMember(req.params.idMember, type);
 
     board.validate(function (err) {
         if(err) return res.status(400).json({message:err});
         board.save(function (err) {
             if(err) return res.status(500).json({message:'Unexpected internal error'});
+
             Member.findByIdAndUpdate(
                 { _id: req.params.idMember},
                 { $addToSet: { idBoards: board._id } },
-                function (err) {
-                    if (err) return res.status(400).json({message : 'User already member'});
-                    return res.status(200).json(board);
+                {
+                    "fields": { "username":1, "lastName": 1, "firstName" : 1, "_id": 1 },
+                    "new": true
+                }).exec(function (err, member) {
+                    if (!member) return res.status(500).json({message : 'Unexpected internal error'});
+                    membership.idMember = member;
+                    return res.status(200).json(membership);
                 });
         });
     });
