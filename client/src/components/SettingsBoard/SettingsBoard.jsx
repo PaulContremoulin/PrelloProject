@@ -54,9 +54,7 @@ export class SettingsBoardToBeConnected extends React.Component {
             if (this.props.board.memberships.username === undefined) {
                 getMembersOfBoard(idBoard)
                     .then(res => {
-                        console.log(res.data);
                         this.props.setBoardMembers(res.data);
-                        console.log(this.props.board);
                     })
                     .catch(err => console.log(err))
             }

@@ -10,6 +10,7 @@ import './ModifyRoleMember.css';
 
 // Actions & Constant
 import {addMember} from "../../../../requests/memberships";
+import {editRoleMember} from "../../../../actions/boardActions";
 
 export class ModifyRoleMemberToBeConnected extends React.Component {
     constructor(props) {
@@ -17,9 +18,22 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
         this.toggle = this.toggle.bind(this);
         this.state = {
             popoverOpen: false,
-            roles:[],
+            roles:["admin","normal","observer"],
         };
     }
+
+    openPopover = () => {
+        const idUser = this.props.user.member.id;
+        const member =this.props.board.memberships.filter(member => member.idMember._id === idUser);
+        if (member[0].memberType !== "admin") {
+            this.setState({roles:["normal","observer"]})
+        } else {
+            this.setState({roles:["admin","normal","observer"]})
+        }
+        this.setState({
+            popoverOpen: !this.state.popoverOpen
+        });
+    };
 
     toggle() {
         this.setState({
@@ -31,7 +45,7 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
         addMember(this.props.board._id, this.props.member.idMember._id, role)
             .then(res => {
                 if (res.status === 200){
-                    this.props.setBoardMembers(res.data.memberships);
+                    this.props.editRoleMember(res.data);
                     this.toggle()
                 } else {
                     console.log("error");
@@ -45,7 +59,7 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
     render() {
         return (
             <div className="ModifyRoleMember">
-                <FontAwesomeIcon icon={faEdit} size="1x" id={'Popover-' + this.props.member.idMember._id} onClick={this.toggle} className="float-right"/>
+                <FontAwesomeIcon icon={faEdit} size="1x" id={'Popover-' + this.props.member.idMember._id} onClick={() => this.openPopover()} className="float-right"/>
                 <Popover placement="right" isOpen={this.state.popoverOpen} target={'Popover-' + this.props.member.idMember._id} toggle={this.toggle}>
                     <PopoverHeader>Change Role</PopoverHeader>
                     <PopoverBody>
@@ -65,25 +79,16 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
             </div>
         )
     }
-
-    componentDidMount(){
-        const idUser = this.props.user.member.id;
-        console.log("*********")
-        console.log(this.props.board.memberships)
-        const member =this.props.board.memberships.filter(member => member.idMember === idUser);
-        if (member[0].memberType !== "admin") {
-            this.setState({roles:["normal","observer"]})
-        } else {
-            this.setState({roles:["admin","normal","observer"]})
-        }
-    }
 }
 
 const mapStateToProps = (state, props) => ({
     board: state.board,
     user: state.user,
 });
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+    editRoleMember: (res) => dispatch(editRoleMember(res)),
+
+});
 
 export const ModifyRoleMember = connect(
     mapStateToProps,
