@@ -11,7 +11,7 @@ import './AddMembers.css';
 
 // Actions & Constant
 import {getMembersSearch} from "../../../requests/memberships";
-import {setBoardMembers} from "../../../actions/boardActions";
+import {setBoardMembers, addMemberAction} from "../../../actions/boardActions";
 
 export class AddMembersToBeConnected extends React.Component {
     constructor() {
@@ -22,7 +22,7 @@ export class AddMembersToBeConnected extends React.Component {
             suggestions: [],
             membersFind : [],
 
-    };
+        };
     }
 
     getSuggestions = (value) => {
@@ -42,7 +42,6 @@ export class AddMembersToBeConnected extends React.Component {
             getMembersSearch(value)
                 .then(res => {
                     if (res.status === 200) {
-                        console.log(res.data);
                         this.setState({
                             membersFind: res.data,
                         })
@@ -86,14 +85,12 @@ export class AddMembersToBeConnected extends React.Component {
         const idBoard = this.props.board._id;
         const member = this.state.value;
         const membFind = this.state.membersFind.filter(memb => memb.username === member);
-        console.log("1111111111111111111");
-        console.log(this.state.membersFind);
-        console.log(membFind);
         if (membFind.length !== 0) {
             addMember(idBoard, membFind[0]._id, 'normal')
                 .then(res => {
                     if (res.status === 200) {
-                        this.props.setBoardMembers(res.data.memberships);
+                        this.props.addMemberAction(res.data);
+                        console.log(this.props.board)
                     } else {
                         console.log("error");
                     }
@@ -115,18 +112,18 @@ export class AddMembersToBeConnected extends React.Component {
             <div>
                 <Row>
                     <Form className="form" onSubmit={ (e) => this.addMemberInDB(e) }>
-                    <Col xs={8}>
-                        <Autosuggest className="inputAdd"
-                            suggestions={suggestions}
-                            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                            getSuggestionValue={this.getSuggestionValue}
-                            renderSuggestion={this.renderSuggestion}
-                            inputProps={inputProps} />
-                    </Col>
-                    <Col xs={4}>
-                        <Button color="secondary" type="submit">Add member</Button>
-                    </Col>
+                        <Col xs={8}>
+                            <Autosuggest className="inputAdd"
+                                         suggestions={suggestions}
+                                         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                         getSuggestionValue={this.getSuggestionValue}
+                                         renderSuggestion={this.renderSuggestion}
+                                         inputProps={inputProps} />
+                        </Col>
+                        <Col xs={4}>
+                            <Button color="secondary" type="submit">Add member</Button>
+                        </Col>
                     </Form>
                 </Row>
             </div>
@@ -139,6 +136,7 @@ const mapStateToProps = (state, props) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
     setBoardMembers: (res) => dispatch(setBoardMembers(res)),
+    addMemberAction: (res) => dispatch(addMemberAction(res)),
 });
 
 export const AddMembers = connect(
