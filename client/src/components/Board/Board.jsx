@@ -4,6 +4,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import * as qs from 'query-string';
 import { history } from './history';
+import { socket } from '../../redux/middleware/websocket';
 
 // Components & Actions
 import { DEFAULT_BOARD } from '../../constants';
@@ -118,20 +119,27 @@ export class BoardToBeConnected extends React.Component {
 
   componentDidMount() {
     const { idBoard, boardName } = this.props.match.params;
-    if (board._id != idBoard) {
-      this.props.setBoard(DEFAULT_BOARD);
+    if(idBoard) {
+      socket.emit('subscribe', idBoard);
+      if (board._id != idBoard) {
+        this.props.setBoard(DEFAULT_BOARD);
+      }
+      getBoardById(idBoard)
+      .then( boardfetch => {
+          const setupBoard = boardfetch.data;
+          getListsOfBoard(idBoard, true)
+            .then( lists => {
+              setupBoard["lists"] = lists.data;
+              this.props.setBoard(setupBoard);
+            })
+      })
+      .catch( err => history.push('/home'))
     }
-    getBoardById(idBoard)
-    .then( boardfetch => {
-        const setupBoard = boardfetch.data;
-        getListsOfBoard(idBoard, true)
-          .then( lists => {
-            setupBoard["lists"] = lists.data;
-            this.props.setBoard(setupBoard);
-          })
-    })
-    .catch( err => history.push('/home'))
+  }
 
+  componentWillUnmount() {
+    const { idBoard } = this.props.match.params;
+    socket.emit('unsubscribe', idBoard);
   }
 
   render() {

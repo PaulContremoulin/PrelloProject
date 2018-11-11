@@ -10,6 +10,7 @@ import './CardModal.css';
 import { AddChecklist } from './AddChecklist/AddChecklist';
 import { Checklist } from './Checklist/Checklist';
 import { setName, setDesc, setDue, setClosed, addChecklist, setChecklists } from '../../../../../actions/cardActions';
+import { checklistSetName, checklistSetPos, checkItemSetName, checkItemSetPos, checkItemSetState } from '../../../../../actions/checkObjectActions';
 import { changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed } from '../../../../../requests/cards';
 import { postChecklistToCard, getChecklists } from '../../../../../requests/checklists';
 
@@ -110,7 +111,9 @@ export class CardModalToBeConnected extends React.Component {
         open,
         listId,
         closeModal,
-        addChecklist
+        addChecklist,
+        checklistSetName, checklistSetPos,
+        checkItemSetName, checkItemSetPos, checkItemSetState,
       } = this.props;
       return (
           <div>
@@ -189,7 +192,14 @@ export class CardModalToBeConnected extends React.Component {
                           <Row className="MainModalRow">
                             <Col>
                             {card.checklists.map(
-                              (checklist, index) => <Checklist checklist={checklist} />
+                              (checklist, index) =>
+                              <Checklist checklist={checklist}
+                                checklistSetName={checklistSetName}
+                                checklistSetPos={checklistSetPos}
+                                checkItemSetName={checkItemSetName}
+                                checkItemSetPos={checkItemSetPos}
+                                checkItemSetState={checkItemSetState}
+                              />
                             )}
                             </Col>
                           </Row>
@@ -231,6 +241,11 @@ const mapDispatchToProps = ( dispatch ) => ({
   setClosed: (idList, idCard, closed) => dispatch( setClosed(idList, idCard, closed) ),
   addChecklist: (checklistName, idCard, idBoard) => dispatch( addChecklist(checklistName, idCard, idBoard) ),
   setChecklists: (idList, idCard, checklists) => dispatch( setChecklists(idList, idCard, checklists) ),
+  checklistSetName: (idChecklist, checklistName, idBoard, idList, idCard) => dispatch( checklistSetName(idChecklist, checklistName, idBoard, idList, idCard) ),
+  checklistSetPos: (idChecklist, checklistPos, idBoard, idList, idCard) => dispatch( checklistSetPos(idChecklist, checklistPos, idBoard, idList, idCard) ),
+  checkItemSetName: (idCheckItem, checkItemName, idBoard, idList, idCard, idChecklist) => dispatch( checkItemSetName(idCheckItem, checkItemName, idBoard, idList, idCard, idChecklist) ),
+  checkItemSetPos: (idCheckItem, checkItemPos, idBoard, idList, idCard, idChecklist) => dispatch( checkItemSetPos(idCheckItem, checkItemPos, idBoard, idList, idCard, idChecklist) ),
+  checkItemSetState: (idCheckItem, checkItemState, idBoard, idList, idCard, idChecklist) => dispatch( checkItemSetState(idCheckItem, checkItemState, idBoard, idList, idCard, idChecklist) ),
 })
 
 export const CardModal = connect(
