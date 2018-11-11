@@ -10,12 +10,22 @@ import './SettingsMembers.css';
 import {connect} from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import {history} from "../../../history";
+import {ShowProfileMember} from "./ShowProfileMember/ShowProfileMember";
 
 // Actions & Constant
 
 export class SettingsMembersToBeConnected extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    redirectionProfile = (id, username) => {
+        if(this.props.user.member._id === id) {
+            history.push('/account');
+        } else {
+            history.push('/member/'+id+'/'+username);
+        }
     }
 
     render() {
@@ -35,7 +45,7 @@ export class SettingsMembersToBeConnected extends React.Component {
                                     <ListGroupItem>
                                             <Row>
                                             <Col xs={5} sm={3} md={5} className="float-left">
-                                                {membership.idMember.username}
+                                                <ShowProfileMember usernameMember={membership.idMember.username} idMember={membership.idMember._id}/>
                                             </Col>
                                             <Col xs={3} sm={5} md={3}>
                                                 {membership.memberType}

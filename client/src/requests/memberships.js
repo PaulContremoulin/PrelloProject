@@ -21,3 +21,10 @@ export const addMember = (
         .then( response => response )
         .catch(err => err.response)
 )
+
+export const getMember = (
+    idUser
+) => (getRequest('/api/members/'+idUser)
+        .then( response => response )
+        .catch(err => err.response)
+)
