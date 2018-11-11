@@ -1,0 +1,8 @@
+.addBoard {
+    height: 118px;
+    border-style: dashed;
+    border-width: 2px;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 25px;
+}

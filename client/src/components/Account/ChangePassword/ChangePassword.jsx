@@ -158,11 +158,11 @@ export class ChangePasswordToBeConnected extends React.Component {
                             <Row>
                                 <Col>
                                     <FormGroup>
-                                        <Label>New Password Confirm</Label>
+                                        <Label>Confirm New Password</Label>
                                         <Input
                                             type="password"
                                             name="newPasswordConfirm"
-                                            placeholder="Enter new password confirm"
+                                            placeholder="Confirm new password"
                                             value={ newPasswordConfirm }
                                             required={true}
                                             onChange={ (e) => this.handleChange(e)}
