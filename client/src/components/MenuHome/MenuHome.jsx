@@ -71,7 +71,7 @@ export class MenuHomeToBeConnected extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.boards.length === 0) {
+        if (this.props.circles.length === 0) {
             getCirclesUser(this.props.user.member._id)
                 .then(res => {
                     this.props.fetchCircles(res.data)
@@ -80,10 +80,9 @@ export class MenuHomeToBeConnected extends React.Component {
                     console.log(error)
                 });
         }
-        if (this.props.circles.length === 0) {
+        if (this.props.boards.length === 0) {
             getBoardsUser(this.props.user.member._id)
                 .then(res => {
-                    console.log(res.data);
                     this.props.fetchBoards(res.data)
                 })
                 .catch(error => {

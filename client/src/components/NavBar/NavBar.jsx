@@ -18,7 +18,6 @@ import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reac
 export class NavBarToBeConnected extends React.Component {
 
     logOut = () => {
-        /*
         const temp = [];
         const board = {
             _id: "",
@@ -28,18 +27,16 @@ export class NavBarToBeConnected extends React.Component {
             desc: "",
             memberships: [],
             lists: [],
+            prefs: {
+                background:"",
+            },
         };
         this.props.fetchCircles(temp);
         this.props.fetchBoards(temp);
         this.props.setBoard(board);
         this.props.setCircle(temp);
-        */
         this.props.logOut();
         history.push('/');
-        console.log(this.props.circles);
-        console.log(this.props.circle);
-        console.log(this.props.boards);
-        console.log(this.props.board);
     };
 
     redirectionMain = () => {

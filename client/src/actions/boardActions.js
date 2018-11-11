@@ -31,11 +31,6 @@ export const addBoard =  (data) => {
     return {
         type: ADD_BOARD,
         board: data,
-        meta: {
-            socket: {
-                channel: 'data:store'
-            }
-        }
     }
 };
 
