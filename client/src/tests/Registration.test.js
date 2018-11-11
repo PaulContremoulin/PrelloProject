@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow, mount, render, configure} from 'enzyme';
 import {expect} from 'chai';
-import { Registration } from '../components/Registration/Registration';
+import { Registration } from '../components/SignInOrSignUp/Registration/Registration';
 import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });

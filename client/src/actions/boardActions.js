@@ -31,6 +31,12 @@ export const addBoard =  (data) => {
     return {
         type: ADD_BOARD,
         board: data,
+        meta: {
+            socket: {
+                channel: 'data:store',
+                room: data._id,
+            }
+        }
     }
 };
 
@@ -99,7 +105,8 @@ export const addList = (list) => {
       },
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: list.idBoard,
           }
       }
   }
@@ -127,7 +134,8 @@ export const addCard = (card) => {
       },
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: card.idBoard,
           }
       }
   }
@@ -160,7 +168,8 @@ export const moveCard = (list, indexOfList) => {
       indexOfList,
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: list.idBoard,
           }
       }
   }
@@ -181,7 +190,8 @@ export const moveCardFromList = (startList, indexStart, endList, indexEnd) => {
       indexEnd,
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: startList.idBoard
           }
       }
   }
