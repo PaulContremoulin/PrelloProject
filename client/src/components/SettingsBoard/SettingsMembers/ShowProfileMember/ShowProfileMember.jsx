@@ -22,12 +22,12 @@ export class ShowProfileMember extends React.Component {
             .then(res => {
                 this.setState({
                     member: res.data,
-                    popoverOpen: !this.state.popoverOpen
                 });
             })
             .catch(err => {
                 console.log(err)
             })
+        this.setState({popoverOpen: !this.state.popoverOpen})
     };
 
     toggle() {
