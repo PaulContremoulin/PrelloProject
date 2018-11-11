@@ -30,7 +30,6 @@ export class SettingsMembersToBeConnected extends React.Component {
                     <Col className="listGroupMember" sm={{size:6, offset:3}}>
                         <ListGroup>
                             {this.props.board.memberships.map(membership => {
-                                console.log(membership);
                                 return (
                                     <ListGroupItem>
                                             <Row>
@@ -40,12 +39,12 @@ export class SettingsMembersToBeConnected extends React.Component {
                                             <Col xs={3} sm={5} md={3}>
                                                 {membership.memberType}
                                             </Col>
-                                                {membership.idMember._id !== this.props.user.member.id &&
+                                                {(membership.idMember._id !== this.props.user.member.id) && this.props.type === "admin" &&
                                                 <Col xs={2} sm={2} md={2}>
                                                     <ModifyRoleMember member={membership}/>
                                                 </Col>
                                                 }
-                                                {membership.idMember._id !== this.props.user.member.id &&
+                                                {membership.idMember._id !== this.props.user.member.id && this.props.type === "admin" &&
                                                 <Col xs={2} sm={2} md={2}>
                                                     <DeleteMember/>
                                                 </Col>
@@ -55,7 +54,9 @@ export class SettingsMembersToBeConnected extends React.Component {
                                 )
                             })}
                         </ListGroup>
-                        <AddMembers/>
+                        {this.props.type !== "observer" &&
+                        < AddMembers />
+                        }
                     </Col>
                 </Row>
             </div>
