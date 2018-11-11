@@ -4,7 +4,7 @@ import React from 'react';
 import { CheckItem } from './CheckItem/CheckItem';
 
 // Css
-import { Container, Row, Col, Input, Card, CardText, CardTitle, CardBody, Button } from 'reactstrap';
+import { Container, Row, Col, Input, Card, CardText, CardTitle, CardBody, CardFooter, Button } from 'reactstrap';
 import Octicon from 'react-octicon';
 import './Checklist.css';
 
@@ -30,7 +30,7 @@ export class Checklist extends React.Component {
       checklistSetName, checklistSetPos,
       checkItemSetName, checkItemSetPos, checkItemSetState,
      } = this.props;
-     const = { inputChecklistName } = this.state;
+     const { inputChecklistName } = this.state;
     return(
       <div className="Checklist">
         <Row>
@@ -65,6 +65,7 @@ export class Checklist extends React.Component {
           :
           null
           }
+          <CardFooter>Add CheckItem</CardFooter>
           </Card>
         </Row>
       </div>

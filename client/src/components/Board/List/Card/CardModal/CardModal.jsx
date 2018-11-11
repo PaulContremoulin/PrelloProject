@@ -29,7 +29,7 @@ export class CardModalToBeConnected extends React.Component {
     const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
     getChecklists(cardId)
       .then(res => {
-        this.props.setChecklists(this.props.listId, cardId, res.data)
+        this.props.setChecklists(this.props.listId, cardId, res.data);
       })
         .catch(error => {console.log(error)});
   }
@@ -98,7 +98,6 @@ export class CardModalToBeConnected extends React.Component {
   addChecklistToCard = (checklistName) => {
     const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
     const boardId = this.props.boardId;
-    console.log(checklistName);
     postChecklistToCard(checklistName, cardId, boardId)
     .then( checklist => this.props.addChecklist(this.props.listId, cardId, checklist.data) )
   }
@@ -115,6 +114,7 @@ export class CardModalToBeConnected extends React.Component {
         checklistSetName, checklistSetPos,
         checkItemSetName, checkItemSetPos, checkItemSetState,
       } = this.props;
+      console.log(card);
       return (
           <div>
             <Modal className="modal-lg" isOpen={open} toggle={() => closeModal() } centered={true}>
@@ -193,7 +193,7 @@ export class CardModalToBeConnected extends React.Component {
                             <Col>
                             {card.checklists.map(
                               (checklist, index) =>
-                              <Checklist checklist={checklist}
+                              <Checklist checklist={checklist} key={index}
                                 checklistSetName={checklistSetName}
                                 checklistSetPos={checklistSetPos}
                                 checkItemSetName={checkItemSetName}

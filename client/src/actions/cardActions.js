@@ -113,7 +113,7 @@ export const addChecklist = (idList, idCard, checklist) => {
       },
       card: {
         id: idCard,
-        checklist
+        checklist: checklist
       },
       meta: {
           socket: {
@@ -131,7 +131,7 @@ export const setChecklists = (idList, idCard, checklists) => {
       },
       card: {
         id: idCard,
-        checklists
+        checklists: checklists
       },
       meta: {
           socket: {
