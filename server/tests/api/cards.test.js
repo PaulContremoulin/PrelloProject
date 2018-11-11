@@ -32,6 +32,26 @@ module.exports = function (app, options) {
                     });
             });
 
+            it('should send back a CREATED response - Card created', function (done) {
+                request(app)
+                    .post('/api/cards')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        "idList" : options.memberUnauthorized.list._id,
+                        "idBoard" : options.memberUnauthorized.list.idBoard,
+                        "pos" : 123456789
+                    })
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.pos.should.equal(123456789);
+                        res.body.idList.should.equal(options.memberUnauthorized.list._id);
+                        options.memberUnauthorized.card = res.body;
+                        done();
+                    });
+            });
+
             it('should send back a CREATED response - Card created by another member', function (done) {
                 request(app)
                     .post('/api/cards')
@@ -303,6 +323,111 @@ module.exports = function (app, options) {
             });
         });
 
+        describe('POST /api/cards/:id/idLabels - Associate a label to a card', function () {
+
+            it('should send back a CREATED response - Label linked at the card', function (done) {
+                request(app)
+                    .post('/api/cards/' + options.card._id + '/idLabels?value=' + options.label._id)
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/cards/'+ options.card._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.idLabels.should.be.instanceof(Array).and.have.length(1);
+                                done();
+                            });
+                    });
+            });
+
+            it('should send back a BAD REQUEST response - Label on other board linked at the card', function (done) {
+                request(app)
+                    .post('/api/cards/' + options.card._id + '/idLabels?value=' + options.memberUnauthorized.label._id)
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a BAD REQUEST response - Label linked at the card of other board', function (done) {
+                request(app)
+                    .post('/api/cards/' + options.memberUnauthorized.card._id + '/idLabels?value=' + options.label._id)
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+        });
+
+        describe('DELETE /api/cards/:id/idLabels/:idLabels - Delete a label to a card', function () {
+
+            it('should send back a NOT FOUND response - Label not exist', function (done) {
+                request(app)
+                    .delete('/api/cards/' + options.card._id + '/idLabels/78' + options.label._id)
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(404)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a FORBIDDEN response - Label removed by another unauthorized member', function (done) {
+                request(app)
+                    .delete('/api/cards/' + options.card._id + '/idLabels/' + options.label._id)
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/cards/' + options.card._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.idLabels.should.be.instanceof(Array).and.have.length(1);
+                                done();
+                            });
+                    });
+            });
+
+            it('should send back a OK response - Label removed to the card', function (done) {
+                request(app)
+                    .delete('/api/cards/' + options.card._id + '/idLabels/' + options.label._id)
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/cards/' + options.card._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.idLabels.should.be.instanceof(Array).and.have.length(0);
+                                done();
+                            });
+                    });
+            });
+
+        });
 
     });
 }

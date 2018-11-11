@@ -45,6 +45,8 @@ const ListRoutes = require('./routes/ListRoutes');
 const CardRoutes = require('./routes/CardRoutes');
 const CircleRoutes = require('./routes/CircleRoutes');
 const ChecklistRoutes = require('./routes/ChecklistRoutes');
+const LabelRoutes = require('./routes/LabelRoutes');
+
 
 // Serve the API
 app.use('/api', indexRouter);
@@ -55,6 +57,10 @@ app.use('/api/lists', ListRoutes);
 app.use('/api/cards', CardRoutes);
 app.use('/api/circles', CircleRoutes);
 app.use('/api/checklists', ChecklistRoutes);
+app.use('/api/labels', LabelRoutes);
+app.use('/api/*', function(req, res) {
+    res.status(404).json({message : 'Resource not found on this server'});
+});
 
 //Serve the client
 app.use('/*', function(req, res){
