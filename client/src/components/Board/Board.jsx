@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import * as qs from 'query-string';
-import { history } from './history';
+import { history } from '../../history';
 import { socket } from '../../redux/middleware/websocket';
 
 // Components & Actions
@@ -118,33 +118,37 @@ export class BoardToBeConnected extends React.Component {
   }
 
   componentDidMount() {
-    const { idBoard, boardName } = this.props.match.params;
-    if(idBoard) {
-      socket.emit('subscribe', idBoard);
-      if (board._id != idBoard) {
-        this.props.setBoard(DEFAULT_BOARD);
-      }
-      getBoardById(idBoard)
-      .then( boardfetch => {
+    const url = history.location.pathname.split('/');
+    if (url.length > 3) {
+      const idBoard = history.location.pathname.split('/')[2];
+      const boardName = history.location.pathname.split('/')[3];
+      if(idBoard) {
+        socket.emit('subscribe', idBoard);
+        if (this.props.board._id != idBoard) {
+          this.props.setBoard(DEFAULT_BOARD);
+        }
+        getBoardById(idBoard)
+        .then( boardfetch => {
           const setupBoard = boardfetch.data;
           getListsOfBoard(idBoard, true)
-            .then( lists => {
-              setupBoard["lists"] = lists.data;
-              this.props.setBoard(setupBoard);
-            })
-      })
-      .catch( err => history.push('/home'))
+          .then( lists => {
+            setupBoard["lists"] = lists.data;
+            this.props.setBoard(setupBoard);
+          })
+        })
+        .catch( err => history.push('/home'))
+      }
     }
   }
 
   componentWillUnmount() {
-    const { idBoard } = this.props.match.params;
+    const idBoard = history.location.pathname.split('/')[2];
     socket.emit('unsubscribe', idBoard);
   }
 
   render() {
     const { board, addList, moveList, addCard, moveCard } = this.props;
-    const color = board.prefs.background;
+    const color = (board.prefs && board.preds.background) ? board.prefs.background : "#ffffff";
     return(
       <div className="Board">
         <BoardMenu boardName={ board.name } boardId={board._id} style={{ "backgroundColor": color }}/>

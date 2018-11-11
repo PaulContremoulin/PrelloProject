@@ -27,7 +27,7 @@ export class CheckItem extends React.Component {
   }
 
   handleOnBlurCheckItem = (e) => {
-    // TODO: 
+    // TODO:
   }
 
   componentDidMount() {
@@ -58,7 +58,7 @@ export class CheckItem extends React.Component {
                 <span onclick={ () => {this.toggleInput()}}>{checkItem.name}</span>
               }
             </CardTitle>
-          <Card>
+          </Card>
         </Row>
       </div>
     )
