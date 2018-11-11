@@ -35,8 +35,8 @@ router.get('/:id', token, ChecklistAccess.readRights(), function(req, res) {
  * @route PUT /checklist/{id}
  * @group checklist - Operations about checklists
  * @param {string} id.path.required - checklist's id
- * @param {string} name.query - checkItem's name
- * @param {number} pos.query - checkItem's position
+ * @param {string} name.query - checklist's name
+ * @param {number} pos.query - checklist's position
  * @returns {CheckList} 200 - CheckList updated
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  403 - Forbidden access
@@ -120,7 +120,7 @@ router.get('/:id/checkItems', token, ChecklistAccess.readRights(), function(req,
  * @param {string} name.query - checkItem's name
  * @param {number} pos.query - checkItem's position
  * @param {string} state.query - checkItem's state (completed, uncompleted)
- * @returns {Array.<CheckItem>} 200 - CheckItem array
+ * @returns {CheckItem} 200 - CheckItem
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  403 - Forbidden access
  * @returns {Error}  404 - Checklist not found
