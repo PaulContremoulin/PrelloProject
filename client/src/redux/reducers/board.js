@@ -60,24 +60,14 @@ const name = ( state = DEFAULT_BOARD.name, action ) => {
     }
 }
 
-// organization reducer
-const idOrganization = ( state = DEFAULT_BOARD.idOrganization, action ) => {
+// prefs reducer
+const prefs = ( state = DEFAULT_BOARD.prefs, action ) => {
     switch ( action.type ) {
         case SET_BOARD :
-            return action.board.idOrganization ;
+            return action.board.prefs;
         default:
             return state ;
     }
-};
-
-// prefs reducer
-const prefs = ( state = DEFAULT_BOARD.prefs, action ) => {
-  switch ( action.type ) {
-    case SET_BOARD :
-      return action.board.prefs;
-    default:
-      return state ;
-  }
 };
 
 /// description reducer
@@ -118,101 +108,101 @@ const memberships = ( state = DEFAULT_BOARD.memberships, action ) => {
 
 // lists reducer
 const lists = ( state = DEFAULT_BOARD.lists, action ) => {
-  switch ( action.type ) {
-    case SET_BOARD :
-      return action.board.lists || [] ;
-    case ADD_LIST :
-      return [
-        ...state,
-        {
-          ...action.list
-        }
-      ];
-    case LIST_SET_NAME :
-      return state.map(
-        list => (list.id === action.list.id) ? {...list, name: action.list.name} : list
-      )
-    case ADD_CARD :
-    console.log('im called');
-    console.log(action);
-      return state.map(
-        list => (list.id === action.card.idList) ? { ...list, cards: [...list.cards, { ...action.card, id: action.card._id }] } : list
-      );
-    case MOVE_CARD : // StartingList, indexOfList
-      return state.map(
-        (list, index) => (index == action.indexOfList) ? action.list : list
-      )
-    case MOVE_CARD_FROM_LIST : // startList, indexStart, endList, indexEnd
-      return state.map(
-        (list, index) => (index == action.indexStart) ? action.startList : (index == action.indexEnd) ? action.endList : list
-      )
-    case MOVE_LIST : //
-      return action.lists
-    case CARD_SET_NAME :
-    case CARD_SET_DUE :
-    case CARD_SET_DESC :
-    case CARD_SET_CLOSED :
-    case CARD_SET_CHECKLISTS :
-    case CARD_ADD_CHECKLIST :
-    case CARD_ADD_CHECKITEM :
-      return state.map(
-        (list, index) => !(list.id == action.list.id) ? list :
-        {
-          ...list,
-          cards: list.cards.map(
-            (cardObj, index) => card( cardObj, action )
-          )
-        }
-      )
-    default:
-      return state ;
-  }
+    switch ( action.type ) {
+        case SET_BOARD :
+            return action.board.lists || [] ;
+        case ADD_LIST :
+            return [
+                ...state,
+                {
+                    ...action.list
+                }
+            ];
+        case LIST_SET_NAME :
+            return state.map(
+                list => (list.id === action.list.id) ? {...list, name: action.list.name} : list
+            )
+        case ADD_CARD :
+            console.log('im called');
+            console.log(action);
+            return state.map(
+                list => (list.id === action.card.idList) ? { ...list, cards: [...list.cards, { ...action.card, id: action.card._id }] } : list
+            );
+        case MOVE_CARD : // StartingList, indexOfList
+            return state.map(
+                (list, index) => (index == action.indexOfList) ? action.list : list
+            )
+        case MOVE_CARD_FROM_LIST : // startList, indexStart, endList, indexEnd
+            return state.map(
+                (list, index) => (index == action.indexStart) ? action.startList : (index == action.indexEnd) ? action.endList : list
+            )
+        case MOVE_LIST : //
+            return action.lists
+        case CARD_SET_NAME :
+        case CARD_SET_DUE :
+        case CARD_SET_DESC :
+        case CARD_SET_CLOSED :
+        case CARD_SET_CHECKLISTS :
+        case CARD_ADD_CHECKLIST :
+        case CARD_ADD_CHECKITEM :
+            return state.map(
+                (list, index) => !(list.id == action.list.id) ? list :
+                    {
+                        ...list,
+                        cards: list.cards.map(
+                            (cardObj, index) => card( cardObj, action )
+                        )
+                    }
+            )
+        default:
+            return state ;
+    }
 };
 
 const card = ( state = {}, action ) => {
-  console.log(action);
-  console.log(state);
-  switch (action.type) {
-    case CARD_SET_NAME :
-      return (action.card.id == state.id ) ? { ...state, name: action.card.name } : state
-    case CARD_SET_DUE :
-      return (action.card.id == state.id ) ? { ...state, due: action.card.due } : state
-    case CARD_SET_DESC :
-      return (action.card.id == state.id ) ? { ...state, desc: action.card.desc } : state
-    case CARD_SET_CLOSED :
-      return (action.card.id == state.id ) ? { ...state, closed: action.card.closed } : state
-    case CARD_SET_CHECKLISTS :
-    case CARD_ADD_CHECKLIST :
-    case CARD_ADD_CHECKITEM :
-      return (action.card.id == state.id ) ? { ...state, checklists: checklists( state.checklists, action ) } : state
-    default:
-      return state ;
-  }
+    console.log(action);
+    console.log(state);
+    switch (action.type) {
+        case CARD_SET_NAME :
+            return (action.card.id == state.id ) ? { ...state, name: action.card.name } : state
+        case CARD_SET_DUE :
+            return (action.card.id == state.id ) ? { ...state, due: action.card.due } : state
+        case CARD_SET_DESC :
+            return (action.card.id == state.id ) ? { ...state, desc: action.card.desc } : state
+        case CARD_SET_CLOSED :
+            return (action.card.id == state.id ) ? { ...state, closed: action.card.closed } : state
+        case CARD_SET_CHECKLISTS :
+        case CARD_ADD_CHECKLIST :
+        case CARD_ADD_CHECKITEM :
+            return (action.card.id == state.id ) ? { ...state, checklists: checklists( state.checklists, action ) } : state
+        default:
+            return state ;
+    }
 }
 
 
 const checklists = ( state = [], action ) => {
-  switch (action.type) {
-    case CARD_SET_CHECKLISTS :
-      return action.card.checklists;
-    case CARD_ADD_CHECKLIST :
-      return [ ...state, {...action.card.checklist, checkItems: [] } ]
-    case CARD_ADD_CHECKITEM :
-      return state.map(
-        (checkList, index) => (action.card.checklist.id == checkList.id ) ? [ ...state, { ...checkList, checkItems: checkItems( checkList.checkItems, action )}] : checkList
-      )
-    default:
-      return state ;
-  }
+    switch (action.type) {
+        case CARD_SET_CHECKLISTS :
+            return action.card.checklists;
+        case CARD_ADD_CHECKLIST :
+            return [ ...state, {...action.card.checklist, checkItems: [] } ]
+        case CARD_ADD_CHECKITEM :
+            return state.map(
+                (checkList, index) => (action.card.checklist.id == checkList.id ) ? [ ...state, { ...checkList, checkItems: checkItems( checkList.checkItems, action )}] : checkList
+            )
+        default:
+            return state ;
+    }
 }
 
 const checkItems = ( state = [], action ) => {
-  switch (action.type) {
-    case CARD_ADD_CHECKITEM :
-      return [ ...state, {...action.card.checklists.checkItem} ]
-    default:
-      return state ;
-  }
+    switch (action.type) {
+        case CARD_ADD_CHECKITEM :
+            return [ ...state, {...action.card.checklists.checkItem} ]
+        default:
+            return state ;
+    }
 }
 
 // combineReducers is a redux function which associate object key with a reducers
@@ -221,7 +211,6 @@ const checkItems = ( state = [], action ) => {
 export const board = combineReducers({
     _id,
     name,
-    idOrganization,
     closed,
     desc,
     memberships,
