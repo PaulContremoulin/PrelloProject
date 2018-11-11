@@ -42,6 +42,7 @@ let memberSchema = new Schema({
         default : [],
         required : true
     },
+    organization : String,
     idOrganizations: {
         type : [Schema.Types.ObjectId],
         default : [],

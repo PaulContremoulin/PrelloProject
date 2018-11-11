@@ -15,6 +15,7 @@ let memberAccess = require('./../middlewares/MemberAccess');
  * @param {string} id.path.required - member's id.
  * @returns {Member.model} 200 - Member's information
  * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden access
  * @returns {Error}  404 - Not found if the user doesn't exist
  * @returns {Error}  default - Unexpected error
  * @security JWT
@@ -25,6 +26,57 @@ router.get('/:id', token, memberAccess.readRights(), function(req, res) {
         if(err) debug('members/:id error : ' + err)
         if(!member) return res.status(404).json({ message:'Member not found'});
         return res.status(200).json(member);
+    });
+
+});
+
+/**
+ * Get the public profil of a member
+ * @route GET /members/{id}
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id.
+ * @returns {Member.model} 200 - Member's information
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/public', token, function(req, res) {
+
+    Member.findById(req.params.id,
+        { username : 1, lastName : 1, firstName : 1, email : 1, organization : 1},
+        function (err, member) {
+        if(err) debug('members/:id error : ' + err)
+        if(!member) return res.status(404).json({ message:'Member not found'});
+        return res.status(200).json(member);
+    });
+
+});
+
+/**
+ * Update the member's password
+ * @route PUT /members/{id}/password
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id.
+ * @param {string} oldPassword.body.required - member's old password
+ * @param {string} newPassword.body.required - member's new password
+ * @returns {Member.model} 200 - Member's password updated
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden access
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.put('/:id/password', token, memberAccess.updateRights(), function(req, res) {
+
+    if(!req.body.oldPassword || !req.body.newPassword ) return res.status(400).json({message : 'Old password field or new password field missing'});
+    let member = req.member;
+    if(!member.validPassword(req.body.oldPassword)) return res.status(400).json({message : 'old password isn\'t valid'});
+    if(!member.setPassword(req.body.newPassword)) return res.status(400).json({message : 'new password isn\'t valid'});
+
+    member.save( (err) => {
+       if(err) return res.status(400).json({message : 'Unexpected internal error'});
+       return res.status(200).json({message : 'Password successfully updated'});
     });
 
 });

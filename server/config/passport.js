@@ -52,6 +52,7 @@ passport.use('signup', new LocalStrategy({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
+            organization : req.body.organization,
             loginType : 'password'
         });
 
