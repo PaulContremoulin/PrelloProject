@@ -20,14 +20,6 @@ export class SettingsMembersToBeConnected extends React.Component {
         super(props);
     }
 
-    redirectionProfile = (id, username) => {
-        if(this.props.user.member._id === id) {
-            history.push('/account');
-        } else {
-            history.push('/member/'+id+'/'+username);
-        }
-    }
-
     render() {
         return (
             <div className="SettingsMembers">

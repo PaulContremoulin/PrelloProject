@@ -24,7 +24,7 @@ export const addMember = (
 
 export const getMember = (
     idUser
-) => (getRequest('/api/members/'+idUser)
+) => (getRequest('/api/members/'+idUser+'/public')
         .then( response => response )
         .catch(err => err.response)
 )
