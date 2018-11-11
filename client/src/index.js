@@ -24,7 +24,6 @@ import {BoardPage} from './pages/BoardPage/BoardPage';
 import {PageNoFound} from "./pages/PageNoFound/PageNoFound";
 import {GithubPage} from "./pages/GithubPage/GithubPage";
 import {CirclePage} from "./pages/CirclePage/CirclePage";
-import {SettingsBoardPage} from "./pages/SettingsBoardPage/SettingsBoardPage";
 import {SettingsBoard} from "./components/SettingsBoard/SettingsBoard";
 
 console.log(isLogged());

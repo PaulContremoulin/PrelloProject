@@ -11,6 +11,7 @@ import './ModifyRoleMember.css';
 // Actions & Constant
 import {addMember} from "../../../../requests/memberships";
 import {editRoleMember} from "../../../../actions/boardActions";
+import {history} from "../../../../history";
 
 export class ModifyRoleMemberToBeConnected extends React.Component {
     constructor(props) {
@@ -23,10 +24,8 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
     }
 
     openPopover = () => {
-        const idUser = this.props.user.member.id;
-        const member =this.props.board.memberships.filter(member => member.idMember._id === idUser);
-        if (member[0].memberType !== "admin") {
-            this.setState({roles:["normal","observer"]})
+        if (this.props.type === "user") {
+            this.setState({roles:["admin","normal"]})
         } else {
             this.setState({roles:["admin","normal","observer"]})
         }
@@ -41,12 +40,13 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
         });
     };
 
-    changeRole = (role) => {
-        addMember(this.props.board._id, this.props.member.idMember._id, role)
+    async changeRole(role) {
+        await addMember(this.props.board._id, this.props.member.idMember._id, role)
             .then(res => {
                 if (res.status === 200){
                     this.props.editRoleMember(res.data);
                     this.toggle()
+                    history.push('/board/'+this.props.board._id+'/'+this.props.board.name+'/settings')
                 } else {
                     console.log("error");
                 }
