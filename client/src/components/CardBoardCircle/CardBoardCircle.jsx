@@ -5,8 +5,8 @@ import {Card, CardHeader, Button, CardBody, CardText, Col, Row, Modal, ModalFoot
 // Css...
 
 // Actions & Constant
-import {deleteBoardCircle} from "../../requests/circle";
-import {deleteBoardsCircle} from "../../actions/circleActions";
+import {deleteBoardCircle, getCirclesUser} from "../../requests/circle";
+import {deleteBoardsCircle, fetchCircles} from "../../actions/circleActions";
 import {connect} from "react-redux";
 
 export class CardBoardCircleToBeConnected extends React.Component {
@@ -30,6 +30,13 @@ export class CardBoardCircleToBeConnected extends React.Component {
             .then(res => {
                 if (res.status === 200) {
                     this.props.deleteBoardsCircle(boardId);
+                    getCirclesUser(this.props.user.member._id)
+                        .then(res => {
+                            this.props.fetchCircles(res.data)
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        });
                     this.toggle();
                 } else {
                     console.log("error");
@@ -69,10 +76,12 @@ export class CardBoardCircleToBeConnected extends React.Component {
 const mapStateToProps = ( state, props ) => ({
     user : state.user,
     circle: state.circle,
+    circles: state.circles,
 });
 
 const mapDispatchToProps = ( dispatch ) => ({
     deleteBoardsCircle: (res) => dispatch(deleteBoardsCircle(res)),
+    fetchCircles: (res) => dispatch( fetchCircles(res)),
 });
 
 export const CardBoardCircle = connect(

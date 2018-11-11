@@ -26,7 +26,7 @@ export class MenuHomeToBeConnected extends React.Component {
             .then(res => {
                 if(res.status === 200){
                     this.props.setCircle(res.data);
-                    history.push('/circle/'+name);
+                    history.push('/circle/'+id+'/'+name);
                 } else {
                     console.log("error");
                 }
@@ -47,7 +47,7 @@ export class MenuHomeToBeConnected extends React.Component {
                     </Col>
                     <Col xs={12}>
                         <ListGroup>
-                            <ListGroupItem tag="a" onClick={() => this.redirectionBoardPersonnal()} action>Personnal's boards</ListGroupItem>
+                            <ListGroupItem className="ListMenu" tag="a" onClick={() => this.redirectionBoardPersonnal()} action>Personnal's boards</ListGroupItem>
                         </ListGroup>
                     </Col>
                     <Col xs={8} sm={4}>
@@ -60,7 +60,7 @@ export class MenuHomeToBeConnected extends React.Component {
                         <ListGroup>
                             {this.props.circles.map(circle => {
                                 return (
-                                    <ListGroupItem tag="a" onClick={() => this.redirectionCircle(circle._id, circle.name)} action>{circle.name}</ListGroupItem>
+                                    <ListGroupItem className="ListMenu" tag="a" onClick={() => this.redirectionCircle(circle._id, circle.name)} action>{circle.name}</ListGroupItem>
                                 )
                             })}
                         </ListGroup>

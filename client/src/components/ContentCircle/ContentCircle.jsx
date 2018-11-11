@@ -9,7 +9,7 @@ import {history} from "../../history";
 import {connect} from "react-redux";
 import {CardBoardCircle} from "../CardBoardCircle/CardBoardCircle";
 import {deleteCircleRequest} from "../../requests/circle";
-import {deleteCircle} from "../../actions/circleActions";
+import {deleteCircle, setCircle} from "../../actions/circleActions";
 import {getListsOfBoard} from "../../requests/boards";
 import {setBoard} from "../../actions/boardActions";
 
@@ -17,7 +17,7 @@ export class ContentCircleToBeConnected extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
         };
 
         this.toggle = this.toggle.bind(this);
@@ -98,11 +98,13 @@ export class ContentCircleToBeConnected extends React.Component {
 const mapStateToProps = ( state, props ) => ({
     user : state.user,
     circle: state.circle,
+    circles: state.circles,
 });
 
 const mapDispatchToProps = ( dispatch ) => ({
     deleteCircle: (res) => dispatch(deleteCircle(res)),
     setBoard: (board) => dispatch( setBoard(board)),
+    setCircle: (res) => dispatch( setCircle(res)),
 });
 
 export const ContentCircle = connect(
