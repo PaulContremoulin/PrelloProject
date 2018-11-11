@@ -6,7 +6,9 @@ let arrayUniquePlugin = require('mongoose-unique-array');
 let circleSchema = new Schema({
         name : {
             type : String,
-            required : true
+            required : true,
+            minlength : 1,
+            maxlength : 100
         },
         idMember : {
             type : mongoose.Types.ObjectId,

@@ -10,15 +10,13 @@ let boardSchema = new Schema({
         name: {
             required  : true,
             minlength : 3,
+            maxlength : 100,
             type      : String
-        },
-        idOrganization : {
-            type      : Schema.Types.ObjectId,
-            default   : null
         },
         desc: {
             required  : false,
-            type      : String
+            type      : String,
+            maxlength : 1000,
         },
         closed : {
                 required : true,

@@ -6,6 +6,7 @@ let listSchema = new Schema({
         name: {
             required  : true,
             minlength : 1,
+            maxlength : 100,
             type      : String
         },
         closed : {

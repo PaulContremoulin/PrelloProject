@@ -32,7 +32,7 @@ router.get('/:id', token, memberAccess.readRights(), function(req, res) {
 
 /**
  * Get the public profil of a member
- * @route GET /members/{id}
+ * @route GET /members/{id}/public
  * @group members - Operations about members
  * @param {string} id.path.required - member's id.
  * @returns {Member.model} 200 - Member's information

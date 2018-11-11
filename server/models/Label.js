@@ -6,7 +6,9 @@ let idValidator = require('mongoose-id-validator');
 let labelSchema = new Schema({
         name : {
             type : String,
-            required : true
+            required : true,
+            minlength : 1,
+            maxlength : 100
         },
         color : {
             type : String,

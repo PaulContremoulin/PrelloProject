@@ -6,7 +6,8 @@ let checklistSchema = new Schema({
         name: {
             type : String,
             required : true,
-            minlength : 1
+            minlength : 1,
+            maxlength : 100
         },
         idBoard: {
             type: mongoose.Types.ObjectId,

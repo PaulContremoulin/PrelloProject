@@ -5,7 +5,8 @@ let commentSchema = new Schema({
         text: {
             type : String,
             required : true,
-            minlength : 1
+            minlength : 1,
+            maxlength : 3000
         },
         idAuthor: {
             type: mongoose.Types.ObjectId,

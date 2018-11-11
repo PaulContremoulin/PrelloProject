@@ -4,8 +4,14 @@ let idValidator = require('mongoose-id-validator');
 let Schema = mongoose.Schema;
 
 let cardSchema = new Schema({
-        name: String,
-        desc: String,
+        name: {
+            type : String,
+            maxlength : 100
+        },
+        desc: {
+            type : String,
+            maxlength : 3000
+        },
         pos: {
             type : Number,
             required : true,
