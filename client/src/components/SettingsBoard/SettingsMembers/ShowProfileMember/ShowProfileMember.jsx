@@ -1,10 +1,7 @@
 // Modules
 import React from 'react';
-import { connect } from 'react-redux';
-import {Popover, PopoverBody, PopoverHeader, Button, ListGroup, ListGroupItem} from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
-
+import {Popover, PopoverBody, PopoverHeader, Button, Col, Row} from 'reactstrap';
+import {getMember} from "../../../../requests/memberships";
 // Css...
 import './ShowProfileMember.css';
 
@@ -16,15 +13,21 @@ export class ShowProfileMember extends React.Component {
         super(props);
         this.toggle = this.toggle.bind(this);
         this.state = {
-            user: "",
+            member: "",
         };
     }
 
     openPopover = () => {
-        //todo: getMember
-        this.setState({
-            popoverOpen: !this.state.popoverOpen
-        });
+        getMember(this.props.idMember)
+            .then(res => {
+                this.setState({
+                    member: res.data,
+                    popoverOpen: !this.state.popoverOpen
+                });
+            })
+            .catch(err => {
+                console.log(err)
+            })
     };
 
     toggle() {
@@ -37,10 +40,24 @@ export class ShowProfileMember extends React.Component {
         return (
             <div className="ModifyRoleMember">
                 <Button color="link" className="member" id={'Popover-'+this.props.usernameMember} onClick={() => this.openPopover()}>{this.props.usernameMember}</Button>
-                <Popover placement="left" isOpen={this.state.popoverOpen} target={'Popover-'+this.props.usernameMember} toggle={this.toggle}>
-                    <PopoverHeader>Member's information</PopoverHeader>
+                <Popover className="popov" placement="left" isOpen={this.state.popoverOpen} target={'Popover-'+this.props.usernameMember} toggle={this.toggle}>
+                    <PopoverHeader>{this.state.member.username}</PopoverHeader>
                     <PopoverBody>
-                        ok
+                        <Row>
+                            <Col>
+                                {this.state.member.firstName +' '+this.state.member.lastName}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                {this.state.member.email}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                {this.state.member.organization}
+                            </Col>
+                        </Row>
                     </PopoverBody>
                 </Popover>
             </div>
