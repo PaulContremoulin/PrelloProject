@@ -58,6 +58,13 @@ cardSchema.virtual('checklists', {
     foreignField: 'idCard' // is equal to `foreignField`
 });
 
+cardSchema.virtual('comments', {
+    ref: 'Comment', // The model to use
+    localField: '_id', // Find people where `localField`
+    foreignField: 'idCard', // is equal to `foreignField`
+    options: { sort: { date: 1 }}
+});
+
 
 cardSchema.methods.createOrUpdateMember = function(memberId) {
     if(!this.idMembers.find( mId => mId.equals(memberId))) this.idMembers.push(memberId);

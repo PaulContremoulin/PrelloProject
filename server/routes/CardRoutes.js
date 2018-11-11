@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let Card = require('./../models/Card');
+let Comment = require('./../models/Comment');
 let Label = require('./../models/Label');
 let Checklist = require('./../models/Checklist');
 let debug = require('debug')('app:card');
@@ -51,10 +52,16 @@ router.post('/', token, CardAccess.createRights(), function(req, res) {
  */
 router.get('/:id', token, CardAccess.readRights(), function(req, res) {
 
-    var openChecklist = false;
+    let openChecklist = false;
+    let openComment = false;
     if(req.query.checklist){
         if(req.query.checklist === 'open') openChecklist = true;
         delete req.query.checklist;
+    }
+
+    if(req.query.comments){
+        if(req.query.comments === 'open') openComment = true;
+        delete req.query.comments;
     }
 
     req.query._id = req.params.id
@@ -68,6 +75,16 @@ router.get('/:id', token, CardAccess.readRights(), function(req, res) {
                 populate: {path: 'checkItems'}
             });
     }
+    if(openComment) {
+        query.populate(
+            {
+                path: 'comments',
+                populate: {
+                    path: 'idAuthor',
+                    select: 'username'
+                }
+            });
+    }
     query.exec(function(err, card){
             if(err) debug('GET cards/:id error : ' + err);
             if(!card) return res.status(404).json({message:'Card not found'});
@@ -79,6 +96,7 @@ router.get('/:id', token, CardAccess.readRights(), function(req, res) {
  * Update a card
  * @route PUT /cards/:id
  * @group card - Operations about cards
+ * @param {string} id.path.required - card's id
  * @param {string} name.query - card's name
  * @param {string} desc.query - card's description
  * @param {boolean} closed.query - card's closed state
@@ -150,7 +168,7 @@ router.post('/:id/idMembers', token, CardAccess.updateRights(), function(req, re
  * Add a checklist to the card
  * @route POST /cards/:id/checklists
  * @group card - Operations about cards
- * @param {string} id.params.required - cards
+ * @param {string} id.params.required - card's id
  * @param {Checklist.model} checklist.body.required - checklist
  * @returns {code} 200 - Checklist created
  * @returns {Error}  400 - bad request, one of fields is invalid
@@ -179,7 +197,7 @@ router.post('/:id/checklists', token, CardAccess.updateRights(), function(req, r
  * Get all checklists of the card
  * @route GET /cards/:id/checklists
  * @group card - Operations about cards
- * @param {string} id.params.required - cards
+ * @param {string} id.params.required - card's id
  * @returns {Array.<Checklist>} 200 - Array of checklists of the card
  * @returns {Error}  400 - bad request, one of fields is invalid
  * @returns {Error}  401 - Unauthorized, invalid credentials
@@ -203,7 +221,7 @@ router.get('/:id/checklists', token, CardAccess.readRights(), function(req, res)
  * Add a label to the card
  * @route POST /cards/{id}/idLabels
  * @group card - Operations about cards
- * @param {string} id.path.required - board's id.
+ * @param {string} id.path.required - card's id.
  * @param {string} value.query.required - label's id value to add.
  * @returns {Code} 200 - Label added
  * @returns {Error}  400 - Bad request, label already added
@@ -235,7 +253,7 @@ router.post('/:id/idLabels', token, CardAccess.updateRights(), function(req, res
  * Remove a label from a card
  * @route DELETE /cards/{id}/idLabels/{idLabel}
  * @group board - Operations about boards
- * @param {string} id.path.required - board's id.
+ * @param {string} id.path.required - card's id.
  * @param {string} idLabel.path.required - label's id to remove.
  * @returns {Code} 200 - Label removed
  * @returns {Error}  401 - Unauthorized, invalid credentials
@@ -255,6 +273,89 @@ router.delete('/:id/idLabels/:idLabel', token, CardAccess.updateRights(), functi
         return res.status(200).json({message : 'Label removed successfully'});
     })
 
+});
+
+
+/**
+ * Add a comment to the card
+ * @route POST /cards/{id}/comments
+ * @group card - Operations about cards
+ * @param {string} id.path.required - card's id.
+ * @param {NewComment.model} comment.body.required - The comment
+ * @returns {Comment.model} 201 - Comment created
+ * @returns {Error}  400 - Bad request, text field missing
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, card is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.post('/:id/comments', token, CardAccess.updateRights(), function(req, res) {
+
+    if(!req.body.text) return res.status(400).json({message: "Text is missing"});
+
+    let comment = new Comment({text : req.body.text, idAuthor : req.user.id, idCard : req.card._id, date : Date.now()});
+
+    comment.validate( (err) => {
+        if(err)  return res.status(400).json({message: err});
+        comment.save( (err) => {
+            if(err) return res.status(500).json({message : 'Unexpected internal error'});
+            Comment.populate(comment, { path: 'idAuthor', select: 'username' }, (err, comment) =>{
+                if (err) return res.status(500).json({message : 'Unexpected internal error'});
+                return res.status(201).json(comment);
+            });
+        });
+    });
+});
+
+/**
+ * Get comments of the card
+ * @route GET /cards/{id}/comments
+ * @group card - Operations about cards
+ * @param {string} id.path.required - card's id.
+ * @returns {Array.<Comment>} 200 - Array of comments
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, card is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/comments', token, CardAccess.readRights(), function(req, res) {
+
+    let query = Comment.find({idCard : req.card._id});
+    query.populate('idAuhtor', 'username');
+    query.exec( (err, comments) => {
+        if(err) return res.status(500).json({message : 'Unexpected internal error'});
+        return res.status(200).json(comments);
+    });
+});
+
+/**
+ * Delete comments on the card
+ * @route DELETE /cards/{id}/comments/{idComment}
+ * @group card - Operations about cards
+ * @param {string} id.path.required - comment's id.
+ * @param {string} idComment.path.required - comment's id
+ * @returns {code} 200 - comment deleted
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, not the author of the comment
+ * @returns {Error}  404 - Not found, card is not found or comment
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.delete('/:id/comments/:idComment', token, CardAccess.updateRights(), function(req, res) {
+
+    Comment.findOne({_id : req.params.idComment, idCard : req.card._id})
+        .exec((err, comment) => {
+            if(err) debug('Delete /:id/comments/:idComment error : ' + err);
+            if(!comment) return res.status(404).json({message : 'Comment not found'});
+            if(!comment.idAuthor.equals(req.user.id)) return res.status(403).json({message : 'Forbidden access'});
+            comment.remove()
+            comment.save( (err) => {
+                if(err) return res.status(500).json({message : 'Unexpected error'});
+                return res.status(200).json({message : 'Comment successfully deleted'});
+            });
+        });
 });
 
 module.exports = router;

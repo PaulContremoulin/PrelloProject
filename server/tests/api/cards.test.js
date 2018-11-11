@@ -429,5 +429,163 @@ module.exports = function (app, options) {
 
         });
 
+        describe('POST /api/cards/:id/comments - Create a comment', function () {
+
+            it('should send back a CREATED response - Comment created by authorized member', function (done) {
+                request(app)
+                    .post('/api/cards/' + options.card._id + '/comments')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        text: "A new comment on a card"
+                    })
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.text.should.be.equals("A new comment on a card");
+                        res.body.idCard.should.be.equals(options.card._id);
+                        res.body.idAuthor.id.should.be.equals(options.member._id);
+                        options.comment = res.body;
+                        done();
+                    });
+            });
+
+            it('should send back a BAD REQUEST response - Comment without text', function (done) {
+                request(app)
+                    .post('/api/cards/' + options.card._id + '/comments')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .send({})
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a CREATED response - Comment created by authorized member', function (done) {
+                request(app)
+                    .post('/api/cards/' + options.card._id + '/comments')
+                    .set('Authorization', 'Bearer ' + options.tokenFreinds)
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        text: "A other new comment on a card"
+                    })
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.text.should.be.equals("A other new comment on a card");
+                        res.body.idCard.should.be.equals(options.card._id);
+                        res.body.idAuthor.id.should.be.equals(options.memberFreinds._id);
+                        done();
+                    });
+            });
+
+            it('should send back a FORBIDDEN response - Comment created by unauthorized member', function (done) {
+                request(app)
+                    .post('/api/cards/' + options.card._id + '/comments')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        text: "A other new comment on a card"
+                    })
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+        });
+
+        describe('GET /api/cards/:id/comments - Get comments on a card', function () {
+
+            it('should send back a OK response - Comments got', function (done) {
+                request(app)
+                    .get('/api/cards/' + options.card._id + '/comments')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.should.be.instanceof(Array).and.have.length(2);
+                        done();
+                    });
+            });
+
+            it('should send back a OK response - Comments got by another member of the board', function (done) {
+                request(app)
+                    .get('/api/cards/' + options.card._id + '/comments')
+                    .set('Authorization', 'Bearer ' + options.tokenFreinds)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.should.be.instanceof(Array).and.have.length(2);
+                        done();
+                    });
+            });
+
+            it('should send back a OK response - Comments got by unauthorized member', function (done) {
+                request(app)
+                    .get('/api/cards/' + options.card._id + '/comments')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+        });
+
+        describe('DELETE /api/cards/:id/comments/:idComment - Get comments on a card', function () {
+
+            it('should send back a FORBIDDEN response - Comment deleted by a member that is not the author', function (done) {
+                request(app)
+                    .delete('/api/cards/' + options.card._id + '/comments/' + options.comment.id)
+                    .set('Authorization', 'Bearer ' + options.tokenFreinds)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a FORBIDDEN response - Comment deleted by a member that is not the author', function (done) {
+                request(app)
+                    .delete('/api/cards/' + options.card._id + '/comments/' + options.comment.id)
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a FORBIDDEN response - Comment deleted by a member that is not the author', function (done) {
+                request(app)
+                    .delete('/api/cards/' + options.card._id + '/comments/' + options.comment.id)
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/cards/' + options.card._id + '/comments')
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.should.be.instanceof(Array).and.have.length(1);
+                                done();
+                            });
+                    });
+            });
+        });
+
+
     });
 }
