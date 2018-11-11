@@ -8,28 +8,12 @@ import {history} from "../../history";
 
 // Css...
 import './Account.css';
-import {resetPswd} from "../../requests/resetPswd";
 import {logOut} from "../../actions/signActions";
 import {ChangePassword} from "./ChangePassword/ChangePassword";
 
 // Actions & Constant
 
 export class AccountToBeConnected extends React.Component {
-
-    changePassword = (email) => {
-        resetPswd(email,process.env.REACT_APP_FRONT_URL)
-            .then(res => {
-                if (res.status === 202) {
-                    //this.props.logOut();
-                    //history.push('/login');
-                } else {
-                    console.log("error");
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    };
 
     render() {
         return (
@@ -77,7 +61,11 @@ export class AccountToBeConnected extends React.Component {
                         <Col xs={12} sm={5}>
                             <Card>
                                 <CardBody>
-                                    <CardText>{this.props.user.member.bio}</CardText>
+                                    {this.props.user.member.bio === undefined ?
+                                        <CardText>Neither Description</CardText>
+                                        :
+                                        <CardText>{this.props.user.member.bio}</CardText>
+                                    }
                                 <Button>Change Description</Button>
                                 </CardBody>
                             </Card>

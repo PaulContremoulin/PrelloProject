@@ -1,6 +1,6 @@
 // Modules
 import React from 'react';
-import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
+import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Card, CardBody, CardText, CardHeader} from 'reactstrap';
 
 // Css
 import './CreateBoard.css';
@@ -83,7 +83,13 @@ export class CreateBoardToBeConnected extends React.Component {
         const { name, color, desc } = this.state;
         return (
             <div>
-                <Button className="button" onClick={() => this.openModal()}> Create a new board </Button>
+                <Card className="addBoard" onClick={() => this.openModal()}>
+                    <CardBody>
+                        <CardText>
+                            Create a new board
+                        </CardText>
+                    </CardBody>
+                </Card>
                 <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
                     <ModalHeader toggle={() =>this.closeModal()}>Add a board</ModalHeader>
                     <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
