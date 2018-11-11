@@ -57,39 +57,45 @@ export class ContentCircleToBeConnected extends React.Component {
     render() {
         return (
             <div>
-                <Container className="contentHome">
-                    <Row>
-                        <Col xs={10}>
-                            <h2>{this.props.circle.name}</h2>
-                        </Col>
-                        <Col xs={2}>
-                            <Button color="danger" onClick={this.toggle}>Delete</Button>
-                        </Col>
-                    </Row>
-                </Container>
-                <Container className="contentBoard">
-                    <Row>
-                        {this.props.circle.idBoards.length !== 0 ? this.props.circle.idBoards.map(board => {
-                            return(
-                                <Col className="displayBoard" xs={12} sm={6} md={3}>
-                                    <CardBoardCircle goToPageBoard={() => this.goToPageBoard(board)} board={board} key={ board._id } circle={this.props.circle}/>
-                                </Col>
-                            )
-                        })
-                        :
-                            <Alert color="primary">
-                                {"Go to personnal's board to add boards in "+this.props.circle.name}
-                            </Alert>
-                        }
-                    </Row>
-                </Container>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                    <ModalBody>Do you want delete this circle ? </ModalBody>
-                    <ModalFooter>
-                        <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                        <Button color="danger" onClick={() => this.deleteCircle(this.props.circle._id)}>Delete</Button>
-                    </ModalFooter>
-                </Modal>
+                {this.props.circle.name !== undefined &&
+                <div>
+                    <Container className="contentHome">
+                        <Row>
+                            <Col xs={10}>
+                                <h2>{this.props.circle.name}</h2>
+                            </Col>
+                            <Col xs={2}>
+                                <Button color="danger" onClick={this.toggle}>Delete</Button>
+                            </Col>
+                        </Row>
+                    </Container>
+                    <Container className="contentBoard">
+                        <Row>
+                            {this.props.circle.idBoards.length !== 0 ? this.props.circle.idBoards.map(board => {
+                                    return (
+                                        <Col className="displayBoard" xs={12} sm={6} md={3}>
+                                            <CardBoardCircle goToPageBoard={() => this.goToPageBoard(board)}
+                                                             board={board} key={board._id} circle={this.props.circle}/>
+                                        </Col>
+                                    )
+                                })
+                                :
+                                <Alert color="primary">
+                                    {"Go to personnal's board to add boards in " + this.props.circle.name}
+                                </Alert>
+                            }
+                        </Row>
+                    </Container>
+                    <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                        <ModalBody>Do you want delete this circle ? </ModalBody>
+                        <ModalFooter>
+                            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                            <Button color="danger"
+                                    onClick={() => this.deleteCircle(this.props.circle._id)}>Delete</Button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+                }
             </div>
         )
     }

@@ -24,6 +24,11 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
     }
 
     openPopover = () => {
+        if (this.props.type === "user") {
+            this.setState({roles:["admin","normal"]})
+        } else {
+            this.setState({roles:["admin","normal","observer"]})
+        }
         this.setState({
             popoverOpen: !this.state.popoverOpen
         });

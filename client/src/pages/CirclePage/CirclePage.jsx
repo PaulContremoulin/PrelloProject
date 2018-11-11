@@ -40,10 +40,13 @@ export class CirclePageToBeConnected extends React.Component {
 
     componentDidMount() {
         const circleFind = this.props.circles.filter(circle => (circle._id === this.props.idCircle) && (circle.name === this.props.nameCircle))
-        if (circleFind.length === 0) {
-            this.setState({isGood:false})
-        } else {
-            this.setState({isGood:true})
+        this.setState({isGood: !(circleFind.length === 0)})
+    }
+
+    componentDidUpdate() {
+        const circleFind = this.props.circles.filter(circle => (circle._id === this.props.idCircle) && (circle.name === this.props.nameCircle))
+        if (this.state.isGood !== !(circleFind.length === 0)) {
+            this.setState({isGood: !this.state.isGood});
         }
     }
 }

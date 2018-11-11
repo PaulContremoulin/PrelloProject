@@ -30,6 +30,7 @@ export class SettingsMembersToBeConnected extends React.Component {
                     <Col className="listGroupMember" sm={{size:6, offset:3}}>
                         <ListGroup>
                             {this.props.board.memberships.map(membership => {
+                                console.log(membership);
                                 return (
                                     <ListGroupItem>
                                             <Row>
@@ -39,9 +40,14 @@ export class SettingsMembersToBeConnected extends React.Component {
                                             <Col xs={3} sm={5} md={3}>
                                                 {membership.memberType}
                                             </Col>
+                                                {(membership.idMember._id === this.props.user.member.id) && (this.props.nbrMember > 1) && (this.props.type === "admin") &&
+                                                <Col xs={2} sm={2} md={2}>
+                                                    <ModifyRoleMember type="user" member={membership}/>
+                                                </Col>
+                                                }
                                                 {(membership.idMember._id !== this.props.user.member.id) && this.props.type === "admin" &&
                                                 <Col xs={2} sm={2} md={2}>
-                                                    <ModifyRoleMember member={membership}/>
+                                                    <ModifyRoleMember type="other" member={membership}/>
                                                 </Col>
                                                 }
                                                 {membership.idMember._id !== this.props.user.member.id && this.props.type === "admin" &&
