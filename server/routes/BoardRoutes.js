@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let Board = require('./../models/Board');
 let Member = require('./../models/Member');
-let Membership = require('./../models/Memberships');
+let Label = require('./../models/Label');
 let List = require('./../models/List');
 let debug = require('debug')('app:board');
 let boardAccess = require('./../middlewares/BoardAccess');
@@ -60,34 +60,12 @@ router.get('/:id', token, boardAccess.readRights(), function(req, res) {
 
     Board.findById(req.query)
         .populate('memberships.idMember', '_id username firstName lastName')
+        .populate('labels')
         .exec(function (err, board) {
         if (err) debug('GET boards/:id error : ' + err);
         if (!board) return res.status(404).json({message : 'Board not found'});
         return res.status(200).json(board);
     });
-});
-
-/**
- * Get members of a board
- * @route GET /boards/{id}/members
- * @group board - Operations about boards
- * @param {string} id.path.required - board's id.
- * @returns {MembershipDetail.model} 200 - Members object
- * @returns {Error}  401 - Unauthorized, invalid credentials
- * @returns {Error}  403 - Forbidden, invalid credentials
- * @returns {Error}  404 - Not found, board is not found
- * @returns {Error}  default - Unexpected error
- * @security JWT
- */
-router.get('/:id/members', token, boardAccess.readRights(), function(req, res) {
-
-    Board.findById(req.params.id, {_id : 1, memberships: 1})
-        .populate('memberships.idMember', 'username firstName lastName')
-        .exec(function (err, board) {
-            if (err) debug('GET boards/:id error : ' + err);
-            if (!board) return res.status(404).json({message : 'Board not found'});
-            return res.status(200).json(board.memberships);
-        });
 });
 
 /**
@@ -147,7 +125,7 @@ router.get('/:id/lists', token, boardAccess.readRights(), function(req, res) {
         delete req.query.cards;
     }
     var query = List.find(req.query);
-    if(oppenCard) query.populate('cards');
+    if(oppenCard) query.populate('cards').populate('cards.idLabels');
     query.exec(function(err, lists){
         if(err) {
             debug('GET boards/:id/lists error : ' + err)
@@ -201,6 +179,60 @@ router.put('/:id/members/:idMember', token, boardAccess.updateRights(), function
                 });
         });
     });
+});
+
+/**
+ * Get members of a board
+ * @route GET /boards/{id}/members
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @returns {MembershipDetail.model} 200 - Members object
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/members', token, boardAccess.readRights(), function(req, res) {
+
+    Board.findById(req.params.id, {_id : 1, memberships: 1})
+        .populate('memberships.idMember', 'username firstName lastName')
+        .exec(function (err, board) {
+            if (err) debug('GET boards/:id error : ' + err);
+            if (!board) return res.status(404).json({message : 'Board not found'});
+            return res.status(200).json(board.memberships);
+        });
+});
+
+/**
+ * Create a label
+ * @route POST /boards/{id}/labels
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @param {string} name.query.required - label's name.
+ * @param {string} color.query.required - label's color.
+ * @returns {Label.model} 200 - Label object
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.post('/:id/labels', token, boardAccess.readRights(), function(req, res) {
+
+    if(!req.query.name) return res.status(400).json({message: 'Label name missing'});
+    if(!req.query.color) return res.status(400).json({message: 'Label color missing'});
+
+    let label = new Label({name : req.query.name, color : req.query.color, idBoard : req.board._id});
+
+    label.validate(function(err){
+        if(err) return res.status(400).json({message: err});
+        label.save(function(err){
+            if(err) return res.status(500).json({message:'Unexpected internal error.'});
+            return res.status(201).json(label);
+        })
+    })
+
 });
 
 module.exports = router;

@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let Card = require('./../models/Card');
+let Label = require('./../models/Label');
 let Checklist = require('./../models/Checklist');
 let debug = require('debug')('app:card');
 let CardAccess = require('./../middlewares/CardAccess');
@@ -59,6 +60,7 @@ router.get('/:id', token, CardAccess.readRights(), function(req, res) {
     req.query._id = req.params.id
 
     let query = Card.findOne(req.query);
+    query.populate('idLabels');
     if(openChecklist) {
         query.populate(
             {
@@ -193,6 +195,65 @@ router.get('/:id/checklists', token, CardAccess.readRights(), function(req, res)
             if(!checklists) return res.status(400).json({message:'Checklists not found'});
             return res.status(200).json(checklists);
         });
+
+});
+
+
+/**
+ * Add a label to the card
+ * @route POST /cards/{id}/idLabels
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @param {string} value.query.required - label's id value to add.
+ * @returns {Code} 200 - Label added
+ * @returns {Error}  400 - Bad request, label already added
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, card or label is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.post('/:id/idLabels', token, CardAccess.updateRights(), function(req, res) {
+
+    Label.findById(req.query.value, function(err, label){
+        if(err) debug ('card/:id/idLabels error : ' + err);
+        if(!label) return res.status(404).json({message : 'Label not found'});
+        if(!label.idBoard.equals(req.card.idBoard)) return res.status(400).json({message : 'Bad request, provide a label associate with the same board'});
+        req.card.idLabels.push(label._id);
+        req.card.validate(function(err){
+            if(err) return res.status(400).json({message : 'Label already added'});
+            req.card.save(function(err){
+                if(err)  return res.status(500).json({message : 'Unexpected internal error'});
+                return res.status(201).json({message : 'Label added successfully'});
+            });
+        });
+    });
+
+});
+
+/**
+ * Remove a label from a card
+ * @route DELETE /cards/{id}/idLabels/{idLabel}
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @param {string} idLabel.path.required - label's id to remove.
+ * @returns {Code} 200 - Label removed
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, card is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.delete('/:id/idLabels/:idLabel', token, CardAccess.updateRights(), function(req, res) {
+
+    if(!mongoose.Types.ObjectId.isValid(req.params.idLabel))
+        return res.status(404).json({message : 'Label id wrong'});
+
+    req.card.idLabels.remove(req.params.idLabel);
+    req.card.save(function(err){
+        if(err) return res.status(400).json({message : err});
+        return res.status(200).json({message : 'Label removed successfully'});
+    })
 
 });
 

@@ -325,6 +325,26 @@ module.exports = function (app, options) {
                     });
             });
 
+            it('should send back a CREATE response - List created', function (done) {
+                request(app)
+                    .post('/api/boards/' + options.memberUnauthorized.board._id + '/lists')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        name: "ListName",
+                        pos : 123
+                    })
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.name.should.equal("ListName");
+                        res.body.pos.should.equal(123);
+                        res.body.idBoard.should.be.equal(options.memberUnauthorized.board._id);
+                        options.memberUnauthorized.list = res.body;
+                        done();
+                    });
+            });
+
             it('should send back a UNAUTHORIZED response - List created with unauthorized user', function (done) {
                 request(app)
                     .post('/api/boards/' + options.board._id + '/lists')
@@ -449,6 +469,76 @@ module.exports = function (app, options) {
                     .end(function (err, res) {
                         if (err) return done(err);
                         res.body.should.be.instanceof(Array).and.have.length(1);
+                        done();
+                    });
+            });
+
+        });
+
+        describe('POST /api/boards/:id/labels - Create a label on a board', function () {
+
+            it('should send back a CREATE response - Label created', function (done) {
+                request(app)
+                    .post('/api/boards/' + options.board._id + '/labels?name=myLabel&color=%23000000')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.name.should.be.equals("myLabel");
+                        res.body.color.should.be.equals("#000000");
+                        options.label = res.body;
+                        done();
+                    });
+            });
+
+            it('should send back a CREATE response - Label created', function (done) {
+                request(app)
+                    .post('/api/boards/' + options.memberUnauthorized.board._id + '/labels?name=myLabelTwo&color=%23000000')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        res.body.name.should.be.equals("myLabelTwo");
+                        res.body.color.should.be.equals("#000000");
+                        options.memberUnauthorized.label = res.body;
+                        done();
+                    });
+            });
+
+            it('should send back a BAD REQUEST response - Label created with no name', function (done) {
+                request(app)
+                    .post('/api/boards/' + options.board._id + '/labels?name=&color=%23000000')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a BAD REQUEST response - Label created with no color', function (done) {
+                request(app)
+                    .post('/api/boards/' + options.board._id + '/labels?name=&color=')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
+            it('should send back a FORBIDDEN response - Label created by unauthorized member', function (done) {
+                request(app)
+                    .post('/api/boards/' + options.board._id + '/labels?name=myLabel&color=%23000000')
+                    .set('Authorization', 'Bearer ' + options.tokenUnauthorized)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
                         done();
                     });
             });

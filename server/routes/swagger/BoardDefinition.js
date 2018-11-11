@@ -43,3 +43,11 @@
  * @property {string} memberType - the member type
  * @property {string} unconfirmed - the member confirmation (join board)
  */
+
+/**
+ * @typedef Label
+ * @property {string} name.required - the name of the label
+ * @property {string} color.required - the color of the label
+ * @property {string} id.required - the label's id
+ * @property {string} idBoard.required - the board's id attached
+ */

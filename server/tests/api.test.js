@@ -40,6 +40,7 @@ describe('PRELLO SERVER API TEST', function() {
         require('./api/cards.test')(app, options);
         require('./api/circles.test')(app, options);
         require('./api/checklists.test')(app, options);
+        require('./api/labels.test')(app, options);
     });
 
 });

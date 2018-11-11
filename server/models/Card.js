@@ -25,6 +25,13 @@ let cardSchema = new Schema({
             type      : Schema.Types.ObjectId,
             ref : 'Board'
         },
+        idLabels : {
+            type : [{
+                type : mongoose.Schema.ObjectId,
+                ref : 'Label'
+            }],
+            default : []
+        },
         idMembers : {
             type : [{
                 type : mongoose.Schema.ObjectId,

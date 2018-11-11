@@ -88,6 +88,13 @@ let boardSchema = new Schema({
 
 boardSchema.plugin(idValidator);
 
+
+boardSchema.virtual('labels', {
+    ref: 'Label', // The model to use
+    localField: '_id', // Find people where `localField`
+    foreignField: 'idBoard' // is equal to `foreignField`
+});
+
 /**
  * get the member if the member belongs at the board's team
  * @param memberId, the member id to test
