@@ -69,6 +69,14 @@ export class SettingsBoardToBeConnected extends React.Component {
             this.setState({type: you[0].memberType,nbrMember:nbrAdmin.length})
         }
     }
+
+    componentDidUpdate(prevProps) {
+        const members = this.props.board.memberships;
+        const nbrAdmin = members.filter(member => member.memberType === "admin");
+        if (this.state.nbrMember !== nbrAdmin.length) {
+            this.setState({nbrMember: nbrAdmin.length});
+        }
+    }
 }
 
 const mapStateToProps = (state, props) => ({
