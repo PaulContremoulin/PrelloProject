@@ -40,7 +40,6 @@ export class CirclePageToBeConnected extends React.Component {
 
     componentDidMount() {
         const circleFind = this.props.circles.filter(circle => (circle._id === this.props.idCircle) && (circle.name === this.props.nameCircle))
-        console.log(circleFind)
         if (circleFind.length === 0) {
             this.setState({isGood:false})
         } else {

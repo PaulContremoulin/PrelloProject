@@ -3,6 +3,7 @@ import React from 'react';
 import {Card, CardHeader, Button, CardBody, CardText, Col, Row, Modal, ModalFooter, ModalBody, ModalHeader} from 'reactstrap';
 
 // Css...
+import './CardBoardCircle.css';
 
 // Actions & Constant
 import {deleteBoardCircle, getCirclesUser} from "../../requests/circle";
@@ -57,7 +58,7 @@ export class CardBoardCircleToBeConnected extends React.Component {
                         {this.props.board.name}
                         <Button className="float-right" onClick={this.toggle} close />
                     </CardHeader>
-                    <CardBody onClick={ () => goToPageBoard() }>
+                    <CardBody className="clickBoard" onClick={ () => goToPageBoard() }>
                         <CardText>{this.props.board.desc}</CardText>
                     </CardBody>
                 </Card>
