@@ -2,10 +2,10 @@
 import React from 'react';
 import './CardBoard.css';
 
-import {Card, ListGroupItem, ListGroup, CardHeader, Button, CardBody, CardText, Col, Row, Modal, ModalBody, ModalHeader} from 'reactstrap';
+import {Card, ListGroupItem, ListGroup, CardHeader, Button, CardBody, CardText, ModalFooter, Modal, ModalBody, ModalHeader} from 'reactstrap';
 // Actions & Constant
-import {addBoardCircle} from "../../requests/circle";
-import {deleteBoardsCircle} from "../../actions/circleActions";
+import {addBoardCircle, getCirclesUser} from "../../requests/circle";
+import {deleteBoardsCircle, editCircle, fetchCircles} from "../../actions/circleActions";
 import {connect} from "react-redux";
 
 export class CardBoardToBeConnected extends React.Component {
@@ -28,7 +28,16 @@ export class CardBoardToBeConnected extends React.Component {
         addBoardCircle(boardId, circleId)
             .then(res => {
                 if (res.status === 201) {
-                    this.toggle();
+                    console.log(this.props.circles)
+                    console.log(res.data);
+                    this.props.editCircle(res.data);
+                    getCirclesUser(this.props.user.member._id)
+                        .then(res => {
+                            this.props.fetchCircles(res.data)
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        });
                 } else {
                     console.log("error");
                 }
@@ -41,6 +50,7 @@ export class CardBoardToBeConnected extends React.Component {
 
     render() {
       const { board, goToPageBoard } = this.props;
+        console.log(this.props.circles)
         return (
             <div>
             <Card style={{ borderBottomColor: board.prefs.background, borderBottomWidth: 4}}>
@@ -57,7 +67,9 @@ export class CardBoardToBeConnected extends React.Component {
                 <ModalBody>
                     <ListGroup>
                         {this.props.circles.map(circle => {
+                            console.log(circle)
                             const filt = circle.idBoards.filter(board => board === this.props.board._id);
+                            console.log(filt);
                             if (filt.length === 0) {
                                 return (
                                     <ListGroupItem tag="a" onClick={() => this.addBoardInCircle(this.props.board._id, circle._id)} action>{circle.name}</ListGroupItem>
@@ -70,6 +82,9 @@ export class CardBoardToBeConnected extends React.Component {
                         })}
                     </ListGroup>
                 </ModalBody>
+                <ModalFooter>
+                    <Button color="secondary" onClick={this.toggle}>OK</Button>
+                </ModalFooter>
             </Modal>
             </div>
         )
@@ -83,6 +98,8 @@ const mapStateToProps = ( state, props ) => ({
 
 const mapDispatchToProps = ( dispatch ) => ({
     deleteBoardsCircle: (res) => dispatch(deleteBoardsCircle(res)),
+    editCircle: (res) => dispatch(editCircle(res)),
+    fetchCircles: (res) => dispatch( fetchCircles(res)),
 });
 
 export const CardBoard = connect(

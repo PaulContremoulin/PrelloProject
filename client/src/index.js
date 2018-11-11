@@ -43,7 +43,7 @@ ReactDOM.render(
                     <Route exact path='/home' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<HomePage />))}/>
                     <Route exact path='/account' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<AccountPage />))}/>
                     <Route exact path='/login/reset/:idmembre/password' component={ChangePswd}/>
-                    <Route exact path='/circle/:namecircle' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<CirclePage />))}/>
+                    <Route exact path='/circle/:idcircle/:namecircle' render={({match}) => (!isLogged() ? (<Redirect to="/login"/>) : (<CirclePage idCircle={match.params.idcircle} nameCircle={match.params.namecircle} />))}/>
                     <Route exact path='/board' render={() => (!isLogged() ? (<Redirect to="/login"/>) : (<BoardPage />))}/>
                     <Route exact path='/board/:idBoard/:boardName/settings' render={({match}) => (!isLogged() ? (<Redirect to="/login"/>) : (<SettingsBoard boardName={match.params.boardName} boardId={match.params.idBoard}/>))}/>
                     <Route path='/login/github' component={GithubPage}/>

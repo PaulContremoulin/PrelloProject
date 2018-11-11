@@ -110,20 +110,22 @@ export class AddMembersToBeConnected extends React.Component {
         };
         return (
             <div>
-                <Row>
-                    <Form className="form" onSubmit={ (e) => this.addMemberInDB(e) }>
-                        <InputGroup>
-                            <Autosuggest className="inputAdd"
+                <Form className="form" onSubmit={ (e) => this.addMemberInDB(e) }>
+                    <Row>
+                        <Col xs={8} sm={8} md={9}>
+                            <Autosuggest
                                          suggestions={suggestions}
                                          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                                          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
                                          getSuggestionValue={this.getSuggestionValue}
                                          renderSuggestion={this.renderSuggestion}
                                          inputProps={inputProps} />
-                            <InputGroupAddon addonType="append"><Button color="secondary" type="submit">Add member</Button></InputGroupAddon>
-                        </InputGroup>
-                    </Form>
-                </Row>
+                        </Col>
+                        <Col xs={4} sm={4} md={3}>
+                            <Button className="buttonAddMember" color="secondary" type="submit">Add</Button>
+                        </Col>
+                    </Row>
+                </Form>
             </div>
         )
     }

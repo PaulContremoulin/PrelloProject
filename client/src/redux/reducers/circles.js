@@ -5,7 +5,7 @@
 * Action types are exported from the action source file
 * It's the best place to avoid circular dependencies
 */
-import { FETCH_CIRCLES, ADD_CIRCLE, DELETE_CIRCLE } from "../../actions/circleActions";
+import {FETCH_CIRCLES, ADD_CIRCLE, DELETE_CIRCLE, EDIT_CIRCLE} from "../../actions/circleActions";
 
 
 /******************************************************************************/
@@ -36,6 +36,8 @@ export const circles = ( state = [], action ) => {
       case DELETE_CIRCLE :
           const circleId = action.circleId;
           return state.filter(circle => circle._id !== circleId);
+      case EDIT_CIRCLE:
+          return state.map(circle => circle._id === action.circle._id ? {...circle, idBoards: action.circle.idBoards} : circle);
     case FETCH_CIRCLES :
       return action.circles;
     case ADD_CIRCLE :

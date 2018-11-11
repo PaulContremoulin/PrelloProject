@@ -34,19 +34,19 @@ export class SettingsMembersToBeConnected extends React.Component {
                                 return (
                                     <ListGroupItem>
                                             <Row>
-                                            <Col xs={5} className="float-left">
+                                            <Col xs={5} sm={3} md={5} className="float-left">
                                                 {membership.idMember.username}
                                             </Col>
-                                            <Col xs={3}>
+                                            <Col xs={3} sm={5} md={3}>
                                                 {membership.memberType}
                                             </Col>
                                                 {membership.idMember._id !== this.props.user.member.id &&
-                                                <Col xs={2}>
+                                                <Col xs={2} sm={2} md={2}>
                                                     <ModifyRoleMember member={membership}/>
                                                 </Col>
                                                 }
                                                 {membership.idMember._id !== this.props.user.member.id &&
-                                                <Col xs={2}>
+                                                <Col xs={2} sm={2} md={2}>
                                                     <DeleteMember/>
                                                 </Col>
                                                 }

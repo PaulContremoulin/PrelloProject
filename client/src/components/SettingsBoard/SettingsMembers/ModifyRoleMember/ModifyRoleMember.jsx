@@ -67,7 +67,7 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
                             {this.state.roles.map(role => {
                                 if (role !== this.props.member.memberType) {
                                     return (
-                                        <ListGroupItem tag="a" href="" action onClick={() => this.changeRole(role)}>
+                                        <ListGroupItem tag="a" href="#" action onClick={() => this.changeRole(role)}>
                                             {role}
                                         </ListGroupItem>
                                     )
