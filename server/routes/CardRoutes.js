@@ -202,7 +202,7 @@ router.get('/:id/checklists', token, CardAccess.readRights(), function(req, res)
 /**
  * Add a label to the card
  * @route POST /cards/{id}/idLabels
- * @group board - Operations about boards
+ * @group card - Operations about cards
  * @param {string} id.path.required - board's id.
  * @param {string} value.query.required - label's id value to add.
  * @returns {Code} 200 - Label added
