@@ -32,7 +32,6 @@ export class SettingsMembersToBeConnected extends React.Component {
                     <Col className="listGroupMember" sm={{size:6, offset:3}}>
                         <ListGroup>
                             {this.props.board.memberships.map(membership => {
-                                console.log(membership);
                                 return (
                                     <ListGroupItem>
                                             <Row>

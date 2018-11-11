@@ -10,6 +10,7 @@ import {history} from "../../history";
 import './Account.css';
 import {resetPswd} from "../../requests/resetPswd";
 import {logOut} from "../../actions/signActions";
+import {ChangePassword} from "./ChangePassword/ChangePassword";
 
 // Actions & Constant
 
@@ -69,7 +70,7 @@ export class AccountToBeConnected extends React.Component {
                                             </Col>
                                         </Row>
                                     </CardText>
-                                    <Button onClick={() => this.changePassword(this.props.user.member.email)}>Change Password</Button>
+                                    <ChangePassword/>
                                 </CardBody>
                             </Card>
                         </Col>
