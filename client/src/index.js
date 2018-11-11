@@ -28,6 +28,7 @@ import {SettingsBoard} from "./components/SettingsBoard/SettingsBoard";
 
 console.log(isLogged());
 
+
 ReactDOM.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
