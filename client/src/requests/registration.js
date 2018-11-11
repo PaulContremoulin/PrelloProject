@@ -17,9 +17,9 @@ export const registerUser = (
   lastName,
   email,
   password,
-  organisation,
+  organization,
   callback
-) => ( postRequest( '/api/signup/', {username, firstName, lastName, email, password, organisation, callback})
+) => ( postRequest( '/api/signup/', {username, firstName, lastName, email, password, organization, callback})
   .then( response => response )
       .catch(err => err.response)
 )
