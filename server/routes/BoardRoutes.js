@@ -176,7 +176,7 @@ router.get('/:id/lists', token, boardAccess.readRights(), function(req, res) {
  * @param {string} id.path.required - board's id.
  * @param {string} idMember.path.required - board's id.
  * @param {string} type.query.required - role assigned (observer - admin - normal).
- * @returns {code} 200 - List object
+ * @returns {Membership.model} 200 - A member added
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  404 - Not found, board is not found
  * @returns {Error}  default - Unexpected error
@@ -244,7 +244,7 @@ router.get('/:id/members', token, boardAccess.readRights(), function(req, res) {
  * @group board - Operations about boards
  * @param {string} id.path.required - board's id.
  * @param {string} idMemberShip.path.required - MemberShip's id.
- * @returns {MembershipDetail.model} 200 - Members object
+ * @returns {code} 200 - Members deleted successfully
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  403 - Forbidden, invalid credentials
  * @returns {Error}  404 - Not found, board is not found
