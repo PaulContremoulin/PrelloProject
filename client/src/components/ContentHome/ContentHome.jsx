@@ -14,6 +14,7 @@ import {getBoardsUser, getListsOfBoard} from "../../requests/boards";
 import {getCirclesUser} from "../../requests/circle";
 import {fetchBoards} from "../../actions/boardActions";
 import {fetchCircles} from "../../actions/circleActions";
+import {ButtonFiltre} from "./ButtonFiltre/ButtonFiltre";
 
 
 export class ContentHomeToBeConnected extends React.Component {
@@ -26,8 +27,11 @@ export class ContentHomeToBeConnected extends React.Component {
         return (
             <div>
                 <Row className="titleContent">
-                    <Col>
+                    <Col xs={6}>
                         <h2>Personnal's Boards</h2>
+                    </Col>
+                    <Col xs={6}>
+                        <ButtonFiltre/>
                     </Col>
                 </Row>
                 <Row>

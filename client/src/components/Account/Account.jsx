@@ -25,7 +25,7 @@ export class AccountToBeConnected extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={12} sm={4}>
+                        <Col xs={12} sm={12} md={4}>
                             <Card>
                                 <CardBody>
                                     <CardText>
@@ -58,7 +58,7 @@ export class AccountToBeConnected extends React.Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col xs={12} sm={5}>
+                        <Col xs={12} sm={12} md={5}>
                             <Card>
                                 <CardBody>
                                     {this.props.user.member.bio === undefined ?
@@ -70,7 +70,7 @@ export class AccountToBeConnected extends React.Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col xs={12} sm={3}>
+                        <Col xs={12} sm={12} md={3}>
                             <Card>
                                 <CardBody>
                                     <CardText>

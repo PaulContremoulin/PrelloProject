@@ -24,13 +24,13 @@ export class MainPage extends React.Component {
             <div className="MainPage">
                 <Container>
                     <Row>
-                        <Col className="contentRight" xs={12} sm={6}>
+                        <Col className="contentRight" xs={5} sm={6}>
                             <h1 className="content">Prello is a collaboration tool that organizes your projects into boards.</h1>
                         </Col>
-                        <Col className="contentLeft" xs={12} sm={{size:5, offset:1}}>
+                        <Col className="contentLeft" xs={7} sm={{size:5, offset:1}}>
                             <Col>
                                 <h1 className="content"> Ready ?</h1>
-                                <Button onClick={() => this.redirectionRegistration()}>Create your account</Button>
+                                <Button className="butCreateAccount" onClick={() => this.redirectionRegistration()}>Create your account</Button>
                             </Col>
                             <Col>
                                 <Button className="buttonLog" onClick={() => this.redirectionLogin()}>Log In</Button>

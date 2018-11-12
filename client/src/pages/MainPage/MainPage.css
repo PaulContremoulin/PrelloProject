@@ -7,7 +7,6 @@
     color: ghostwhite;
 }
 
-@media only screen and (min-width: 580px) {
     .contentRight {
         margin-top: 100px;
     }
@@ -22,5 +21,24 @@
 
     .buttonLog {
         margin-top: 10px;
+    }
+
+@media only screen and (max-width: 580px) {
+    h1 {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    .butCreateAccount {
+        font-size: 15px;
+    }
+
+    .buttonLog {
+        font-size: 15px;
     }
 }
