@@ -10,7 +10,8 @@ import './DeleteMember.css';
 
 // Actions & Constant
 import {deleteMember} from "../../../../requests/memberships";
-import {setBoardMembers} from "../../../../actions/boardActions";
+import {setBoardMembers, fetchBoards} from "../../../../actions/boardActions";
+import {getBoardsUser} from "../../../../requests/boards";
 
 export class DeleteMemberToBeConnected extends React.Component {
     constructor(props) {
@@ -34,6 +35,13 @@ export class DeleteMemberToBeConnected extends React.Component {
                 if(res.status === 200){
                     const newMemberShips = this.props.board.memberships.filter(member => member._id !== this.props.idMemberShip)
                     this.props.setBoardMembers(newMemberShips)
+                    getBoardsUser(this.props.user.member._id)
+                        .then(res => {
+                            this.props.fetchBoards(res.data)
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        });
                 }
             })
     }
@@ -60,6 +68,7 @@ const mapStateToProps = (state, props) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
     setBoardMembers: (res) => dispatch( setBoardMembers(res)),
+    fetchBoards: (res) => dispatch( fetchBoards(res)),
 });
 
 export const DeleteMember = connect(

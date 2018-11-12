@@ -10,6 +10,7 @@ import {history} from "../../history";
 import './Account.css';
 import {logOut} from "../../actions/signActions";
 import {ChangePassword} from "./ChangePassword/ChangePassword";
+import {DeleteAccount} from "./DeleteAccount/DeleteAccount";
 
 // Actions & Constant
 
@@ -54,7 +55,14 @@ export class AccountToBeConnected extends React.Component {
                                             </Col>
                                         </Row>
                                     </CardText>
-                                    <ChangePassword/>
+                                    <Row>
+                                        <Col xs={12} sm={12} md={12} xl={6}>
+                                            <ChangePassword/>
+                                        </Col>
+                                        <Col xs={12} sm={12} md={12} xl={6}>
+                                            <DeleteAccount/>
+                                        </Col>
+                                    </Row>
                                 </CardBody>
                             </Card>
                         </Col>
