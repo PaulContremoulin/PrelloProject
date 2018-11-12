@@ -13,10 +13,10 @@ import { Row, Col } from 'reactstrap';
 
 export const HomePageToBeConnected = () => (
     <div className="home">
-            <Col className="menu" xs={5} sm={3}>
+            <Col className="menu" xs={6} sm={5} md={3} xl={2}>
                 <MenuHome/>
             </Col>
-            <Col xs={7} sm={9}>
+            <Col xs={6} sm={7} md={9} xl={10}>
                 <ContentHome/>
             </Col>
     </div>

@@ -11,11 +11,26 @@ import {setBoard} from "../../actions/boardActions";
 // Css...
 import logo from '../../assets/prello_logo.png';
 import './NavBar.css';
-import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reactstrap';
+import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler} from 'reactstrap';
 
 // Actions & Constant
 
 export class NavBarToBeConnected extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.toggleNavbar = this.toggleNavbar.bind(this);
+        this.state = {
+            collapsed: true
+        };
+    }
+
+    toggleNavbar() {
+        this.setState({
+            collapsed: !this.state.collapsed
+        });
+    }
 
     logOut = () => {
         const temp = [];
@@ -36,26 +51,27 @@ export class NavBarToBeConnected extends React.Component {
         this.props.setBoard(board);
         this.props.setCircle(temp);
         this.props.logOut();
+        this.toggleNavbar()
         history.push('/');
     };
 
-    redirectionMain = () => {
-        history.push('/')
-    };
-
     redirectionHome = () => {
+        this.toggleNavbar()
         history.push('/home')
     };
 
     redirectionLogin = () => {
+        this.toggleNavbar()
         history.push('/login')
     };
 
     redirectionRegistration = () => {
+        this.toggleNavbar()
         history.push('/registration')
     };
 
     redirectionAccount = () => {
+        this.toggleNavbar()
         history.push('/account')
     };
 
@@ -66,13 +82,10 @@ export class NavBarToBeConnected extends React.Component {
         } = this.props;
         return (
             <Navbar expand="md">
-                {!(user.member) ?
-                    <NavbarBrand><img onClick={() => this.redirectionMain()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
-                    :
-                    <NavbarBrand><img onClick={() => this.redirectionHome()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
-                }
+                <NavbarBrand><img onClick={() => this.redirectionHome()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
+                <NavbarToggler onClick={this.toggleNavbar}  />
                 {!(user.member) && !(noLink==="true") &&
-                <Collapse navbar>
+                <Collapse isOpen={!this.state.collapsed} navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
                             <NavLink className="helpNavItem" href="#" onClick={ () => this.redirectionRegistration() }>Sign Up</NavLink>
@@ -84,7 +97,7 @@ export class NavBarToBeConnected extends React.Component {
                 </Collapse>
                 }
                 {(user.member) && !(noLink==="true") &&
-                <Collapse navbar>
+                <Collapse isOpen={!this.state.collapsed} navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
                             <NavLink className="helpNavItem" href="#" onClick={() => this.redirectionHome()}>Home</NavLink>

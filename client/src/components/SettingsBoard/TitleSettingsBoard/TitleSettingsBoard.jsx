@@ -4,12 +4,17 @@ import {Button, Row, Col} from 'reactstrap';
 
 // Css...
 import './TitleSettingsBoard.css';
+import {history} from "../../../history";
 
 // Actions & Constant
 
 export class TitleSettingsBoard extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    goToPageBoard = (board) => {
+        history.push('/board/' + this.props.boardId + '/' + this.props.boardName)
     }
 
     render() {
@@ -20,7 +25,7 @@ export class TitleSettingsBoard extends React.Component {
                         <div className="float-left">
                             <h3>{'Board '+this.props.boardName+' - Settings'}</h3>
                         </div>
-                        <Button className="float-right" color="secondary">Back</Button>
+                        <Button className="float-right" color="secondary" onClick={() => this.goToPageBoard()}>Back</Button>
                     </Col>
                 </Row>
             </div>

@@ -17,7 +17,7 @@ import { postListToBoard, postCardToBoard, getListsOfBoard, getBoardById } from 
 import { changeListName } from '../../requests/lists';
 
 // Css
-import { Container, Row, Col, CardDeck } from 'reactstrap';
+import { Container, Row, Col, CardDeck, Alert } from 'reactstrap';
 import './Board.css';
 
 const ContainerBoard = styled.div``;
@@ -25,6 +25,9 @@ const ContainerBoard = styled.div``;
 export class BoardToBeConnected extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            isGood: true,
+        }
     }
 
     onDragEnd = result => {
@@ -134,10 +137,14 @@ export class BoardToBeConnected extends React.Component {
                             .then( lists => {
                                 setupBoard["lists"] = lists.data;
                                 console.log(setupBoard)
-                                this.props.setBoard(setupBoard);
+                                if (setupBoard.name === boardName) {
+                                    this.props.setBoard(setupBoard);
+                                } else {
+                                    this.setState({isGood:false})
+                                }
                             })
                     })
-                    .catch( err => history.push('/home'))
+                    .catch( err => this.setState({isGood:false}))
             }
         }
     }
@@ -152,42 +159,53 @@ export class BoardToBeConnected extends React.Component {
         const color = (board.prefs && board.preds.background) ? board.prefs.background : "#ffffff";
         return(
             <div className="Board">
-                <BoardMenu boardName={ board.name } boardId={board._id} style={{ "backgroundColor": color }}/>
-                <div className="Lists">
-                    <DragDropContext
-                        onDragStart={() => {}}
-                        onDragUpdate={() => {}}
-                        onDragEnd={ this.onDragEnd }
-                    >
-                        <Droppable droppableId="allLists" direction="horizontal" type="list" >
-                            {(provided, snapshot) =>
-                                <ContainerBoard
-                                    {...provided.droppableProps}
-                                    ref={provided.innerRef}
-                                    isDragging={ snapshot.isDragging }
-                                >
-                                    <CardDeck style={{"width": (board.lists.length+1)*300 + "px"}}>
-                                        {board.lists.map( (list, index) => (
-                                            <div key={index} style={{"width": "300px"}}>
-                                                <List
-                                                    board={board}
-                                                    list={list}
-                                                    addCard={(cardName, listId) => this.addCardToBoard(cardName, listId, board._id)}
-                                                    moveList={moveList}
-                                                    setNameOfList= { (listName) => this.setNameOfList(list.id, listName) }
-                                                    index={index}
-                                                />
-                                            </div>
-                                        ))
-                                        }
-                                        <AddList addList={(listName) => this.addListToBoard(listName, board._id)}/>
-                                    </CardDeck>
-                                    {provided.placeholder}
-                                </ContainerBoard>
-                            }
-                        </Droppable>
-                    </DragDropContext>
-                </div>
+                {this.state.isGood ?
+                    <div>
+                        <BoardMenu boardName={board.name} boardId={board._id} style={{"backgroundColor": color}}/>
+                        <div className="Lists">
+                            <DragDropContext
+                                onDragStart={() => {
+                                }}
+                                onDragUpdate={() => {
+                                }}
+                                onDragEnd={this.onDragEnd}
+                            >
+                                <Droppable droppableId="allLists" direction="horizontal" type="list">
+                                    {(provided, snapshot) =>
+                                        <ContainerBoard
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}
+                                            isDragging={snapshot.isDragging}
+                                        >
+                                            <CardDeck style={{"width": (board.lists.length + 1) * 300 + "px"}}>
+                                                {board.lists.map((list, index) => (
+                                                    <div key={index} style={{"width": "300px"}}>
+                                                        <List
+                                                            board={board}
+                                                            list={list}
+                                                            addCard={(cardName, listId) => this.addCardToBoard(cardName, listId, board._id)}
+                                                            moveList={moveList}
+                                                            setNameOfList={(listName) => this.setNameOfList(list.id, listName)}
+                                                            index={index}
+                                                        />
+                                                    </div>
+                                                ))
+                                                }
+                                                <AddList
+                                                    addList={(listName) => this.addListToBoard(listName, board._id)}/>
+                                            </CardDeck>
+                                            {provided.placeholder}
+                                        </ContainerBoard>
+                                    }
+                                </Droppable>
+                            </DragDropContext>
+                        </div>
+                    </div>
+                    :
+                    <Alert color="danger">
+                        You don't have permission to access on this board
+                    </Alert>
+                }
             </div>
         )
     }

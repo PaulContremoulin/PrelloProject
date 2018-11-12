@@ -1,8 +1,11 @@
 // Modules
 import React from 'react';
 import './CardBoard.css';
+import {Row, Col, Card, ListGroupItem, ListGroup, CardHeader, Button, CardBody, CardText, ModalFooter, Modal, ModalBody, ModalHeader} from 'reactstrap';
 
-import {Card, ListGroupItem, ListGroup, CardHeader, Button, CardBody, CardText, ModalFooter, Modal, ModalBody, ModalHeader} from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+
 // Actions & Constant
 import {addBoardCircle, getCirclesUser} from "../../requests/circle";
 import {deleteBoardsCircle, editCircle, fetchCircles} from "../../actions/circleActions";
@@ -67,16 +70,19 @@ export class CardBoardToBeConnected extends React.Component {
                 <ModalBody>
                     <ListGroup>
                         {this.props.circles.map(circle => {
-                            console.log(circle)
                             const filt = circle.idBoards.filter(board => board === this.props.board._id);
-                            console.log(filt);
                             if (filt.length === 0) {
                                 return (
-                                    <ListGroupItem tag="a" onClick={() => this.addBoardInCircle(this.props.board._id, circle._id)} action>{circle.name}</ListGroupItem>
+                                    <ListGroupItem className="clickBoard" tag="a" onClick={() => this.addBoardInCircle(this.props.board._id, circle._id)} action>{circle.name}</ListGroupItem>
                                 )
                         } else {
                                 return (
-                                    <ListGroupItem disabled>{circle.name}</ListGroupItem>
+                                    <ListGroupItem disabled>
+                                        <Row>
+                                            <Col xs={8}>{circle.name}</Col>
+                                            <Col xs={4}><FontAwesomeIcon icon={faCheck} size="1x"/></Col>
+                                        </Row>
+                                    </ListGroupItem>
                                 )
                             }
                         })}
