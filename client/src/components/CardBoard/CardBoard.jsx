@@ -62,7 +62,7 @@ export class CardBoardToBeConnected extends React.Component {
                           <Button className="float-right" onClick={this.toggle} close>+</Button>
                 </CardHeader>
                 <CardBody className="clickBoard" onClick={ () => goToPageBoard() }>
-                    <CardText>{this.props.board.desc}</CardText>
+                    <CardText className="ellipsisCard">{this.props.board.desc}</CardText>
                 </CardBody>
             </Card>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
