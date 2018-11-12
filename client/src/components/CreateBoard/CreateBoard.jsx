@@ -16,6 +16,7 @@ export class CreateBoardToBeConnected extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            activeTab: '1',
             'open': false,
             'visible': false,
             'name': '',
@@ -26,12 +27,21 @@ export class CreateBoardToBeConnected extends React.Component {
         }
     }
 
+    toggle(tab) {
+        if (this.state.activeTab !== tab) {
+            this.setState({
+                activeTab: tab
+            });
+        }
+    }
+
     openModal (){
         this.setState({ open: true })
     }
 
     closeModal () {
         this.setState({
+            activeTab: '1',
             open: false,
             'visible': false,
             'name':'',
