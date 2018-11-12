@@ -54,10 +54,10 @@ export class ContentCircleToBeConnected extends React.Component {
                 {this.props.circle.name !== undefined &&
                 <div>
                     <Row className="titleContent">
-                        <Col xs={10}>
+                        <Col xs={5} sm={8} md={10}>
                             <h2>{this.props.circle.name}</h2>
                         </Col>
-                        <Col xs={2}>
+                        <Col xs={7} sm={4} md={2}>
                             <Button color="danger" onClick={this.toggle}>Delete</Button>
                         </Col>
                     </Row>

@@ -51,27 +51,22 @@ export class NavBarToBeConnected extends React.Component {
         this.props.setBoard(board);
         this.props.setCircle(temp);
         this.props.logOut();
-        this.toggleNavbar()
         history.push('/');
     };
 
     redirectionHome = () => {
-        this.toggleNavbar()
         history.push('/home')
     };
 
     redirectionLogin = () => {
-        this.toggleNavbar()
         history.push('/login')
     };
 
     redirectionRegistration = () => {
-        this.toggleNavbar()
         history.push('/registration')
     };
 
     redirectionAccount = () => {
-        this.toggleNavbar()
         history.push('/account')
     };
 
