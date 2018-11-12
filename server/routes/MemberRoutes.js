@@ -58,9 +58,9 @@ router.get('/:id/public', token, function(req, res) {
  * @route PUT /members/{id}
  * @group members - Operations about members
  * @param {string} id.path.required - member's id
- * @param {string} lastName.query.required - member's lastName
- * @param {string} firstName.query.required - member's firstName
- * @param {string} organization.query.required - member's organization
+ * @param {string} lastName.query - member's lastName
+ * @param {string} firstName.query - member's firstName
+ * @param {string} organization.query - member's organization
  * @returns {Code} 200 - Member deleted
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  403 - Forbidden access

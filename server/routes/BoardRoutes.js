@@ -73,9 +73,9 @@ router.get('/:id', token, boardAccess.readRights(), function(req, res) {
  * @route PUT /boards/{id}
  * @group board - Operations about boards
  * @param {string} id.path.required - board's id
- * @param {string} name.query.required - board's name.
- * @param {string} desc.query.required - board's description.
- * @param {string} closed.query.required - board's archived or not.
+ * @param {string} name.query - board's name.
+ * @param {string} desc.query - board's description.
+ * @param {string} closed.query - board's archived or not.
  * @returns {code} 200 - Board updated successfully
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  404 - Not found, board is not found
@@ -220,7 +220,7 @@ router.put('/:id/members/:idMember', token, boardAccess.updateRights(), function
  * @route GET /boards/{id}/members
  * @group board - Operations about boards
  * @param {string} id.path.required - board's id.
- * @returns {MembershipDetail.model} 200 - Members object
+ * @returns {Array.<MembershipDetail>} 200 - Members object
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  403 - Forbidden, invalid credentials
  * @returns {Error}  404 - Not found, board is not found

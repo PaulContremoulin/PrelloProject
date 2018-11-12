@@ -32,6 +32,7 @@
 
 /**
  * @typedef Membership
+ * @property {string} id.required - the membership id
  * @property {string} idMember.required - the member id
  * @property {string} memberType - the member type
  * @property {string} unconfirmed - the member confirmation (join board)
