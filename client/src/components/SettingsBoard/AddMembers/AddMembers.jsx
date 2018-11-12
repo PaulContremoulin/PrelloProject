@@ -90,7 +90,7 @@ export class AddMembersToBeConnected extends React.Component {
                 .then(res => {
                     if (res.status === 200) {
                         this.props.addMemberAction(res.data);
-                        console.log(this.props.board)
+                        this.setState({value:""})
                     } else {
                         console.log("error");
                     }

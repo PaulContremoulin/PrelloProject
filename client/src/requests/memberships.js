@@ -1,4 +1,4 @@
-import { getRequest, putRequest } from './genericRequest';
+import { getRequest, putRequest, deleteRequest } from './genericRequest';
 
 /**
  * @desc check if the user can be connect
@@ -26,5 +26,13 @@ export const getMember = (
     idUser
 ) => (getRequest('/api/members/'+idUser+'/public')
         .then( response => response )
+        .catch(err => err.response)
+)
+
+export const deleteMember = (
+    idBoard,
+        idMemberShip,
+) => (deleteRequest('/api/boards/'+idBoard+'/members/'+idMemberShip)
+        .then(response => response)
         .catch(err => err.response)
 )
