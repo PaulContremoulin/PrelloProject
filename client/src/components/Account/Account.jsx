@@ -31,7 +31,7 @@ export class AccountToBeConnected extends React.Component {
                                     <CardText>
                                         <Row>
                                             <Col sm={2}>
-                                                <FontAwesomeIcon icon={faUser} size="2x"/>
+                                                <FontAwesomeIcon icon={faUser} size="1x"/>
                                             </Col>
                                             <Col sm={10}>
                                                 {this.props.user.member.firstName+' '+this.props.user.member.lastName}
@@ -39,7 +39,7 @@ export class AccountToBeConnected extends React.Component {
                                         </Row>
                                         <Row className="indexCol">
                                             <Col sm={2}>
-                                                <FontAwesomeIcon icon={faBriefcase} size="2x"/>
+                                                <FontAwesomeIcon icon={faBriefcase} size="1x"/>
                                             </Col>
                                             <Col sm={10}>
                                                 {this.props.user.member.organization}
@@ -47,7 +47,7 @@ export class AccountToBeConnected extends React.Component {
                                         </Row>
                                         <Row className="indexCol">
                                             <Col sm={2}>
-                                                <FontAwesomeIcon icon={faEnvelope} size="2x"/>
+                                                <FontAwesomeIcon icon={faEnvelope} size="1x"/>
                                             </Col>
                                             <Col sm={10}>
                                                 {this.props.user.member.email}

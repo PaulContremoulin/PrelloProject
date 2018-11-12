@@ -27,7 +27,7 @@ export class ButtonFiltreToBeConnected extends React.Component {
 
     render() {
         return (
-            <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+            <ButtonDropdown className="float-right" direction="left" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                 <DropdownToggle caret>
                     Filter
                 </DropdownToggle>
