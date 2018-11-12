@@ -1,4 +1,4 @@
-import {putRequest} from "./genericRequest";
+import {putRequest, deleteRequest} from "./genericRequest";
 
 export const changePasswordUser = (
     oldPassword,
@@ -6,5 +6,12 @@ export const changePasswordUser = (
     idUser
 ) => ( putRequest( '/api/members/'+idUser+'/password', {oldPassword, newPassword})
         .then( response => response )
+        .catch(err => err.response)
+)
+
+export const deleteAccount = (
+    idUser
+) => (deleteRequest('/api/members/'+idUser)
+        .then(response => response)
         .catch(err => err.response)
 )

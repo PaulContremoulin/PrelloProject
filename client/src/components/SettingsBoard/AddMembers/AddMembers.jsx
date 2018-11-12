@@ -11,7 +11,8 @@ import './AddMembers.css';
 
 // Actions & Constant
 import {getMembersSearch} from "../../../requests/memberships";
-import {setBoardMembers, addMemberAction} from "../../../actions/boardActions";
+import {setBoardMembers, addMemberAction, fetchBoards} from "../../../actions/boardActions";
+import {getBoardsUser} from "../../../requests/boards";
 
 export class AddMembersToBeConnected extends React.Component {
     constructor() {
@@ -91,6 +92,13 @@ export class AddMembersToBeConnected extends React.Component {
                     if (res.status === 200) {
                         this.props.addMemberAction(res.data);
                         this.setState({value:""})
+                        getBoardsUser(this.props.user.member._id)
+                            .then(res => {
+                                this.props.fetchBoards(res.data)
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            });
                     } else {
                         console.log("error");
                     }
@@ -133,10 +141,12 @@ export class AddMembersToBeConnected extends React.Component {
 
 const mapStateToProps = (state, props) => ({
     board: state.board,
+    user: state.user,
 });
 const mapDispatchToProps = (dispatch) => ({
     setBoardMembers: (res) => dispatch(setBoardMembers(res)),
     addMemberAction: (res) => dispatch(addMemberAction(res)),
+    fetchBoards: (res) => dispatch( fetchBoards(res)),
 });
 
 export const AddMembers = connect(
