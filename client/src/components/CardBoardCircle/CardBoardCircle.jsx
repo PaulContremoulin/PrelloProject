@@ -9,6 +9,8 @@ import './CardBoardCircle.css';
 import {deleteBoardCircle, getCirclesUser} from "../../requests/circle";
 import {deleteBoardsCircle, fetchCircles} from "../../actions/circleActions";
 import {connect} from "react-redux";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faUser, faUsers} from "@fortawesome/free-solid-svg-icons/index";
 
 export class CardBoardCircleToBeConnected extends React.Component {
     constructor(props) {
@@ -54,12 +56,24 @@ export class CardBoardCircleToBeConnected extends React.Component {
         return (
             <div>
                 <Card style={{ borderBottomColor: board.prefs.background, borderBottomWidth: 4}}>
-                    <CardHeader>
-                        {this.props.board.name}
-                        <Button className="float-right" onClick={this.toggle} close />
+                    <CardHeader className="headerBoardCard">
+                        <div className="butHeaderCard">
+                            {this.props.board.name}
+                            <Button className="float-right" onClick={this.toggle} close />
+                        </div>
                     </CardHeader>
                     <CardBody className="clickBoard" onClick={ () => goToPageBoard() }>
                         <CardText className="ellipsisCard">{this.props.board.desc}</CardText>
+                        <hr className="my-2"/>
+                        {this.props.board.memberships.length !== 1 ?
+                            <div className="footerCardBoard">
+                                {this.props.board.memberships.length + ' '}<FontAwesomeIcon icon={faUsers} size="sm"/>
+                            </div>
+                            :
+                            <div className="footerCardBoard">
+                                <FontAwesomeIcon icon={faUser} size="sm"/>{' personnal'}
+                            </div>
+                        }
                     </CardBody>
                 </Card>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>

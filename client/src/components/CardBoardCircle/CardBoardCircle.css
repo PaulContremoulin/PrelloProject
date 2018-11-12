@@ -1,5 +1,30 @@
 .clickBoard {
     cursor: pointer;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+}
+
+.headerBoardCard {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.ellipsisCard {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-style: italic;
+}
+
+.butHeaderCard {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.footerCardBoard {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
 
 @media only screen and (min-width: 1200px) {

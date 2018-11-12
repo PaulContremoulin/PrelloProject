@@ -9,6 +9,8 @@ import './CreateBoard.css';
 import {createBoard} from "../../requests/boards";
 import { connect } from "react-redux";
 import {addBoard} from "../../actions/boardActions";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPlus} from "@fortawesome/free-solid-svg-icons/index";
 
 export class CreateBoardToBeConnected extends React.Component {
     constructor(props) {
@@ -86,7 +88,12 @@ export class CreateBoardToBeConnected extends React.Component {
                 <Card className="addBoard" onClick={() => this.openModal()}>
                     <CardBody>
                         <CardText>
-                            Create a new board
+                            <div>
+                                <FontAwesomeIcon icon={faPlus} size="1x"/>
+                            </div>
+                            <div>
+                                Create a board
+                            </div>
                         </CardText>
                     </CardBody>
                 </Card>
