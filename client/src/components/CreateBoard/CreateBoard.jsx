@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
-import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Card, CardBody, CardText, CardHeader} from 'reactstrap';
+import {TabContent, TabPane, Nav, NavItem, NavLink, Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Card, CardBody, CardText, CardHeader} from 'reactstrap';
+import classnames from 'classnames';
 
 // Css
 import './CreateBoard.css';
@@ -11,6 +12,7 @@ import { connect } from "react-redux";
 import {addBoard} from "../../actions/boardActions";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPlus} from "@fortawesome/free-solid-svg-icons/index";
+import {AddMembersCreateBoard} from "./AddMembersCreateBoard/AddMembersCreateBoard";
 
 export class CreateBoardToBeConnected extends React.Component {
     constructor(props) {
@@ -110,55 +112,83 @@ export class CreateBoardToBeConnected extends React.Component {
                 <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
                     <ModalHeader toggle={() =>this.closeModal()}>Add a board</ModalHeader>
                     <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
-                        <ModalBody>
-                            <Alert color="danger" isOpen={this.state.visible} toggle={() =>this.onDismiss() }>
-                                The board was not able to be created
-                            </Alert>
-                            <Row>
-                                <Col sm="12" md="8">
-                                    <FormGroup>
-                                        <Label>Name</Label>
-                                        <Input
-                                            type="text"
-                                            name="name"
-                                            placeholder="Enter a name"
-                                            value={ name }
-                                            required={true}
-                                            onChange={ (e) => this.handleChange(e)}
-                                        />
-                                    </FormGroup>
-                                </Col>
-                                <Col sm="12" md="2">
-                                    <FormGroup>
-                                        <Label for="exampleColor">Color</Label>
-                                        <Input
-                                            type="color"
-                                            name="color"
-                                            id="exampleColor"
-                                            placeholder="color placeholder"
-                                            value={ color }
-                                            required={true}
-                                            onChange={ (e) => this.handleChange(e)}
-                                        />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <FormGroup>
-                                        <Label>Description</Label>
-                                        <Input
-                                            type="textarea"
-                                            name="desc"
-                                            id="exampleText"
-                                            placeholder="Enter a description"
-                                            value={ desc }
-                                            required={true}
-                                            onChange={ (e) => this.handleChange(e)}
-                                        />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
+                        <ModalBody className="ModalBodyCreateBoard">
+                            <Nav tabs>
+                                <NavItem>
+                                    <NavLink style={{cursor: 'pointer'}}
+                                        className={classnames({ active: this.state.activeTab === '1' })}
+                                        onClick={() => { this.toggle('1'); }}
+                                    >
+                                        Informations
+                                    </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink style={{cursor: 'pointer'}}
+                                        className={classnames({ active: this.state.activeTab === '2' })}
+                                        onClick={() => { this.toggle('2'); }}
+                                    >
+                                        Members
+                                    </NavLink>
+                                </NavItem>
+                            </Nav>
+
+                            <TabContent activeTab={this.state.activeTab}>
+                                <TabPane tabId="1">
+                                    <Alert color="danger" isOpen={this.state.visible} toggle={() =>this.onDismiss() }>
+                                        The board was not able to be created
+                                    </Alert>
+                                    <Row>
+                                        <Col sm="12" md="8">
+                                            <FormGroup>
+                                                <Label>Name</Label>
+                                                <Input
+                                                    type="text"
+                                                    name="name"
+                                                    placeholder="Enter a name"
+                                                    value={ name }
+                                                    required={true}
+                                                    onChange={ (e) => this.handleChange(e)}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col sm="12" md="2">
+                                            <FormGroup>
+                                                <Label for="exampleColor">Color</Label>
+                                                <Input
+                                                    type="color"
+                                                    name="color"
+                                                    id="exampleColor"
+                                                    placeholder="color placeholder"
+                                                    value={ color }
+                                                    required={true}
+                                                    onChange={ (e) => this.handleChange(e)}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <FormGroup>
+                                                <Label>Description</Label>
+                                                <Input
+                                                    type="textarea"
+                                                    name="desc"
+                                                    id="exampleText"
+                                                    placeholder="Enter a description"
+                                                    value={ desc }
+                                                    required={true}
+                                                    onChange={ (e) => this.handleChange(e)}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                </TabPane>
+
+                                <TabPane tabId="2">
+                                    <AddMembersCreateBoard/>
+                                </TabPane>
+                            </TabContent>
+
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="secondary" onClick={() =>this.closeModal() }>Return</Button>
