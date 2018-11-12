@@ -51,11 +51,6 @@ export class SettingsMembersToBeConnected extends React.Component {
                                                         <ModifyRoleMember type="other" member={membership}/>
                                                     </Col>
                                                     }
-                                                    {membership.idMember._id !== this.props.user.member.id && this.props.type === "admin" &&
-                                                    <Col xs={2} sm={2} md={2}>
-                                                        <DeleteMember/>
-                                                    </Col>
-                                                    }
                                             </Row>
                                         </ListGroupItem>
                                 )
@@ -81,7 +76,7 @@ export class SettingsMembersToBeConnected extends React.Component {
                                             }
                                             {membership.idMember._id !== this.props.user.member.id && this.props.type === "admin" &&
                                             <Col xs={2} sm={2} md={2}>
-                                                <DeleteMember/>
+                                                <DeleteMember idBoard={this.props.board._id} idMemberShip={membership.id}/>
                                             </Col>
                                             }
                                         </Row>
