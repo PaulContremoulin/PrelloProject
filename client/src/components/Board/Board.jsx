@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import * as qs from 'query-string';
 import { history } from '../../history';
 import { socket } from '../../redux/middleware/websocket';
-
 // Components & Actions
 import { DEFAULT_BOARD } from '../../constants';
 import {BoardMenu} from './BoardMenu/BoardMenu';
@@ -15,13 +14,11 @@ import {setBoard, addList, moveList, addCard, moveCard, moveCardFromList} from '
 import { setListName } from '../../actions/listActions';
 import { postListToBoard, postCardToBoard, getListsOfBoard, getBoardById } from '../../requests/boards';
 import { changeListName } from '../../requests/lists';
-
+import { nextPosFromArray } from '../../boardUtil.js';
 // Css
 import { Container, Row, Col, CardDeck, Alert } from 'reactstrap';
 import './Board.css';
-
 const ContainerBoard = styled.div``;
-
 export class BoardToBeConnected extends React.Component {
     constructor(props) {
         super(props)
@@ -29,11 +26,9 @@ export class BoardToBeConnected extends React.Component {
             isGood: true,
         }
     }
-
     onDragEnd = result => {
         // console.log(result);
         const { destination, source, draggableId, type } = result;
-
         // If the card hasnt been moved to a droppable position
         if (!destination) {
             return;
@@ -44,82 +39,67 @@ export class BoardToBeConnected extends React.Component {
             return;
         }
         const contextBoard = this.props.board;
-
         if( type === "list" ) {
             const newListOrder = Array.from(contextBoard.lists);
             const listDragged = contextBoard.lists[source.index];
             newListOrder.splice(source.index, 1);
             newListOrder.splice(destination.index, 0, listDragged);
-
             this.props.moveList(newListOrder);
             return;
         }
-
         const contextListStart = contextBoard.lists.filter( list => list.id == source.droppableId )[0];
         const contextListEnd = contextBoard.lists.filter( list => list.id == destination.droppableId )[0];
-
         // Move a card inside a list
         if (contextListStart === contextListEnd) {
             const newCardList = Array.from(contextListStart.cards);
             newCardList.splice(source.index, 1);
             newCardList.splice(destination.index, 0, contextListStart.cards[source.index]);
-
             const newContextList = {
                 ...contextListStart,
                 cards: newCardList,
             }
             const indexOfList = contextBoard.lists.findIndex( (list, index) => list.id === contextListStart.id );
-
             this.props.moveCard(newContextList, indexOfList);
             return;
         }
-
         //From a list to another
         // Source list
         const newCardListStart = Array.from(contextListStart.cards);
         newCardListStart.splice(source.index, 1);
         // newCardListStart.splice(destination.index, 0, contextListStart.cards[source.index]);
-
         const newContextListStart = {
             ...contextListStart,
             cards: newCardListStart,
         }
-
         // Destination list
         const newCardListEnd = Array.from(contextListEnd.cards);
         // newCardListEnd.splice(source.index, 1);
         newCardListEnd.splice(destination.index, 0, contextListStart.cards[source.index]);
-
         const newContextListEnd = {
             ...contextListEnd,
             cards: newCardListEnd,
         }
         const indexOfListStart = contextBoard.lists.findIndex( (list, index) => list.id === contextListStart.id );
         const indexOfListEnd = contextBoard.lists.findIndex( (list, index) => list.id === contextListEnd.id );
-
         this.props.moveCardFromList(newContextListStart, indexOfListStart, newContextListEnd, indexOfListEnd);
         return;
     };
-
     setNameOfList = (listId, listName) => {
         changeListName(listId, listName)
             .then( () => this.props.setListName(listId, listName) )
     }
-
     addCardToBoard = (cardName, listId, boardId) => { // pos to be added later
         postCardToBoard(cardName, listId, boardId)
             .then( newCard => {
                 this.props.addCard(newCard.data)
             })
     }
-
     addListToBoard = (listName, boardId) => { // position to be added later
         postListToBoard(listName, boardId)
             .then( newList => {
                 this.props.addList(newList.data)
             })
     }
-
     componentDidMount() {
         const url = history.location.pathname.split('/');
         if (url.length > 3) {
@@ -153,7 +133,6 @@ export class BoardToBeConnected extends React.Component {
         const idBoard = history.location.pathname.split('/')[2];
         socket.emit('unsubscribe', idBoard);
     }
-
     render() {
         const { board, addList, moveList, addCard, moveCard } = this.props;
         const color = (board.prefs && board.preds.background) ? board.prefs.background : "#ffffff";
@@ -210,11 +189,9 @@ export class BoardToBeConnected extends React.Component {
         )
     }
 }
-
 const mapStateToProps = ( state, props ) => ({
     board: state.board
 })
-
 const mapDispatchToProps = ( dispatch ) => ({
     setBoard: (board) => dispatch( setBoard(board)),
     addList: (listName, boardId) => dispatch( addList(listName, boardId) ),
@@ -224,7 +201,6 @@ const mapDispatchToProps = ( dispatch ) => ({
     setListName: (listId, listName) => dispatch( setListName(listId, listName) ),
     moveCardFromList: (newListStart, indexOfListStart, newListEnd, indexOfListEnd) => dispatch( moveCardFromList(newListStart, indexOfListStart, newListEnd, indexOfListEnd) ),
 })
-
 export const Board = connect(
     mapStateToProps,
     mapDispatchToProps,

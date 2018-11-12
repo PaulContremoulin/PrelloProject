@@ -55,17 +55,17 @@ export function getMembersOfBoard(idBoard) {
       return getRequest('/api/boards/' + idBoard + '/lists/?cards=' + cardsFilter)
   }
 
-  export function postListToBoard(listName, boardId) { // TODO: Generate Position
+  export function postListToBoard(listName, listPos, boardId) { // TODO: Generate Position
       return postRequest('/api/boards/' + boardId + '/lists/', {
         name: listName,
-        pos: 0
+        pos: listPos
       })
   }
 
-  export function postCardToBoard(cardName, listId, boardId) { // TODO: Generate Position
+  export function postCardToBoard(cardName, cardPos, listId, boardId) { // TODO: Generate Position
       return postRequest('/api/cards/', {
         name: cardName,
-        pos: 0,
+        pos: cardPos,
         desc: "",
         due: "",
         dueComplete: false,
