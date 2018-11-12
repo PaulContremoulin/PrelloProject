@@ -150,6 +150,72 @@ module.exports = function (app, options) {
 
         });
 
+        describe('PUT /api/boards/:id - Board read', function () {
+
+            it('should send back a OK response - Board name updated', function (done) {
+                request(app)
+                    .put('/api/boards/' + options.board._id + '?name=BoardNameUpdated')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/boards/' + options.board._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.name.should.equal("BoardNameUpdated");
+                                done();
+                            });
+                    });
+            });
+
+            it('should send back a OK response - Board closed updated', function (done) {
+                request(app)
+                    .put('/api/boards/' + options.board._id + '?closed=true')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/boards/' + options.board._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.closed.should.equal(true);
+                                done();
+                            });
+                    });
+            });
+
+            it('should send back a OK response - Board desc updated', function (done) {
+                request(app)
+                    .put('/api/boards/' + options.board._id + '?desc=A new board to create amazing things')
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/boards/' + options.board._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.desc.should.equal('A new board to create amazing things');
+                                done();
+                            });
+                    });
+            });
+        });
+
         describe('PUT /api/boards/:id/members/:idMember - Board add member', function () {
 
             it('should send back a OK response - Freind member added', function (done) {
@@ -160,6 +226,7 @@ module.exports = function (app, options) {
                     .expect(200)
                     .end(function (err, res) {
                         if (err) return done(err);
+                        options.membership = res.body;
                         request(app)
                             .get('/api/boards/' + options.board._id)
                             .set('Authorization', 'Bearer ' + options.token)
@@ -267,6 +334,7 @@ module.exports = function (app, options) {
                     });
             });
 
+
             it('should send back a FORBIDDEN response - Board\'s members get by member without access', function (done) {
                 request(app)
                     .get('/api/boards/' + options.board._id + '/members')
@@ -301,6 +369,50 @@ module.exports = function (app, options) {
                         done();
                     });
             });
+        });
+
+        describe('DELETE /api/boards/:id/members/:idMemberShip - delete a membership', function () {
+
+            it('should send back a FORBIDDEN response - Board\'s members deleted by not a admin', function (done) {
+                request(app)
+                    .delete('/api/boards/' + options.board._id + '/members/' + options.membership._id)
+                    .set('Authorization', 'Bearer ' + options.tokenFreinds)
+                    .set('Content-Type', 'application/json')
+                    .expect(403)
+                    .end(function (err, res) {
+                        done();
+                    });
+            });
+
+            it('should send back a OK response - Board\'s members deleted by an admin', function (done) {
+                request(app)
+                    .delete('/api/boards/' + options.board._id + '/members/' + options.membership._id)
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        request(app)
+                            .get('/api/boards/' + options.board._id)
+                            .set('Authorization', 'Bearer ' + options.token)
+                            .set('Content-Type', 'application/json')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) return done(err);
+                                res.body.memberships.should.be.instanceof(Array).and.have.length(1);
+                                request(app)
+                                    .put('/api/boards/' + options.board._id + '/members/' + options.memberFreinds._id + '?type=normal')
+                                    .set('Authorization', 'Bearer ' + options.token)
+                                    .set('Content-Type', 'application/json')
+                                    .expect(200)
+                                    .end(function (err, res) {
+                                        if (err) return done(err);
+                                        done();
+                                    });
+                            });
+                    });
+            });
+
         });
 
         describe('POST /api/boards/:id/lists - Create a list for the board', function () {

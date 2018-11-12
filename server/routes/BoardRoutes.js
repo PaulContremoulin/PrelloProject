@@ -69,6 +69,40 @@ router.get('/:id', token, boardAccess.readRights(), function(req, res) {
 });
 
 /**
+ * Update a board by id
+ * @route PUT /boards/{id}
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id
+ * @param {string} name.query.required - board's name.
+ * @param {string} desc.query.required - board's description.
+ * @param {string} closed.query.required - board's archived or not.
+ * @returns {code} 200 - Board updated successfully
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.put('/:id', token, boardAccess.updateRights(), function(req, res) {
+
+    let board = req.board;
+
+    (req.query.name) ? board.name = req.query.name : null;
+    (req.query.desc) ? board.desc = req.query.desc : null;
+    (req.query.closed) ? board.closed = req.query.closed : null;
+
+    board.validate(function (err) {
+        if(err) return res.status(400).json({message:err});
+        board.save(function (err) {
+            if(err) {
+                debug('PUT board/:id error : ' + err);
+                return res.status(500).json({message:'Unexpected internal error'});
+            }
+            return res.status(200).json({message:'Board updated successfully'});
+        });
+    });
+});
+
+/**
  * Create a list on the board
  * @route POST /boards/{id}/lists
  * @group board - Operations about boards
@@ -202,6 +236,41 @@ router.get('/:id/members', token, boardAccess.readRights(), function(req, res) {
             if (!board) return res.status(404).json({message : 'Board not found'});
             return res.status(200).json(board.memberships);
         });
+});
+
+/**
+ * Delete a member of a board
+ * @route DELETE /boards/{id}/members/{idMemberShip}
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @param {string} idMemberShip.path.required - MemberShip's id.
+ * @returns {MembershipDetail.model} 200 - Members object
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.delete('/:id/members/:idMemberShip', token, boardAccess.deleteRights(), function(req, res) {
+
+    let board = req.board;
+
+    if(board.nbAdmin() <= 1 && board.isAdminMember(req.params.idMemberShip))
+        return res.status(403).json({message : 'Can not delete the last administrator'});
+
+    if(!board.memberships.pull(req.params.idMemberShip)) return res.status(404).json({message : 'Membership id not found'});
+
+    board.validate(function (err) {
+        if (err) return res.status(400).json({message: err});
+        board.save(function (err) {
+            if (err) {
+                debug('PUT board/:id error : ' + err);
+                return res.status(500).json({message: 'Unexpected internal error'});
+            }
+            return res.status(200).json({message: 'Board updated successfully'});
+        });
+    });
+
 });
 
 /**

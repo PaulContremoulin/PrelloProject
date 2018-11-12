@@ -54,6 +54,63 @@ router.get('/:id/public', token, function(req, res) {
 });
 
 /**
+ * Update the member
+ * @route PUT /members/{id}
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id
+ * @param {string} lastName.query.required - member's lastName
+ * @param {string} firstName.query.required - member's firstName
+ * @param {string} organization.query.required - member's organization
+ * @returns {Code} 200 - Member deleted
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden access
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.put('/:id', token, memberAccess.updateRights(), function(req, res) {
+
+    let member = req.member;
+
+    (req.query.lastName) ? member.lastName = req.query.lastName : null;
+    (req.query.firstName) ? member.firstName = req.query.firstName : null;
+    (req.query.organization) ? member.organization = req.query.organization : null;
+
+    member.validate( (err) => {
+        if(err) return res.status(400).json({message : err});
+        member.save( (err) => {
+            if(err) return res.status(500).json({message : 'Unexpected internal error'});
+            return res.status(200).json({message : 'Member successfully updated'});
+        });
+    });
+
+});
+
+/**
+ * Delete the member
+ * @route DELETE /members/{id}
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id
+ * @returns {Code} 200 - Member deleted
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden access
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.delete('/:id', token, memberAccess.updateRights(), function(req, res) {
+
+    let member = req.member;
+
+    member.remove()
+    member.save( (err) => {
+        if(err) return res.status(500).json({message : 'Unexpected internal error'});
+        return res.status(200).json({message : 'Password successfully updated'});
+    });
+
+});
+
+/**
  * Update the member's password
  * @route PUT /members/{id}/password
  * @group members - Operations about members
@@ -75,7 +132,7 @@ router.put('/:id/password', token, memberAccess.updateRights(), function(req, re
     if(!member.setPassword(req.body.newPassword)) return res.status(400).json({message : 'new password isn\'t valid'});
 
     member.save( (err) => {
-       if(err) return res.status(400).json({message : 'Unexpected internal error'});
+       if(err) return res.status(500).json({message : 'Unexpected internal error'});
        return res.status(200).json({message : 'Password successfully updated'});
     });
 

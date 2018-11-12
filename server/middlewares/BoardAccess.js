@@ -23,6 +23,19 @@ let updateRights = function() {
     }
 };
 
+
+let deleteRights = function() {
+    return function (req, res, next) {
+        findBoard(req, res, function () {
+            let board = req.board;
+            let member = req.user.id;
+            if (!board.isAdminMember(member)) return res.status(403).send('Forbidden.');
+            req.user.access = true;
+            return next();
+        });
+    }
+};
+
 let readRights = function() {
     return function (req, res, next) {
         findBoard(req, res, function () {
@@ -37,5 +50,6 @@ let readRights = function() {
 
 module.exports = ListAccess = {
     updateRights : updateRights,
-    readRights : readRights
+    readRights : readRights,
+    deleteRights: deleteRights
 };

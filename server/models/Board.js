@@ -150,8 +150,8 @@ boardSchema.methods.createOrUpdateMember = function(idMember, memberType) {
             memberType: memberType,
             unconfirmed: true
         };
-        this.memberships.push(member);
-        return member;
+        this.memberships.push(member)
+        return this.memberships[this.memberships.length-1]
     }
 };
 
