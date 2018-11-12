@@ -25,27 +25,23 @@ export class ContentHomeToBeConnected extends React.Component {
     render() {
         return (
             <div>
-                <Container className="contentHome">
-                    <Row>
-                        <Col>
-                            <h2>Personnal's Boards</h2>
-                        </Col>
-                    </Row>
-                </Container>
-                <Container className="contentBoard">
-                    <Row>
-                            {this.props.boards.map(board => {
-                                    return(
-                                        <Col className="displayBoard" xs={12} sm={6} md={3} key={ board._id }>
-                                            <CardBoard board={board} goToPageBoard={() => this.goToPageBoard(board)} />
-                                        </Col>
-                                    )
-                                })}
-                        <Col className="displayBoard" xs={12} sm={6} md={3}>
-                            <CreateBoard/>
-                        </Col>
-                    </Row>
-                </Container>
+                <Row className="titleContent">
+                    <Col>
+                        <h2>Personnal's Boards</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    {this.props.boards.map(board => {
+                        return(
+                            <Col className="displayBoard" xs={12} sm={6} md={3} key={ board._id }>
+                                <CardBoard board={board} goToPageBoard={() => this.goToPageBoard(board)} />
+                            </Col>
+                        )
+                    })}
+                    <Col className="displayBoard" xs={12} sm={6} md={3}>
+                        <CreateBoard/>
+                    </Col>
+                </Row>
             </div>
         )
     }
