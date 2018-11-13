@@ -3,3 +3,7 @@
     flex-wrap: wrap;
     margin-left: -15px;
 }
+
+.menu {
+    height: 100vh;
+}

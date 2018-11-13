@@ -1,8 +1,10 @@
 // Modules
 import React from 'react';
-import {ListGroupItem, ListGroup, Row, Col} from 'reactstrap';
-// Css...
+import {ListGroupItem, ListGroup, Row, Col, Alert} from 'reactstrap';
 import {connect} from "react-redux";
+
+// Css...
+import './ShowAddMembersCreateBoard.css';
 
 // Actions & Constant
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,22 +24,30 @@ export class ShowAddMembersCreateBoardToBeConnected extends React.Component {
     render() {
         return (
             <div className="ShowAddMembersCreateBoard">
-                <ListGroup>
-                    {this.props.members.map(member => {
-                        return (
-                            <ListGroupItem>
-                                <Row>
-                                    <Col xs={10}>
-                                        {member.username}
-                                    </Col>
-                                    <Col xs={2}>
-                                        <FontAwesomeIcon onClick={() => this.deleteMemberCreation(member)} icon={faTimes} size="1x"/>
-                                    </Col>
-                                </Row>
-                            </ListGroupItem>
-                        )})
-                    }
-                </ListGroup>
+                {this.props.members.length !== 0 ?
+                    <ListGroup className="listGroupAddMember">
+                        {this.props.members.map(member => {
+                            return (
+                                <ListGroupItem>
+                                    <Row>
+                                        <Col xs={10}>
+                                            {member.username}
+                                        </Col>
+                                        <Col xs={2}>
+                                            <FontAwesomeIcon onClick={() => this.deleteMemberCreation(member)}
+                                                             icon={faTimes} size="1x"/>
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                            )
+                        })
+                        }
+                    </ListGroup>
+                    :
+                    <Alert className="alertNeitherMember" color="secondary">
+                        Neither member
+                    </Alert>
+                }
             </div>
         )
     }

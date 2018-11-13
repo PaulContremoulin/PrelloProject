@@ -60,7 +60,7 @@ export class DeleteAccountToBeConnected extends React.Component {
         return (
             <div className="DeleteMember">
                 <Button className="butDeleteUser" color="danger" onClick={this.toggle}>Delete account</Button>
-                <Modal centered={true} isOpen={this.state.modal} toggle={this.toggle}>
+                <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalBody>Do you want delete your account ? </ModalBody>
                     <ModalFooter>
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
