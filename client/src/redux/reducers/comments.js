@@ -16,7 +16,8 @@ export const comments = ( state = [], action ) => {
       return [];
     case SET_COMMENTS :
       //return [...(action.comments.map(
-      return [...state, ...(action.comments.map(
+      //return [...state, ...(action.comments.map(
+      return [...(action.comments.map(
         commentObj => comment(commentObj, action)
       )) ]
     case ADD_COMMENT :
