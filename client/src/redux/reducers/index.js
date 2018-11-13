@@ -6,6 +6,8 @@ import { board } from './board';
 import { teams } from './teams';
 import { circles } from './circles';
 import { circle } from './circle';
+import { checklists } from './checklists';
+import { comments } from './comments';
 
 export default combineReducers({
     user,
@@ -14,4 +16,6 @@ export default combineReducers({
     teams,
     circles,
     circle,
+    checklists,
+    comments,
 });

@@ -52,10 +52,11 @@ export function getMembersOfBoard(idBoard) {
 
   export function getListsOfBoard(idBoard, withCards = false, archived = false) {
       const cardsFilter = (withCards) ? "open" : "closed";
-      return getRequest('/api/boards/' + idBoard + '/lists/?cards=' + cardsFilter)
+      return getRequest('/api/boards/' + idBoard + '/lists?cards=' + cardsFilter)
   }
 
   export function postListToBoard(listName, listPos, boardId) { // TODO: Generate Position
+    console.log(boardId);
       return postRequest('/api/boards/' + boardId + '/lists/', {
         name: listName,
         pos: listPos

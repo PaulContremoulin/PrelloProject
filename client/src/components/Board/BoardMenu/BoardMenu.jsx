@@ -20,11 +20,11 @@ export class BoardMenu extends React.Component {
   }
 
   render() {
-    const boardName = this.props.boardName;
-      const boardId = this.props.boardId;
+    const {boardName, boardId, color} = this.props;
+
     return (
       <div className="BoardMenu">
-        <Navbar className="boardNavBar" expand="md">
+        <Navbar className="boardNavBar" expand="md" style={{"backgroundColor": "#d9d9d9"}}>
           <NavbarBrand className="boardTitle" disabled href="#">{boardName}</NavbarBrand>
           <Nav className="ml-auto" navbar>
               <NavItem>
