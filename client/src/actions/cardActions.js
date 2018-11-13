@@ -23,6 +23,9 @@
 * @desc
 */
 export const setName = (idList, idCard, name) => {
+  console.log(idList);
+  console.log(idCard);
+  console.log(name);
   return {
       type: CARD_SET_NAME,
       list: {

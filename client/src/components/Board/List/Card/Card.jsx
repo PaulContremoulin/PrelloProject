@@ -32,19 +32,20 @@ export class CardComponent extends React.Component {
 
   render() {
     const { card, board, index, listId, openModal } = this.props;
+    console.log(card);
     const { open } = this.state;
     return(
       <div className="Card">
           <Draggable
-            draggableId={card._id.toString()}
+            draggableId={card.id}
             index={index}
           >
             {(provided) =>
-              <ContainerCard
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                ref={provided.innerRef}
-              >
+                  <ContainerCard
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                  >
                   <div style={{"padding-bottom":"8px"}}>
                     <Card
 
