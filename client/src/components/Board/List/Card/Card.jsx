@@ -32,12 +32,13 @@ export class CardComponent extends React.Component {
 
   render() {
     const { card, board, index, listId, openModal } = this.props;
+    console.log(card);
     const { open } = this.state;
     return(
       <div className="Card">
         <Row>
           <Draggable
-            draggableId={card._id.toString()}
+            draggableId={card.id}
             index={index}
           >
             {(provided) =>
@@ -52,7 +53,6 @@ export class CardComponent extends React.Component {
                 >
                   <CardTitle>
                     {card.name}
-
                   </CardTitle>
                 </Card>
               </ContainerCard>

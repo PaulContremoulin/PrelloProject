@@ -91,7 +91,6 @@ export class BoardToBeConnected extends React.Component {
             .then( () => this.props.setListName(listId, listName) )
     }
     addCardToBoard = (cardName, cardPos, listId, boardId) => { // pos to be added later
-      console.log(boardId);
         postCardToBoard(cardName, cardPos, listId, boardId)
             .then( newCard => {
                 this.props.addCard(newCard.data)
@@ -139,7 +138,6 @@ export class BoardToBeConnected extends React.Component {
     render() {
         const { board, addList, moveList, addCard, moveCard } = this.props;
         const boardId = (board._id) ? board._id : board.id;
-        console.log(boardId);
         const color = (board.prefs && board.preds.background) ? board.prefs.background : "#ffffff";
         return(
             <div className="Board">
