@@ -134,8 +134,7 @@ export class BoardToBeConnected extends React.Component {
     componentWillUnmount() {
         this.props.resetComments(); // resets the comments reducer
         this.props.resetChecklists(); // resets the checklists reducer
-        const idBoard = history.location.pathname.split('/')[2];
-        socket.emit('unsubscribe', idBoard);
+        socket.emit('unsubscribe', this.props.board._id);
     }
     render() {
         const { board, addList, moveList, addCard, moveCard } = this.props;

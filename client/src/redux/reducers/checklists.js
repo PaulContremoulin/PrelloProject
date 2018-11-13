@@ -16,7 +16,7 @@ export const checklists = ( state = [], action ) => {
     case RESET_CHECKLISTS :
       return [];
     case CARD_SET_CHECKLISTS :
-      return [...state, ...action.card.checklists];
+      return [...action.card.checklists];
     case CARD_ADD_CHECKLIST :
       return [ ...state, {...action.card.checklist, checkItems: [] } ]
     case CARD_ADD_CHECKITEM :
