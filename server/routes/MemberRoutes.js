@@ -75,6 +75,7 @@ router.put('/:id', token, memberAccess.updateRights(), function(req, res) {
     (req.query.lastName) ? member.lastName = req.query.lastName : null;
     (req.query.firstName) ? member.firstName = req.query.firstName : null;
     (req.query.organization) ? member.organization = req.query.organization : null;
+    (req.query.bio) ? member.bio = req.query.bio : null;
 
     member.validate( (err) => {
         if(err) return res.status(400).json({message : err});

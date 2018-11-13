@@ -5,6 +5,7 @@
 */
 export const SET_LOGIN = "SET_LOGIN" ;
 export const LOG_OUT = "LOG_OUT" ;
+export const EDIT_INFORMATION_USER = "EDIT_INFORMATION_USER";
 
 /** Action Builders
 * Action Builders are function that return an action following this rule of thumb :
@@ -29,4 +30,9 @@ export const setLogin = ( user ) => ({
 */
 export const logOut = () => ({
   type: LOG_OUT,
+})
+
+export const changeInformationAction = (userEdit) => ({
+    type: EDIT_INFORMATION_USER,
+    userEdit
 })

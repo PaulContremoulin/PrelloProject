@@ -15,3 +15,14 @@ export const deleteAccount = (
         .then(response => response)
         .catch(err => err.response)
 )
+
+export const changeInformationUser = (
+    idUser,
+    firstName,
+    lastName,
+    organization,
+    bio
+) => (putRequest('/api/members/'+idUser+'?lastName='+lastName+'&firstName='+firstName+'&organization='+organization+'&bio='+bio)
+        .then(response => response)
+        .catch(err => err.response)
+)
