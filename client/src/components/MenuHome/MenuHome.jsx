@@ -47,7 +47,7 @@ export class MenuHomeToBeConnected extends React.Component {
                     </Col>
                     <Col xs={12}>
                         <ListGroup>
-                            <ListGroupItem className="ListMenu" tag="a" onClick={() => this.redirectionBoardPersonnal()} action>Personnal's boards</ListGroupItem>
+                            <ListGroupItem className="ListMenu" tag="a" onClick={() => this.redirectionBoardPersonnal()} action>Personal boards</ListGroupItem>
                         </ListGroup>
                     </Col>
                     <Col xs={8} sm={4}>

@@ -28,7 +28,7 @@ export class ContentHomeToBeConnected extends React.Component {
             <div>
                 <Row className="titleContent">
                     <Col xs={12}>
-                        <h2>Personnal's Boards</h2>
+                        <h2>Personal Boards</h2>
                         <ButtonFiltre />
                     </Col>
                 </Row>
