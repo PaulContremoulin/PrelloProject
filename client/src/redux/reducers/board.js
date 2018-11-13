@@ -16,6 +16,9 @@ import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE } from '../
 
 import { LIST_SET_NAME, LIST_SET_CLOSED } from '../../actions/listActions';
 
+
+import { card } from './card';
+
 import { card } from './card';
 
 

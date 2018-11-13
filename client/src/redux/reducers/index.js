@@ -10,6 +10,7 @@ import { checklists } from './checklists';
 import { comments } from './comments';
 import { labels } from './labels';
 
+
 export default combineReducers({
     user,
     boards,
@@ -19,5 +20,5 @@ export default combineReducers({
     circle,
     checklists,
     comments,
-    labels,
+    labels
 });
