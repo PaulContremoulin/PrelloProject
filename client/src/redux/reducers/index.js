@@ -9,6 +9,7 @@ import { circle } from './circle';
 import { checklists } from './checklists';
 import { comments } from './comments';
 import { labels } from './labels';
+import {members} from "./members";
 
 export default combineReducers({
     user,
@@ -19,5 +20,6 @@ export default combineReducers({
     circle,
     checklists,
     comments,
-    labels
+    labels,
+    members,
 });

@@ -7,12 +7,15 @@ import classnames from 'classnames';
 import './CreateBoard.css';
 
 // Actions & Constant
-import {createBoard} from "../../requests/boards";
+import {createBoard, getBoardsUser} from "../../requests/boards";
 import { connect } from "react-redux";
-import {addBoard} from "../../actions/boardActions";
+import {addBoard, fetchBoards} from "../../actions/boardActions";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPlus} from "@fortawesome/free-solid-svg-icons/index";
 import {AddMembersCreateBoard} from "./AddMembersCreateBoard/AddMembersCreateBoard";
+import {ShowAddMembersCreateBoard} from "./ShowAddMembersCreateBoard/ShowAddMembersCreateBoard";
+import {fetchMembersCreationBoard} from "../../actions/membersActions";
+import {addMember} from "../../requests/memberships";
 
 export class CreateBoardToBeConnected extends React.Component {
     constructor(props) {
@@ -42,6 +45,7 @@ export class CreateBoardToBeConnected extends React.Component {
     }
 
     closeModal () {
+        this.props.fetchMembersCreationBoard([])
         this.setState({
             activeTab: '1',
             open: false,
@@ -51,6 +55,7 @@ export class CreateBoardToBeConnected extends React.Component {
             'desc':'',
             'memberships': [],
             'color':'#000000',
+            'idBoard':"",
         })
     }
 
@@ -63,7 +68,7 @@ export class CreateBoardToBeConnected extends React.Component {
         });
     };
 
-    submitForm(e) {
+    async submitForm(e) {
         e.preventDefault();
         const name = this.state.name,
             desc = this.state.desc,
@@ -72,10 +77,10 @@ export class CreateBoardToBeConnected extends React.Component {
         const prefs = {
             'background': this.state.color,
         };
-        createBoard(name, idOrganization, desc, memberships, prefs)
+       await createBoard(name, idOrganization, desc, memberships, prefs)
             .then(res => {
+                this.setState({idBoard:res.data._id})
                 this.props.addBoard(res.data)
-                this.closeModal()
             })
             .catch(
                 this.setState({
@@ -85,6 +90,17 @@ export class CreateBoardToBeConnected extends React.Component {
                     'desc':'',
                 })
             )
+        await this.props.members.map(member => {
+            addMember(this.state.idBoard, member._id, 'normal')
+        })
+        await getBoardsUser(this.props.user.member._id)
+            .then(res => {
+                this.props.fetchBoards(res.data)
+            })
+            .catch(error => {
+                console.log(error)
+            });
+        this.closeModal()
     };
 
     onDismiss = () => {
@@ -185,6 +201,7 @@ export class CreateBoardToBeConnected extends React.Component {
                                 </TabPane>
 
                                 <TabPane tabId="2">
+                                    <ShowAddMembersCreateBoard/>
                                     <AddMembersCreateBoard/>
                                 </TabPane>
                             </TabContent>
@@ -203,10 +220,13 @@ export class CreateBoardToBeConnected extends React.Component {
 
 const mapStateToProps = ( state, props ) => ({
     user : state.user,
+    members: state.members,
 });
 
 const mapDispatchToProps = ( dispatch ) => ({
     addBoard: (res) => dispatch( addBoard(res)),
+    fetchMembersCreationBoard: (res) => dispatch( fetchMembersCreationBoard(res)),
+    fetchBoards: (res) => dispatch( fetchBoards(res)),
 });
 
 export const CreateBoard = connect(

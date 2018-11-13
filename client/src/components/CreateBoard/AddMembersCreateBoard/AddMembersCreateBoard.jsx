@@ -7,11 +7,9 @@ import {Row, Button, Col, Form, InputGroup, InputGroupAddon} from 'reactstrap';
 // Css...
 import './AddMembersCreateBoard.css';
 
-
 // Actions & Constant
 import {getMembersSearch} from "../../../requests/memberships";
-import {setBoardMembers, addMemberAction, fetchBoards} from "../../../actions/boardActions";
-import {getBoardsUser} from "../../../requests/boards";
+import {addMemberCreationBoard} from "../../../actions/membersActions";
 
 export class AddMembersCreateBoardToBeConnected extends React.Component {
     constructor() {
@@ -81,7 +79,10 @@ export class AddMembersCreateBoardToBeConnected extends React.Component {
     };
 
     addMemberInStore = () => {
-        console.log("ok")
+        const member = this.state.value;
+        const membFind = this.state.membersFind.filter(memb => memb.username === member);
+        this.props.addMemberCreationBoard(membFind[0])
+        this.setState({value:""})
     }
 
     render() {
@@ -93,7 +94,6 @@ export class AddMembersCreateBoardToBeConnected extends React.Component {
         };
         return (
             <div>
-                <Form className="form" onSubmit={ (e) => this.addMemberInStore(e) }>
                     <Row>
                         <Col xs={8} sm={8} md={9}>
                             <Autosuggest
@@ -105,10 +105,9 @@ export class AddMembersCreateBoardToBeConnected extends React.Component {
                                 inputProps={inputProps} />
                         </Col>
                         <Col xs={4} sm={4} md={3}>
-                            <Button className="buttonAddMember" color="secondary" type="submit">Add</Button>
+                            <Button onClick={() => this.addMemberInStore()} className="buttonAddMember" color="secondary" >Add</Button>
                         </Col>
                     </Row>
-                </Form>
             </div>
         )
     }
@@ -117,7 +116,9 @@ export class AddMembersCreateBoardToBeConnected extends React.Component {
 const mapStateToProps = (state, props) => ({
     user: state.user,
 });
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+    addMemberCreationBoard: (res) => dispatch( addMemberCreationBoard(res)),
+});
 
 export const AddMembersCreateBoard = connect(
     mapStateToProps,
