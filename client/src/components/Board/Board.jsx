@@ -156,9 +156,9 @@ export class BoardToBeConnected extends React.Component {
                                             ref={provided.innerRef}
                                             isDragging={snapshot.isDragging}
                                         >
-                                            <CardDeck style={{"width": (board.lists.length + 1) * 300 + "px"}}>
+                                            <CardDeck style={{"width": (board.lists.length + 1) * 320 + "px"}}>
                                                 {board.lists.map((list, index) => (
-                                                    <div key={index} style={{"width": "300px"}}>
+                                                    <div key={index} style={{"width": "320px"}}>
                                                         <List
                                                             board={board}
                                                             list={list}
@@ -170,8 +170,10 @@ export class BoardToBeConnected extends React.Component {
                                                     </div>
                                                 ))
                                                 }
-                                                <AddList
-                                                    addList={(listName) => this.addListToBoard(listName, board._id)}/>
+                                                <div style={{"width": "320px"}}>
+                                                    <AddList
+                                                        addList={(listName) => this.addListToBoard(listName, board._id)}/>
+                                                </div>
                                             </CardDeck>
                                             {provided.placeholder}
                                         </ContainerBoard>

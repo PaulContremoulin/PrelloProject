@@ -1,5 +1,15 @@
 .AddCard {
   border: 0px !important;
-  padding: 8px;
-  background-color: #dfe3e6;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: rgba(0,0,0,0);
+}
+
+
+.AddCard form {
+    padding: 0px;
+}
+
+.AddCard input {
+    border: solid 1px gray;
 }
