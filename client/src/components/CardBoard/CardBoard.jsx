@@ -53,7 +53,6 @@ export class CardBoardToBeConnected extends React.Component {
 
     render() {
       const { board, goToPageBoard } = this.props;
-        console.log(this.props.circles)
         return (
             <div>
             <Card style={{ borderBottomColor: board.prefs.background, borderBottomWidth: 4}}>
