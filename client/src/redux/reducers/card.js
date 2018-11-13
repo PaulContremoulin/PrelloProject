@@ -14,7 +14,7 @@ const id = ( state = DEFAULT_CARD.id, action ) => {
 const name = ( state = DEFAULT_CARD.name, action ) => {
   switch (action.type) {
   case CARD_SET_NAME :
-    return (action.card.id === state.id ) ? { ...state, name: action.card.name } : state
+    return { ...state, name: action.card.name }
   default:
     return state ;
   }
@@ -22,7 +22,7 @@ const name = ( state = DEFAULT_CARD.name, action ) => {
 const desc = ( state = DEFAULT_CARD.desc, action ) => {
   switch (action.type) {
   case CARD_SET_DESC :
-    return (action.card.id === state.id ) ? { ...state, desc: action.card.desc } : state
+    return { ...state, desc: action.card.desc }
   default:
     return state ;
   }
@@ -30,7 +30,7 @@ const desc = ( state = DEFAULT_CARD.desc, action ) => {
 const due = ( state = DEFAULT_CARD.due, action ) => {
   switch (action.type) {
   case CARD_SET_DUE :
-    return (action.card.id === state.id ) ? { ...state, due: action.card.due } : state
+    return { ...state, due: action.card.due }
   default:
     return state ;
   }
@@ -44,7 +44,7 @@ const dueComplete = ( state = DEFAULT_CARD.dueComplete, action ) => {
 const closed = ( state = DEFAULT_CARD.closed, action ) => {
   switch (action.type) {
   case CARD_SET_CLOSED :
-    return (action.card.id === state.id ) ? { ...state, closed: action.card.closed } : state
+    return { ...state, closed: action.card.closed }
   default:
     return state ;
   }
