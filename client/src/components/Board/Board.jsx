@@ -11,6 +11,8 @@ import {BoardMenu} from './BoardMenu/BoardMenu';
 import {List} from './List/List';
 import {AddList} from './AddList/AddList';
 import {setBoard, addList, moveList, addCard, moveCard, moveCardFromList} from '../../actions/boardActions';
+import {resetComments} from '../../actions/commentActions';
+import {resetChecklists} from '../../actions/checkObjectActions';
 import { setListName } from '../../actions/listActions';
 import { postListToBoard, postCardToBoard, getListsOfBoard, getBoardById } from '../../requests/boards';
 import { changeListName } from '../../requests/lists';
@@ -88,14 +90,15 @@ export class BoardToBeConnected extends React.Component {
         changeListName(listId, listName)
             .then( () => this.props.setListName(listId, listName) )
     }
-    addCardToBoard = (cardName, listId, boardId) => { // pos to be added later
-        postCardToBoard(cardName, listId, boardId)
+    addCardToBoard = (cardName, cardPos, listId, boardId) => { // pos to be added later
+      console.log(boardId);
+        postCardToBoard(cardName, cardPos, listId, boardId)
             .then( newCard => {
                 this.props.addCard(newCard.data)
             })
     }
-    addListToBoard = (listName, boardId) => { // position to be added later
-        postListToBoard(listName, boardId)
+    addListToBoard = (listName, listPos, boardId) => { // position to be added later
+        postListToBoard(listName, listPos, boardId)
             .then( newList => {
                 this.props.addList(newList.data)
             })
@@ -103,44 +106,47 @@ export class BoardToBeConnected extends React.Component {
     componentDidMount() {
         const url = history.location.pathname.split('/');
         if (url.length > 3) {
-            const idBoard = history.location.pathname.split('/')[2];
-            const boardName = history.location.pathname.split('/')[3];
-            if(idBoard) {
-                socket.emit('subscribe', idBoard);
-                if (this.props.board._id !== idBoard) {
-                    this.props.setBoard(DEFAULT_BOARD);
-                }
-                getBoardById(idBoard)
-                    .then( boardfetch => {
-                        const setupBoard = boardfetch.data;
-                        getListsOfBoard(idBoard, true)
-                            .then( lists => {
-                                setupBoard["lists"] = lists.data;
-                                console.log(setupBoard)
-                                if (setupBoard.name === boardName) {
-                                    this.props.setBoard(setupBoard);
-                                } else {
-                                    this.setState({isGood:false})
-                                }
-                            })
-                    })
-                    .catch( err => this.setState({isGood:false}))
+          const idBoard = history.location.pathname.split('/')[2];
+          const boardName = history.location.pathname.split('/')[3];
+          if(idBoard) {
+            socket.emit('subscribe', idBoard);
+            if (this.props.board._id !== idBoard) {
+                this.props.setBoard(DEFAULT_BOARD);
             }
+            getBoardById(idBoard)
+            .then( boardfetch => {
+                const setupBoard = boardfetch.data;
+                getListsOfBoard(idBoard, true)
+                .then( lists => {
+                  setupBoard["lists"] = lists.data;
+                  if (setupBoard.name === boardName) {
+                      this.props.setBoard(setupBoard);
+                  } else {
+                      this.setState({isGood:false})
+                  }
+                })
+            })
+            .catch( err => this.setState({isGood:false}))
+          }
         }
     }
 
     componentWillUnmount() {
+        this.props.resetComments(); // resets the comments reducer
+        this.props.resetChecklists(); // resets the checklists reducer
         const idBoard = history.location.pathname.split('/')[2];
         socket.emit('unsubscribe', idBoard);
     }
     render() {
         const { board, addList, moveList, addCard, moveCard } = this.props;
+        const boardId = (board._id) ? board._id : board.id;
+        console.log(boardId);
         const color = (board.prefs && board.preds.background) ? board.prefs.background : "#ffffff";
         return(
             <div className="Board">
                 {this.state.isGood ?
                     <div>
-                        <BoardMenu boardName={board.name} boardId={board._id} style={{"backgroundColor": color}}/>
+                        <BoardMenu boardName={board.name} boardId={boardId} color={color}/>
                         <div className="Lists">
                             <DragDropContext
                                 onDragStart={() => {
@@ -162,7 +168,7 @@ export class BoardToBeConnected extends React.Component {
                                                         <List
                                                             board={board}
                                                             list={list}
-                                                            addCard={(cardName, listId) => this.addCardToBoard(cardName, listId, board._id)}
+                                                            addCard={(cardName, listId) => this.addCardToBoard(cardName, nextPosFromArray(list.cards), listId, boardId)}
                                                             moveList={moveList}
                                                             setNameOfList={(listName) => this.setNameOfList(list.id, listName)}
                                                             index={index}
@@ -170,10 +176,8 @@ export class BoardToBeConnected extends React.Component {
                                                     </div>
                                                 ))
                                                 }
-                                                <div style={{"width": "320px"}}>
-                                                    <AddList
-                                                        addList={(listName) => this.addListToBoard(listName, board._id)}/>
-                                                </div>
+                                                <AddList
+                                                    addList={(listName) => this.addListToBoard(listName, nextPosFromArray(board.lists), boardId)}/>
                                             </CardDeck>
                                             {provided.placeholder}
                                         </ContainerBoard>
@@ -192,16 +196,18 @@ export class BoardToBeConnected extends React.Component {
     }
 }
 const mapStateToProps = ( state, props ) => ({
-    board: state.board
+    board: state.board,
 })
 const mapDispatchToProps = ( dispatch ) => ({
     setBoard: (board) => dispatch( setBoard(board)),
-    addList: (listName, boardId) => dispatch( addList(listName, boardId) ),
+    addList: (listName) => dispatch( addList(listName) ),
     moveList: (newListOrder) => dispatch( moveList(newListOrder) ),
     addCard: (card) => dispatch( addCard(card) ),
     moveCard: (newList, indexOfList) => dispatch( moveCard(newList, indexOfList) ),
     setListName: (listId, listName) => dispatch( setListName(listId, listName) ),
     moveCardFromList: (newListStart, indexOfListStart, newListEnd, indexOfListEnd) => dispatch( moveCardFromList(newListStart, indexOfListStart, newListEnd, indexOfListEnd) ),
+    resetComments: () => dispatch( resetComments()),
+    resetChecklists: () => dispatch( resetChecklists()),
 })
 export const Board = connect(
     mapStateToProps,

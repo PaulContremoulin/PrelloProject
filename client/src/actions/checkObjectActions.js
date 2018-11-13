@@ -3,6 +3,7 @@
 /** Action types
  * Action types are constants string meant to explains reducer which treatments are needed.
  */
+ export const RESET_CHECKLISTS = 'RESET_CHECKLISTS';
  export const CHECKLIST_SET_NAME = 'CHECKLIST_SET_NAME';
  export const CHECKLIST_SET_POS = 'CHECKLIST_SET_POS';
  export const CHECKITEM_SET_NAME = 'CHECKITEM_SET_NAME';
@@ -16,6 +17,15 @@
  * This mean also that random values are created by the Action Builder
  */
 
+
+ /**
+ * @desc
+ */
+ export const resetChecklists = () => {
+   return {
+       type: RESET_CHECKLISTS,
+   }
+ };
 
 /**
 * @desc

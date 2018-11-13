@@ -29,15 +29,19 @@ export function nextPos(lastObject) {
 }
 
 export function nextPosFromArray(arrayObjects) {
-  const sortedArray = arrayObjects.sort( function(a, b) {
-    if (a.pos < b.pos) {
-      return -1;
-    }
-    if (a.pos > b.pos) {
-      return 1;
-    }
-    // a must be equal to b
-    return 0;
-  });
-  return ((sortedArray[sortedArray.length - 1]).pos + 65536);
+  if (arrayObjects && arrayObjects.length !== 0) {
+    const sortedArray = arrayObjects.sort( function(a, b) {
+      if (a.pos < b.pos) {
+        return -1;
+      }
+      if (a.pos > b.pos) {
+        return 1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+    return ((sortedArray[sortedArray.length - 1]).pos + 65536);
+  } else {
+    return 65536;
+  }
 }
