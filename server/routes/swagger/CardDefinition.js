@@ -20,7 +20,8 @@
 
 /**
  * @typedef Comment
- * @property {string} text.required - the card's name
+ * @property {string} id.required - the comment's id
+ * @property {string} text.required - the comment's text
  * @property {string} idAuthor.required - the comment's author
  * @property {string} idCard.required - the card's id attach at the comment
  * @property {date} date.required - the date of the comment

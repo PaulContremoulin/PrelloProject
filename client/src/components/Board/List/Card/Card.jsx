@@ -36,7 +36,6 @@ export class CardComponent extends React.Component {
     const { open } = this.state;
     return(
       <div className="Card">
-        <Row>
           <Draggable
             draggableId={card.id}
             index={index}
@@ -47,23 +46,26 @@ export class CardComponent extends React.Component {
                 {...provided.dragHandleProps}
                 ref={provided.innerRef}
               >
-                <Card
-                  className="CardCeption"
-                  onClick={() => this.openModal()}
-                >
-                  <CardTitle>
-                    {card.name}
-                  </CardTitle>
-                </Card>
+                  <div style={{"padding-bottom":"8px"}}>
+                    <Card
+
+                      className="CardCeption"
+                      onClick={() => this.openModal()}
+                    >
+                      <CardTitle>
+                        {card.name}
+
+                      </CardTitle>
+                    </Card>
+                  </div>
               </ContainerCard>
             }
           </Draggable>
-          {(open) ?
+            {(open) ?
             <CardModal listId={listId} card={card} open={open} closeModal={() => this.closeModal()} />
             :
-            null
-          }
-        </Row>
+                null
+            }
       </div>
     )
   }

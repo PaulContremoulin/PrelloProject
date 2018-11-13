@@ -46,6 +46,7 @@ export class List extends React.Component {
           <ContainerList
             {...provided.draggableProps}
             ref={provided.innerRef}
+            className="ListContainer"
           >
             <CardTitle
               className="ListTitle"
@@ -72,14 +73,14 @@ export class List extends React.Component {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                <Card className="List" style={{"width": "272px", "marginLeft": "8px"}}>
+                <Card className="List" style={{"width": "100%", "margin": "0px"}}>
                 { (list.cards != null) ?
                   list.cards.map( (card, index) => (
                     (card.closed) ?
                     null
                     :
                     <div key={index}>
-                      <CardComponent listId={list.id} card={card} index={index} />
+                        <CardComponent listId={list.id} card={card} index={index} />
                     </div>
                   ) )
                   :
