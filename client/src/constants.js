@@ -140,4 +140,13 @@ export const DEFAULT_CARD = {
   pos: 0,
   idMembers: [],
   idLabels: [],
+  idBoard: "",
+  idList: "",
 }
+
+export const DEFAULT_LABEL = {
+  id: "",
+  name: "",
+  color: "",
+  idBoard: "",
+};

@@ -11,12 +11,16 @@ import { AddChecklist } from './AddChecklist/AddChecklist';
 import { Checklist } from './Checklist/Checklist';
 import { Comment } from './Comment/Comment';
 import { AddComment } from './AddComment/AddComment';
+import { LabelComponent } from './Label/Label';
+import { AddLabel } from './AddLabel/AddLabel';
 import { setName, setDesc, setDue, setClosed, addChecklist, setChecklists } from '../../../../../actions/cardActions';
 import { changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed } from '../../../../../requests/cards';
 import { checklistSetName, checklistSetPos, checkItemSetName, checkItemSetPos, checkItemSetState } from '../../../../../actions/checkObjectActions';
 import { postChecklistToCard, getChecklists } from '../../../../../requests/checklists';
 import { setComments, addComment, setTextComment } from '../../../../../actions/commentActions';
 import { getComments, postCommentToCard, putTextToComment } from '../../../../../requests/comments';
+import { setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard } from '../../../../../actions/labelActions';
+import { getLabel, postLabel, putLabel, deleteLabel, removeLabelFromCard, postLabelToCard } from '../../../../../requests/labels';
 
 export class CardModalToBeConnected extends React.Component {
   constructor(props) {
@@ -26,6 +30,7 @@ export class CardModalToBeConnected extends React.Component {
         descInput: false,
         dueDateInput: false,
         addChecklist: false,
+        openTags: false,
       }
   }
 
@@ -111,12 +116,16 @@ export class CardModalToBeConnected extends React.Component {
     .then( comment => this.props.addComment(comment.data, boardId) )
   }
 
+  // Tags
+  toggleTags = () => {
+    this.setState({ openTags: !this.state.openTags })
+  }
 
   render() {
-    const { openInputHeader } = this.state;
+    const { openInputHeader, openTags } = this.state;
       const {
         card,
-        boardId, checklists, comments,
+        boardId, checklists, comments, labels,
         open,
         listId,
         closeModal,
@@ -125,7 +134,6 @@ export class CardModalToBeConnected extends React.Component {
         checklistSetName, checklistSetPos,
         checkItemSetName, checkItemSetPos, checkItemSetState,
       } = this.props;
-      console.log(card);
       return (
           <div>
             <Modal className="modal-lg" isOpen={open} toggle={() => closeModal() } centered={true}>
@@ -170,6 +178,9 @@ export class CardModalToBeConnected extends React.Component {
                       <Button color="secondary" onClick={ () => this.toggleEditedChecklist() }>Add checklist</Button>
                     </Row>
                     <Row className="SideModalRow">
+                      <Button color="secondary" onClick={ () => this.toggleTags() }>Tags</Button>
+                    </Row>
+                    <Row className="SideModalRow">
                       <Button color="secondary" onClick={ () => this.closeCard() }>Archive</Button>
                     </Row>
                     <Row className="SideModalRow">
@@ -191,6 +202,16 @@ export class CardModalToBeConnected extends React.Component {
                         <p onClick={ () => this.toggleDescInput()}>{card.desc}</p>
                       }
                     </Row>
+                    {(openTags) ?
+                      <Row className="MainModalRow">
+                        <h4>Tags : </h4>
+                        {labels.map(
+                          (label, index) => <LabelComponent label={label} key={index} />
+                        )}
+                      </Row>
+                      :
+                      null
+                    }
                     <Row className="MainModalRow">
                       <h4>Members : </h4>
                     </Row>
@@ -228,7 +249,7 @@ export class CardModalToBeConnected extends React.Component {
                     }
                     <Row className="MainModalRow">
                       <h4>Comments : </h4>
-                      { //<Comment key={index} comment={comment} /> Bugged, 
+                      { //<Comment key={index} comment={comment} /> Bugged,
                       (comments) ?
                         <div>
                           {comments.map(
@@ -258,6 +279,7 @@ const mapStateToProps = ( state, props ) => ({
   boardId: (state.board.id) ? state.board.id : state.board._id,
   checklists: state.checklists.filter( checklist => checklist.idCard == props.card.id),
   comments: state.comments.filter( comment => comment.idCard == props.card.id),
+  labels: state.labels.filter( label => label.id == state.board.id )
 })
 
 const mapDispatchToProps = ( dispatch ) => ({
