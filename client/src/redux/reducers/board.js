@@ -14,7 +14,7 @@ import { SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIS
 
 import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE } from '../../actions/cardActions';
 
-import { LIST_SET_NAME } from '../../actions/listActions';
+import { LIST_SET_NAME, LIST_SET_CLOSED } from '../../actions/listActions';
 
 import { card } from './card';
 
@@ -123,6 +123,10 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
             return state.map(
                 list => (list.id === action.list.id) ? {...list, name: action.list.name} : list
             )
+        case LIST_SET_CLOSED :
+          return state.map(
+            list => (list.id === action.list.id) ? {...list, closed: action.list.closed} : list
+          )
         case ADD_CARD :
             console.log(action);
             return state.map(

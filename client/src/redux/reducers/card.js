@@ -14,7 +14,7 @@ const id = ( state = DEFAULT_CARD.id, action ) => {
 const name = ( state = DEFAULT_CARD.name, action ) => {
   switch (action.type) {
   case CARD_SET_NAME :
-    return { ...state, name: action.card.name }
+    return action.card.name
   default:
     return state ;
   }
@@ -22,7 +22,7 @@ const name = ( state = DEFAULT_CARD.name, action ) => {
 const desc = ( state = DEFAULT_CARD.desc, action ) => {
   switch (action.type) {
   case CARD_SET_DESC :
-    return { ...state, desc: action.card.desc }
+    return action.card.desc
   default:
     return state ;
   }
@@ -30,7 +30,7 @@ const desc = ( state = DEFAULT_CARD.desc, action ) => {
 const due = ( state = DEFAULT_CARD.due, action ) => {
   switch (action.type) {
   case CARD_SET_DUE :
-    return { ...state, due: action.card.due }
+    return action.card.due
   default:
     return state ;
   }
@@ -44,7 +44,7 @@ const dueComplete = ( state = DEFAULT_CARD.dueComplete, action ) => {
 const closed = ( state = DEFAULT_CARD.closed, action ) => {
   switch (action.type) {
   case CARD_SET_CLOSED :
-    return { ...state, closed: action.card.closed }
+    return action.card.closed
   default:
     return state ;
   }
@@ -68,6 +68,20 @@ const idLabels = ( state = DEFAULT_CARD.idLabels, action ) => {
   }
 }
 
+const idBoard = ( state = DEFAULT_CARD.idBoard, action ) => {
+  switch (action.type) {
+      default:
+          return state ;
+  }
+}
+
+const idList = ( state = DEFAULT_CARD.idList, action ) => {
+  switch (action.type) {
+      default:
+          return state ;
+  }
+}
+
 
 // combineReducers is a redux function which associate object key with a reducers
 // It return a reducer responsible for this sub-state
@@ -82,4 +96,6 @@ export const card = combineReducers({
   pos,
   idMembers,
   idLabels,
+  idBoard,
+  idList,
 });
