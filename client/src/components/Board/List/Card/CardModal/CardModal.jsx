@@ -22,6 +22,7 @@ import { getComments, postCommentToCard, putTextToComment } from '../../../../..
 import { setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard } from '../../../../../actions/labelActions';
 import { getLabel, postLabel, putLabel, deleteLabel, removeLabelFromCard, postLabelToCard } from '../../../../../requests/labels';
 
+
 export class CardModalToBeConnected extends React.Component {
   constructor(props) {
       super(props)
@@ -115,7 +116,6 @@ export class CardModalToBeConnected extends React.Component {
     postCommentToCard(commentText, cardId)
     .then( comment => this.props.addComment(comment.data, boardId) )
   }
-
   // Tags
   toggleTags = () => {
     this.setState({ openTags: !this.state.openTags })

@@ -14,7 +14,11 @@ const id = ( state = DEFAULT_CARD.id, action ) => {
 const name = ( state = DEFAULT_CARD.name, action ) => {
   switch (action.type) {
   case CARD_SET_NAME :
+<<<<<<< HEAD
     return action.card.name
+=======
+    return (action.card.id === state.id ) ? { ...state, name: action.card.name } : state
+>>>>>>> Comments, cleaned reducers checklist and comments
   default:
     return state ;
   }
@@ -22,7 +26,11 @@ const name = ( state = DEFAULT_CARD.name, action ) => {
 const desc = ( state = DEFAULT_CARD.desc, action ) => {
   switch (action.type) {
   case CARD_SET_DESC :
+<<<<<<< HEAD
     return action.card.desc
+=======
+    return (action.card.id === state.id ) ? { ...state, desc: action.card.desc } : state
+>>>>>>> Comments, cleaned reducers checklist and comments
   default:
     return state ;
   }
@@ -30,7 +38,11 @@ const desc = ( state = DEFAULT_CARD.desc, action ) => {
 const due = ( state = DEFAULT_CARD.due, action ) => {
   switch (action.type) {
   case CARD_SET_DUE :
+<<<<<<< HEAD
     return action.card.due
+=======
+    return (action.card.id === state.id ) ? { ...state, due: action.card.due } : state
+>>>>>>> Comments, cleaned reducers checklist and comments
   default:
     return state ;
   }
@@ -44,7 +56,11 @@ const dueComplete = ( state = DEFAULT_CARD.dueComplete, action ) => {
 const closed = ( state = DEFAULT_CARD.closed, action ) => {
   switch (action.type) {
   case CARD_SET_CLOSED :
+<<<<<<< HEAD
     return action.card.closed
+=======
+    return (action.card.id === state.id ) ? { ...state, closed: action.card.closed } : state
+>>>>>>> Comments, cleaned reducers checklist and comments
   default:
     return state ;
   }
@@ -82,7 +98,6 @@ const idList = ( state = DEFAULT_CARD.idList, action ) => {
   }
 }
 
-
 // combineReducers is a redux function which associate object key with a reducers
 // It return a reducer responsible for this sub-state
 // combineReducers got others untold subtilities
@@ -97,5 +112,5 @@ export const card = combineReducers({
   idMembers,
   idLabels,
   idBoard,
-  idList,
+  idList
 });
