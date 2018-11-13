@@ -35,10 +35,8 @@ export class Checklist extends React.Component {
       <div className="Checklist">
         <Row>
           <Card className="ChecklistCard">
-          <CardTitle className="ChecklistTitle" onclick={ () => this.toggleCheklistInput() }>
+          <CardTitle className="ChecklistTitle" onClick={ () => this.toggleCheklistInput() }>
           {(inputChecklistName) ?
-            checklist.name
-            :
             <Input
               type="text"
               name="checklistName"
@@ -46,6 +44,8 @@ export class Checklist extends React.Component {
               defaultValue={checklist.name}
               onBlur={(e) => this.handleOnBlurChecklist(e)}
             />
+            :
+            checklist.name
           }</CardTitle>
           {(checklist.checkItems) ?
           <CardBody>

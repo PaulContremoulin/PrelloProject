@@ -131,11 +131,13 @@ export const RESULT = {
   Position of the card in the list
 */
 export const DEFAULT_CARD = {
-  id: "default",
+  id: "",
   closed: false,
   desc: "",
   due: "",
   dueComplete: false,
-  name: "default",
-  pos: 0
+  name: "",
+  pos: 0,
+  idMembers: [],
+  idLabels: [],
 }

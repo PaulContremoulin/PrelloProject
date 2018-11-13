@@ -123,14 +123,10 @@ export const addChecklist = (idList, idCard, checklist) => {
   }
 }
 
-export const setChecklists = (idList, idCard, checklists) => {
+export const setChecklists = (checklists) => {
   return {
       type: CARD_SET_CHECKLISTS,
-      list: {
-        id: idList
-      },
       card: {
-        id: idCard,
         checklists: checklists
       },
       meta: {
