@@ -39,6 +39,7 @@ import {getComments, postCommentToCard, putTextToComment} from '../../../../../r
 import {setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard} from '../../../../../actions/labelActions';
 import {getLabel, postLabel, putLabel, deleteLabel, removeLabelFromCard, postLabelToCard} from '../../../../../requests/labels';
 
+
 import {TitleCard} from "./TitleCard/TitleCard";
 import {DateCalendar} from "./DateCalendar/DateCalendar";
 import {DescCard} from "./DescCard/DescCard";
@@ -73,7 +74,6 @@ export class CardModalToBeConnected extends React.Component {
                 console.log(error)
             });
     }
-
 // cardId : ID
 // cardName : String
 // index : Int
@@ -110,6 +110,7 @@ export class CardModalToBeConnected extends React.Component {
         postCommentToCard(commentText, cardId)
             .then(comment => this.props.addComment(comment.data, boardId))
     }
+
     // Tags
     toggleTags = () => {
         this.setState({openTags: !this.state.openTags})

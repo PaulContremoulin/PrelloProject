@@ -134,6 +134,8 @@ export class BoardToBeConnected extends React.Component {
         this.props.resetComments(); // resets the comments reducer
         this.props.resetChecklists(); // resets the checklists reducer
         socket.emit('unsubscribe', this.props.board._id);
+        //const idBoard = history.location.pathname.split('/')[2];
+        //socket.emit('unsubscribe', idBoard);
     }
     render() {
         const { board, addList, moveList, addCard, moveCard } = this.props;
@@ -173,10 +175,8 @@ export class BoardToBeConnected extends React.Component {
                                                     </div>
                                                 ))
                                                 }
-                                                <div style={{"width": "320px"}}>
-                                                    <AddList
-                                                        addList={(listName) => this.addListToBoard(listName, nextPosFromArray(board.lists), boardId)}/>
-                                                </div>
+                                                <AddList
+                                                    addList={(listName) => this.addListToBoard(listName, nextPosFromArray(board.lists), boardId)}/>
                                             </CardDeck>
                                             {provided.placeholder}
                                         </ContainerBoard>

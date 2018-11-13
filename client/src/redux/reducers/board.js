@@ -153,6 +153,7 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
                     ...list,
                     cards: list.cards.map(
                         (cardObj, index) => (action.card.id === cardObj.id ) ? card( cardObj, action ) : cardObj
+                        //(cardObj, index) => card( cardObj, action )
                     )
                 }
             )

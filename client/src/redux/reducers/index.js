@@ -10,7 +10,6 @@ import { checklists } from './checklists';
 import { comments } from './comments';
 import { labels } from './labels';
 
-
 export default combineReducers({
     user,
     boards,
