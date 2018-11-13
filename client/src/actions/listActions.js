@@ -4,6 +4,7 @@
  * Action types are constants string meant to explains reducer which treatments are needed.
  */
  export const LIST_SET_NAME = 'LIST_SET_NAME';
+ export const LIST_SET_CLOSED = 'LIST_SET_CLOSED';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -23,5 +24,24 @@ export const setListName = (idList, name) => {
         id: idList,
         name,
       }
+  }
+};
+
+/**
+* @desc
+*/
+export const setListClosed = (idList, closed, idBoard) => {
+  return {
+    type: LIST_SET_CLOSED,
+    list: {
+      id: idList,
+      closed,
+    },
+    meta: {
+        socket: {
+            channel: 'data:store',
+            room: idBoard,
+        }
+    }
   }
 };
