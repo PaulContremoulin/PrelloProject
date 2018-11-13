@@ -41,11 +41,11 @@ export class CardComponent extends React.Component {
             index={index}
           >
             {(provided) =>
-                  <ContainerCard
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef}
-                  >
+              <ContainerCard
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                ref={provided.innerRef}
+              >
                   <div style={{"padding-bottom":"8px"}}>
                     <Card
 
@@ -61,11 +61,16 @@ export class CardComponent extends React.Component {
               </ContainerCard>
             }
           </Draggable>
-          {(open) ?
+            {(open) ?
             <CardModal listId={listId} card={card} open={open} closeModal={() => this.closeModal()} />
             :
+<<<<<<< HEAD
             null
           }
+=======
+                null
+            }
+>>>>>>> [FRONT] - Board presentation (CSS)
       </div>
     )
   }
