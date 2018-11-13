@@ -7,7 +7,7 @@ import { combineReducers } from 'redux';
 * It's the best place to avoid circular dependencies
 */
 import { SET_LOGIN, LOG_OUT } from "../../actions/signActions";
-
+import {EDIT_INFORMATION_USER} from "../../actions/signActions";
 
 /******************************************************************************/
 /******************************* LOGIN REDUCERS ********************************/
@@ -38,6 +38,8 @@ export const user = ( state = {}, action ) => {
       return action.user ;
     case LOG_OUT :
       return {} ;
+      case EDIT_INFORMATION_USER :
+        return {...state, member:{...state.member, firstName:action.userEdit.firstName, lastName:action.userEdit.lastName, organization:action.userEdit.organization, bio:action.userEdit.bio}}
     default:
       return state ;
   }

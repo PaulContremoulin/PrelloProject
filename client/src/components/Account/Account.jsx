@@ -11,6 +11,7 @@ import './Account.css';
 import {logOut} from "../../actions/signActions";
 import {ChangePassword} from "./ChangePassword/ChangePassword";
 import {DeleteAccount} from "./DeleteAccount/DeleteAccount";
+import {ChangeInformation} from "./ChangeInformation/ChangeInformation";
 
 // Actions & Constant
 
@@ -74,7 +75,7 @@ export class AccountToBeConnected extends React.Component {
                                         :
                                         <CardText>{this.props.user.member.bio}</CardText>
                                     }
-                                <Button>Change Description</Button>
+                                <ChangeInformation/>
                                 </CardBody>
                             </Card>
                         </Col>
