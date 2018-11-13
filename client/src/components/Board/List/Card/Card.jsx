@@ -61,7 +61,7 @@ export class CardComponent extends React.Component {
               </ContainerCard>
             }
           </Draggable>
-            {(open) ?
+          {(open) ?
             <CardModal listId={listId} card={card} open={open} closeModal={() => this.closeModal()} />
             :
             null
