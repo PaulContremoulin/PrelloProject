@@ -76,7 +76,7 @@ export class CardBoardToBeConnected extends React.Component {
                     }
                 </CardBody>
             </Card>
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+            <Modal centered={true} isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader>Add {this.props.board.name} in circles</ModalHeader>
                 <ModalBody>
                     <ListGroup>

@@ -32,7 +32,7 @@ export class ContentHomeToBeConnected extends React.Component {
                         <ButtonFiltre />
                     </Col>
                 </Row>
-                <Row>
+                <Row className="displayCardBoard">
                     {this.props.boards.map(board => {
                         return(
                             <Col className="displayBoard" xs={12} sm={6} md={3} key={ board._id }>
