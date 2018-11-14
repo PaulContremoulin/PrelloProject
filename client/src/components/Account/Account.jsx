@@ -35,7 +35,7 @@ export class AccountToBeConnected extends React.Component {
                         </Col>
                     </Row>
                     <Row className="contentMyAccount">
-                        <Col xs={12} sm={12} md={{size:3, offset:1}}>
+                        <Col xs={12} sm={5} md={4} lg={{size:3, offset:1}} xl={{size:3, offset:1}}>
                             <Card>
                                 <CardBody>
                                     <CardText>
@@ -72,7 +72,7 @@ export class AccountToBeConnected extends React.Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col xs={12} sm={12} md={6}>
+                        <Col xs={12} sm={7} md={4} lg={6} xl={6}>
                             <Card className="cardBio">
                                 <CardBody>
                                     {this.props.user.member.bio === undefined || this.props.user.member.bio === "" ?
@@ -83,14 +83,14 @@ export class AccountToBeConnected extends React.Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col xs={12} sm={12} md={2}>
+                        <Col xs={12} sm={12} md={{size:2, offset:2}} lg={{size:1, offset:1}} xl={{size:1, offset:1}}>
                             <ChangeInformation/>
                             <ChangePassword/>
                             <DeleteAccount/>
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={12} sm={12} md={{size:3, offset:1}}>
+                        <Col xs={12} sm={4} md={4} lg={{size:3, offset:1}} xl={{size:3, offset:1}}>
                             <Card className="indexCol">
                                 <CardBody className="bodyStatMyProfile">
                                     <CardText>
@@ -104,7 +104,7 @@ export class AccountToBeConnected extends React.Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col xs={12} sm={12} md={3}>
+                        <Col xs={12} sm={4} md={4} lg={{size:3}} xl={{size:3}}>
                             <Card className="indexCol">
                                 <CardBody className="bodyStatMyProfile">
                                     <CardText>
@@ -118,14 +118,14 @@ export class AccountToBeConnected extends React.Component {
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col xs={12} sm={12} md={3}>
+                        <Col xs={12} sm={4} md={4} lg={{size:3}} xl={{size:3}}>
                             <Card className="indexCol">
                                 <CardBody className="bodyStatMyProfile">
                                     <CardText>
                                         <Col className="centerCol">
                                             Number of circles
                                         </Col>
-                                        <Col className="centerCol">
+                                            <Col className="centerCol">
                                             {this.props.circles.length}
                                         </Col>
                                     </CardText>

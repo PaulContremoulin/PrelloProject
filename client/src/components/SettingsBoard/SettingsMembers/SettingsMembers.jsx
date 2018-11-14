@@ -33,7 +33,7 @@ export class SettingsMembersToBeConnected extends React.Component {
                             {this.props.board.memberships.map(membership => {
                                 if(membership.idMember._id === this.props.user.member.id) {
                                 return (
-                                    <ListGroupItem className="listItemUser">
+                                    <ListGroupItem key={membership._id} className="listItemUser">
                                             <Row>
                                                 <Col xs={5} sm={3} md={5} className="float-left">
                                                     <ShowProfileMember usernameMember={membership.idMember.username} idMember={membership.idMember._id}/>
@@ -56,7 +56,7 @@ export class SettingsMembersToBeConnected extends React.Component {
                                 )
                             } else {
                                 return (
-                                    <ListGroupItem>
+                                    <ListGroupItem key={membership._id}>
                                         <Row>
                                             <Col xs={5} sm={3} md={5} className="float-left">
                                                 <ShowProfileMember usernameMember={membership.idMember.username} idMember={membership.idMember._id}/>

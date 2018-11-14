@@ -84,11 +84,11 @@ export class CardBoardToBeConnected extends React.Component {
                             const filt = circle.idBoards.filter(board => board === this.props.board._id);
                             if (filt.length === 0) {
                                 return (
-                                    <ListGroupItem className="clickBoard2" tag="a" onClick={() => this.addBoardInCircle(this.props.board._id, circle._id)} action>{circle.name}</ListGroupItem>
+                                    <ListGroupItem key={circle._id}  className="clickBoard2" tag="a" onClick={() => this.addBoardInCircle(this.props.board._id, circle._id)} action>{circle.name}</ListGroupItem>
                                 )
                         } else {
                                 return (
-                                    <ListGroupItem disabled>
+                                    <ListGroupItem key={circle._id} disabled>
                                         <Row>
                                             <Col xs={8}>{circle.name}</Col>
                                             <Col xs={4}><FontAwesomeIcon icon={faCheck} size="1x"/></Col>
