@@ -154,8 +154,7 @@ export class CardModalToBeConnected extends React.Component {
                       :
                       <h4 onClick={ () => this.toggleInputHeader() } >{card.name}</h4>
                   }
-<<<<<<< HEAD
-                </Row>
+                </Col>
                 <Row>
                   <Col className="SideModalCol" md="3">
                     <Row className="SideModalRow">
@@ -226,52 +225,46 @@ export class CardModalToBeConnected extends React.Component {
                         :
                         null
                     }
-=======
-                </Col>
-                <Col>
->>>>>>> [FRONT] - Card css design
-                    {
-                      (card.due !== null && card.due !== '')
-                      ?
-                      <h6 id="dueDateId" onClick={ () => this.toggleDueInput() }>For : <Badge color="primary"> { dateFormat(card.due, "fullDate") } </Badge></h6>
-                      :
-                      <h6 id="dueDateId" onClick={ () => this.toggleDueInput() }>No due date</h6>
-                    }
-<<<<<<< HEAD
-                    <Row className="MainModalRow">
-                      <h4>Comments : </h4>
-                      { //<Comment key={index} comment={comment} /> Bugged,
-                      (comments) ?
-                        <div>
-                          {comments.map(
-                            (comment, index) => <span>comment.text</span>
-                          )}
-                        </div>
-                        :
-                        null
-                      }
-                      <AddComment
-                        addComment={ (checklistName) => { this.addCommentToCard(checklistName) } }
-                      />
-                    </Row>
                   </Col>
                 </Row>
-=======
-                    <Popover placement="bottom" isOpen={this.state.dueDateInput} target="dueDateId" toggle={this.state.dueDateInput}>
-                        <PopoverHeader>Due date</PopoverHeader>
-                        <PopoverBody>
-                            <Calendar
-                                value={ card.due ? new Date(card.due) : new Date()}
-                                onChange={ (date) => this.handleOnChangeDueDate(date)}
-                                onBlur={(e) => this.toggleDueInput()}
-                            />
-                        </PopoverBody>
-                    </Popover>
-                </Col>
+                  <Row>
+                    <Col>
+                        {
+                          (card.due !== null && card.due !== '')
+                          ?
+                          <h6 id="dueDateId" onClick={ () => this.toggleDueInput() }>For : <Badge color="primary"> { dateFormat(card.due, "fullDate") } </Badge></h6>
+                          :
+                          <h6 id="dueDateId" onClick={ () => this.toggleDueInput() }>No due date</h6>
+                        }
+                        <Row className="MainModalRow">
+                          <h4>Comments : </h4>
+                          { //<Comment key={index} comment={comment} /> Bugged,
+                          (comments) ?
+                            <div>
+                              {comments.map(
+                                (comment, index) => <span>comment.text</span>
+                              )}
+                            </div>
+                            :
+                            null
+                          }
+                          <AddComment
+                            addComment={ (checklistName) => { this.addCommentToCard(checklistName) } }
+                          />
+                        </Row>
+                  </Col>
+                </Row>
+                <Popover placement="bottom" isOpen={this.state.dueDateInput} target="dueDateId" toggle={this.state.dueDateInput}>
+                    <PopoverHeader>Due date</PopoverHeader>
+                    <PopoverBody>
+                        <Calendar
+                            value={ card.due ? new Date(card.due) : new Date()}
+                            onChange={ (date) => this.handleOnChangeDueDate(date)}
+                            onBlur={(e) => this.toggleDueInput()}
+                        />
+                    </PopoverBody>
+                </Popover>
               </ModalHeader>
-              <ModalBody>
->>>>>>> [FRONT] - Card css design
-              </ModalBody>
           </Modal>
       )
   }

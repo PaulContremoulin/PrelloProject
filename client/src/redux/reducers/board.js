@@ -19,8 +19,6 @@ import { LIST_SET_NAME, LIST_SET_CLOSED } from '../../actions/listActions';
 
 import { card } from './card';
 
-import { card } from './card';
-
 
 /******************************************************************************/
 /******************************* Board REDUCERS ********************************/
