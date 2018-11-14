@@ -1,8 +1,8 @@
 .float-right {
     cursor: pointer;
 }
-@media only screen and (max-width: 1200px) {
+
     .butDeleteUser {
-        margin-top: 10px;
+        margin-top: 20px;
+        width: 170px;
     }
-}

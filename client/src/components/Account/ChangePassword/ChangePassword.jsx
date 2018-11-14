@@ -103,7 +103,7 @@ export class ChangePasswordToBeConnected extends React.Component {
         const { oldPassword, newPassword, newPasswordConfirm } = this.state;
         return (
             <div>
-                <Button onClick={() => this.openModal()}>Change Password</Button>
+                <Button className="float-right butDeleteUser" onClick={() => this.openModal()}>Change Password</Button>
                 <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
                     <ModalHeader toggle={() =>this.closeModal()}>Change Password</ModalHeader>
                     <Form className="form" onSubmit={this.handleSubmit}>
@@ -173,7 +173,7 @@ export class ChangePasswordToBeConnected extends React.Component {
                         </ModalBody>
                         <ModalFooter>
                             <Button color="secondary" onClick={() =>this.closeModal() }>Return</Button>
-                            <Button color="primary" type="submit">Create</Button>
+                            <Button color="primary" type="submit">Change</Button>
                         </ModalFooter>
                     </Form>
                 </Modal>
