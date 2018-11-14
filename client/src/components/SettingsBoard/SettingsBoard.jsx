@@ -47,7 +47,11 @@ export class SettingsBoardToBeConnected extends React.Component {
                                 <EditStateBoard/>
                             </Col>
                         </Row>
-                        <hr className="my-2"/>
+                        <Row>
+                            <Col sm={{size:9, offset:1}}>
+                                <hr className="my-2"/>
+                            </Col>
+                        </Row>
                         <SettingsMembers type={this.state.type} nbrMember={this.state.nbrMember}/>
                     </Container>
                     :

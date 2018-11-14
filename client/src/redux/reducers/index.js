@@ -10,6 +10,7 @@ import { checklists } from './checklists';
 import { comments } from './comments';
 import { labels } from './labels';
 import {members} from "./members";
+import {state} from "./state";
 
 export default combineReducers({
     user,
@@ -22,4 +23,5 @@ export default combineReducers({
     comments,
     labels,
     members,
+    state,
 });
