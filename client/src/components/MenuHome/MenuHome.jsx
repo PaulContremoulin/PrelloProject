@@ -81,7 +81,7 @@ export class MenuHomeToBeConnected extends React.Component {
                 });
         }
         if (this.props.boards.length === 0) {
-            getBoardsUser(this.props.user.member._id)
+            getBoardsUser(this.props.user.member._id,"false")
                 .then(res => {
                     this.props.fetchBoards(res.data)
                 })
