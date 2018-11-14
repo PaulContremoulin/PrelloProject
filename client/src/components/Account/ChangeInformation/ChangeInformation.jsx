@@ -79,7 +79,7 @@ export class ChangeInformationToBeConnected extends React.Component {
         const { firstName, lastName, organization, bio } = this.state;
         return (
             <div>
-                <Button onClick={() => this.openModal()}>Change Information</Button>
+                <Button className="float-right butChangeInfo" onClick={() => this.openModal()}>Change Information</Button>
                 <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
                     <ModalHeader toggle={() =>this.closeModal()}>Change Information</ModalHeader>
                     <Form className="form" onSubmit={this.handleSubmit}>
@@ -144,7 +144,7 @@ export class ChangeInformationToBeConnected extends React.Component {
                         </ModalBody>
                         <ModalFooter>
                             <Button color="secondary" onClick={() =>this.closeModal() }>Return</Button>
-                            <Button color="primary" type="submit">Create</Button>
+                            <Button color="primary" type="submit">Change</Button>
                         </ModalFooter>
                     </Form>
                 </Modal>

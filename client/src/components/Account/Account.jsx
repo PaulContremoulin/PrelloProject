@@ -17,17 +17,25 @@ import {ChangeInformation} from "./ChangeInformation/ChangeInformation";
 
 export class AccountToBeConnected extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            'nbrBoardsPersonal':[],
+            'nbrBoardsShare':[],
+        }
+    }
+
     render() {
         return (
             <div>
                 <Container className="contentHome">
                     <Row>
-                        <Col align="center">
-                            <h2>{this.props.user.member.username}</h2>
+                        <Col className="TitleMyAccount" align="center">
+                            <h2>My Profile</h2>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col xs={12} sm={12} md={4}>
+                    <Row className="contentMyAccount">
+                        <Col xs={12} sm={12} md={{size:3, offset:1}}>
                             <Card>
                                 <CardBody>
                                     <CardText>
@@ -36,7 +44,12 @@ export class AccountToBeConnected extends React.Component {
                                                 <FontAwesomeIcon icon={faUser} size="1x"/>
                                             </Col>
                                             <Col sm={10}>
+                                                <div>
                                                 {this.props.user.member.firstName+' '+this.props.user.member.lastName}
+                                                </div>
+                                                <div>
+                                                {'@'+this.props.user.member.username}
+                                                </div>
                                             </Col>
                                         </Row>
                                         <Row className="indexCol">
@@ -56,44 +69,58 @@ export class AccountToBeConnected extends React.Component {
                                             </Col>
                                         </Row>
                                     </CardText>
-                                    <Row>
-                                        <Col xs={12} sm={12} md={12} xl={6}>
-                                            <ChangePassword/>
-                                        </Col>
-                                        <Col xs={12} sm={12} md={12} xl={6}>
-                                            <DeleteAccount/>
-                                        </Col>
-                                    </Row>
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col xs={12} sm={12} md={5}>
-                            <Card>
+                        <Col xs={12} sm={12} md={6}>
+                            <Card className="cardBio">
                                 <CardBody>
-                                    {this.props.user.member.bio === undefined ?
+                                    {this.props.user.member.bio === undefined || this.props.user.member.bio === "" ?
                                         <CardText>Neither Description</CardText>
                                         :
                                         <CardText>{this.props.user.member.bio}</CardText>
                                     }
-                                <ChangeInformation/>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                        <Col xs={12} sm={12} md={2}>
+                            <ChangeInformation/>
+                            <ChangePassword/>
+                            <DeleteAccount/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={12} sm={12} md={{size:3, offset:1}}>
+                            <Card className="indexCol">
+                                <CardBody className="bodyStatMyProfile">
+                                    <CardText>
+                                        <Col className="centerCol">
+                                            Number of personal boards
+                                        </Col>
+                                        <Col className="centerCol">
+                                            {this.state.nbrBoardsPersonal}
+                                        </Col>
+                                    </CardText>
                                 </CardBody>
                             </Card>
                         </Col>
                         <Col xs={12} sm={12} md={3}>
-                            <Card>
-                                <CardBody>
+                            <Card className="indexCol">
+                                <CardBody className="bodyStatMyProfile">
                                     <CardText>
                                         <Col className="centerCol">
-                                            Number of boards
+                                            Number of shared boards
                                         </Col>
                                         <Col className="centerCol">
-                                            {this.props.boards.length}
+                                            {this.state.nbrBoardsShare}
                                         </Col>
-                                        </CardText>
+                                    </CardText>
                                 </CardBody>
                             </Card>
+                        </Col>
+                        <Col xs={12} sm={12} md={3}>
                             <Card className="indexCol">
-                                <CardBody>
+                                <CardBody className="bodyStatMyProfile">
                                     <CardText>
                                         <Col className="centerCol">
                                             Number of circles
@@ -101,7 +128,7 @@ export class AccountToBeConnected extends React.Component {
                                         <Col className="centerCol">
                                             {this.props.circles.length}
                                         </Col>
-                                        </CardText>
+                                    </CardText>
                                 </CardBody>
                             </Card>
                         </Col>
@@ -110,6 +137,16 @@ export class AccountToBeConnected extends React.Component {
             </div>
         )
     }
+
+    componentDidMount() {
+        const boardsPersonal = this.props.boards.filter(board => board.memberships.length === 1);
+        const boardsShare = this.props.boards.filter(board => board.memberships.length > 1);
+        this.setState({
+            nbrBoardsPersonal: boardsPersonal.length,
+            nbrBoardsShare: boardsShare.length,
+        })
+    }
+
 }
 
 const mapStateToProps = ( state, props ) => ({
