@@ -1,6 +1,6 @@
 .SideModalRow {
-  margin: 20px;
-}
+   margin: 20px;
+ }
 
 .SideModalCol {
   border-top: 2px solid;
@@ -16,4 +16,8 @@
 
 .cardModalBody {
   background-color: #dfe3e6;
+}
+
+.DateInput {
+  height: 32px;
 }
