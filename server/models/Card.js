@@ -16,7 +16,10 @@ let cardSchema = new Schema({
             type : Number,
             required : true,
         },
-        due :  Date,
+        due :  {
+            type : Date,
+            default : null
+        },
         dueComplete : {
             default : false,
             type: Boolean

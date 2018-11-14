@@ -117,7 +117,7 @@ router.put('/:id', token, CardAccess.updateRights(), function(req, res) {
     (req.query.name) ? card.name = req.query.name : null;
     (req.query.desc) ? card.desc = req.query.desc : null;
     (req.query.closed) ? card.closed = req.query.closed : null;
-    (req.query.due) ? card.due = req.query.due : null;
+    (req.query.due) ? ((req.query.due !== 'null') ? card.due = req.query.due : card.due = undefined) : null;
     (req.query.dueComplete) ? card.dueComplete = req.query.dueComplete : null;
     (req.query.pos) ? card.pos = req.query.pos : null;
 
