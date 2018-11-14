@@ -60,7 +60,7 @@ export class MenuHomeToBeConnected extends React.Component {
                         <ListGroup>
                             {this.props.circles.map(circle => {
                                 return (
-                                    <ListGroupItem className="ListMenu" tag="a" onClick={() => this.redirectionCircle(circle._id, circle.name)} action>{circle.name}</ListGroupItem>
+                                    <ListGroupItem key={circle._id} className="ListMenu" tag="a" onClick={() => this.redirectionCircle(circle._id, circle.name)} action>{circle.name}</ListGroupItem>
                                 )
                             })}
                         </ListGroup>

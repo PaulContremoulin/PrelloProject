@@ -116,12 +116,10 @@ export class CreateBoardToBeConnected extends React.Component {
                 <Card className="addBoard" onClick={() => this.openModal()}>
                     <CardBody>
                         <CardText>
-                            <div>
-                                <FontAwesomeIcon icon={faPlus} size="1x"/>
-                            </div>
-                            <div>
-                                Create a board
-                            </div>
+                            <FontAwesomeIcon icon={faPlus} size="1x"/>
+                        </CardText>
+                        <CardText>
+                            Create a board
                         </CardText>
                     </CardBody>
                 </Card>

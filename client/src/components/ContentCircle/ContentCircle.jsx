@@ -64,9 +64,9 @@ export class ContentCircleToBeConnected extends React.Component {
                     <Row>
                         {this.props.circle.idBoards.length !== 0 ? this.props.circle.idBoards.map(board => {
                             return (
-                                <Col className="displayBoard" xs={12} sm={6} md={3}>
-                                    <CardBoardCircle goToPageBoard={() => this.goToPageBoard(board)}
-                                                     board={board} key={board._id} circle={this.props.circle}/>
+                                <Col key={board._id} className="displayBoard" xs={12} sm={6} md={6} xl={3}>
+                                    <CardBoardCircle key={board._id} goToPageBoard={() => this.goToPageBoard(board)}
+                                                     board={board} circle={this.props.circle}/>
                                 </Col>
                             )
                             })
