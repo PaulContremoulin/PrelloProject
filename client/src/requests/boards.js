@@ -28,10 +28,10 @@ export function createBoard(name, idOrganization, desc, memberships, prefs) {
     })
 }
 
-export function getBoardsUser(idUser) {
+export function getBoardsUser(idUser, state) {
     return new Promise((resolve, reject) =>
     {
-        getRequest( '/api/members/'+idUser+'/boards')
+        getRequest( '/api/members/'+idUser+'/boards?closed='+state)
             .then(response => {
                 resolve(response)
             })

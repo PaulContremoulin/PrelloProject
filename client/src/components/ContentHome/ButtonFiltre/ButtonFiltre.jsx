@@ -7,6 +7,7 @@ import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reac
 // Actions & Constant
 import {connect} from "react-redux";
 import {fetchBoards} from "../../../actions/boardActions";
+import {getBoardsUser} from "../../../requests/boards";
 
 
 export class ButtonFiltreToBeConnected extends React.Component {
@@ -25,6 +26,16 @@ export class ButtonFiltreToBeConnected extends React.Component {
         });
     }
 
+    getBoardsState = (state) => {
+        getBoardsUser(this.props.user.member._id,state)
+            .then(res => {
+                this.props.fetchBoards(res.data)
+            })
+            .catch(error => {
+                console.log(error)
+            });
+    }
+
     render() {
         return (
             <ButtonDropdown className="float-right" direction="left" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -32,8 +43,8 @@ export class ButtonFiltreToBeConnected extends React.Component {
                     Filter
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem>Archived</DropdownItem>
-                    <DropdownItem>Not archived</DropdownItem>
+                    <DropdownItem onClick={() => this.getBoardsState("true")}>Archived</DropdownItem>
+                    <DropdownItem onClick={() => this.getBoardsState("false")}>Not archived</DropdownItem>
                 </DropdownMenu>
             </ButtonDropdown>
         )
@@ -42,6 +53,7 @@ export class ButtonFiltreToBeConnected extends React.Component {
 
 const mapStateToProps = ( state, props ) => ({
     boards: state.boards,
+    user : state.user,
 });
 
 const mapDispatchToProps = ( dispatch ) => ({
