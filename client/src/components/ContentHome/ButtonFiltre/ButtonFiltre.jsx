@@ -8,6 +8,7 @@ import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reac
 import {connect} from "react-redux";
 import {fetchBoards} from "../../../actions/boardActions";
 import {getBoardsUser} from "../../../requests/boards";
+import {changeState} from "../../../actions/stateBoards";
 
 
 export class ButtonFiltreToBeConnected extends React.Component {
@@ -30,6 +31,8 @@ export class ButtonFiltreToBeConnected extends React.Component {
         getBoardsUser(this.props.user.member._id,state)
             .then(res => {
                 this.props.fetchBoards(res.data)
+                const temp = state === "true"
+                this.props.changeState(temp)
             })
             .catch(error => {
                 console.log(error)
@@ -58,6 +61,7 @@ const mapStateToProps = ( state, props ) => ({
 
 const mapDispatchToProps = ( dispatch ) => ({
     fetchBoards: (res) => dispatch( fetchBoards(res)),
+    changeState: (res) => dispatch( changeState(res)),
 });
 
 export const ButtonFiltre = connect(

@@ -56,23 +56,23 @@ export class EditStateBoardToBeConnected extends React.Component {
             <div className="DeleteMember">
                 {this.props.board.closed ?
                     <div>
-                        <Button color="danger" onClick={this.toggle}>Unlock Board</Button>
+                        <Button color="danger" onClick={this.toggle}>Unarchive Board</Button>
                         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                            <ModalBody>Do you want unlock this board ? </ModalBody>
+                            <ModalBody>Do you want unarchive this board ? </ModalBody>
                             <ModalFooter>
                                 <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                                <Button color="danger" onClick={() => this.archiveBoard()}>Unlock</Button>
+                                <Button color="danger" onClick={() => this.archiveBoard()}>Unarchive</Button>
                             </ModalFooter>
                         </Modal>
                     </div>
                     :
                     <div>
-                        <Button color="danger" onClick={this.toggle}>Lock Board</Button>
+                        <Button color="danger" onClick={this.toggle}>Archive Board</Button>
                         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                            <ModalBody>Do you want lock this board ? </ModalBody>
+                            <ModalBody>Do you want archive this board ? </ModalBody>
                             <ModalFooter>
                                 <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                                <Button color="danger" onClick={() => this.archiveBoard()}>Lock</Button>
+                                <Button color="danger" onClick={() => this.archiveBoard()}>Archive</Button>
                             </ModalFooter>
                         </Modal>
                     </div>

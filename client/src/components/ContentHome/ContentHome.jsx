@@ -21,9 +21,6 @@ export class ContentHomeToBeConnected extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            isArchived: false
-        };
     }
 
     goToPageBoard = (board) => {
@@ -35,7 +32,7 @@ export class ContentHomeToBeConnected extends React.Component {
             <div>
                 <Row className="titleContent">
                     <Col xs={12}>
-                        {this.state.isArchived ?
+                        {this.props.state ?
                             <h2>Personal Boards (Archived)</h2>
                             :
                             <h2>Personal Boards</h2>
@@ -51,7 +48,7 @@ export class ContentHomeToBeConnected extends React.Component {
                             </Col>
                         )
                     })}
-                    {!this.state.isArchived &&
+                    {!this.props.state &&
                     <Col className="displayBoard" xs={12} sm={6} md={6} xl={3}>
                         <CreateBoard/>
                     </Col>
@@ -60,31 +57,13 @@ export class ContentHomeToBeConnected extends React.Component {
             </div>
         )
     }
-
-    componentDidMount() {
-        const nbrArchived = this.props.boards.filter(board => board.closed === true).length;
-        const nbrNotArchived = this.props.boards.filter(board => board.closed !== true).length;
-        console.log(nbrArchived)
-        const temp = (nbrArchived !== 0);
-        this.setState({isArchived:temp})
-
-    }
-
-    componentDidUpdate() {
-        const nbrArchived = this.props.boards.filter(board => board.closed === true).length
-        console.log(nbrArchived)
-        const isArchivedConst = nbrArchived !== 0;
-        if (this.state.isArchived !== isArchivedConst) {
-            this.setState({isArchived: isArchivedConst});
-        }
-    }
-
 }
 
 const mapStateToProps = ( state, props ) => ({
     user : state.user,
     boards: state.boards,
     circles: state.circles,
+    state: state.state,
 });
 
 const mapDispatchToProps = ( dispatch ) => ({
