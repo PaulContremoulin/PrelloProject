@@ -18,6 +18,6 @@
   background-color: #dfe3e6;
 }
 
-.DateInput {
-  height: 32px;
+.cardModal {
+    max-width: 600px;
 }
