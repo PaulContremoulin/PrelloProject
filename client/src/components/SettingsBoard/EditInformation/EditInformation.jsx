@@ -91,7 +91,7 @@ export class EditInformationToBeConnected extends React.Component {
         const { name, desc} = this.state;
         return (
             <div>
-                <Button onClick={() => this.openModal()}>Change Information</Button>
+                <Button className="butEditInfoBoard" onClick={() => this.openModal()}>Change Information</Button>
                 <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
                     <ModalHeader toggle={() =>this.closeModal()}>Change Information</ModalHeader>
                     <Form className="form" onSubmit={this.handleSubmit}>

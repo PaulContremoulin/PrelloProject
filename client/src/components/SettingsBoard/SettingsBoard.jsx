@@ -35,24 +35,21 @@ export class SettingsBoardToBeConnected extends React.Component {
                         <TitleSettingsBoard boardName={this.props.board.name} boardId={this.props.board._id}/>
                         <hr className="my-2"/>
                         <Row>
-                            <Col sm={{size:8, offset:2}}>
-                                <h4><FontAwesomeIcon icon={faWrench} size="1x"/> Settings</h4>
+                            <Col sm={12} md={7}>
+                                <SettingsMembers type={this.state.type} nbrMember={this.state.nbrMember}/>
+                            </Col>
+                            <Col sm={12} md={{size:4, offset:1}}>
+                                <h4 className="contentSettings"><FontAwesomeIcon icon={faWrench} size="1x"/> Settings</h4>
+                                <Row className="butContentSettings">
+                                    <Col sm={6} md={{size:10, offset:2}}>
+                                        <EditInformation/>
+                                    </Col>
+                                    <Col sm={6} md={{size:10, offset:2}} >
+                                        <EditStateBoard/>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col sm={{size:2, offset:4}} >
-                                <EditInformation/>
-                            </Col>
-                            <Col sm={{size:3}} >
-                                <EditStateBoard/>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col sm={{size:9, offset:1}}>
-                                <hr className="my-2"/>
-                            </Col>
-                        </Row>
-                        <SettingsMembers type={this.state.type} nbrMember={this.state.nbrMember}/>
                     </Container>
                     :
                     <Alert color="danger">

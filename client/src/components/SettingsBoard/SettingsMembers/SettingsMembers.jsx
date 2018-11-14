@@ -23,12 +23,12 @@ export class SettingsMembersToBeConnected extends React.Component {
         return (
             <div className="SettingsMembers">
                 <Row>
-                    <Col sm={{size:8, offset:2}}>
+                    <Col sm={{size:12}}>
                         <h4 className="float-left"><FontAwesomeIcon icon={faUsers} size="1x"/> Members</h4>
                     </Col>
                 </Row>
                 <Row>
-                    <Col className="listGroupMember" sm={{size:6, offset:3}}>
+                    <Col className="listGroupMember" sm={{size:11, offset:1}}>
                         <ListGroup className="scrollingList">
                             {this.props.board.memberships.map(membership => {
                                 if(membership.idMember._id === this.props.user.member.id) {

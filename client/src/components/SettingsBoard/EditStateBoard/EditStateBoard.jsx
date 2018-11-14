@@ -56,7 +56,7 @@ export class EditStateBoardToBeConnected extends React.Component {
             <div className="DeleteMember">
                 {this.props.board.closed ?
                     <div>
-                        <Button color="danger" onClick={this.toggle}>Unarchive Board</Button>
+                        <Button className="butEditState" color="danger" onClick={this.toggle}>Unarchive Board</Button>
                         <Modal isOpen={this.state.modal} toggle={this.toggle}>
                             <ModalBody>Do you want unarchive this board ? </ModalBody>
                             <ModalFooter>
@@ -67,7 +67,7 @@ export class EditStateBoardToBeConnected extends React.Component {
                     </div>
                     :
                     <div>
-                        <Button color="danger" onClick={this.toggle}>Archive Board</Button>
+                        <Button className="butEditState" color="danger" onClick={this.toggle}>Archive Board</Button>
                         <Modal isOpen={this.state.modal} toggle={this.toggle}>
                             <ModalBody>Do you want archive this board ? </ModalBody>
                             <ModalFooter>

@@ -1,0 +1,9 @@
+.butEditState {
+    width: 170px;
+}
+
+@media only screen and (min-width: 767px) {
+    .butEditState {
+        margin-top: 20px;
+    }
+}
