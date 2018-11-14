@@ -61,8 +61,18 @@ export class ContentHomeToBeConnected extends React.Component {
         )
     }
 
+    componentDidMount() {
+        const nbrArchived = this.props.boards.filter(board => board.closed === true).length;
+        const nbrNotArchived = this.props.boards.filter(board => board.closed !== true).length;
+        console.log(nbrArchived)
+        const temp = (nbrArchived !== 0);
+        this.setState({isArchived:temp})
+
+    }
+
     componentDidUpdate() {
         const nbrArchived = this.props.boards.filter(board => board.closed === true).length
+        console.log(nbrArchived)
         const isArchivedConst = nbrArchived !== 0;
         if (this.state.isArchived !== isArchivedConst) {
             this.setState({isArchived: isArchivedConst});

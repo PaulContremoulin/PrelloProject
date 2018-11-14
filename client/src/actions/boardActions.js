@@ -14,6 +14,8 @@ export const MOVE_CARD_FROM_LIST= "MOVE_CARD_FROM_LIST" ;
 export const SET_BOARD_MEMBERS = "SET_BOARD_MEMBERS";
 export const ADD_MEMBER = "ADD_MEMBER";
 export const EDIT_ROLE_MEMBER = "EDIT_ROLE_MEMBER";
+export const EDIT_INFORMATION_BOARD = "EDIT_INFORMATION_BOARD";
+export const EDIT_STATE_BOARD = "EDIT_STATE_BOARD";
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -63,6 +65,20 @@ export const setBoard = (board) => {
         board
     }
 };
+
+export const editInformationsBoard = (board) => {
+    return {
+        type:EDIT_INFORMATION_BOARD,
+        board
+    }
+}
+
+export const changeStateBoard = (state) => {
+    return {
+        type: EDIT_STATE_BOARD,
+        state
+    }
+}
 
 export const setBoardMembers = (listMembers) => {
     return {

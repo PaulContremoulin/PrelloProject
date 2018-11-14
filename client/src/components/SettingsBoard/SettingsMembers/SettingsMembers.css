@@ -9,3 +9,9 @@
 .listItemUser {
   background-color: #f2f2f2;
 }
+
+.scrollingList {
+    max-height: 300px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
