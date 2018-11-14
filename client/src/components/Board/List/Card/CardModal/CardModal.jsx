@@ -1,8 +1,8 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
-import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
-
+import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Badge, Popover, PopoverHeader, PopoverBody} from 'reactstrap';
+import Calendar from 'react-calendar';
 // Css
 import './CardModal.css';
 
@@ -22,6 +22,7 @@ import { getComments, postCommentToCard, putTextToComment } from '../../../../..
 import { setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard } from '../../../../../actions/labelActions';
 import { getLabel, postLabel, putLabel, deleteLabel, removeLabelFromCard, postLabelToCard } from '../../../../../requests/labels';
 
+import  dateFormat from 'dateformat';
 
 export class CardModalToBeConnected extends React.Component {
   constructor(props) {
@@ -77,8 +78,8 @@ export class CardModalToBeConnected extends React.Component {
     this.setState({ descInput: false })
   }
 
-  handleOnBlurDueDate = (event) => {
-    const newDate = event.target.value;
+  handleOnChangeDueDate = (date) => {
+    const newDate = date;
     if (newDate !== this.props.card.due) {
       const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
       changeCardDueDate(cardId, newDate )
@@ -87,7 +88,7 @@ export class CardModalToBeConnected extends React.Component {
     this.setState({ dueDateInput: false })
   }
 
-  toggleInputHeader = () => { this.setState({ openInputHeader: true }) }
+  toggleInputHeader = () => this.setState({ openInputHeader: true });
 
   toggleDescInput = () => { this.setState({ descInput : true }) }
 
@@ -135,39 +136,25 @@ export class CardModalToBeConnected extends React.Component {
         checkItemSetName, checkItemSetPos, checkItemSetState,
       } = this.props;
       return (
-          <div>
-            <Modal className="modal-lg" isOpen={open} toggle={() => closeModal() } centered={true}>
+          <Modal isOpen={open} toggle={() => closeModal() } centered={true}>
               <ModalHeader className="cardModalHeader" toggle={() => closeModal()}>
-              {(openInputHeader) ?
-                <Input
-                  type="text"
-                  name="cardName"
-                  placeholder="Card name"
-                  required={true}
-                  defaultValue={card.name}
-                  onBlur={(e) => this.handleOnBlurHeader(e)}
-                />
-                :
-                <span onClick={ () => this.toggleInputHeader() } >{card.name}</span>
-              }
-              </ModalHeader>
-              <ModalBody className="cardModalBody">
-                <Row className="MainModalRow">
-                  {(card.due !== null && !this.state.dueDateInput) ? <h6>Due Date : {card.due}</h6> : null}
-                  {(this.state.dueDateInput) ?
-                    <div>
-                      <Label for="dueDate">Due date :</Label>
+                <Col>
+                  {(openInputHeader) ?
+                      <h4>
                       <Input
-                      type="date"
-                      name="dueDate"
-                      id="dueDate"
-                      placeholder="date placeholder"
-                      onBlur={ (e) => this.handleOnBlurDueDate(e) }
+                          type="text"
+                          name="cardName"
+                          placeholder="Card name"
+                          autoFocus
+                          required={true}
+                          defaultValue={card.name}
+                          onBlur={(e) => this.handleOnBlurHeader(e)}
                       />
-                    </div>
-                    :
-                    null
+                      </h4>
+                      :
+                      <h4 onClick={ () => this.toggleInputHeader() } >{card.name}</h4>
                   }
+<<<<<<< HEAD
                 </Row>
                 <Row>
                   <Col className="SideModalCol" md="3">
@@ -239,14 +226,18 @@ export class CardModalToBeConnected extends React.Component {
                         :
                         null
                     }
+=======
+                </Col>
+                <Col>
+>>>>>>> [FRONT] - Card css design
                     {
-                      (this.state.addChecklist) ?
-                        <AddChecklist
-                          toggleEditedChecklist={() => this.toggleEditedChecklist()}
-                          addChecklist={ (checklistName) => { this.addChecklistToCard(checklistName) } }
-                        />
-                        : null
+                      (card.due !== null && card.due !== '')
+                      ?
+                      <h6 id="dueDateId" onClick={ () => this.toggleDueInput() }>For : <Badge color="primary"> { dateFormat(card.due, "fullDate") } </Badge></h6>
+                      :
+                      <h6 id="dueDateId" onClick={ () => this.toggleDueInput() }>No due date</h6>
                     }
+<<<<<<< HEAD
                     <Row className="MainModalRow">
                       <h4>Comments : </h4>
                       { //<Comment key={index} comment={comment} /> Bugged,
@@ -265,12 +256,23 @@ export class CardModalToBeConnected extends React.Component {
                     </Row>
                   </Col>
                 </Row>
+=======
+                    <Popover placement="bottom" isOpen={this.state.dueDateInput} target="dueDateId" toggle={this.state.dueDateInput}>
+                        <PopoverHeader>Due date</PopoverHeader>
+                        <PopoverBody>
+                            <Calendar
+                                value={ card.due ? new Date(card.due) : new Date()}
+                                onChange={ (date) => this.handleOnChangeDueDate(date)}
+                                onBlur={(e) => this.toggleDueInput()}
+                            />
+                        </PopoverBody>
+                    </Popover>
+                </Col>
+              </ModalHeader>
+              <ModalBody>
+>>>>>>> [FRONT] - Card css design
               </ModalBody>
-              <ModalFooter>
-                  <Button color="secondary" onClick={() => closeModal() }>Return</Button>
-              </ModalFooter>
-            </Modal>
-          </div>
+          </Modal>
       )
   }
 }
