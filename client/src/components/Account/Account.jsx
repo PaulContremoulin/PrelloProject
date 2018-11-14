@@ -38,7 +38,6 @@ export class AccountToBeConnected extends React.Component {
                         <Col xs={12} sm={5} md={4} lg={{size:3, offset:1}} xl={{size:3, offset:1}}>
                             <Card>
                                 <CardBody>
-                                    <CardText>
                                         <Row>
                                             <Col sm={2}>
                                                 <FontAwesomeIcon icon={faUser} size="1x"/>
@@ -68,7 +67,6 @@ export class AccountToBeConnected extends React.Component {
                                                 {this.props.user.member.email}
                                             </Col>
                                         </Row>
-                                    </CardText>
                                 </CardBody>
                             </Card>
                         </Col>
@@ -93,42 +91,36 @@ export class AccountToBeConnected extends React.Component {
                         <Col xs={12} sm={4} md={4} lg={{size:3, offset:1}} xl={{size:3, offset:1}}>
                             <Card className="indexCol">
                                 <CardBody className="bodyStatMyProfile">
-                                    <CardText>
                                         <Col className="centerCol">
                                             Number of personal boards
                                         </Col>
                                         <Col className="centerCol">
                                             {this.state.nbrBoardsPersonal}
                                         </Col>
-                                    </CardText>
                                 </CardBody>
                             </Card>
                         </Col>
                         <Col xs={12} sm={4} md={4} lg={{size:3}} xl={{size:3}}>
                             <Card className="indexCol">
                                 <CardBody className="bodyStatMyProfile">
-                                    <CardText>
                                         <Col className="centerCol">
                                             Number of shared boards
                                         </Col>
                                         <Col className="centerCol">
                                             {this.state.nbrBoardsShare}
                                         </Col>
-                                    </CardText>
                                 </CardBody>
                             </Card>
                         </Col>
                         <Col xs={12} sm={4} md={4} lg={{size:3}} xl={{size:3}}>
                             <Card className="indexCol">
                                 <CardBody className="bodyStatMyProfile">
-                                    <CardText>
                                         <Col className="centerCol">
                                             Number of circles
                                         </Col>
                                             <Col className="centerCol">
                                             {this.props.circles.length}
                                         </Col>
-                                    </CardText>
                                 </CardBody>
                             </Card>
                         </Col>
