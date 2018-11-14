@@ -91,10 +91,6 @@ export class BoardToBeConnected extends React.Component {
             .then( () => this.props.setListName(listId, listName) )
     }
     addCardToBoard = (cardName, cardPos, listId, boardId) => { // pos to be added later
-<<<<<<< HEAD
-=======
-      console.log(boardId);
->>>>>>> Comments, cleaned reducers checklist and comments
         postCardToBoard(cardName, cardPos, listId, boardId)
             .then( newCard => {
                 this.props.addCard(newCard.data)
@@ -137,20 +133,11 @@ export class BoardToBeConnected extends React.Component {
     componentWillUnmount() {
         this.props.resetComments(); // resets the comments reducer
         this.props.resetChecklists(); // resets the checklists reducer
-<<<<<<< HEAD
         socket.emit('unsubscribe', this.props.board._id);
-=======
-        const idBoard = history.location.pathname.split('/')[2];
-        socket.emit('unsubscribe', idBoard);
->>>>>>> Comments, cleaned reducers checklist and comments
     }
     render() {
         const { board, addList, moveList, addCard, moveCard } = this.props;
         const boardId = (board._id) ? board._id : board.id;
-<<<<<<< HEAD
-=======
-        console.log(boardId);
->>>>>>> Comments, cleaned reducers checklist and comments
         const color = (board.prefs && board.preds.background) ? board.prefs.background : "#ffffff";
         return(
             <div className="Board">
