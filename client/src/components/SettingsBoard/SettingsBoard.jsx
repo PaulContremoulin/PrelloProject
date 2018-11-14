@@ -1,16 +1,20 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
-import {Container, Alert} from 'reactstrap';
+import {Container, Alert, Row, Col} from 'reactstrap';
 
 // Css...
 import './SettingsBoard.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWrench } from '@fortawesome/free-solid-svg-icons';
+
+// Actions & Constant
 import {TitleSettingsBoard} from "../../components/SettingsBoard/TitleSettingsBoard/TitleSettingsBoard";
 import {setBoard ,setBoardMembers} from "../../actions/boardActions";
 import {getMembersOfBoard} from "../../requests/boards";
 import {SettingsMembers} from "./SettingsMembers/SettingsMembers";
-
-// Actions & Constant
+import {EditInformation} from "./EditInformation/EditInformation";
+import {EditStateBoard} from "./EditStateBoard/EditStateBoard";
 
 export class SettingsBoardToBeConnected extends React.Component {
     constructor(props) {
@@ -29,6 +33,20 @@ export class SettingsBoardToBeConnected extends React.Component {
                 {this.state.isGood ?
                     <Container>
                         <TitleSettingsBoard boardName={this.props.board.name} boardId={this.props.board._id}/>
+                        <hr className="my-2"/>
+                        <Row>
+                            <Col sm={{size:8, offset:2}}>
+                                <h4><FontAwesomeIcon icon={faWrench} size="1x"/> Settings</h4>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={{size:2, offset:4}} >
+                                <EditInformation/>
+                            </Col>
+                            <Col sm={{size:3}} >
+                                <EditStateBoard/>
+                            </Col>
+                        </Row>
                         <hr className="my-2"/>
                         <SettingsMembers type={this.state.type} nbrMember={this.state.nbrMember}/>
                     </Container>

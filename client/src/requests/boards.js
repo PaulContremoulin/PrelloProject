@@ -1,4 +1,4 @@
-import { postRequest, getRequest } from './genericRequest';
+import { postRequest, getRequest, putRequest } from './genericRequest';
 
 /**
  * @desc create a new boards in the database
@@ -76,3 +76,14 @@ export function getMembersOfBoard(idBoard) {
         idLabels: [],
       })
   }
+
+export const changeInformationBoard = (
+    idBoard,
+    name,
+    desc,
+    closed,
+) => (putRequest('/api/boards/'+idBoard+'?name='+name+'&desc='+desc+'&closed='+closed)
+        .then(response => response)
+        .catch(err => err.response)
+)
+

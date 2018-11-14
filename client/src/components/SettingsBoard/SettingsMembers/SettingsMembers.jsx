@@ -29,7 +29,7 @@ export class SettingsMembersToBeConnected extends React.Component {
                 </Row>
                 <Row>
                     <Col className="listGroupMember" sm={{size:6, offset:3}}>
-                        <ListGroup>
+                        <ListGroup className="scrollingList">
                             {this.props.board.memberships.map(membership => {
                                 if(membership.idMember._id === this.props.user.member.id) {
                                 return (

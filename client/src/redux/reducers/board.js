@@ -10,7 +10,7 @@ import { combineReducers } from 'redux';
 
 import { DEFAULT_BOARD } from '../../constants';
 
-import { SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIST, SET_BOARD_MEMBERS, ADD_MEMBER, EDIT_ROLE_MEMBER } from '../../actions/boardActions';
+import { EDIT_STATE_BOARD, SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIST, SET_BOARD_MEMBERS, ADD_MEMBER, EDIT_ROLE_MEMBER, EDIT_INFORMATION_BOARD } from '../../actions/boardActions';
 
 import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE } from '../../actions/cardActions';
 
@@ -57,6 +57,8 @@ const name = ( state = DEFAULT_BOARD.name, action ) => {
     switch ( action.type ) {
         case SET_BOARD :
             return action.board.name ;
+        case EDIT_INFORMATION_BOARD:
+            return action.board.name;
         default:
             return state ;
     }
@@ -77,6 +79,8 @@ const desc = ( state = DEFAULT_BOARD.desc, action ) => {
     switch ( action.type ) {
         case SET_BOARD :
             return action.board.desc ;
+        case EDIT_INFORMATION_BOARD:
+            return action.board.desc;
         default:
             return state ;
     }
@@ -87,6 +91,8 @@ const closed = ( state = DEFAULT_BOARD.closed, action ) => {
     switch ( action.type ) {
         case SET_BOARD :
             return action.board.closed ;
+        case EDIT_STATE_BOARD:
+            return action.state;
         default:
             return state ;
     }
