@@ -34,7 +34,7 @@ export class Comment extends React.Component {
         <Row>
           <Card className="CommentCard">
             <CardTitle className="CommentTitle">
-              {comment.idAuthor}
+              {comment.idAuthor.username}
             </CardTitle>
             <CardBody>
               {comment.text}

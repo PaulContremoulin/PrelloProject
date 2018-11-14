@@ -34,7 +34,7 @@ export class AddChecklist extends React.Component {
 
 
   render() {
-    const { toggleEditedChecklist, handleOnBlurChecklist, addChecklist } = this.props;
+    const { toggleEditedChecklist, addChecklist } = this.props;
     return (
       <Row>
         <Form className="form" onSubmit={this.handleSubmit}>

@@ -37,7 +37,7 @@ export class CardModalToBeConnected extends React.Component {
   }
 
   componentDidMount() {
-    const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+    const cardId = this.props.card.id;
     getChecklists(cardId)
       .then(res => {
         this.props.setChecklists(res.data);
@@ -50,18 +50,10 @@ export class CardModalToBeConnected extends React.Component {
         .catch(error => {console.log(error)});
   }
 
-// cardId : ID
-// cardName : String
-// index : Int
-// associatedMembers : [ userId ]
-// deadline (due Date) : date
-// checklists : [ Checklist ]
-// comments : [ Comment ]
-
   handleOnBlurHeader = (event) => {
     const newName = event.target.value;
     if (newName !== this.props.card.name) {
-      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+      const cardId = this.props.card.id;
       changeCardName(cardId, newName )
       .then( () => this.props.setName( this.props.listId, cardId, newName ) )
     }
@@ -71,7 +63,7 @@ export class CardModalToBeConnected extends React.Component {
   handleOnBlurDesc = (event) => {
     const newDesc = event.target.value;
     if (newDesc !== this.props.card.desc) {
-      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+      const cardId = this.props.card.id;
       changeCardDesc(cardId, newDesc )
       .then( () => this.props.setDesc( this.props.listId, cardId, newDesc ) )
     }
@@ -81,7 +73,7 @@ export class CardModalToBeConnected extends React.Component {
   handleOnChangeDueDate = (date) => {
     const newDate = date;
     if (newDate !== this.props.card.due) {
-      const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+      const cardId = this.props.card.id;
       changeCardDueDate(cardId, newDate )
       .then( () => this.props.setDue( this.props.listId, cardId, newDate ) )
     }
@@ -95,7 +87,7 @@ export class CardModalToBeConnected extends React.Component {
   toggleDueInput = () => { this.setState({ dueDateInput : !this.state.dueDateInput }) }
 
   closeCard = () => {
-    const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+    const cardId = this.props.card.id;
     changeCardClosed(cardId, true)
     .then( () => this.props.setClosed( this.props.listId, cardId, true) )
   }
@@ -104,15 +96,17 @@ export class CardModalToBeConnected extends React.Component {
   toggleEditedChecklist = () => { this.setState({ addChecklist: !this.state.addChecklist }); }
 
   addChecklistToCard = (checklistName) => {
-    const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+    const cardId = this.props.card.id;
     const boardId = this.props.boardId;
     postChecklistToCard(checklistName, cardId, boardId)
-    .then( checklist => this.props.addChecklist(this.props.listId, cardId, checklist.data) )
+    .then( checklist => {
+      this.props.addChecklist(checklist.data, boardId)
+    } )
   }
 
   // COMMENTS
   addCommentToCard = (commentText) => {
-    const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+    const cardId = this.props.card.id;
     const boardId = this.props.boardId;
     postCommentToCard(commentText, cardId)
     .then( comment => this.props.addComment(comment.data, boardId) )
@@ -135,6 +129,7 @@ export class CardModalToBeConnected extends React.Component {
         checklistSetName, checklistSetPos,
         checkItemSetName, checkItemSetPos, checkItemSetState,
       } = this.props;
+      console.log(checklists);
       return (
           <Modal isOpen={open} toggle={() => closeModal() } centered={true}>
               <ModalHeader className="cardModalHeader" toggle={() => closeModal()}>
@@ -225,6 +220,13 @@ export class CardModalToBeConnected extends React.Component {
                         :
                         null
                     }
+                    {(this.state.addChecklist) ?
+                      <AddChecklist
+                        toggleEditedChecklist={ () => this.toggleEditedChecklist() }
+                        addChecklist={ (checklistName) => this.addChecklistToCard(checklistName) }
+                      />
+                      : null
+                    }
                   </Col>
                 </Row>
                   <Row>
@@ -238,11 +240,11 @@ export class CardModalToBeConnected extends React.Component {
                         }
                         <Row className="MainModalRow">
                           <h4>Comments : </h4>
-                          { //<Comment key={index} comment={comment} /> Bugged,
+                          { // Bugged,
                           (comments) ?
                             <div>
                               {comments.map(
-                                (comment, index) => <span>comment.text</span>
+                                (comment, index) => <Comment key={index} comment={comment} />
                               )}
                             </div>
                             :
@@ -278,11 +280,11 @@ const mapStateToProps = ( state, props ) => ({
 })
 
 const mapDispatchToProps = ( dispatch ) => ({
-  setName: (idList, idCard, name) => dispatch( setName(idList, idCard, name) ),
-  setDesc: (idList, idCard, desc) => dispatch( setDesc(idList, idCard, desc) ),
-  setDue: (idList, idCard, due) => dispatch( setDue(idList, idCard, due) ),
-  setClosed: (idList, idCard, closed) => dispatch( setClosed(idList, idCard, closed) ),
-  addChecklist: (checklistName, idCard, idBoard) => dispatch( addChecklist(checklistName, idCard, idBoard) ),
+  setName: (idList, idCard, name, idBoard) => dispatch( setName(idList, idCard, name, idBoard) ),
+  setDesc: (idList, idCard, desc, idBoard) => dispatch( setDesc(idList, idCard, desc, idBoard) ),
+  setDue: (idList, idCard, due, idBoard) => dispatch( setDue(idList, idCard, due, idBoard) ),
+  setClosed: (idList, idCard, closed, idBoard) => dispatch( setClosed(idList, idCard, closed, idBoard) ),
+  addChecklist: (checklist, idBoard) => dispatch( addChecklist(checklist, idBoard) ),
   setChecklists: (checklists) => dispatch( setChecklists(checklists) ),
   checklistSetName: (idChecklist, checklistName, idBoard, idList, idCard) => dispatch( checklistSetName(idChecklist, checklistName, idBoard, idList, idCard) ),
   checklistSetPos: (idChecklist, checklistPos, idBoard, idList, idCard) => dispatch( checklistSetPos(idChecklist, checklistPos, idBoard, idList, idCard) ),

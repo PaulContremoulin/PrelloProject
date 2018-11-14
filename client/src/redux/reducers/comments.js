@@ -48,7 +48,7 @@ const text = ( state = "", action ) => {
   }
 }
 
-const idAuthor = ( state = "", action ) => {
+const idAuthor = ( state = {}, action ) => {
   switch (action.type) {
     case SET_COMMENTS :
       return action.comment.idAuthor;

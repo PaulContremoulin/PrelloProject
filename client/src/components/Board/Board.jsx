@@ -11,10 +11,10 @@ import {BoardMenu} from './BoardMenu/BoardMenu';
 import {List} from './List/List';
 import {AddList} from './AddList/AddList';
 import {setBoard, addList, moveList, addCard, moveCard, moveCardFromList} from '../../actions/boardActions';
+import { postListToBoard, postCardToBoard, getListsOfBoard, getBoardById } from '../../requests/boards';
 import {resetComments} from '../../actions/commentActions';
 import {resetChecklists} from '../../actions/checkObjectActions';
-import { setListName } from '../../actions/listActions';
-import { postListToBoard, postCardToBoard, getListsOfBoard, getBoardById } from '../../requests/boards';
+import { setListName, setListClosed } from '../../actions/listActions';
 import { changeListName } from '../../requests/lists';
 import { nextPosFromArray } from '../../boardUtil.js';
 // Css
@@ -86,9 +86,9 @@ export class BoardToBeConnected extends React.Component {
         this.props.moveCardFromList(newContextListStart, indexOfListStart, newContextListEnd, indexOfListEnd);
         return;
     };
-    setNameOfList = (listId, listName) => {
+    setNameOfList = (listId, listName, idBoard) => {
         changeListName(listId, listName)
-            .then( () => this.props.setListName(listId, listName) )
+            .then( () => this.props.setListName(listId, listName, idBoard) )
     }
     addCardToBoard = (cardName, cardPos, listId, boardId) => { // pos to be added later
         postCardToBoard(cardName, cardPos, listId, boardId)
@@ -167,7 +167,7 @@ export class BoardToBeConnected extends React.Component {
                                                             list={list}
                                                             addCard={(cardName, listId) => this.addCardToBoard(cardName, nextPosFromArray(list.cards), listId, boardId)}
                                                             moveList={moveList}
-                                                            setNameOfList={(listName) => this.setNameOfList(list.id, listName)}
+                                                            setNameOfList={(listName) => this.setNameOfList(list.id, listName, boardId)}
                                                             index={index}
                                                         />
                                                     </div>
@@ -203,7 +203,8 @@ const mapDispatchToProps = ( dispatch ) => ({
     moveList: (newListOrder) => dispatch( moveList(newListOrder) ),
     addCard: (card) => dispatch( addCard(card) ),
     moveCard: (newList, indexOfList) => dispatch( moveCard(newList, indexOfList) ),
-    setListName: (listId, listName) => dispatch( setListName(listId, listName) ),
+    setListName: (listId, listName, idBoard) => dispatch( setListName(listId, listName, idBoard) ),
+    setListName: (listId, closed, idBoard) => dispatch( setListName(listId, closed, idBoard) ),
     moveCardFromList: (newListStart, indexOfListStart, newListEnd, indexOfListEnd) => dispatch( moveCardFromList(newListStart, indexOfListStart, newListEnd, indexOfListEnd) ),
     resetComments: () => dispatch( resetComments()),
     resetChecklists: () => dispatch( resetChecklists()),

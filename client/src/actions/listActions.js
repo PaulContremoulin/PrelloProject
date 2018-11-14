@@ -17,12 +17,18 @@
 /**
 * @desc
 */
-export const setListName = (idList, name) => {
+export const setListName = (idList, name, idBoard) => {
   return {
       type: LIST_SET_NAME,
       list: {
         id: idList,
         name,
+      },
+      meta: {
+          socket: {
+              channel: 'data:store',
+              room: idBoard,
+          }
       }
   }
 };

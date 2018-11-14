@@ -36,9 +36,3 @@ const checkItems = ( state = [], action ) => {
       return state ;
   }
 }
-
-// From card
-// case CARD_SET_CHECKLISTS :
-// case CARD_ADD_CHECKLIST :
-// case CARD_ADD_CHECKITEM :
-// return (action.card.id == state.id ) ? { ...state, checklists: checklists( state.checklists, action ) } : state

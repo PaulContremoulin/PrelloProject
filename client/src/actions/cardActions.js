@@ -22,7 +22,7 @@
 /**
 * @desc
 */
-export const setName = (idList, idCard, name) => {
+export const setName = (idList, idCard, name, idBoard) => {
   console.log(idList);
   console.log(idCard);
   console.log(name);
@@ -37,7 +37,8 @@ export const setName = (idList, idCard, name) => {
       },
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: idBoard,
           }
       }
   }
@@ -46,7 +47,7 @@ export const setName = (idList, idCard, name) => {
 /**
 * @desc
 */
-export const setDesc = (idList, idCard, desc) => {
+export const setDesc = (idList, idCard, desc, idBoard) => {
   return {
       type: CARD_SET_DESC,
       list: {
@@ -58,7 +59,8 @@ export const setDesc = (idList, idCard, desc) => {
       },
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: idBoard,
           }
       }
   }
@@ -68,7 +70,7 @@ export const setDesc = (idList, idCard, desc) => {
 /**
 * @desc
 */
-export const setDue = (idList, idCard, due) => {
+export const setDue = (idList, idCard, due, idBoard) => {
   return {
       type: CARD_SET_DUE,
       list: {
@@ -80,7 +82,8 @@ export const setDue = (idList, idCard, due) => {
       },
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: idBoard,
           }
       }
   }
@@ -90,7 +93,7 @@ export const setDue = (idList, idCard, due) => {
 /**
 * @desc
 */
-export const setClosed = (idList, idCard, closed) => {
+export const setClosed = (idList, idCard, closed, idBoard) => {
   return {
       type: CARD_SET_CLOSED,
       list: {
@@ -102,25 +105,23 @@ export const setClosed = (idList, idCard, closed) => {
       },
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: idBoard,
           }
       }
   }
 };
 
-export const addChecklist = (idList, idCard, checklist) => {
+export const addChecklist = (checklist, idBoard) => {
   return {
       type: CARD_ADD_CHECKLIST,
-      list: {
-        id: idList
-      },
       card: {
-        id: idCard,
         checklist: checklist
       },
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: idBoard,
           }
       }
   }
@@ -140,7 +141,7 @@ export const setChecklists = (checklists) => {
   }
 }
 
-export const addCheckItem = (idList, idCard, idChecklist, checkItem) => {
+export const addCheckItem = (idList, idCard, idChecklist, checkItem, idBoard) => {
   return {
       type: CARD_ADD_CHECKITEM,
       list: {
@@ -155,7 +156,8 @@ export const addCheckItem = (idList, idCard, idChecklist, checkItem) => {
       },
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: idBoard,
           }
       }
   }
