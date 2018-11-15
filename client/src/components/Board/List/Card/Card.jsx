@@ -64,13 +64,8 @@ export class CardComponent extends React.Component {
             {(open) ?
             <CardModal listId={listId} card={card} open={open} closeModal={() => this.closeModal()} />
             :
-<<<<<<< HEAD
             null
           }
-=======
-                null
-            }
->>>>>>> [FRONT] - Board presentation (CSS)
       </div>
     )
   }
