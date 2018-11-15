@@ -6,7 +6,7 @@ export function postLabel(boardId, labelName, labelColor) {
 }
 
 export function putLabel(labelId, labelName = "", labelColor = "") {
-  const queryStr = '';
+  var queryStr = '';
   if (labelName && labelColor) { queryStr = '?name=' + labelName + '&color=' + labelColor }
   else if (labelName) { queryStr = '?name=' + labelName }
   else if (labelColor) { queryStr = '?color=' + labelColor }

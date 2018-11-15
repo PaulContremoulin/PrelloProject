@@ -18,7 +18,13 @@ export class Checklist extends React.Component {
     }
   }
 
-  handleOnBlurChecklist = () => {
+  handleOnBlurChecklist = (e) => {
+    const newName = e.target.value;
+    if (newName !== this.props.checklist.name) {
+      this.props.putChecklist( newName )
+      .then( () => this.props.checklistSetName( newName ) )
+    }
+    this.setState({ inputChecklistName: false })
 
   }
 
@@ -28,6 +34,7 @@ export class Checklist extends React.Component {
 
   render() {
     const { checklist,
+      putChecklist,
       checklistSetName, checklistSetPos,
       checkItemSetName, checkItemSetPos, checkItemSetState,
      } = this.props;

@@ -11,13 +11,20 @@ import { putRequest, getRequest, postRequest } from './genericRequest';
       })
   }
 
-  export function postCheckitemToCard(checklistName, idCard, idBoard) {
-      return postRequest('/api/checklists/', {
-        name: checklistName,
+  export function putChecklist(idChecklist, nameChecklist = "", posChecklist = "") {
+    var queryStr = '';
+    if (nameChecklist && posChecklist) { queryStr = '?name=' + nameChecklist + '&pos=' + posChecklist }
+    else if (nameChecklist) { queryStr = '?name=' + nameChecklist }
+    else if (posChecklist) { queryStr = '?pos=' + posChecklist }
+    return putRequest('/api/checklists/' + idChecklist + queryStr)
+  }
+
+  export function postCheckitemToCard(checkItemName, idCard, idBoard, idChecklist) {
+      return postRequest('/api/checklists/' + idChecklist + "/checklists", {
+        name: checkItemName,
         pos: 0,
-        idCard: idCard,
-        idBoard: idBoard,
-        checkItems: []
+        idChecklist: idChecklist,
+        state: "incomplete",
       })
   }
 

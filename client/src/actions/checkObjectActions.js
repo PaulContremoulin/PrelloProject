@@ -30,14 +30,10 @@
 /**
 * @desc
 */
-export const checklistSetName = (idChecklist, checklistName, idBoard, idList, idCard) => {
+export const checklistSetName = (idChecklist, checklistName, idBoard) => {
   return {
       type: CHECKLIST_SET_NAME,
-      list: {
-        id: idList
-      },
       card: {
-        id: idCard,
         checklist: {
           id: idChecklist,
           name: checklistName,
@@ -55,12 +51,9 @@ export const checklistSetName = (idChecklist, checklistName, idBoard, idList, id
 /**
 * @desc
 */
-export const checklistSetPos = (idChecklist, checklistPos, idBoard, idList, idCard) => {
+export const checklistSetPos = (idChecklist, checklistPos, idBoard, idCard) => {
   return {
       type: CHECKLIST_SET_POS,
-      list: {
-        id: idList
-      },
       card: {
         id: idCard,
         checklist: {
@@ -80,12 +73,9 @@ export const checklistSetPos = (idChecklist, checklistPos, idBoard, idList, idCa
 /**
 * @desc
 */
-export const checkItemSetName = (idCheckItem, checkItemName, idBoard, idList, idCard, idChecklist) => {
+export const checkItemSetName = (idCheckItem, checkItemName, idBoard, idCard, idChecklist) => {
   return {
       type: CHECKITEM_SET_NAME,
-      list: {
-        id: idList
-      },
       card: {
         id: idCard,
         checklist: {
@@ -108,12 +98,9 @@ export const checkItemSetName = (idCheckItem, checkItemName, idBoard, idList, id
 /**
 * @desc
 */
-export const checkItemSetPos = (idCheckItem, checkItemPos, idBoard, idList, idCard, idChecklist) => {
+export const checkItemSetPos = (idCheckItem, checkItemPos, idBoard, idCard, idChecklist) => {
   return {
       type: CHECKITEM_SET_POS,
-      list: {
-        id: idList
-      },
       card: {
         id: idCard,
         checklist: {
@@ -136,12 +123,9 @@ export const checkItemSetPos = (idCheckItem, checkItemPos, idBoard, idList, idCa
 /**
 * @desc
 */
-export const checkItemSetState = (idCheckItem, checkItemState, idBoard, idList, idCard, idChecklist) => {
+export const checkItemSetState = (idCheckItem, checkItemState, idBoard, idCard, idChecklist) => {
   return {
       type: CHECKITEM_SET_STATE,
-      list: {
-        id: idList
-      },
       card: {
         id: idCard,
         checklist: {
