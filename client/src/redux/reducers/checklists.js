@@ -25,26 +25,28 @@ export const checklists = ( state = [], action ) => {
     case RESET_CHECKLISTS :
       return [];
     case CARD_SET_CHECKLISTS :
-      //return [...action.card.checklists];
-      //return [...state, ...action.card.checklists];
       return [...action.card.checklists];
     case CARD_ADD_CHECKLIST :
-      return [ ...state, {...action.card.checklist, checkItems: [] } ]
+      return [ ...state, {...action.card.checklist, checkItems: [] } ];
+    case ADD_CHECKITEM :
+      return state.map( (checklist, index) => (action.card.checklist.id == checklist.id) ? { ...checklist, checkItems : checkItems(checklist.checkItems, action)} : checklist);
+    case CHECKITEM_SET_STATE :
+      return state.map( (checklist, index) => (action.card.checklist.id == checklist.id) ? { ...checklist, checkItems : checkItems(checklist.checkItems, action)} : checklist);
     case CHECKLIST_SET_NAME :
-      return state.map(
-        (checklist, index) => (action.card.checklist.id == checklist.id ) ? { ...checklist, name: action.card.checklist.name } : checklist
-      )
-      case DELETE_CHECKLIST:
-        return state.filter(checklist => checklist.id !== action.card.checklist.id)
+      return state.map((checklist, index) => (action.card.checklist.id == checklist.id ) ? { ...checklist, name: action.card.checklist.name } : checklist);
+    case DELETE_CHECKLIST:
+      return state.filter(checklist => checklist.id !== action.card.checklist.id)
     default:
       return state ;
   }
-}
+};
 
-export const checkItems = ( state = [], action ) => {
+const checkItems = ( state = [], action ) => {
   switch (action.type) {
     case ADD_CHECKITEM :
       return [ ...state, action.card.checklist.checkItem ]
+    case CHECKITEM_SET_STATE :
+      return state.map((checkItem, index) => (action.card.checklist.checkItem.id == checkItem.id ) ? { ...checkItem, state: action.card.checklist.checkItem.state } : checkItem);
     default:
       return state ;
   }
