@@ -119,7 +119,7 @@ router.get('/:id/checkItems', token, ChecklistAccess.readRights(), function(req,
  * @param {string} idCheckItem.path.required - checkItem's id
  * @param {string} name.query - checkItem's name
  * @param {number} pos.query - checkItem's position
- * @param {string} state.query - checkItem's state (completed, uncompleted)
+ * @param {string} state.query - checkItem's state (completed, incomplete)
  * @returns {CheckItem} 200 - CheckItem
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  403 - Forbidden access

@@ -175,12 +175,14 @@ export class CardModalToBeConnected extends React.Component {
                                 checklistSetPos={checklistSetPos}
                                 checkItemSetName={checkItemSetName}
                                 checkItemSetPos={checkItemSetPos}
-                                checkItemSetState={checkItemSetState}
                                 checkListDelete={(idChecklist) => {
                                     checkListDelete(boardId, card.id, idChecklist)
                                 }}
                                 addCheckItem={(idCheckList, checkItem) => {
                                     addCheckItem(boardId, card.id, idCheckList, checkItem)
+                                }}
+                                checkItemSetState={(idCheckItem, checkItemState, idChecklist) => {
+                                    checkItemSetState(idCheckItem, checkItemState, boardId, card.id, idChecklist)
                                 }}
                             />
                         </Col>
@@ -233,7 +235,7 @@ const mapDispatchToProps = (dispatch) => ({
     checklistSetPos: (idChecklist, checklistPos, idBoard, idList, idCard) => dispatch(checklistSetPos(idChecklist, checklistPos, idBoard, idList, idCard)),
     checkItemSetName: (idCheckItem, checkItemName, idBoard, idList, idCard, idChecklist) => dispatch(checkItemSetName(idCheckItem, checkItemName, idBoard, idList, idCard, idChecklist)),
     checkItemSetPos: (idCheckItem, checkItemPos, idBoard, idList, idCard, idChecklist) => dispatch(checkItemSetPos(idCheckItem, checkItemPos, idBoard, idList, idCard, idChecklist)),
-    checkItemSetState: (idCheckItem, checkItemState, idBoard, idList, idCard, idChecklist) => dispatch(checkItemSetState(idCheckItem, checkItemState, idBoard, idList, idCard, idChecklist)),
+    checkItemSetState: (idCheckItem, checkItemState, idBoard, idCard, idChecklist)=> dispatch(checkItemSetState(idCheckItem, checkItemState, idBoard, idCard, idChecklist)),
     setComments: (comments) => dispatch(setComments(comments)),
     addComment: (comment, idBoard) => dispatch(addComment(comment, idBoard)),
     setTextComment: (idComment, text, idBoard) => dispatch(setTextComment(idComment, text, idBoard)),

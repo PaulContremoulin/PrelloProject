@@ -48,7 +48,7 @@ export class DescCard extends React.Component {
                             <Button className="float-right  descButton" type="submit" value="Submit" color="success" size="sm">Save</Button>
                         </Form>
                         :
-                        <p onClick={() => this.toggleDescInput()}>{desc}</p>
+                        <div class="desc" onClick={() => this.toggleDescInput()}>{desc}</div>
                     }
                     </Col>
                 </Row>

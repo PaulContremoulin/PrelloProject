@@ -7,7 +7,7 @@ import { CheckItem } from './CheckItem/CheckItem';
 
 
 import './Checklist.css'
-import {deleteCecklist, postCheckitemToCard} from "../../../../../../../requests/checklists";
+import {deleteChecklist, postCheckitemToCard} from "../../../../../../../requests/checklists";
 export class Checklist extends React.Component {
 
     constructor(props) {
@@ -33,8 +33,12 @@ export class Checklist extends React.Component {
     };
 
     deleteChecklist = () => {
-        deleteCecklist(this.props.checklist.id)
+        deleteChecklist(this.props.checklist.id)
             .then( () => this.props.checkListDelete(this.props.checklist.id) );
+    };
+
+    progressItem = () => {
+        return (this.props.checklist.checkItems.filter( i => i.state === "completed").length / this.props.checklist.checkItems.length) * 100;
     };
 
     render() {
@@ -42,6 +46,7 @@ export class Checklist extends React.Component {
             checklist,
             key,
             checklistSetName,
+            checkItemSetState,
             checklistSetPos,
             checkListDelete,
             addCheckItem
@@ -71,14 +76,21 @@ export class Checklist extends React.Component {
                     }
                     </Col>
                     <Col xs={{size:10, offset: 1}} className="CheckItems">
-                        <Progress className="progressBar" value="25" />
-                        {(checklist.checkItems) ?
-                            checklist.checkItems.map(
-                                (checkItem, index) =>
-                                    <CheckItem checkItem={checkItem}
-                                               index={index}
-                                    />
-                            ) : null
+                        {(checklist.checkItems && checklist.checkItems.length > 0) ?
+                            <div>
+                                <Progress className="progressBar" value={this.progressItem()} />
+                                {checklist.checkItems.map(
+                                    (checkItem, index) =>
+                                        <CheckItem checkItem={checkItem}
+                                                   checklistId={checklist.id}
+                                                   checkItemSetState={(checkItem, checkState) => {
+                                                       checkItemSetState(checkItem, checkState, checklist.id)
+                                                   }}
+                                                   index={index}
+                                        />
+                                )}
+                            </div>
+                            : null
                         }
                         <div className="addCheckItem">
                             {(this.state.checkItemInput)
@@ -95,7 +107,7 @@ export class Checklist extends React.Component {
                                     <input hidden={true} type="submit" value="Submit" />
                                 </Form>
                                 :
-                                <p onClick={() => this.toggleCheckItemInput()}>add a check item...</p>
+                                <div className="addField" onClick={() => this.toggleCheckItemInput()}>add a check item...</div>
                             }
                         </div>
                     </Col>
