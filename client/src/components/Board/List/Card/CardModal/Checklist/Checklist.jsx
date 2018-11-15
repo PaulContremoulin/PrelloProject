@@ -6,6 +6,7 @@ import { CheckItem } from './CheckItem/CheckItem';
 // Css
 import { Container, Row, Col, Input, Card, CardText, CardTitle, CardBody, CardFooter, Button } from 'reactstrap';
 import Octicon from 'react-octicon';
+
 import './Checklist.css';
 
 
@@ -23,7 +24,7 @@ export class Checklist extends React.Component {
 
   toggleCheklistInput = () => {
     this.setState({ inputChecklistName: true })
-  }
+  };
 
   render() {
     const { checklist,
@@ -53,11 +54,11 @@ export class Checklist extends React.Component {
               <Row>
                 {checklist.checkItems.map(
                     (checkItem, index) =>
-                    <CheckItem checkItem={ checkItem }
-                      checkItemSetName={ checkItemSetName }
-                      checkItemSetPos={ checkItemSetPos }
-                      checkItemSetState={ checkItemSetState }
-                    />
+                      <CheckItem checkItem={ checkItem }
+                        checkItemSetName={ checkItemSetName }
+                        checkItemSetPos={ checkItemSetPos }
+                        checkItemSetState={ checkItemSetState }
+                      />
                   )}
               </Row>
             </Col>

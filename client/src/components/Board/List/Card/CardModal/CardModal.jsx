@@ -32,35 +32,17 @@ import {LabelComponent} from './Label/Label';
 import {AddLabel} from './AddLabel/AddLabel';
 import {setName, setDesc, setDue, setClosed, addChecklist, setChecklists} from '../../../../../actions/cardActions';
 import {changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed} from '../../../../../requests/cards';
-import {
-    checklistSetName,
-    checklistSetPos,
-    checkItemSetName,
-    checkItemSetPos,
-    checkItemSetState
-} from '../../../../../actions/checkObjectActions';
+import {checklistSetName, checklistSetPos, checkItemSetName, checkItemSetPos, checkItemSetState} from '../../../../../actions/checkObjectActions';
 import {postChecklistToCard, getChecklists} from '../../../../../requests/checklists';
 import {setComments, addComment, setTextComment} from '../../../../../actions/commentActions';
 import {getComments, postCommentToCard, putTextToComment} from '../../../../../requests/comments';
-import {
-    setLabels,
-    addLabel,
-    setNameLabel,
-    setColorLabel,
-    deleteLabelFromBoard
-} from '../../../../../actions/labelActions';
-import {
-    getLabel,
-    postLabel,
-    putLabel,
-    deleteLabel,
-    removeLabelFromCard,
-    postLabelToCard
-} from '../../../../../requests/labels';
+import {setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard} from '../../../../../actions/labelActions';
+import {getLabel, postLabel, putLabel, deleteLabel, removeLabelFromCard, postLabelToCard} from '../../../../../requests/labels';
 
 import {TitleCard} from "./TitleCard/TitleCard";
 import {DateCalendar} from "./DateCalendar/DateCalendar";
 import {DescCard} from "./DescCard/DescCard";
+import {ChecklistsCard} from "./ChecklistsCard/ChecklistsCard";
 
 export class CardModalToBeConnected extends React.Component {
     constructor(props) {
@@ -173,6 +155,15 @@ export class CardModalToBeConnected extends React.Component {
                         }}
                         desc={card.desc}
                     />
+                    <ChecklistsCard
+                        checklists={checklists}
+                        checklistSetName={checklistSetName}
+                        checklistSetPos={checklistSetPos}
+                        checkItemSetName={checkItemSetName}
+                        checkItemSetPos={checkItemSetPos}
+                        checkItemSetState={checkItemSetState}
+                    />
+
                 </ModalBody>
             </Modal>
         )

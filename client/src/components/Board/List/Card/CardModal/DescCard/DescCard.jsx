@@ -33,26 +33,24 @@ export class DescCard extends React.Component {
             <Col>
                 <Row>
                     <Col xs="1"><FontAwesomeIcon className='icon' icon={faAlignJustify}/></Col>
+                    <Col xs="11">
+                        <h5>Description</h5>
                     {(this.state.descInput) || (desc === "")?
-                        <Col xs="11">
-                            <Form onSubmit={ (e) => { e.preventDefault(); this.setDesc(e.target.descName.value)}}>
-                                <Input
-                                    type="textarea"
-                                    name="descName"
-                                    placeholder="Add a description for your card..."
-                                    defaultValue={desc}
-                                    onBlur={(e) => this.setDesc(e.target.value)}
-                                />
-                                <Button className="float-right  descButton" color="danger" size="sm">Cancel</Button>
-                                <Button className="float-right  descButton" type="submit" value="Submit" color="success" size="sm">Save</Button>
-                            </Form>
-                        </Col>
+                        <Form onSubmit={ (e) => { e.preventDefault(); this.setDesc(e.target.descName.value)}}>
+                            <Input
+                                style={{"margin-top":"8px"}}
+                                type="textarea"
+                                name="descName"
+                                placeholder="Add a description for your card..."
+                                defaultValue={desc}
+                            />
+                            {(desc !== "") ? <Button className="float-right  descButton" onClick={() => {this.setState({descInput: false})}} color="danger" size="sm">Cancel</Button> : null}
+                            <Button className="float-right  descButton" type="submit" value="Submit" color="success" size="sm">Save</Button>
+                        </Form>
                         :
-                        <Col xs="11">
-                            <span><i>Description</i></span>
-                            <p onClick={() => this.toggleDescInput()}>{desc}</p>
-                        </Col>
+                        <p onClick={() => this.toggleDescInput()}>{desc}</p>
                     }
+                    </Col>
                 </Row>
             </Col>
         );
