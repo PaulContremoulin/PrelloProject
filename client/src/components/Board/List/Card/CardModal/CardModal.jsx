@@ -45,6 +45,7 @@ import {DateCalendar} from "./DateCalendar/DateCalendar";
 import {DescCard} from "./DescCard/DescCard";
 import {ChecklistsCard} from "./ChecklistsCard/ChecklistsCard";
 
+
 export class CardModalToBeConnected extends React.Component {
     constructor(props) {
         super(props)
@@ -176,7 +177,7 @@ const mapStateToProps = (state, props) => ({
     checklists: state.checklists.filter(checklist => checklist.idCard == props.card.id),
     comments: state.comments.filter(comment => comment.idCard == props.card.id),
     labels: state.labels.filter(label => label.id == state.board.id)
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
     setName: (idList, idCard, name) => dispatch(setName(idList, idCard, name)),
@@ -193,7 +194,7 @@ const mapDispatchToProps = (dispatch) => ({
     setComments: (comments) => dispatch(setComments(comments)),
     addComment: (comment, idBoard) => dispatch(addComment(comment, idBoard)),
     setTextComment: (idComment, text, idBoard) => dispatch(setTextComment(idComment, text, idBoard)),
-})
+});
 
 export const CardModal = connect(
     mapStateToProps,

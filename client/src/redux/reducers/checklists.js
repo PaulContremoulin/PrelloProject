@@ -23,7 +23,11 @@ export const checklists = ( state = [], action ) => {
       return [ ...state, {...action.card.checklist, checkItems: [] } ]
     case CARD_ADD_CHECKITEM :
       return state.map(
-        (checkList, index) => (action.card.checklist.id == checkList.id ) ? [ ...state, { ...checkList, checkItems: checkItems( checkList.checkItems, action )}] : checkList
+        (checklist, index) => (action.card.checklist.id == checklist.id ) ? { ...checklist, checkItems: checkItems( checklist.checkItems, action )} : checklist
+      )
+    case CHECKLIST_SET_NAME :
+      return state.map(
+        (checklist, index) => (action.card.checklist.id == checklist.id ) ? { ...checklist, name: action.card.checklist.name } : checklist
       )
     default:
       return state ;
