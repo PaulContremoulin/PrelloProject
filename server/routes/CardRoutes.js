@@ -210,6 +210,7 @@ router.post('/:id/checklists', token, CardAccess.updateRights(), function(req, r
 router.get('/:id/checklists', token, CardAccess.readRights(), function(req, res) {
 
     Checklist.find({idCard : req.params.id})
+        .populate('checkItems')
         .exec(function(err, checklists){
             if(err) debug('GET cards/:id/checklists error : ' + err);
             if(!checklists) return res.status(400).json({message:'Checklists not found'});

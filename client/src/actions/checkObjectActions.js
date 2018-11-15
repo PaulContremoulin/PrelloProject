@@ -1,5 +1,7 @@
 // Modules
 
+import {CARD_ADD_CHECKITEM} from "./cardActions";
+
 /** Action types
  * Action types are constants string meant to explains reducer which treatments are needed.
  */
@@ -9,6 +11,8 @@
  export const CHECKITEM_SET_NAME = 'CHECKITEM_SET_NAME';
  export const CHECKITEM_SET_POS = 'CHECKITEM_SET_POS';
  export const CHECKITEM_SET_STATE = 'CHECKITEM_SET_STATE';
+ export const DELETE_CHECKLIST = 'DELETE_CHECKLIST';
+ export const ADD_CHECKITEM ='ADD_CHECKITEM';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -94,6 +98,49 @@ export const checkItemSetName = (idCheckItem, checkItemName, idBoard, idCard, id
       }
   }
 };
+
+/**
+ * @desc
+ */
+export const checkListDelete = (idBoard, idCard, idChecklist) => {
+    return {
+        type: DELETE_CHECKLIST,
+        card: {
+            id: idCard,
+            checklist: {
+                id: idChecklist
+            },
+        },
+        meta: {
+            socket: {
+                channel: 'data:store',
+                room: idBoard,
+            }
+        }
+    }
+};
+
+/**
+ * @desc
+ */
+export const addCheckItem = (idBoard, idCard, idChecklist, checkItem) => {
+    return {
+        type: ADD_CHECKITEM,
+        card: {
+            id: idCard,
+            checklist: {
+                id: idChecklist,
+                checkItem
+            }
+        },
+        meta: {
+            socket: {
+                channel: 'data:store',
+                room: idBoard,
+            }
+        }
+    }
+}
 
 /**
 * @desc

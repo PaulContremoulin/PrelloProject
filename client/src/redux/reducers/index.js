@@ -6,7 +6,7 @@ import { board } from './board';
 import { teams } from './teams';
 import { circles } from './circles';
 import { circle } from './circle';
-import { checklists } from './checklists';
+import { checklists, checkItems } from './checklists';
 import { comments } from './comments';
 import { labels } from './labels';
 import {members} from "./members";
@@ -24,4 +24,5 @@ export default combineReducers({
     labels,
     members,
     state,
+    checkItems
 });

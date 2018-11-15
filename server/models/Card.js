@@ -6,6 +6,7 @@ let Schema = mongoose.Schema;
 let cardSchema = new Schema({
         name: {
             type : String,
+            minlength : 3,
             maxlength : 100
         },
         desc: {

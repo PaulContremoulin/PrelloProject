@@ -1,4 +1,4 @@
-import { putRequest, getRequest, postRequest } from './genericRequest';
+import { putRequest, getRequest, postRequest, deleteRequest } from './genericRequest';
 
 
   export function postChecklistToCard(checklistName, idCard, idBoard) {
@@ -19,8 +19,8 @@ import { putRequest, getRequest, postRequest } from './genericRequest';
     return putRequest('/api/checklists/' + idChecklist + queryStr)
   }
 
-  export function postCheckitemToCard(checkItemName, idCard, idBoard, idChecklist) {
-      return postRequest('/api/checklists/' + idChecklist + "/checklists", {
+  export function postCheckitemToCard(checkItemName, idChecklist) {
+      return postRequest('/api/checklists/' + idChecklist + "/checkItems", {
         name: checkItemName,
         pos: 0,
         idChecklist: idChecklist,
@@ -31,6 +31,10 @@ import { putRequest, getRequest, postRequest } from './genericRequest';
   export function getChecklists(idCard) {
       return getRequest('/api/cards/' + idCard + '/checklists')
   }
+
+export function deleteCecklist(idChecklist) {
+    return deleteRequest('/api/checklists/' + idChecklist )
+}
 
   /*
   * @property {string} name.required - the checklist's name

@@ -59,7 +59,7 @@ export class AddList extends React.Component {
 
               </Form>
           :
-          <Button onClick={() => this.toggleEdited() } style={{"width": "100%"}}>Add a list</Button>
+          <Button onClick={() => this.toggleEdited() } block>Add a list</Button>
         }
       </div>
     )
