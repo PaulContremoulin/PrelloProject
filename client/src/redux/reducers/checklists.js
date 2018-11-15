@@ -9,7 +9,16 @@ import { combineReducers } from 'redux';
  */
 
 import { CARD_ADD_CHECKLIST, CARD_ADD_CHECKITEM, CARD_SET_CHECKLISTS } from '../../actions/cardActions';
-import { RESET_CHECKLISTS, CHECKLIST_SET_NAME, CHECKLIST_SET_POS, CHECKITEM_SET_NAME, CHECKITEM_SET_POS, CHECKITEM_SET_STATE } from '../../actions/checkObjectActions';
+import {
+    RESET_CHECKLISTS,
+    CHECKLIST_SET_NAME,
+    DELETE_CHECKLIST,
+    ADD_CHECKITEM,
+    CHECKLIST_SET_POS,
+    CHECKITEM_SET_NAME,
+    CHECKITEM_SET_POS,
+    CHECKITEM_SET_STATE,
+} from '../../actions/checkObjectActions';
 
 export const checklists = ( state = [], action ) => {
   switch (action.type) {
@@ -21,23 +30,21 @@ export const checklists = ( state = [], action ) => {
       return [...action.card.checklists];
     case CARD_ADD_CHECKLIST :
       return [ ...state, {...action.card.checklist, checkItems: [] } ]
-    case CARD_ADD_CHECKITEM :
-      return state.map(
-        (checklist, index) => (action.card.checklist.id == checklist.id ) ? { ...checklist, checkItems: checkItems( checklist.checkItems, action )} : checklist
-      )
     case CHECKLIST_SET_NAME :
       return state.map(
         (checklist, index) => (action.card.checklist.id == checklist.id ) ? { ...checklist, name: action.card.checklist.name } : checklist
       )
+      case DELETE_CHECKLIST:
+        return state.filter(checklist => checklist.id !== action.card.checklist.id)
     default:
       return state ;
   }
 }
 
-const checkItems = ( state = [], action ) => {
+export const checkItems = ( state = [], action ) => {
   switch (action.type) {
-    case CARD_ADD_CHECKITEM :
-      return [ ...state, {...action.card.checklists.checkItem} ]
+    case ADD_CHECKITEM :
+      return [ ...state, action.card.checklist.checkItem ]
     default:
       return state ;
   }

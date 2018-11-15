@@ -9,7 +9,6 @@
  export const CARD_SET_CLOSED = 'CARD_SET_CLOSED';
  export const CARD_SET_CHECKLISTS = 'CARD_SET_CHECKLISTS';
  export const CARD_ADD_CHECKLIST = 'CARD_ADD_CHECKLIST';
- export const CARD_ADD_CHECKITEM = 'CARD_ADD_CHECKITEM';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -131,27 +130,6 @@ export const setChecklists = (checklists) => {
       type: CARD_SET_CHECKLISTS,
       card: {
         checklists: checklists
-      },
-      meta: {
-          socket: {
-              channel: 'data:store'
-          }
-      }
-  }
-}
-
-export const addCheckItem = (idList, idCard, idChecklist, checkItem) => {
-  return {
-      type: CARD_ADD_CHECKITEM,
-      list: {
-        id: idList
-      },
-      card: {
-        id: idCard,
-        checklist: {
-          id: idChecklist,
-          checkItem
-        }
       },
       meta: {
           socket: {

@@ -1,20 +1,20 @@
 import React from "react";
-import {Col, Input, Row, Progress, Form} from "reactstrap";
+import {Col, Input, Row, Progress, Form, Button} from "reactstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCheckSquare} from '@fortawesome/fontawesome-free-regular';
+import { faTimes } from '@fortawesome/fontawesome-free-solid';
 import { CheckItem } from './CheckItem/CheckItem';
 
 
 import './Checklist.css'
-import {changeCardName} from "../../../../../../../requests/cards";
-
+import {deleteCecklist, postCheckitemToCard} from "../../../../../../../requests/checklists";
 export class Checklist extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             inputChecklistName: false,
-            inputCheckItemInput: false,
+            checkItemInput: false,
         }
     };
 
@@ -23,15 +23,18 @@ export class Checklist extends React.Component {
     };
 
     toggleCheckItemInput = () => {
-        this.setState({ inputCheckItemInput: !this.state.inputCheckItemInput })
+        this.setState({ checkItemInput: !this.state.checkItemInput })
     };
 
-    addCheckItem = (name) => {
-        if (name !== this.props.name) {
-            changeCardName(this.props.cardId, name )
-                .then( () => this.props.setName(name) )
-        }
-        this.setState({ openInputHeader: false })
+    addCheckItem = (nameItem) => {
+        postCheckitemToCard(nameItem, this.props.checklist.id)
+            .then( (res) => this.props.addCheckItem(this.props.checklist.id, res.data));
+        this.setState({ checkItemInput: false })
+    };
+
+    deleteChecklist = () => {
+        deleteCecklist(this.props.checklist.id)
+            .then( () => this.props.checkListDelete(this.props.checklist.id) );
     };
 
     render() {
@@ -39,7 +42,9 @@ export class Checklist extends React.Component {
             checklist,
             key,
             checklistSetName,
-            checklistSetPos
+            checklistSetPos,
+            checkListDelete,
+            addCheckItem
         } = this.props;
         return (
             <Col >
@@ -59,7 +64,10 @@ export class Checklist extends React.Component {
                             />
                         </div>
                         :
-                        <h5 onClick={() => this.toggleChecklistInput()}><FontAwesomeIcon style={{"margin-right":"8px"}} icon={faCheckSquare}/>{checklist.name}</h5>
+                        <Row>
+                            <Col sm="10" onClick={() => this.toggleChecklistInput()}><h6><FontAwesomeIcon style={{"margin-right":"8px"}} icon={faCheckSquare}/>{checklist.name}</h6></Col>
+                            <Col sm="2"><Button size="sm" className="float-right" close onClick={() => this.deleteChecklist()}/></Col>
+                        </Row>
                     }
                     </Col>
                     <Col xs={{size:10, offset: 1}} className="CheckItems">
@@ -73,7 +81,7 @@ export class Checklist extends React.Component {
                             ) : null
                         }
                         <div className="addCheckItem">
-                            {(this.state.inputCheckItemInput)
+                            {(this.state.checkItemInput)
                                 ?
                                 <Form onSubmit={ (e) => { e.preventDefault(); this.addCheckItem(e.target.checkItem.value)}}>
                                     <Input
@@ -91,7 +99,6 @@ export class Checklist extends React.Component {
                             }
                         </div>
                     </Col>
-
                 </Row>
             </Col>
         );

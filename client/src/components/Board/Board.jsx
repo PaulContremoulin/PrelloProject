@@ -175,8 +175,10 @@ export class BoardToBeConnected extends React.Component {
                                                     </div>
                                                 ))
                                                 }
-                                                <AddList
-                                                    addList={(listName) => this.addListToBoard(listName, nextPosFromArray(board.lists), boardId)}/>
+                                                <div style={{"width":"304px"}}>
+                                                    <AddList
+                                                        addList={(listName) => this.addListToBoard(listName, nextPosFromArray(board.lists), boardId)}/>
+                                                </div>
                                             </CardDeck>
                                             {provided.placeholder}
                                         </ContainerBoard>
