@@ -17,7 +17,7 @@ export class TitleCard extends React.Component {
                 .then( () => this.props.setName(name) )
         }
         this.setState({ openInputHeader: false })
-    }
+    };
 
     toggleInputHeader = () => this.setState({ openInputHeader: !this.state.openInputHeader });
 
