@@ -1,6 +1,9 @@
 // Modules
 import { combineReducers } from 'redux';
-import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE, CARD_SET_DUE_COMPLETE, CARD_ADD_CHECKLIST } from '../../actions/cardActions';
+import {
+  CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE,
+  CARD_SET_DUE_COMPLETE, CARD_ADD_CHECKLIST, CARD_ADD_MEMBER, CARD_DELETE_MEMBER,
+} from '../../actions/cardActions';
 
 import { DEFAULT_CARD } from '../../constants';
 
@@ -66,6 +69,10 @@ const pos = ( state = DEFAULT_CARD.pos, action ) => {
 }
 const idMembers = ( state = DEFAULT_CARD.idMembers, action ) => {
   switch (action.type) {
+    case CARD_ADD_MEMBER :
+      return [...state, action.card.member.id]
+    case CARD_DELETE_MEMBER :
+      return state.filter( member => !(member === action.card.member.id) )
       default:
           return state ;
   }

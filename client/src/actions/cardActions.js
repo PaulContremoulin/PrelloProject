@@ -10,6 +10,8 @@
  export const CARD_SET_CHECKLISTS = 'CARD_SET_CHECKLISTS';
  export const CARD_ADD_CHECKLIST = 'CARD_ADD_CHECKLIST';
  export const CARD_SET_DUE_COMPLETE = 'CARD_SET_DUE_COMPLETE';
+ export const CARD_ADD_MEMBER = 'CARD_ADD_MEMBER';
+ export const CARD_DELETE_MEMBER = 'CARD_DELETE_MEMBER';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -152,6 +154,42 @@ export const setChecklists = (checklists) => {
       meta: {
           socket: {
               channel: 'data:store'
+          }
+      }
+  }
+}
+
+export const addMemberCard = (idCard, idMember, idList, idBoard) => {
+  return {
+      type: CARD_ADD_MEMBER,
+      card: {
+        id: idCard,
+        member: {
+          id: idMember,
+        }
+      },
+      meta: {
+          socket: {
+              channel: 'data:store',
+              room: idBoard,
+          }
+      }
+  }
+}
+
+export const deleteMemberCard = (idCard, idMember, idList, idBoard) => {
+  return {
+      type: CARD_DELETE_MEMBER,
+      card: {
+        id: idCard,
+        member: {
+          id: idMember,
+        }
+      },
+      meta: {
+          socket: {
+              channel: 'data:store',
+              room: idBoard,
           }
       }
   }
