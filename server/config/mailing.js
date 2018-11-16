@@ -24,7 +24,7 @@ let resetPasswordMessage = function(recipient, resetUrl, next) {
         // plaintext body
         text: 'Hello ' + recipient.firstName + '!',
         // HTML body
-        html:'<p><b>Hello</b> ' + recipient.firstName + ' !</p>'+
+        html:'<p><b>Hello</b> ' + recipient.username + ' !</p>'+
         '<p>You have send request to reset your password.<br/>' +
         'Click on the link below to reset your password account. (Expire in 1 hour)<br/>' +
         'Link : <a href="' + resetUrl + '">' + resetUrl + '</a></p>' +
