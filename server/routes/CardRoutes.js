@@ -326,7 +326,7 @@ router.post('/:id/comments', token, CardAccess.updateRights(), function(req, res
 router.get('/:id/comments', token, CardAccess.readRights(), function(req, res) {
 
     let query = Comment.find({idCard : req.card._id});
-    query.populate('idAuhtor', 'username');
+    query.populate('idAuthor', 'username');
     query.exec( (err, comments) => {
         if(err) return res.status(500).json({message : 'Unexpected internal error'});
         return res.status(200).json(comments);

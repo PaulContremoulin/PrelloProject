@@ -1,6 +1,5 @@
 import React from "react";
-import {Col, Input, Row, Button, Form} from "reactstrap";
-import {changeCardDesc} from "../../../../../../requests/cards";
+import {Col, Row} from "reactstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faListUl } from '@fortawesome/fontawesome-free-solid';
 import {Checklist} from "./Checklist/Checklist";
@@ -26,7 +25,7 @@ export class ChecklistsCard extends React.Component {
             addCheckItem
         } = this.props;
         return (
-            <Col>
+            <Col className="checklistsCard">
                 {(checklists.length > 0) ?
                     <Row>
                         <Col xs="1"><FontAwesomeIcon className='hidden-sm-down' icon={faListUl}/></Col>

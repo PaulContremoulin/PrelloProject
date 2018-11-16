@@ -44,7 +44,7 @@ export const checklists = ( state = [], action ) => {
 const checkItems = ( state = [], action ) => {
   switch (action.type) {
     case ADD_CHECKITEM :
-      return [ ...state, action.card.checklist.checkItem ]
+      return [ ...state, action.card.checklist.checkItem ];
     case CHECKITEM_SET_STATE :
       return state.map((checkItem, index) => (action.card.checklist.checkItem.id == checkItem.id ) ? { ...checkItem, state: action.card.checklist.checkItem.state } : checkItem);
     default:
