@@ -5,7 +5,6 @@ import { getRequest, putRequest, deleteRequest } from './genericRequest';
  * @param { String } stringSearch
  * @return status code
  */
-
 export const getMembersSearch = (
     stringSearch
 ) => ( getRequest( '/api/members/search/'+stringSearch)
@@ -13,6 +12,13 @@ export const getMembersSearch = (
         .catch(err => err.response)
 )
 
+/**
+ * @desc add a member
+ * @param { String } idBoard
+ * @param { String } idUser
+ * @param { String } typeMember
+ * @return status code
+ */
 export const addMember = (
     idBoard,
     idUser,
@@ -22,6 +28,11 @@ export const addMember = (
         .catch(err => err.response)
 )
 
+/**
+ * @desc get a member
+ * @param { String } idUser
+ * @return status code
+ */
 export const getMember = (
     idUser
 ) => (getRequest('/api/members/'+idUser+'/public')
@@ -29,6 +40,12 @@ export const getMember = (
         .catch(err => err.response)
 )
 
+/**
+ * @desc delete a member
+ * @param { String } idBoard
+ * @param { String } idMemberShip
+ * @return status code
+ */
 export const deleteMember = (
     idBoard,
         idMemberShip,

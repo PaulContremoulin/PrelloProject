@@ -1,6 +1,10 @@
 import React from 'react';
-import {Login} from "../../components/SignInOrSignUp/Login/Login";
+
+//Css
 import './LoginPage.css';
+
+//Action & component
+import {Login} from "../../components/SignInOrSignUp/Login/Login";
 
 export const LoginPage = () => (
     <div className="LoginPage">

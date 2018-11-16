@@ -1,20 +1,16 @@
 // Modules
 import React from 'react';
 import ReactLoading from 'react-loading';
-import { Container, Row, Col, Button } from 'reactstrap';
-
 import { history } from '../../history';
-
-// constants and actions
-import {setLogin} from "../../actions/signActions";
-import {NavBar} from "../../components/NavBar/NavBar";
+import {connect} from "react-redux";
 
 // Css...
 import "./GithubPage.css"
 
-// Requests
+// constants and actions
+import {setLogin} from "../../actions/signActions";
 import { githubAuth } from "../../requests/githubAuth";
-import {connect} from "react-redux";
+
 
 export class GithubPageToBeConnected extends React.Component  {
     constructor(props) {

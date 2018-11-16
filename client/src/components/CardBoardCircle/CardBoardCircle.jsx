@@ -1,16 +1,16 @@
 // Modules
 import React from 'react';
-import {Card, CardHeader, Button, CardBody, CardText, Col, Row, Modal, ModalFooter, ModalBody, ModalHeader} from 'reactstrap';
+import {connect} from "react-redux";
+import {Card, CardHeader, Button, CardBody, CardText, Modal, ModalFooter, ModalBody} from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faUser, faUsers} from "@fortawesome/free-solid-svg-icons/index";
 
-// Css...
+// Css
 import './CardBoardCircle.css';
 
 // Actions & Constant
 import {deleteBoardCircle, getCirclesUser} from "../../requests/circle";
 import {deleteBoardsCircle, fetchCircles} from "../../actions/circleActions";
-import {connect} from "react-redux";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faUser, faUsers} from "@fortawesome/free-solid-svg-icons/index";
 
 export class CardBoardCircleToBeConnected extends React.Component {
     constructor(props) {

@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
-import {Container, Row, Col, Alert} from 'reactstrap';
+import {connect} from "react-redux";
+import {Row, Col} from 'reactstrap';
 import { history } from '../../history';
 
 // Css...
@@ -8,10 +9,7 @@ import './ContentHome.css';
 
 // Actions & Constant
 import {CreateBoard} from "../CreateBoard/CreateBoard";
-import {connect} from "react-redux";
 import {CardBoard} from "../CardBoard/CardBoard";
-import {getBoardsUser, getListsOfBoard} from "../../requests/boards";
-import {getCirclesUser} from "../../requests/circle";
 import {fetchBoards} from "../../actions/boardActions";
 import {fetchCircles} from "../../actions/circleActions";
 import {ButtonFiltre} from "./ButtonFiltre/ButtonFiltre";
@@ -60,9 +58,7 @@ export class ContentHomeToBeConnected extends React.Component {
 }
 
 const mapStateToProps = ( state, props ) => ({
-    user : state.user,
     boards: state.boards,
-    circles: state.circles,
     state: state.state,
 });
 

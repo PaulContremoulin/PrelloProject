@@ -44,13 +44,6 @@ export class EditInformationToBeConnected extends React.Component {
         });
     };
 
-    handleReset = (board) => {
-        this.setState({
-            'name': board.firstName,
-            'desc': board.lastName,
-        })
-    }
-
     handleSubmit = (event) => {
         event.preventDefault();
         changeInformationBoard(this.props.board._id,this.state.name, this.state.desc, this.props.board.closed)

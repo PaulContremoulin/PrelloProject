@@ -9,7 +9,6 @@ import Octicon from 'react-octicon';
 
 // Actions & Constant
 import {loginUser} from "../../../requests/login";
-import {signInGithub} from "../../../requests/registration";
 import {setLogin} from "../../../actions/signActions";
 
 
@@ -137,7 +136,7 @@ export class LoginToBeConnected extends React.Component {
         );
     }
 }
-// onClick={ () => signInGithub() }
+
 const mapStateToProps = (state, props) => ({});
 const mapDispatchToProps = (dispatch) => ({
     setLogin: (res) => dispatch( setLogin(res)),

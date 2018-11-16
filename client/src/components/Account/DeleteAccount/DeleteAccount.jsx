@@ -1,6 +1,7 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
+import {history} from "../../../history";
 import {Modal, ModalBody, ModalFooter, Button} from 'reactstrap'
 
 // Css...
@@ -11,7 +12,7 @@ import {deleteAccount} from "../../../requests/user";
 import {fetchBoards, setBoard} from "../../../actions/boardActions";
 import {logOut} from "../../../actions/signActions";
 import {fetchCircles, setCircle} from "../../../actions/circleActions";
-import {history} from "../../../history";
+
 
 export class DeleteAccountToBeConnected extends React.Component {
     constructor(props) {

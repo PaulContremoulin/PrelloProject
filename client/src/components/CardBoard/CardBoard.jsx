@@ -1,15 +1,16 @@
 // Modules
 import React from 'react';
-import './CardBoard.css';
-import {Row, Col, Card, ListGroupItem, ListGroup, CardHeader, Button, CardBody, CardText, ModalFooter, Modal, ModalBody, ModalHeader, CardFooter} from 'reactstrap';
-
+import {connect} from "react-redux";
+import {Row, Col, Card, ListGroupItem, ListGroup, CardHeader, Button, CardBody, CardText, ModalFooter, Modal, ModalBody, ModalHeader} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faUsers, faUser } from '@fortawesome/free-solid-svg-icons';
+
+// Css
+import './CardBoard.css';
 
 // Actions & Constant
 import {addBoardCircle, getCirclesUser} from "../../requests/circle";
 import {deleteBoardsCircle, editCircle, fetchCircles} from "../../actions/circleActions";
-import {connect} from "react-redux";
 
 export class CardBoardToBeConnected extends React.Component {
     constructor(props) {
@@ -31,8 +32,6 @@ export class CardBoardToBeConnected extends React.Component {
         addBoardCircle(boardId, circleId)
             .then(res => {
                 if (res.status === 201) {
-                    console.log(this.props.circles)
-                    console.log(res.data);
                     this.props.editCircle(res.data);
                     getCirclesUser(this.props.user.member._id)
                         .then(res => {
@@ -49,7 +48,6 @@ export class CardBoardToBeConnected extends React.Component {
                 console.log(err);
             })
     };
-
 
     render() {
       const { board, goToPageBoard } = this.props;

@@ -2,13 +2,13 @@
 import React from 'react';
 import {ListGroupItem, ListGroup, Row, Col, Alert} from 'reactstrap';
 import {connect} from "react-redux";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // Css...
 import './ShowAddMembersCreateBoard.css';
 
 // Actions & Constant
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import {deleteMemberCreationBoard} from "../../../actions/membersActions";
 
 export class ShowAddMembersCreateBoardToBeConnected extends React.Component {
@@ -19,7 +19,6 @@ export class ShowAddMembersCreateBoardToBeConnected extends React.Component {
     deleteMemberCreation = (member) => {
         this.props.deleteMemberCreationBoard(member);
     }
-
 
     render() {
         return (

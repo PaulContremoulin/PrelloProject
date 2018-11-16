@@ -1,11 +1,10 @@
 // Modules
 import React from 'react';
 import {history} from '../../history';
+import {Button, Container, Col, Row} from 'reactstrap';
 
 // Css...
 import './MainPage.css';
-import {NavBar} from "../../components/NavBar/NavBar";
-import {Button, Container, Col, Row} from 'reactstrap';
 
 // Actions & Constant
 

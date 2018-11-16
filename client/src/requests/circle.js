@@ -1,8 +1,11 @@
 import {getRequest, postRequest, deleteRequest} from './genericRequest';
 
 /**
-*
-*/
+ * @desc create a circle
+ * @param { String } userId
+ * @param { String } name
+ * @return status code
+ */
 export const createCircle = (
   userId,
   name
@@ -12,6 +15,11 @@ export const createCircle = (
   .catch( error => error.response )
 )
 
+/**
+ * @desc get circles user
+ * @param { String } idUser
+ * @return status code
+ */
 export function getCirclesUser(idUser) {
     return new Promise((resolve, reject) =>
     {
@@ -25,6 +33,11 @@ export function getCirclesUser(idUser) {
     })
 }
 
+/**
+ * @desc get boards from a circle
+ * @param { String } circleid
+ * @return status code
+ */
 export const getBoardsCircle = (
     circleid
 ) => (
@@ -33,6 +46,12 @@ export const getBoardsCircle = (
         .catch( error => error.response )
 )
 
+/**
+ * @desc delete board in a circle
+ * @param { String } circleId
+ * @param { String } boardId
+ * @return status code
+ */
 export const deleteBoardCircle = (
     circleId,
     boardId
@@ -42,6 +61,11 @@ export const deleteBoardCircle = (
         .catch( error => error.response )
 )
 
+/**
+ * @desc delete a circle
+ * @param { String } circleId
+ * @return status code
+ */
 export const deleteCircleRequest = (
     circleId
 ) => (
@@ -50,6 +74,12 @@ export const deleteCircleRequest = (
         .catch( error => error.response )
 )
 
+/**
+ * @desc add a board in a circle
+ * @param { String } boardId
+ * @param { String } circleId
+ * @return status code
+ */
 export const addBoardCircle = (
     boardId,
     circleId,

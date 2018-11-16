@@ -2,13 +2,12 @@
 import React from 'react';
 import { history } from '../../../history';
 import * as qs from 'query-string';
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 
 // Css...
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import './ChangePswd.css';
 
 // Actions & Constant
-import {NavBar} from "../../NavBar/NavBar";
 import { changePswd, checkToken } from "../../../requests/resetPswd";
 
 export class ChangePswd extends React.Component {

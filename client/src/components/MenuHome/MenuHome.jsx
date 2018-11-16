@@ -1,11 +1,11 @@
 // Modules
 import React from 'react';
 import {connect} from 'react-redux';
-import './MenuHome.css';
 import {Row, Col, ListGroup, ListGroupItem} from 'reactstrap';
 import {history} from "../../history";
 
-// Css...
+// Css
+import './MenuHome.css';
 
 // Actions & Constant
 import {CreateCircle} from "../CreateCircle/CreateCircle";
@@ -21,8 +21,6 @@ import {changeState} from "../../actions/stateBoards";
 export class MenuHomeToBeConnected extends React.Component {
 
     redirectionCircle = (id, name) => {
-        console.log(this.props.circles);
-            console.log(this.props.boards);
         getBoardsCircle(id)
             .then(res => {
                 if(res.status === 200){

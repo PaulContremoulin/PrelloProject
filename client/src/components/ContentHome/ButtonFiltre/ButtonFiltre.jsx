@@ -1,11 +1,9 @@
 // Modules
 import React from 'react';
+import {connect} from "react-redux";
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-// Css...
-
 // Actions & Constant
-import {connect} from "react-redux";
 import {fetchBoards} from "../../../actions/boardActions";
 import {getBoardsUser} from "../../../requests/boards";
 import {changeState} from "../../../actions/stateBoards";
@@ -55,7 +53,6 @@ export class ButtonFiltreToBeConnected extends React.Component {
 }
 
 const mapStateToProps = ( state, props ) => ({
-    boards: state.boards,
     user : state.user,
 });
 

@@ -1,9 +1,10 @@
 // Modules
 import React from 'react';
 import { connect } from 'react-redux';
-import {Popover, PopoverBody, PopoverHeader, Button, ListGroup, ListGroupItem} from 'reactstrap';
+import {history} from "../../../../history";
+import {Popover, PopoverBody, PopoverHeader, ListGroup, ListGroupItem} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 // Css...
 import './ModifyRoleMember.css';
@@ -11,7 +12,6 @@ import './ModifyRoleMember.css';
 // Actions & Constant
 import {addMember} from "../../../../requests/memberships";
 import {editRoleMember} from "../../../../actions/boardActions";
-import {history} from "../../../../history";
 
 export class ModifyRoleMemberToBeConnected extends React.Component {
     constructor(props) {
@@ -83,7 +83,6 @@ export class ModifyRoleMemberToBeConnected extends React.Component {
 
 const mapStateToProps = (state, props) => ({
     board: state.board,
-    user: state.user,
 });
 const mapDispatchToProps = (dispatch) => ({
     editRoleMember: (res) => dispatch(editRoleMember(res)),
