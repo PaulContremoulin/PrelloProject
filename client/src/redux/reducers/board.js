@@ -14,7 +14,7 @@ import { EDIT_STATE_BOARD, SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, 
 
 import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE, CARD_SET_DUE_COMPLETE, CARD_ADD_MEMBER, CARD_DELETE_MEMBER } from '../../actions/cardActions';
 
-import { LIST_SET_NAME, LIST_SET_CLOSED } from '../../actions/listActions';
+import { LIST_SET_NAME, LIST_SET_CLOSED, LIST_DELETE } from '../../actions/listActions';
 
 import { sortObjects } from '../../boardUtil';
 import { card } from './card';
@@ -128,12 +128,16 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
             return []
           }
         case ADD_LIST :
-            return [
-                ...state,
-                {
-                  ...action.list
-                }
-            ];
+          return [
+              ...state,
+              {
+                ...action.list
+              }
+          ];
+        case LIST_DELETE :
+          return state.filter(
+            list => !(list.id === action.list.id)
+          );
         case LIST_SET_NAME :
             return state.map(
                 list => (list.id === action.list.id) ? {...list, name: action.list.name} : list

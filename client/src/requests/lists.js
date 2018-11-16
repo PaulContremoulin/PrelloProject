@@ -1,4 +1,4 @@
-import { putRequest, getRequest } from './genericRequest';
+import { putRequest, getRequest, deleteRequest } from './genericRequest';
 
 
   export function changeListName(listId, listName) {
@@ -11,4 +11,8 @@ import { putRequest, getRequest } from './genericRequest';
 
   export function changeListClosed(listId, listClosed) {
       return putRequest('/api/lists/' + listId + '/closed?value=' + listClosed)
+  }
+
+  export function deleteListFromBoard(listId) {
+      return deleteRequest('/api/lists/' + listId )
   }

@@ -13,9 +13,9 @@ import {AddList} from './AddList/AddList';
 import {setBoard, addList, moveList, addCard, moveCard, moveCardFromList} from '../../actions/boardActions';
 import {resetComments} from '../../actions/commentActions';
 import {resetChecklists} from '../../actions/checkObjectActions';
-import { setListName } from '../../actions/listActions';
+import { setListName, setListClosed, deleteList } from '../../actions/listActions';
 import { postListToBoard, postCardToBoard, getListsOfBoard, getBoardById } from '../../requests/boards';
-import { changeListName, changeListPos } from '../../requests/lists';
+import { changeListName, changeListPos, changeListClosed, deleteListFromBoard } from '../../requests/lists';
 import { changeCardPos, changeCardPosAndList } from '../../requests/cards';
 import { nextPosFromArray, calcPos, setupAllPos, calcNextPos } from '../../boardUtil.js';
 // Css
@@ -181,18 +181,33 @@ export class BoardToBeConnected extends React.Component {
         changeListName(listId, listName)
             .then( () => this.props.setListName(listId, listName, boardId) )
     }
-    addCardToBoard = (cardName, cardPos, listId, boardId) => { // pos to be added later
+    addCardToBoard = (cardName, cardPos, listId, boardId) => {
         postCardToBoard(cardName, cardPos, listId, boardId)
             .then( newCard => {
                 this.props.addCard(newCard.data)
             })
     }
-    addListToBoard = (listName, listPos, boardId) => { // position to be added later
+    addListToBoard = (listName, listPos, boardId) => {
         postListToBoard(listName, listPos, boardId)
             .then( newList => {
                 this.props.addList(newList.data)
             })
     }
+
+    setListToClosed = (listId, closed, boardId) => {
+        changeListClosed(listId, closed)
+            .then( () => {
+                this.props.setListClosed(listId, closed, boardId)
+            })
+    }
+
+    deleteListBoard = (listId, boardId) => {
+        deleteListFromBoard(listId)
+            .then( () => {
+                this.props.deleteList(listId, boardId)
+            })
+    }
+
     componentDidMount() {
         const url = history.location.pathname.split('/');
         if (url.length > 3) {
@@ -253,18 +268,22 @@ export class BoardToBeConnected extends React.Component {
                                             isDragging={snapshot.isDragging}
                                         >
                                             <CardDeck style={{"width": (board.lists.length + 1) * 320 + "px"}}>
-                                                {board.lists.map((list, index) => (
+                                                {board.lists.map((list, index) =>
+                                                  !(list.closed) ?
                                                     <div key={index} style={{"width": "320px"}}>
                                                         <List
                                                             board={board}
                                                             list={list}
                                                             addCard={(cardName, listId) => this.addCardToBoard(cardName, nextPosFromArray(list.cards), listId, boardId)}
+                                                            setListClosed={(closed) => this.setListToClosed(list.id, closed, boardId)}
                                                             moveList={moveList}
                                                             setNameOfList={(listName) => this.setNameOfList(list.id, listName, boardId)}
                                                             index={index}
                                                         />
                                                     </div>
-                                                ))
+                                                  :
+                                                  null
+                                                )
                                                 }
                                                 <div style={{"width":"304px"}}>
                                                     <AddList
@@ -293,6 +312,8 @@ const mapStateToProps = ( state, props ) => ({
 const mapDispatchToProps = ( dispatch ) => ({
     setBoard: (board) => dispatch( setBoard(board)),
     addList: (listName) => dispatch( addList(listName) ),
+    setListClosed: (listId, closed, boardId) => dispatch( setListClosed(listId, closed, boardId) ),
+    deleteList: (listId, boardId) => dispatch( deleteList(listId, boardId) ),
     moveList: (newListOrder) => dispatch( moveList(newListOrder) ),
     addCard: (card) => dispatch( addCard(card) ),
     moveCard: (newList, indexOfList) => dispatch( moveCard(newList, indexOfList) ),
