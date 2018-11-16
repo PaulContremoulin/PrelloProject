@@ -39,7 +39,10 @@ export const addCircle = (data) => {
     }
 };
 
-
+/**
+ * @desc set a circle
+ * @return FETCH_CIRCLE action
+ */
 export const setCircle = (circle) => {
     return {
         type: FETCH_CIRCLE,
@@ -47,6 +50,10 @@ export const setCircle = (circle) => {
     }
 };
 
+/**
+ * @desc delete boards from a circle
+ * @return DELETE_BOARD_CIRCLE action
+ */
 export const deleteBoardsCircle = (boardId) => {
     return {
         type: DELETE_BOARD_CIRCLE,
@@ -54,6 +61,10 @@ export const deleteBoardsCircle = (boardId) => {
     }
 };
 
+/**
+ * @desc delete a circle
+ * @return DELETE_CIRCLE action
+ */
 export const deleteCircle = (circleId) => {
     return {
         type: DELETE_CIRCLE,
@@ -61,6 +72,10 @@ export const deleteCircle = (circleId) => {
     }
 };
 
+/**
+ * @desc edit a circle
+ * @return EDIT_CIRCLE action
+ */
 export const editCircle = (circle) => {
     return {
         type: EDIT_CIRCLE,
