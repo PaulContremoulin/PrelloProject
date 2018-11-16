@@ -40,14 +40,22 @@ export class SettingsBoardToBeConnected extends React.Component {
                             </Col>
                             <Col sm={12} md={{size:4, offset:1}}>
                                 <h4 className="contentSettings"><FontAwesomeIcon icon={faWrench} size="1x"/> Settings</h4>
-                                <Row className="butContentSettings">
-                                    <Col sm={6} md={{size:10, offset:2}}>
-                                        <EditInformation/>
-                                    </Col>
-                                    <Col sm={6} md={{size:10, offset:2}} >
-                                        <EditStateBoard/>
-                                    </Col>
-                                </Row>
+                                {this.state.type !== "observer" ?
+                                    <Row className="butContentSettings">
+                                        <Col sm={6} md={{size: 10, offset: 2}}>
+                                            <EditInformation/>
+                                        </Col>
+                                        <Col sm={6} md={{size: 10, offset: 2}}>
+                                            <EditStateBoard/>
+                                        </Col>
+                                    </Row>
+                                    :
+                                    <Row>
+                                        <Alert color="primary">
+                                            You don't have the permission to change information and status !
+                                        </Alert>
+                                    </Row>
+                                }
                             </Col>
                         </Row>
                     </Container>
@@ -60,15 +68,15 @@ export class SettingsBoardToBeConnected extends React.Component {
         )
     }
 
-     componentDidMount() {
+    componentDidMount() {
         const idBoard = this.props.boardId;
         const nameBoard = this.props.boardName;
         if ((this.props.board._id !== idBoard) || (this.props.board.name !== nameBoard)) {
             const newBoard = this.props.boards.filter(board => (board._id === idBoard) && (board.name === nameBoard));
-           console.log(this.props.boards)
+            console.log(this.props.boards)
             console.log(newBoard)
             if (newBoard.length === 0) {
-               console.log("ok")
+                console.log("ok")
                 this.setState({isGood: false});
             } else {
                 this.props.setBoard(newBoard[0]);
