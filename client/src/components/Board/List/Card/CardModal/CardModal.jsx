@@ -56,7 +56,7 @@ export class CardModalToBeConnected extends React.Component {
     }
 
     componentDidMount() {
-        const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+        const cardId = this.props.card.id;
         getChecklists(cardId)
             .then(res => {
                 this.props.setChecklists(res.data);
@@ -74,9 +74,9 @@ export class CardModalToBeConnected extends React.Component {
     }
 
     closeCard = () => {
-        const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+        const cardId = this.props.card.id;
         changeCardClosed(cardId, true)
-            .then(() => this.props.setClosed(this.props.listId, cardId, true))
+            .then(() => this.props.setClosed(this.props.listId, cardId, true, this.props.boardId))
     };
 
     deleteCardEvent = () => {
@@ -86,7 +86,7 @@ export class CardModalToBeConnected extends React.Component {
 
     // COMMENTS
     addCommentToCard = (commentText) => {
-        const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
+        const cardId = this.props.card.id;
         const boardId = this.props.boardId;
         postCommentToCard(commentText, cardId)
             .then(comment => this.props.addComment(comment.data, boardId))
@@ -129,13 +129,13 @@ export class CardModalToBeConnected extends React.Component {
                         cardId={card.id}
                         name={card.name}
                         setName={(name) => {
-                            setName(listId, card.id, name)
+                            setName(listId, card.id, name, boardId)
                         }}
                     />
                     <DateCalendar
                         cardId={card.id}
                         setDue={(due) => {
-                            setDue(listId, card.id, due)
+                            setDue(listId, card.id, due, boardId)
                         }}
                         setDueComplete={(dueComplete) => {
                             setDueComplete(listId, card.id, dueComplete)
@@ -150,7 +150,7 @@ export class CardModalToBeConnected extends React.Component {
                             <DescCard
                                 cardId={card.id}
                                 setDesc={(desc) => {
-                                    setDesc(listId, card.id, desc)
+                                    setDesc(listId, card.id, desc, boardId)
                                 }}
                                 desc={card.desc}
                             />
@@ -226,17 +226,16 @@ const mapStateToProps = (state, props) => ({
     checklists: state.checklists.filter(checklist => checklist.idCard == props.card.id),
     comments: state.comments.filter(comment => comment.idCard == props.card.id),
     labels: state.labels.filter(label => label.id == state.board.id),
-    checkItems: state.checkItems,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setDueComplete: (idList, idCard, dueComplete) => dispatch(setDueComplete = (idList, idCard, dueComplete)),
+    setDueComplete: (idList, idCard, dueComplete) => dispatch(setDueComplete(idList, idCard, dueComplete)),
     deleteCard: (card) =>  dispatch(deleteCard(card)),
-    setName: (idList, idCard, name) => dispatch(setName(idList, idCard, name)),
-    setDesc: (idList, idCard, desc) => dispatch(setDesc(idList, idCard, desc)),
-    setDue: (idList, idCard, due) => dispatch(setDue(idList, idCard, due)),
-    setClosed: (idList, idCard, closed) => dispatch(setClosed(idList, idCard, closed)),
-    addChecklist: (idList, idCard, checklist) => dispatch(addChecklist(idList, idCard, checklist)),
+    setName: (idList, idCard, name, idBoard) => dispatch(setName(idList, idCard, name, idBoard)),
+    setDesc: (idList, idCard, desc, idBoard) => dispatch(setDesc(idList, idCard, desc), idBoard),
+    setDue: (idList, idCard, due, idBoard) => dispatch(setDue(idList, idCard, due, idBoard)),
+    setClosed: (idList, idCard, closed, idBoard) => dispatch(setClosed(idList, idCard, closed, idBoard)),
+    addChecklist: (idCard, checklist, idBoard) => dispatch(addChecklist(idCard, checklist, idBoard)),
     addCheckItem : (idBoard, idCard, idChecklist, checkItem) => dispatch(addCheckItem(idBoard, idCard, idChecklist, checkItem)),
     checkListDelete: (idBoard, idCard, idChecklist) => dispatch(checkListDelete(idBoard, idCard,idChecklist)),
     checkItemDelete :  (idBoard, idCard, idChecklist, idCheckItem) => dispatch(checkItemDelete(idBoard, idCard,idChecklist, idCheckItem)),

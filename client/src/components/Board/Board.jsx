@@ -86,9 +86,9 @@ export class BoardToBeConnected extends React.Component {
         this.props.moveCardFromList(newContextListStart, indexOfListStart, newContextListEnd, indexOfListEnd);
         return;
     };
-    setNameOfList = (listId, listName) => {
+    setNameOfList = (listId, listName, boardId) => {
         changeListName(listId, listName)
-            .then( () => this.props.setListName(listId, listName) )
+            .then( () => this.props.setListName(listId, listName, boardId) )
     }
     addCardToBoard = (cardName, cardPos, listId, boardId) => { // pos to be added later
         postCardToBoard(cardName, cardPos, listId, boardId)
@@ -169,7 +169,7 @@ export class BoardToBeConnected extends React.Component {
                                                             list={list}
                                                             addCard={(cardName, listId) => this.addCardToBoard(cardName, nextPosFromArray(list.cards), listId, boardId)}
                                                             moveList={moveList}
-                                                            setNameOfList={(listName) => this.setNameOfList(list.id, listName)}
+                                                            setNameOfList={(listName) => this.setNameOfList(list.id, listName, boardId)}
                                                             index={index}
                                                         />
                                                     </div>
