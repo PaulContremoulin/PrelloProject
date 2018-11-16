@@ -7,7 +7,7 @@ import { CheckItem } from './CheckItem/CheckItem';
 
 
 import './Checklist.css'
-import {deleteChecklist, postCheckitemToCard} from "../../../../../../../requests/checklists";
+import {deleteChecklist, postCheckitemToCard, putChecklist} from "../../../../../../../requests/checklists";
 export class Checklist extends React.Component {
 
     constructor(props) {
@@ -15,6 +15,7 @@ export class Checklist extends React.Component {
         this.state = {
             inputChecklistName: false,
             checkItemInput: false,
+            value: ''
         }
     };
 
@@ -29,7 +30,7 @@ export class Checklist extends React.Component {
     addCheckItem = (nameItem) => {
         postCheckitemToCard(nameItem, this.props.checklist.id)
             .then( (res) => this.props.addCheckItem(this.props.checklist.id, res.data));
-        this.setState({ checkItemInput: false })
+        this.setState({value: ''});
     };
 
     deleteChecklist = () => {
@@ -41,6 +42,18 @@ export class Checklist extends React.Component {
         return (this.props.checklist.checkItems.filter( i => i.state === "completed").length / this.props.checklist.checkItems.length) * 100;
     };
 
+    handleInputChange = (event) => {
+        this.setState({
+            value: event.target.value,
+        });
+    };
+
+    checklistSetName = (nameItem) => {
+        putChecklist( this.props.checklist.id, nameItem)
+            .then( () =>  this.props.checklistSetName(this.props.checklist.id, nameItem));
+        this.toggleChecklistInput();
+    };
+
     render() {
         const {
             checklist,
@@ -49,6 +62,7 @@ export class Checklist extends React.Component {
             checkItemSetState,
             checklistSetPos,
             checkListDelete,
+            checkItemDelete,
             addCheckItem
         } = this.props;
         return (
@@ -58,15 +72,18 @@ export class Checklist extends React.Component {
                     {(this.state.inputChecklistName)
                         ?
                         <div>
-                            <Input
-                                autoFocus
-                                size="sm"
-                                type="text"
-                                name="checklistName"
-                                placeholder="checklist name"
-                                defaultValue={checklist.name}
-                                onBlur={() => {this.toggleChecklistInput()}}
-                            />
+                            <Form onSubmit={ (e) => { e.preventDefault(); this.checklistSetName(e.target.checklistName.value)}}>
+                                <Input
+                                    autoFocus
+                                    size="sm"
+                                    type="text"
+                                    name="checklistName"
+                                    placeholder="checklist name"
+                                    defaultValue={checklist.name}
+                                    onBlur={() => {this.toggleChecklistInput()}}
+                                />
+                                <input hidden={true} type="submit" value="Submit" />
+                            </Form>
                         </div>
                         :
                         <Row>
@@ -81,12 +98,13 @@ export class Checklist extends React.Component {
                                 <Progress className="progressBar" value={this.progressItem()} />
                                 {checklist.checkItems.map(
                                     (checkItem, index) =>
-                                        <CheckItem checkItem={checkItem}
+                                        <CheckItem index={index}
+                                                   checkItem={checkItem}
                                                    checklistId={checklist.id}
+                                                   checkItemDelete={checkItemDelete}
                                                    checkItemSetState={(checkItem, checkState) => {
                                                        checkItemSetState(checkItem, checkState, checklist.id)
                                                    }}
-                                                   index={index}
                                         />
                                 )}
                             </div>
@@ -100,8 +118,10 @@ export class Checklist extends React.Component {
                                         autoFocus
                                         size="sm"
                                         type="text"
+                                        value={this.state.value}
                                         name="checkItem"
                                         placeholder="check item name"
+                                        onChange={ (e) => this.handleInputChange(e)}
                                         onBlur={() => {this.toggleCheckItemInput()}}
                                     />
                                     <input hidden={true} type="submit" value="Submit" />

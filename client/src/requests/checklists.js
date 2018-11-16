@@ -1,5 +1,23 @@
 import {putRequest, getRequest, postRequest, deleteRequest} from './genericRequest';
 
+/*
+* @property {string} name.required - the checklist's name
+* @property {number} pos - the checklist's pos
+* @property {number} pos.required - the checklist's pos
+* @property {string} idCard - the checklist's card attached
+* @property {string} idBoard - the checklist's board attached
+* @property {Array.<CheckItem>} checkItems - the list of checkItems to do
+*/
+
+/*
+checkItems: [{
+        "state": "complete",
+        "id": "4eea6aeda5da7f5a490000b9",
+        "idChecklist": "4554132168484894528",
+        "name": "See if there is a call",
+        "pos": 16751
+    }]
+*/
 
 export function postChecklistToCard(checklistName, idCard, idBoard) {
     return postRequest('/api/cards/' + idCard + '/checklists', {
@@ -9,6 +27,10 @@ export function postChecklistToCard(checklistName, idCard, idBoard) {
         idBoard: idBoard,
         checkItems: []
     })
+}
+
+export function getChecklists(idCard) {
+    return getRequest('/api/cards/' + idCard + '/checklists')
 }
 
 export function putChecklist(idChecklist, nameChecklist = "", posChecklist = "") {
@@ -34,10 +56,6 @@ export function postCheckitemToCard(checkItemName, idChecklist) {
     })
 }
 
-export function getChecklists(idCard) {
-    return getRequest('/api/cards/' + idCard + '/checklists')
-}
-
 export function putItemState(idChecklist, idCheckItem, state) {
     return putRequest('/api/checklists/' + idChecklist + '/checkItems/' + idCheckItem + '?state=' + state)
 }
@@ -46,21 +64,6 @@ export function deleteChecklist(idChecklist) {
     return deleteRequest('/api/checklists/' + idChecklist)
 }
 
-/*
-* @property {string} name.required - the checklist's name
-* @property {number} pos - the checklist's pos
-* @property {number} pos.required - the checklist's pos
-* @property {string} idCard - the checklist's card attached
-* @property {string} idBoard - the checklist's board attached
-* @property {Array.<CheckItem>} checkItems - the list of checkItems to do
-*/
-
-/*
-checkItems: [{
-        "state": "complete",
-        "id": "4eea6aeda5da7f5a490000b9",
-        "idChecklist": "4554132168484894528",
-        "name": "See if there is a call",
-        "pos": 16751
-    }]
-*/
+export function deleteCheckItem(idChecklist, idCheckItem) {
+    return deleteRequest('/api/checklists/' + idChecklist + /checkItems/ + idCheckItem)
+}

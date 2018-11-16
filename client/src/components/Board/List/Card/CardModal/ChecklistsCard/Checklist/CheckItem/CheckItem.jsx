@@ -1,17 +1,17 @@
 import React from "react";
-import {Col, Input, Row, Progress} from "reactstrap";
+import {Col, Input, Row, Progress, Button} from "reactstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCheckSquare} from '@fortawesome/fontawesome-free-regular';
 
+import {deleteCheckItem, putItemState} from "../../../../../../../../requests/checklists";
 import './CheckItem.css';
-import {postCheckitemToCard} from "../../../../../../../../requests/checklists";
-import { putItemState } from "../../../../../../../../requests/checklists";
+import {checkItemDelete} from "../../../../../../../../actions/checkObjectActions";
+
 export class CheckItem extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        }
+        this.state = {}
     };
 
     changeItemState(checked){
@@ -21,24 +21,25 @@ export class CheckItem extends React.Component {
             .then( () => this.props.checkItemSetState(this.props.checkItem.id, stateLabel, this.props.checklistId));
     }
 
-    addCheckItem = (nameItem) => {
-        postCheckitemToCard(nameItem, this.props.checklist.id)
-            .then( (res) => this.props.addCheckItem(this.props.checklist.id, res.data));
-        this.setState({ checkItemInput: false })
+    deleteCheckItem = () => {
+        deleteCheckItem(this.props.checklistId, this.props.checkItem.id)
+            .then( () => this.props.checkItemDelete(this.props.checklistId, this.props.checkItem.id));
     };
 
     render() {
         const {
             checkItem,
             checklistId,
-            checkItemSetState
+            checkItemSetState,
+            checkItemDelete
         } = this.props;
         return (
             <Col className="checkItem">
                 <Input
                     type="checkbox"
                     checked={checkItem.state === "completed"}
-                    onChange={(e) => this.changeItemState(e.target.checked)}/>{checkItem.name}
+                    onChange={(e) => this.changeItemState(e.target.checked)}/>
+                <div className="itemField">{checkItem.name}<Button size="sm" className="closeItem float-right" close onClick={() => this.deleteCheckItem()}/></div>
             </Col>
         );
     }
