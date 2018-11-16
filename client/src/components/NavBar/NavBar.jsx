@@ -2,18 +2,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {history} from '../../history';
-
-import {logOut} from "../../actions/signActions";
-import {fetchBoards} from "../../actions/boardActions";
-import {fetchCircles, setCircle} from "../../actions/circleActions";
-import {setBoard} from "../../actions/boardActions";
+import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler} from 'reactstrap';
 
 // Css...
 import logo from '../../assets/prello_logo.png';
 import './NavBar.css';
-import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler} from 'reactstrap';
 
 // Actions & Constant
+import {logOut} from "../../actions/signActions";
+import {fetchBoards} from "../../actions/boardActions";
+import {fetchCircles, setCircle} from "../../actions/circleActions";
+import {setBoard} from "../../actions/boardActions";
 
 export class NavBarToBeConnected extends React.Component {
 
@@ -113,10 +112,6 @@ export class NavBarToBeConnected extends React.Component {
 
 const mapStateToProps = (state, props) => ({
     user: state.user,
-    circle: state.circle,
-    circles: state.circles,
-    boards: state.boards,
-    board: state.board
 });
 const mapDispatchToProps = (dispatch) => ({
     logOut: () => dispatch( logOut()),

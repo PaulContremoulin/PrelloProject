@@ -1,9 +1,9 @@
 // Modules
 import React from 'react';
 import { history } from '../../../history';
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 
 // Css...
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import "./ResetPswd.css";
 
 // Actions & Constant

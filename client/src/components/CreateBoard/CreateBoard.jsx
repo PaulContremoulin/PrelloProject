@@ -1,17 +1,17 @@
 // Modules
 import React from 'react';
-import {TabContent, TabPane, Nav, NavItem, NavLink, Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Card, CardBody, CardText, CardHeader} from 'reactstrap';
+import { connect } from "react-redux";
+import {TabContent, TabPane, Nav, NavItem, NavLink, Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Card, CardBody, CardText} from 'reactstrap';
 import classnames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPlus} from "@fortawesome/free-solid-svg-icons/index";
 
 // Css
 import './CreateBoard.css';
 
 // Actions & Constant
 import {createBoard, getBoardsUser} from "../../requests/boards";
-import { connect } from "react-redux";
 import {addBoard, fetchBoards} from "../../actions/boardActions";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPlus} from "@fortawesome/free-solid-svg-icons/index";
 import {AddMembersCreateBoard} from "./AddMembersCreateBoard/AddMembersCreateBoard";
 import {ShowAddMembersCreateBoard} from "./ShowAddMembersCreateBoard/ShowAddMembersCreateBoard";
 import {fetchMembersCreationBoard} from "../../actions/membersActions";

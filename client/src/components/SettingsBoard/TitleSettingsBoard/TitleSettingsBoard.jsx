@@ -1,10 +1,10 @@
 // Modules
 import React from 'react';
+import {history} from "../../../history";
 import {Button, Row, Col} from 'reactstrap';
 
 // Css...
 import './TitleSettingsBoard.css';
-import {history} from "../../../history";
 
 // Actions & Constant
 
@@ -13,7 +13,7 @@ export class TitleSettingsBoard extends React.Component {
         super(props);
     }
 
-    goToPageBoard = (board) => {
+    goToPageBoard = () => {
         history.push('/board/' + this.props.boardId + '/' + this.props.boardName)
     }
 

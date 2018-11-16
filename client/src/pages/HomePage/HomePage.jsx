@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-// Components & Actions
-import {NavBar} from '../../components/NavBar/NavBar'
-import {MenuHome} from '../../components/MenuHome/MenuHome';
-import {ContentHome} from '../../components/ContentHome/ContentHome';
-import { logOut } from '../../actions/signActions.js';
+import { Col } from 'reactstrap';
 
 // Css
 import './HomePage.css';
-import { Row, Col } from 'reactstrap';
+
+// Components & Actions
+import {MenuHome} from '../../components/MenuHome/MenuHome';
+import {ContentHome} from '../../components/ContentHome/ContentHome';
+import { logOut } from '../../actions/signActions.js';
 
 export const HomePageToBeConnected = () => (
     <div className="home">

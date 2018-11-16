@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
-import {Row, Button, Col, Form, InputGroup, InputGroupAddon} from 'reactstrap';
+import {Row, Button, Col} from 'reactstrap';
 
 // Css...
 import './AddMembersCreateBoard.css';

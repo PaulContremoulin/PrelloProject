@@ -1,5 +1,4 @@
 import { postRequest } from './genericRequest';
-import { axios } from 'axios';
 /**
 * @desc add a new user to the database
 * @param { String } username
@@ -7,7 +6,7 @@ import { axios } from 'axios';
 * @param { String } lastName
 * @param { email } email
 * @param { String } password
- * @param {String} organisation
+ * @param {String} organization
  * @param {String} callback
 * @return status code
 */
@@ -23,9 +22,3 @@ export const registerUser = (
   .then( response => response )
       .catch(err => err.response)
 )
-
-
-
-export function signInGithub() {
-    axios.get(process.env.REACT_APP_API_URL + '/api/auth/github')
-}

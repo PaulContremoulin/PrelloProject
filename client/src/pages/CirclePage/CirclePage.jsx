@@ -1,14 +1,16 @@
 // Modules
 import React from 'react';
-import {MenuHome} from "../../components/MenuHome/MenuHome";
-
-// Css...
-import {Row, Col, Alert} from 'reactstrap';
-import {ContentCircle} from "../../components/ContentCircle/ContentCircle";
-import './CirclePage.css';
+import {Col, Alert} from 'reactstrap';
 import {connect} from "react-redux";
 
+// Css
+import './CirclePage.css';
+
 // Actions & Constant
+import {MenuHome} from "../../components/MenuHome/MenuHome";
+import {ContentCircle} from "../../components/ContentCircle/ContentCircle";
+
+
 
 export class CirclePageToBeConnected extends React.Component {
 

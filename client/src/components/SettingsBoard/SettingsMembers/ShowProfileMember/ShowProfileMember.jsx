@@ -1,12 +1,12 @@
 // Modules
 import React from 'react';
 import {Popover, PopoverBody, PopoverHeader, Button, Col, Row} from 'reactstrap';
-import {getMember} from "../../../../requests/memberships";
-// Css...
+
+// Css
 import './ShowProfileMember.css';
 
 // Actions & Constant
-
+import {getMember} from "../../../../requests/memberships";
 
 export class ShowProfileMember extends React.Component {
     constructor(props) {

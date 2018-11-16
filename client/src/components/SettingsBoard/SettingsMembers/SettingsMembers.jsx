@@ -1,18 +1,18 @@
 // Modules
 import React from 'react';
-import {Row, Button, Col, ListGroup, ListGroupItem} from 'reactstrap';
-import {AddMembers} from "../AddMembers/AddMembers";
-import {ModifyRoleMember} from "./ModifyRoleMember/ModifyRoleMember";
-import {DeleteMember} from "./DeleteMember/DeleteMember";
+import {connect} from "react-redux";
+import {Row, Col, ListGroup, ListGroupItem} from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 
 // Css...
 import './SettingsMembers.css';
-import {connect} from "react-redux";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import {ShowProfileMember} from "./ShowProfileMember/ShowProfileMember";
 
 // Actions & Constant
+import {AddMembers} from "../AddMembers/AddMembers";
+import {ModifyRoleMember} from "./ModifyRoleMember/ModifyRoleMember";
+import {DeleteMember} from "./DeleteMember/DeleteMember";
+import {ShowProfileMember} from "./ShowProfileMember/ShowProfileMember";
 
 export class SettingsMembersToBeConnected extends React.Component {
     constructor(props) {

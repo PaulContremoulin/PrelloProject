@@ -1,5 +1,6 @@
 // Modules
 import React from 'react';
+import {connect} from "react-redux";
 import {Row, Col, Button, ModalBody, ModalFooter, Modal, Alert} from 'reactstrap';
 import {history} from "../../history";
 
@@ -7,7 +8,6 @@ import {history} from "../../history";
 import './ContentCircle.css';
 
 // Actions & Constant
-import {connect} from "react-redux";
 import {CardBoardCircle} from "../CardBoardCircle/CardBoardCircle";
 import {deleteCircleRequest} from "../../requests/circle";
 import {deleteCircle, setCircle} from "../../actions/circleActions";
@@ -92,9 +92,7 @@ export class ContentCircleToBeConnected extends React.Component {
 }
 
 const mapStateToProps = ( state, props ) => ({
-    user : state.user,
     circle: state.circle,
-    circles: state.circles,
 });
 
 const mapDispatchToProps = ( dispatch ) => ({

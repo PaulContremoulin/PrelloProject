@@ -23,12 +23,11 @@ export class ChangeInformationToBeConnected extends React.Component {
         }
     }
 
-
     openModal (){
         this.setState({ open: true })
     }
 
-    closeModal (member) {
+    closeModal () {
         this.setState({
             open: false,
         })
@@ -42,15 +41,6 @@ export class ChangeInformationToBeConnected extends React.Component {
             [ name ]: value,
         });
     };
-
-    handleReset = (member) => {
-        this.setState({
-            'firstName': member.firstName,
-            'lastName': member.lastName,
-            'organization': member.organization,
-            'bio': member.bio,
-        })
-    }
 
     handleSubmit = (event) => {
         event.preventDefault();

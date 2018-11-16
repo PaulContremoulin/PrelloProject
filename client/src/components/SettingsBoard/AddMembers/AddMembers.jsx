@@ -2,14 +2,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
-import {Row, Button, Col, Form, InputGroup, InputGroupAddon} from 'reactstrap';
-import {addMember} from "../../../requests/memberships";
+import {Row, Button, Col, Form} from 'reactstrap';
 
 // Css...
 import './AddMembers.css';
 
-
 // Actions & Constant
+import {addMember} from "../../../requests/memberships";
 import {getMembersSearch} from "../../../requests/memberships";
 import {setBoardMembers, addMemberAction, fetchBoards} from "../../../actions/boardActions";
 import {getBoardsUser} from "../../../requests/boards";
@@ -31,7 +30,6 @@ export class AddMembersToBeConnected extends React.Component {
         const inputLength = inputValue.length;
 
         return inputLength === 0 ? [] : this.state.membersFind.filter(member => {
-            console.log(member);
             return member.username.toLowerCase().slice(0, inputLength) === inputValue
     });
     }
@@ -48,7 +46,6 @@ export class AddMembersToBeConnected extends React.Component {
                         const newTab2 = newTab.filter(
                             member => (this.props.board.memberships.findIndex( (mem, index) => mem.idMember._id === member.id) === -1)
                         )
-                        console.log(newTab2)
                         this.setState({
                             membersFind: newTab2,
                         })

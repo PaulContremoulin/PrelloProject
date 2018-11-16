@@ -2,12 +2,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {Row, Button, Col, Form, Modal, ModalFooter, ModalBody, ModalHeader, Alert, FormGroup, Label, Input} from 'reactstrap';
-import {changePasswordUser} from "../../../requests/user";
 
 // Css...
 import './ChangePassword.css';
 
 // Actions & Constant
+import {changePasswordUser} from "../../../requests/user";
 
 export class ChangePasswordToBeConnected extends React.Component {
     constructor() {
@@ -183,7 +183,6 @@ export class ChangePasswordToBeConnected extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-    board: state.board,
     user: state.user,
 });
 const mapDispatchToProps = (dispatch) => ({});

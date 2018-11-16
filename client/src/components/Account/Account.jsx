@@ -1,20 +1,18 @@
 // Modules
 import React from 'react';
-import {Container, Row, Col, Card, CardBody, CardText, CardTitle, Button} from 'reactstrap';
 import {connect} from "react-redux";
+import {Container, Row, Col, Card, CardBody, CardText} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faBriefcase } from '@fortawesome/free-solid-svg-icons';
-import {history} from "../../history";
 
-// Css...
+// Css
 import './Account.css';
-import {logOut} from "../../actions/signActions";
+
+// Actions & Constant
 import {ChangePassword} from "./ChangePassword/ChangePassword";
 import {DeleteAccount} from "./DeleteAccount/DeleteAccount";
 import {ChangeInformation} from "./ChangeInformation/ChangeInformation";
 import {getAllBoardsUser} from "../../requests/boards";
-
-// Actions & Constant
 
 export class AccountToBeConnected extends React.Component {
 
@@ -154,9 +152,7 @@ const mapStateToProps = ( state, props ) => ({
     boards: state.boards,
 });
 
-const mapDispatchToProps = ( dispatch ) => ({
-    logOut: () => dispatch( logOut()),
-});
+const mapDispatchToProps = ( dispatch ) => ({});
 
 export const Account = connect(
     mapStateToProps,

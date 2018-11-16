@@ -1,11 +1,10 @@
 // Modules
 import React from 'react';
 import {history} from '../../history';
+import {Button} from 'reactstrap';
 
 // Css...
 import './PageNoFound.css';
-import {NavBar} from "../../components/NavBar/NavBar";
-import {Button} from 'reactstrap';
 
 // Actions & Constant
 
