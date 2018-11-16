@@ -1,4 +1,4 @@
-import { putRequest, deleteRequest } from './genericRequest';
+import { putRequest, postRequest, deleteRequest } from './genericRequest';
 
 /**
  * @desc change card name
@@ -59,3 +59,14 @@ export function changeCardPosAndList(cardId, cardPos, idList) {
     return putRequest('/api/cards/' + cardId + '/?pos=' + cardPos + '&idList=' + idList)
 }
 
+export function addMemberToCard(cardId, memberId) {
+    return postRequest('/api/cards/' + cardId + '/idMembers?value=' + memberId )
+}
+
+/**
+* Route not created yet
+*
+*/
+export function deleteMemberFromCard(cardId, memberId) {
+    return deleteRequest('/api/cards/' + cardId + '/members/' + memberId )
+}
