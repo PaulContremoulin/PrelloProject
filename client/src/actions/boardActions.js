@@ -187,7 +187,8 @@ export const moveList = (lists) => {
       lists,
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: lists[0].idBoard,
           }
       }
   }

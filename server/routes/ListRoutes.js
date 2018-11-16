@@ -111,13 +111,13 @@ router.put('/:id/pos', token, listAccess.updateRights(), function(req, res) {
     if(!req.query.value) res.status(400).json({message:'Value is missing'});
 
     let list = req.list;
-    list.post = req.query.value;
+    list.pos = req.query.value;
 
     list.validate(function (err) {
         if(err) return res.status(400).json({message:err});
         list.save(function (err) {
             if(err) return res.status(500).send('Internal error');
-            return res.status(200).josn({message:'Position updated successfully'});
+            return res.status(200).json({message:'Position updated successfully'});
         });
     });
 });

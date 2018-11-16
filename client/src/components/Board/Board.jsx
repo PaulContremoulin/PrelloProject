@@ -15,8 +15,9 @@ import {resetComments} from '../../actions/commentActions';
 import {resetChecklists} from '../../actions/checkObjectActions';
 import { setListName } from '../../actions/listActions';
 import { postListToBoard, postCardToBoard, getListsOfBoard, getBoardById } from '../../requests/boards';
-import { changeListName } from '../../requests/lists';
-import { nextPosFromArray } from '../../boardUtil.js';
+import { changeListName, changeListPos } from '../../requests/lists';
+import { changeCardPos, changeCardPosAndList } from '../../requests/cards';
+import { nextPosFromArray, calcPos, setupAllPos, calcNextPos } from '../../boardUtil.js';
 // Css
 import { Container, Row, Col, CardDeck, Alert } from 'reactstrap';
 import './Board.css';
@@ -40,52 +41,142 @@ export class BoardToBeConnected extends React.Component {
         ) {
             return;
         }
+        // Current board
         const contextBoard = this.props.board;
+
+        // LIST DRAGGED
         if( type === "list" ) {
-            const newListOrder = Array.from(contextBoard.lists);
-            const listDragged = contextBoard.lists[source.index];
+            var newListOrder = Array.from(contextBoard.lists);
+            // Default : From left to right
+            var lowerIndex = destination.index;
+            var upperIndex = destination.index+1;
+            // from right to left
+            if (destination.index < source.index) {
+              lowerIndex = destination.index-1;
+              upperIndex = destination.index;
+            }
+            var nextPos;
+            (destination.index == (contextBoard.lists.length-1)) ? nextPos = calcNextPos(contextBoard.lists[destination.index])
+            : (destination.index == 0) ? nextPos =  calcPos({ pos: 0}, contextBoard.lists[upperIndex])
+            : nextPos =  calcPos(contextBoard.lists[lowerIndex], contextBoard.lists[upperIndex]);
+
+            const listDragged = { ...contextBoard.lists[source.index], pos: nextPos, };
             newListOrder.splice(source.index, 1);
             newListOrder.splice(destination.index, 0, listDragged);
+            if(!nextPos) {
+              newListOrder = setupAllPos(newListOrder);
+              nextPos = newListOrder[destination.index].pos;
+              newListOrder.map(
+                list => {
+                  changeListPos(list.id, list.pos)
+                  return list;
+              })
+            } else {
+              changeListPos(listDragged.id, listDragged.pos)
+                .catch( () => this.props.moveList(contextBoard.lists))
+            }
             this.props.moveList(newListOrder);
             return;
         }
+
+        // CARD DRAGGED
         const contextListStart = contextBoard.lists.filter( list => list.id == source.droppableId )[0];
         const contextListEnd = contextBoard.lists.filter( list => list.id == destination.droppableId )[0];
+
+        var nextPos;
+        // Default : From up to down
+        var lowerIndex = destination.index;
+        var upperIndex = destination.index+1;
+
         // Move a card inside a list
         if (contextListStart === contextListEnd) {
-            const newCardList = Array.from(contextListStart.cards);
+            var newCardList = Array.from(contextListStart.cards);
+            // from down to up
+            if (destination.index < source.index) {
+              lowerIndex = destination.index-1;
+              upperIndex = destination.index;
+            }
+
+            (destination.index == (contextListStart.cards.length-1)) ? nextPos = calcNextPos(contextListStart.cards[destination.index])
+            : (destination.index == 0) ? nextPos =  calcPos({ pos: 0}, contextListStart.cards[upperIndex])
+            : nextPos =  calcPos(contextListStart.cards[lowerIndex], contextListStart.cards[upperIndex]);
+            const cardDragged = { ...contextListStart.cards[source.index], pos: nextPos, };
+
             newCardList.splice(source.index, 1);
-            newCardList.splice(destination.index, 0, contextListStart.cards[source.index]);
+            newCardList.splice(destination.index, 0, cardDragged);
+            // Index of list in board's lists
+            const indexOfList = contextBoard.lists.findIndex( (list, index) => list.id === contextListStart.id );
+
+            if(!nextPos) {
+              newCardList = setupAllPos(newCardList);
+              nextPos = newCardList[destination.index].pos;
+              newCardList.map(
+                card => {
+                  changeCardPos(card.id, card.pos)
+                  return card;
+              })
+            } else {
+              changeCardPos(cardDragged.id, cardDragged.pos)
+                .catch( () => this.props.moveCard(contextListStart, indexOfList))
+            }
             const newContextList = {
                 ...contextListStart,
                 cards: newCardList,
             }
-            const indexOfList = contextBoard.lists.findIndex( (list, index) => list.id === contextListStart.id );
             this.props.moveCard(newContextList, indexOfList);
             return;
         }
+
         //From a list to another
         // Source list
-        const newCardListStart = Array.from(contextListStart.cards);
-        newCardListStart.splice(source.index, 1);
-        // newCardListStart.splice(destination.index, 0, contextListStart.cards[source.index]);
-        const newContextListStart = {
-            ...contextListStart,
-            cards: newCardListStart,
-        }
+        var newCardListStart = Array.from(contextListStart.cards);
         // Destination list
-        const newCardListEnd = Array.from(contextListEnd.cards);
-        // newCardListEnd.splice(source.index, 1);
-        newCardListEnd.splice(destination.index, 0, contextListStart.cards[source.index]);
-        const newContextListEnd = {
-            ...contextListEnd,
-            cards: newCardListEnd,
-        }
+        var newCardListEnd = Array.from(contextListEnd.cards);
+        lowerIndex = destination.index-1;
+        upperIndex = destination.index;
         const indexOfListStart = contextBoard.lists.findIndex( (list, index) => list.id === contextListStart.id );
         const indexOfListEnd = contextBoard.lists.findIndex( (list, index) => list.id === contextListEnd.id );
+
+        (destination.index === (newCardListEnd.length)) ? nextPos = nextPosFromArray(newCardListEnd)
+        : (newCardListEnd.length === 0) ? nextPos = nextPosFromArray(newCardListEnd)
+        : (destination.index === 0) ? nextPos =  calcPos({ pos: 0}, newCardListEnd[upperIndex])
+        : nextPos =  calcPos(newCardListEnd[lowerIndex], newCardListEnd[upperIndex]);
+        const cardDragged = { ...newCardListStart[source.index], pos: nextPos, };
+
+        newCardListEnd.splice(destination.index, 0, cardDragged);
+        const newContextListEnd = {
+          ...contextListEnd,
+          cards: newCardListEnd,
+        }
+
+        if(!nextPos) {
+          newCardListEnd = setupAllPos(newCardListEnd);
+          nextPos = newCardListEnd[destination.index].pos;
+          newCardListEnd.map(
+            card => {
+              changeCardPosAndList(card.id, card.pos, contextListEnd.id)
+              return card;
+          })
+        } else {
+          changeCardPosAndList(cardDragged.id, cardDragged.pos, contextListEnd.id)
+            // .catch( () => this.props.moveCardFromList(contextListStart, source, contextListEnd, indexOfListEnd))
+        }
+        newCardListStart.splice(source.index, 1);
+        const newContextListStart = {
+          ...contextListStart,
+          cards: newCardListStart,
+        }
         this.props.moveCardFromList(newContextListStart, indexOfListStart, newContextListEnd, indexOfListEnd);
+
+        console.log(contextListStart.cards);
+        console.log(contextListEnd.cards);
+        console.log(cardDragged);
+        console.log(newContextListStart.cards);
+        console.log(newContextListEnd.cards);
         return;
     };
+
+
     setNameOfList = (listId, listName, boardId) => {
         changeListName(listId, listName)
             .then( () => this.props.setListName(listId, listName, boardId) )

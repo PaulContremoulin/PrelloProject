@@ -129,6 +129,7 @@ router.delete('/:id', token, CardAccess.updateRights(), function(req, res) {
  * @param {string} due.query - card's due date
  * @param {date} dueComplete.query - card's due date completed
  * @param {number} pos.query - card's position
+ * @param {string} idList.query - card's list attached
  * @returns {code} 200 - Card updated
  * @returns {Error}  400 - bad request, one of fields is invalid
  * @returns {Error}  401 - Unauthorized, invalid credentials
@@ -146,6 +147,7 @@ router.put('/:id', token, CardAccess.updateRights(), function(req, res) {
     (req.query.due) ? ((req.query.due !== 'null') ? card.due = req.query.due : card.due = undefined) : null;
     (req.query.dueComplete) ? card.dueComplete = req.query.dueComplete : null;
     (req.query.pos) ? card.pos = req.query.pos : null;
+    (req.query.idList) ? card.idList = req.query.idList : null;
 
     card.validate(function (err) {
         if(err) return res.status(400).json({message:err});

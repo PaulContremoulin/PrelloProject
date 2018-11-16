@@ -2,15 +2,17 @@
 export function isPosValid(lesserObject, upperObject) {
   const lesserPos = (lesserObject) ? lesserObject.pos : false;
   const upperPos = (upperObject) ? upperObject.pos : false;
-  if (lesserPos && upperPos) {
+  if ((lesserPos || lesserPos == 0) && (upperPos || upperPos == 0 )) {
     return ((upperPos - lesserPos) > 1 );
   } else {
     return false;
   }
 }
 
-export function calcPos(lesserObject, upperObject, movingObject) {
+export function calcPos(lesserObject, upperObject) {
   if (isPosValid(lesserObject, upperObject)) {
+    console.log(lesserObject.pos);
+    console.log(upperObject.pos);
     return ((lesserObject.pos + upperObject.pos)/2)
   } else {
     return false;
@@ -24,7 +26,7 @@ export function setupAllPos (arrayObjects) {
   );
 }
 
-export function nextPos(lastObject) {
+export function calcNextPos(lastObject) {
   return (lastObject.pos + 65536);
 }
 
@@ -44,4 +46,14 @@ export function nextPosFromArray(arrayObjects) {
   } else {
     return 65536;
   }
+}
+export function sortObjects(a, b) {
+   if (a.pos < b.pos) {
+     return -1;
+   }
+   if (a.pos > b.pos) {
+     return 1;
+   }
+   // a must be equal to b
+   return 0;
 }
