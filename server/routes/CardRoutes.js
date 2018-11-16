@@ -88,7 +88,14 @@ router.get('/:id', token, CardAccess.readRights(), function(req, res) {
     query.exec(function(err, card){
             if(err) debug('GET cards/:id error : ' + err);
             if(!card) return res.status(404).json({message:'Card not found'});
-            return res.status(200).json(card);
+
+            Checklist.count({ idCard: card._id }, function (err, count) {
+                if (err) return res.status(500).json({message:'Unexpected internal error'});
+
+                card.badges = { checklists : count};
+
+                return res.status(200).json(card);
+            });
         });
 });
 
