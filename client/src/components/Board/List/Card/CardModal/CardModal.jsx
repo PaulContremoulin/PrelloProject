@@ -188,7 +188,7 @@ export class CardModalToBeConnected extends React.Component {
                                 cardId={card.id}
                                 boardId={boardId}
                                 addChecklist={ (checklist) => {
-                                    addChecklist(card.idList, card.id, checklist)
+                                    addChecklist(card.id, checklist, boardId)
                                 }}
                             />
                             <Button color="secondary" onClick={this.toggleArchive} size="sm" block>Archive</Button>
@@ -238,7 +238,7 @@ const mapDispatchToProps = (dispatch) => ({
     addChecklist: (idCard, checklist, idBoard) => dispatch(addChecklist(idCard, checklist, idBoard)),
     addCheckItem : (idBoard, idCard, idChecklist, checkItem) => dispatch(addCheckItem(idBoard, idCard, idChecklist, checkItem)),
     checkListDelete: (idBoard, idCard, idChecklist) => dispatch(checkListDelete(idBoard, idCard,idChecklist)),
-    checkItemDelete :  (idBoard, idCard, idChecklist, idCheckItem) => dispatch(checkItemDelete(idBoard, idCard,idChecklist, idCheckItem)),
+    checkItemDelete : (idBoard, idCard, idChecklist, idCheckItem) => dispatch(checkItemDelete(idBoard, idCard,idChecklist, idCheckItem)),
     setChecklists: (checklists) => dispatch(setChecklists(checklists)),
     checklistSetName: (idChecklist, checklistName, idBoard, idList, idCard) => dispatch(checklistSetName(idChecklist, checklistName, idBoard, idList, idCard)),
     checklistSetPos: (idChecklist, checklistPos, idBoard, idList, idCard) => dispatch(checklistSetPos(idChecklist, checklistPos, idBoard, idList, idCard)),
