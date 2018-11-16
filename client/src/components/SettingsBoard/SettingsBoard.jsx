@@ -15,6 +15,7 @@ import {getMembersOfBoard} from "../../requests/boards";
 import {SettingsMembers} from "./SettingsMembers/SettingsMembers";
 import {EditInformation} from "./EditInformation/EditInformation";
 import {EditStateBoard} from "./EditStateBoard/EditStateBoard";
+import {UnarchiveCard} from "./UnarchiveCard/UnarchiveCard";
 
 export class SettingsBoardToBeConnected extends React.Component {
     constructor(props) {
@@ -47,6 +48,7 @@ export class SettingsBoardToBeConnected extends React.Component {
                                         <Col sm={6} md={{size: 10, offset: 2}}>
                                             <EditStateBoard/>
                                         </Col>
+
                                     </Row>
                                     :
                                     <Row>
@@ -57,6 +59,13 @@ export class SettingsBoardToBeConnected extends React.Component {
                                 }
                             </Col>
                         </Row>
+                        {this.state.type !== "observer" &&
+                            <Row>
+                                <Col sm={12} md={{size:8,offset:2}}>
+                                    <UnarchiveCard/>
+                                </Col>
+                            </Row>
+                        }
                     </Container>
                     :
                     <Alert color="danger">

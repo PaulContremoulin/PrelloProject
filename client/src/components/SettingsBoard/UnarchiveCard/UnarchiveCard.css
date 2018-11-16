@@ -1,0 +1,13 @@
+.butEditInfoBoard {
+    width: 170px;
+}
+
+.btnUnarchive {
+    padding-right: 10px;
+}
+
+@media only screen and (min-width: 767px) {
+    .butEditInfoBoard {
+        margin-top: 20px;
+    }
+}
