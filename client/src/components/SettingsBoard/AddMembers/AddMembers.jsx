@@ -30,9 +30,10 @@ export class AddMembersToBeConnected extends React.Component {
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;
 
-        return inputLength === 0 ? [] : this.state.membersFind.filter(member =>
-            member.username.toLowerCase().slice(0, inputLength) === inputValue
-        );
+        return inputLength === 0 ? [] : this.state.membersFind.filter(member => {
+            console.log(member);
+            return member.username.toLowerCase().slice(0, inputLength) === inputValue
+    });
     }
 
 
@@ -43,8 +44,13 @@ export class AddMembersToBeConnected extends React.Component {
             getMembersSearch(value)
                 .then(res => {
                     if (res.status === 200) {
+                        const newTab = res.data.filter(member => member._id !== this.props.user.member._id)
+                        const newTab2 = newTab.filter(
+                            member => (this.props.board.memberships.findIndex( (mem, index) => mem.idMember._id === member.id) === -1)
+                        )
+                        console.log(newTab2)
                         this.setState({
-                            membersFind: res.data,
+                            membersFind: newTab2,
                         })
                     }
                 })

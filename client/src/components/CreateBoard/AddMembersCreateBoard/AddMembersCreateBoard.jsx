@@ -40,8 +40,12 @@ export class AddMembersCreateBoardToBeConnected extends React.Component {
             getMembersSearch(value)
                 .then(res => {
                     if (res.status === 200) {
+                        const newTab = res.data.filter(member => member._id !== this.props.user.member._id)
+                        const newTab2 = newTab.filter(
+                            member => (this.props.members.findIndex( (mem, index) => mem._id === member.id) === -1)
+                        )
                         this.setState({
-                            membersFind: res.data,
+                            membersFind: newTab2,
                         })
                     }
                 })
@@ -115,6 +119,7 @@ export class AddMembersCreateBoardToBeConnected extends React.Component {
 
 const mapStateToProps = (state, props) => ({
     user: state.user,
+    members: state.members
 });
 const mapDispatchToProps = (dispatch) => ({
     addMemberCreationBoard: (res) => dispatch( addMemberCreationBoard(res)),

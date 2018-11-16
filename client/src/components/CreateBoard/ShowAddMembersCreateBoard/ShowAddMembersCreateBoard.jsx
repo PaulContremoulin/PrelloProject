@@ -28,7 +28,7 @@ export class ShowAddMembersCreateBoardToBeConnected extends React.Component {
                     <ListGroup className="listGroupAddMember">
                         {this.props.members.map(member => {
                             return (
-                                <ListGroupItem>
+                                <ListGroupItem key={member._id}>
                                     <Row>
                                         <Col xs={10}>
                                             {member.username}
