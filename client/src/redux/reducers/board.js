@@ -16,7 +16,7 @@ import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE, CARD_SET_D
 
 import { LIST_SET_NAME, LIST_SET_CLOSED } from '../../actions/listActions';
 
-
+import { sortObjects } from '../../boardUtil';
 import { card } from './card';
 
 
@@ -118,7 +118,15 @@ const memberships = ( state = DEFAULT_BOARD.memberships, action ) => {
 const lists = ( state = DEFAULT_BOARD.lists, action ) => {
     switch ( action.type ) {
         case SET_BOARD :
-            return action.board.lists || [] ;
+          if ( action.board.lists ) {
+            const sortedCards = action.board.lists.map(
+              list => ( { ...list, cards: list.cards.sort( sortObjects )} )
+            )
+            const sortedArrayList = sortedCards.sort( sortObjects );
+            return sortedArrayList;
+          } else {
+            return []
+          }
         case ADD_LIST :
             return [
                 ...state,

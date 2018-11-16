@@ -2,11 +2,11 @@ import { putRequest, deleteRequest } from './genericRequest';
 
 
 export function changeCardName(cardId, cardName) {
-  return putRequest('/api/cards/' + cardId + '/?name=' + cardName)
+    return putRequest('/api/cards/' + cardId + '/?name=' + cardName)
 }
 
 export function changeCardDesc(cardId, cardDesc) {
-  return putRequest('/api/cards/' + cardId + '/?desc=' + cardDesc)
+    return putRequest('/api/cards/' + cardId + '/?desc=' + cardDesc)
 }
 
 export function cardDueDateCompleted(cardId, value) {
@@ -14,13 +14,22 @@ export function cardDueDateCompleted(cardId, value) {
 }
 
 export function changeCardDueDate(cardId, cardDueDate) {
-  return putRequest('/api/cards/' + cardId + '/?due=' + cardDueDate)
+    return putRequest('/api/cards/' + cardId + '/?due=' + cardDueDate)
 }
 
 export function changeCardClosed(cardId, cardClosed) {
-  return putRequest('/api/cards/' + cardId + '/?closed=' + cardClosed)
+    return putRequest('/api/cards/' + cardId + '/?closed=' + cardClosed)
 }
 
 export function deleteCardRequest(cardId) {
     return deleteRequest('/api/cards/' + cardId)
+}
+
+
+export function changeCardPos(cardId, cardPos) {
+    return putRequest('/api/cards/' + cardId + '/?pos=' + cardPos)
+}
+
+export function changeCardPosAndList(cardId, cardPos, idList) {
+    return putRequest('/api/cards/' + cardId + '/?pos=' + cardPos + '&idList=' + idList)
 }
