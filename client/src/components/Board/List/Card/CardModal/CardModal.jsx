@@ -8,7 +8,6 @@ import './CardModal.css';
 
 // Actions & Constant
 import {AddChecklist} from './AddChecklist/AddChecklist';
-import {Comment} from './Comment/Comment';
 import {AddComment} from './AddComment/AddComment';
 import {LabelComponent} from './Label/Label';
 import {AddLabel} from './AddLabel/AddLabel';

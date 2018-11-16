@@ -91,6 +91,13 @@ const idList = ( state = DEFAULT_CARD.idList, action ) => {
   }
 }
 
+const badges = ( state = DEFAULT_CARD.badges, action ) => {
+    switch (action.type) {
+        default:
+            return state ;
+    }
+}
+
 // combineReducers is a redux function which associate object key with a reducers
 // It return a reducer responsible for this sub-state
 // combineReducers got others untold subtilities
@@ -105,5 +112,6 @@ export const card = combineReducers({
   idMembers,
   idLabels,
   idBoard,
-  idList
+  idList,
+  badges
 });
