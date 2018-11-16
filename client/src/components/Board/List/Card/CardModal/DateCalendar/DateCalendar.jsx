@@ -45,15 +45,9 @@ export class DateCalendar extends React.Component {
                         (due !== null && due !== '')
                             ?
                             <h6 id="dueDateId">
-                                For :
+                                For : {' '}
                                 <Badge color="primary">
-                                        <InputGroup>
-                                            <Input
-                                                type="checkbox"
-                                                checked={dueComplete === "completed"}
-                                                onChange={(e) => this.handleOnChangeDueCompleted(e.target.checked)}/>
-                                            <InputGroupAddon addonType="prepend" onClick={() => this.toggleDueInput() }> { dateFormat(due, "fullDate")}</InputGroupAddon>
-                                        </InputGroup>
+                                    <div onClick={() => this.toggleDueInput() }> { dateFormat(due, "fullDate")}</div>
                                 </Badge>
                             </h6>
                             :
