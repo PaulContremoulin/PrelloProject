@@ -12,6 +12,7 @@ import {logOut} from "../../actions/signActions";
 import {ChangePassword} from "./ChangePassword/ChangePassword";
 import {DeleteAccount} from "./DeleteAccount/DeleteAccount";
 import {ChangeInformation} from "./ChangeInformation/ChangeInformation";
+import {getAllBoardsUser} from "../../requests/boards";
 
 // Actions & Constant
 
@@ -131,12 +132,18 @@ export class AccountToBeConnected extends React.Component {
     }
 
     componentDidMount() {
-        const boardsPersonal = this.props.boards.filter(board => board.memberships.length === 1);
-        const boardsShare = this.props.boards.filter(board => board.memberships.length > 1);
-        this.setState({
-            nbrBoardsPersonal: boardsPersonal.length,
-            nbrBoardsShare: boardsShare.length,
-        })
+        getAllBoardsUser(this.props.user.member._id)
+            .then(res => {
+                const boardsPersonal = res.data.filter(board => board.memberships.length === 1);
+                const boardsShare = res.data.filter(board => board.memberships.length > 1);
+                this.setState({
+                    nbrBoardsPersonal: boardsPersonal.length,
+                    nbrBoardsShare: boardsShare.length,
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            });
     }
 
 }

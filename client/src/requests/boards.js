@@ -41,6 +41,19 @@ export function getBoardsUser(idUser, state) {
     })
 }
 
+export function getAllBoardsUser(idUser) {
+    return new Promise((resolve, reject) =>
+    {
+        getRequest( '/api/members/'+idUser+'/boards')
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
 export function getMembersOfBoard(idBoard) {
     return getRequest('/api/boards/'+idBoard+'/members')
 }
