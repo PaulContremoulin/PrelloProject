@@ -77,10 +77,13 @@ export class CreateBoardToBeConnected extends React.Component {
         const prefs = {
             'background': this.state.color,
         };
-       await createBoard(name, idOrganization, desc, memberships, prefs)
+        await createBoard(name, idOrganization, desc, memberships, prefs)
             .then(res => {
                 this.setState({idBoard:res.data._id})
                 this.props.addBoard(res.data)
+                this.props.members.map(member => {
+                    addMember(this.state.idBoard, member._id, 'normal')
+                })
             })
             .catch(
                 this.setState({
@@ -90,10 +93,7 @@ export class CreateBoardToBeConnected extends React.Component {
                     'desc':'',
                 })
             )
-        await this.props.members.map(member => {
-            addMember(this.state.idBoard, member._id, 'normal')
-        })
-        await getBoardsUser(this.props.user.member._id)
+         getBoardsUser(this.props.user.member._id,"false")
             .then(res => {
                 this.props.fetchBoards(res.data)
             })
