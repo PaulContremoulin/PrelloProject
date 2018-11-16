@@ -1,6 +1,3 @@
-// Modules
-import { combineReducers } from 'redux';
-
 // Actions & constants
 /**
 * Action types are exported from the action source file
@@ -10,7 +7,7 @@ import { SET_LOGIN, LOG_OUT } from "../../actions/signActions";
 import {EDIT_INFORMATION_USER} from "../../actions/signActions";
 
 /******************************************************************************/
-/******************************* LOGIN REDUCERS ********************************/
+/******************************* User REDUCERS ********************************/
 /******************************************************************************/
 /**
 * Reducers

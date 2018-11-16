@@ -16,7 +16,7 @@ export const EDIT_INFORMATION_USER = "EDIT_INFORMATION_USER";
 
 /**
 * @desc set the user login
-* @param login
+* @param user
 * @return SET_LOGIN action
 */
 export const setLogin = ( user ) => ({
@@ -32,6 +32,10 @@ export const logOut = () => ({
   type: LOG_OUT,
 })
 
+/**
+ * @desc change user information
+ * @return EDIT_INFORMATION_USER action
+ */
 export const changeInformationAction = (userEdit) => ({
     type: EDIT_INFORMATION_USER,
     userEdit
