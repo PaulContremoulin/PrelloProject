@@ -30,7 +30,7 @@ export class DescCard extends React.Component {
     render() {
         const {cardId, desc, setDesc} = this.props;
         return (
-            <Col>
+            <Col className="descCard">
                 <Row>
                     <Col xs="1"><FontAwesomeIcon className='icon' icon={faAlignJustify}/></Col>
                     <Col xs="11">

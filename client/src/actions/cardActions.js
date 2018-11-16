@@ -110,9 +110,6 @@ export const setClosed = (idList, idCard, closed) => {
 export const addChecklist = (idList, idCard, checklist) => {
   return {
       type: CARD_ADD_CHECKLIST,
-      list: {
-        id: idList
-      },
       card: {
         id: idCard,
         checklist: checklist

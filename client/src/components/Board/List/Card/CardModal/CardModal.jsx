@@ -1,54 +1,44 @@
 // Modules
 import React from 'react';
 import {connect} from 'react-redux';
-import {
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Button,
-    Row,
-    Col,
-    Form,
-    FormGroup,
-    Label,
-    Input,
-    Alert,
-    Badge,
-    Popover,
-    PopoverHeader,
-    PopoverBody,
-    InputGroup,
-    InputGroupAddon
-} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Badge, Popover, PopoverHeader, PopoverBody, InputGroup,} from 'reactstrap';
 
 // Css
 import './CardModal.css';
 
 // Actions & Constant
 import {AddChecklist} from './AddChecklist/AddChecklist';
-import {Checklist} from './Checklist/Checklist';
 import {Comment} from './Comment/Comment';
 import {AddComment} from './AddComment/AddComment';
 import {LabelComponent} from './Label/Label';
 import {AddLabel} from './AddLabel/AddLabel';
-import {setName, setDesc, setDue, setClosed, addChecklist, setChecklists} from '../../../../../actions/cardActions';
-import {changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed} from '../../../../../requests/cards';
-import {checklistSetName, checklistSetPos, checkItemSetName, checkItemSetPos, checkItemSetState, checkListDelete, addCheckItem} from '../../../../../actions/checkObjectActions';
-import {postChecklistToCard, getChecklists} from '../../../../../requests/checklists';
-import {setComments, addComment, setTextComment} from '../../../../../actions/commentActions';
-import {getComments, postCommentToCard, putTextToComment} from '../../../../../requests/comments';
-import {setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard} from '../../../../../actions/labelActions';
-import {getLabel, postLabel, putLabel, deleteLabel, removeLabelFromCard, postLabelToCard} from '../../../../../requests/labels';
-
 
 import {TitleCard} from "./TitleCard/TitleCard";
 import {DateCalendar} from "./DateCalendar/DateCalendar";
 import {DescCard} from "./DescCard/DescCard";
 import {ChecklistsCard} from "./ChecklistsCard/ChecklistsCard";
-import Octicon from "react-octicon";
+import {CommentsCard} from "./CommentsCard/CommentsCard";
+
+import {changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed} from '../../../../../requests/cards';
+import { getChecklists} from '../../../../../requests/checklists';
+import {getComments, postCommentToCard, putTextToComment} from '../../../../../requests/comments';
+import {getLabel, postLabel, putLabel, deleteLabel, removeLabelFromCard, postLabelToCard} from '../../../../../requests/labels';
+
+import {
+    checklistSetName,
+    checklistSetPos,
+    checkItemSetName,
+    checkItemSetPos,
+    checkItemSetState,
+    checkListDelete,
+    addCheckItem} from '../../../../../actions/checkObjectActions';
+import {setName, setDesc, setDue, setClosed, addChecklist, setChecklists} from '../../../../../actions/cardActions';
+import {setComments, addComment, setTextComment} from '../../../../../actions/commentActions';
+import {setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard} from '../../../../../actions/labelActions';
+
 
 export class CardModalToBeConnected extends React.Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -78,39 +68,12 @@ export class CardModalToBeConnected extends React.Component {
                 console.log(error)
             });
     }
-// cardId : ID
-// cardName : String
-// index : Int
-// associatedMembers : [ userId ]
-// deadline (due Date) : date
-// checklists : [ Checklist ]
-// comments : [ Comment ]
-
-
-
 
     closeCard = () => {
         const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
         changeCardClosed(cardId, true)
             .then(() => this.props.setClosed(this.props.listId, cardId, true))
-    }
-
-    // CHECKLISTS
-    toggleEditedChecklist = () => {
-        this.setState({addChecklist: !this.state.addChecklist});
-    }
-
-    toggleAddChecklist() {
-        this.setState({popoverAddChecklist: !this.state.popoverAddChecklist});
-    }
-
-    addChecklistToCard = (checklistName) => {
-        const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
-        const boardId = this.props.boardId;
-        postChecklistToCard(checklistName, cardId, boardId)
-            .then(checklist => this.props.addChecklist(this.props.listId, cardId, checklist.data))
-        this.toggleAddChecklist();
-    }
+    };
 
     // COMMENTS
     addCommentToCard = (commentText) => {
@@ -118,12 +81,12 @@ export class CardModalToBeConnected extends React.Component {
         const boardId = this.props.boardId;
         postCommentToCard(commentText, cardId)
             .then(comment => this.props.addComment(comment.data, boardId))
-    }
+    };
 
     // Tags
     toggleTags = () => {
         this.setState({openTags: !this.state.openTags})
-    }
+    };
 
     render() {
         const {openInputHeader, openTags} = this.state;
@@ -185,25 +148,22 @@ export class CardModalToBeConnected extends React.Component {
                                     checkItemSetState(idCheckItem, checkItemState, boardId, card.id, idChecklist)
                                 }}
                             />
+                            <CommentsCard
+                                cardId={card.id}
+                                comments={comments}
+                                addComment={(comment) => {
+                                    addComment(comment, card.idBoard)
+                                }}
+                        />
                         </Col>
                         <Col sm="3">
-                            <Button color="primary" size="sm" id="addCeckItemId" onClick={ () => this.toggleAddChecklist() } block>Add a checklist</Button>
-                            <Popover placement="bottom" isOpen={this.state.popoverAddChecklist} target="addCeckItemId" toggle={() => this.toggleAddChecklist()}>
-                                <Form className="form" onSubmit={(e) => { e.preventDefault(); this.addChecklistToCard(e.target.checklistName.value)}}>
-                                    <InputGroup>
-                                        <Input
-                                            type="text"
-                                            name="checklistName"
-                                            placeholder="Checklist name"
-                                            required={true}
-                                            size="sm"
-                                        />
-                                        <InputGroupAddon addonType="append">
-                                            <Button size="sm" color="success"><Octicon size="sm" name="plus"/></Button>
-                                        </InputGroupAddon>
-                                    </InputGroup>
-                                </Form>
-                            </Popover>
+                            <AddChecklist
+                                cardId={card.id}
+                                boardId={boardId}
+                                addChecklist={ (checklist) => {
+                                    addChecklist(card.idList, card.id, checklist)
+                                }}
+                            />
                             <Button color="warning" size="sm" block>Archive</Button>
                             <Button color="danger" size="sm" block>Delete</Button>
                         </Col>
@@ -227,7 +187,7 @@ const mapDispatchToProps = (dispatch) => ({
     setDesc: (idList, idCard, desc) => dispatch(setDesc(idList, idCard, desc)),
     setDue: (idList, idCard, due) => dispatch(setDue(idList, idCard, due)),
     setClosed: (idList, idCard, closed) => dispatch(setClosed(idList, idCard, closed)),
-    addChecklist: (checklistName, idCard, idBoard) => dispatch(addChecklist(checklistName, idCard, idBoard)),
+    addChecklist: (idList, idCard, checklist) => dispatch(addChecklist(idList, idCard, checklist)),
     addCheckItem : (idBoard, idCard, idChecklist, checkItem) => dispatch(addCheckItem(idBoard, idCard, idChecklist, checkItem)),
     checkListDelete: (idBoard, idCard, idChecklist) => dispatch(checkListDelete(idBoard, idCard,idChecklist)),
     setChecklists: (checklists) => dispatch(setChecklists(checklists)),

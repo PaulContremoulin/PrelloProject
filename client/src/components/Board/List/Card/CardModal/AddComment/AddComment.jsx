@@ -4,6 +4,7 @@ import React from 'react';
 
 // Css
 import { Row, Button, Form, Input } from 'reactstrap';
+import {postCommentToCard} from "../../../../../../requests/comments";
 import Octicon from 'react-octicon';
 import './AddComment.css'
 
@@ -20,9 +21,12 @@ export class AddComment extends React.Component {
     event.preventDefault();
     const commentText = this.state.commentText;
     if (commentText !== "") {
-      this.props.addComment(commentText);
-      this.setState({ commentText: "" })
-      this.toggleAddComment();
+
+        postCommentToCard(this.cardId, commentText)
+            .then()
+        this.props.addComment(commentText);
+        this.setState({ commentText: "" })
+        this.toggleAddComment();
     }
   }
 
