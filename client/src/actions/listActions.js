@@ -5,6 +5,7 @@
  */
  export const LIST_SET_NAME = 'LIST_SET_NAME';
  export const LIST_SET_CLOSED = 'LIST_SET_CLOSED';
+ export const LIST_DELETE = 'LIST_DELETE';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -42,6 +43,24 @@ export const setListClosed = (idList, closed, idBoard) => {
     list: {
       id: idList,
       closed,
+    },
+    meta: {
+        socket: {
+            channel: 'data:store',
+            room: idBoard,
+        }
+    }
+  }
+};
+
+/**
+* @desc
+*/
+export const deleteList = (idList, idBoard) => {
+  return {
+    type: LIST_DELETE,
+    list: {
+      id: idList,
     },
     meta: {
         socket: {

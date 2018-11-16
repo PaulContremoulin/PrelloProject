@@ -39,7 +39,10 @@ export class List extends React.Component {
   }
 
   render() {
-    const { list, board, moveList, addCard, setNameOfList, index } = this.props;
+    const { list, board,
+      moveList, addCard, setNameOfList, setListClosed,
+      index,
+    } = this.props;
     return (
       <Draggable draggableId={list.id} index={index} >
         {(provided) =>
@@ -50,7 +53,6 @@ export class List extends React.Component {
           >
             <CardTitle
               className="ListTitle"
-              onClick={() => this.setState({ inputNameList: true })}
               {...provided.dragHandleProps}
             >
               {(this.state.inputNameList) ?
@@ -62,8 +64,9 @@ export class List extends React.Component {
                   onBlur={(e) => this.handleOnBlur(e)}
                 />
                 :
-                list.name
+                <span onClick={() => this.setState({ inputNameList: true })}>{list.name}</span>
               }
+              <Button color="danger" onClick={() => setListClosed(true)}>Archive</Button>
               </CardTitle>
             <Droppable
               droppableId={list.id.toString()}
