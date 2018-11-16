@@ -100,6 +100,25 @@ router.get('/:id', token, CardAccess.readRights(), function(req, res) {
 });
 
 /**
+ * Delete a card by id
+ * @route Delete /cards/:id
+ * @group card - Operations about cards
+ * @param {string} id.path.required - card's id
+ * @returns {Card.model} 200 - Card deleted
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid rights
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.delete('/:id', token, CardAccess.updateRights(), function(req, res) {
+    req.card.remove();
+    req.card.save((err) => {
+        if(err) return res.status(500).json({message : 'Unexpected internal error'})
+        return res.status(200).json({message : 'Card successfully deleted'})
+    });
+});
+
+/**
  * Update a card
  * @route PUT /cards/:id
  * @group card - Operations about cards
@@ -256,7 +275,6 @@ router.post('/:id/idLabels', token, CardAccess.updateRights(), function(req, res
             });
         });
     });
-
 });
 
 /**
