@@ -16,7 +16,7 @@ export const ADD_MEMBER = "ADD_MEMBER";
 export const EDIT_ROLE_MEMBER = "EDIT_ROLE_MEMBER";
 export const EDIT_INFORMATION_BOARD = "EDIT_INFORMATION_BOARD";
 export const EDIT_STATE_BOARD = "EDIT_STATE_BOARD";
-
+export const DELETE_CARD = "DELETE_CARD";
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
  * Whenever an given Action is dispatched on the Redux store with a given state,
@@ -157,6 +157,26 @@ export const addCard = (card) => {
   }
 };
 
+/**
+ * @desc
+ */
+export const deleteCard = (card) => {
+    return {
+        type: DELETE_CARD,
+        list: {
+            id: card.idList
+        },
+        card: {
+            id: card.id
+        },
+        meta: {
+            socket: {
+                channel: 'data:store',
+                room: card.idBoard,
+            }
+        }
+    }
+};
 
 /**
  * @desc

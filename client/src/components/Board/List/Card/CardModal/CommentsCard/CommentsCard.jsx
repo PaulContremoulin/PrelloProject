@@ -11,17 +11,24 @@ export class CommentsCard extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { }
+        this.state = {
+            value : ''
+        }
     }
+
+    handleChange = (event) => {
+        this.setState({
+            value: event.target.value,
+        });
+    };
 
     sendComment(textComment) {
         if (textComment !== "") {
             postCommentToCard(textComment, this.props.cardId)
                 .then( (res) => {
-                    console.log('coucouc ');
-                    console.log(res)
                     this.props.addComment(res.data)
                 });
+            this.setState({value : ''});
         }
     }
 
@@ -47,7 +54,9 @@ export class CommentsCard extends React.Component {
                                 style={{"margin-top":"8px"}}
                                 type="textarea"
                                 name="textComment"
+                                value={this.state.value}
                                 placeholder="Write your message..."
+                                onChange={ (e) => this.handleChange(e)}
                             />
                             <Button className="float-right  descButton" type="submit" value="Submit" color="primary" size="sm">Send</Button>
                         </Form>

@@ -12,6 +12,7 @@ import {CARD_ADD_CHECKITEM} from "./cardActions";
  export const CHECKITEM_SET_POS = 'CHECKITEM_SET_POS';
  export const CHECKITEM_SET_STATE = 'CHECKITEM_SET_STATE';
  export const DELETE_CHECKLIST = 'DELETE_CHECKLIST';
+ export const DELETE_CHECKITEM = 'DELETE_CHECKITEM';
  export const ADD_CHECKITEM ='ADD_CHECKITEM';
 
 /** Action Builders
@@ -190,4 +191,28 @@ export const checkItemSetState = (idCheckItem, checkItemState, idBoard, idCard, 
           }
       }
   }
+};
+
+/**
+ * @desc
+ */
+export const checkItemDelete = (idBoard, idCard,idChecklist, idCheckItem) => {
+    return {
+        type: DELETE_CHECKITEM,
+        card: {
+            id: idCard,
+            checklist: {
+                id: idChecklist,
+                checkItem: {
+                    id: idCheckItem
+                }
+            },
+        },
+        meta: {
+            socket: {
+                channel: 'data:store',
+                room: idBoard,
+            }
+        }
+    }
 };

@@ -13,6 +13,7 @@ import {
     RESET_CHECKLISTS,
     CHECKLIST_SET_NAME,
     DELETE_CHECKLIST,
+    DELETE_CHECKITEM,
     ADD_CHECKITEM,
     CHECKLIST_SET_POS,
     CHECKITEM_SET_NAME,
@@ -29,8 +30,9 @@ export const checklists = ( state = [], action ) => {
     case CARD_ADD_CHECKLIST :
       return [ ...state, {...action.card.checklist, checkItems: [] } ];
     case ADD_CHECKITEM :
-      return state.map( (checklist, index) => (action.card.checklist.id == checklist.id) ? { ...checklist, checkItems : checkItems(checklist.checkItems, action)} : checklist);
+    case DELETE_CHECKITEM :
     case CHECKITEM_SET_STATE :
+        console.log(action)
       return state.map( (checklist, index) => (action.card.checklist.id == checklist.id) ? { ...checklist, checkItems : checkItems(checklist.checkItems, action)} : checklist);
     case CHECKLIST_SET_NAME :
       return state.map((checklist, index) => (action.card.checklist.id == checklist.id ) ? { ...checklist, name: action.card.checklist.name } : checklist);
@@ -45,6 +47,8 @@ const checkItems = ( state = [], action ) => {
   switch (action.type) {
     case ADD_CHECKITEM :
       return [ ...state, action.card.checklist.checkItem ];
+      case DELETE_CHECKITEM :
+      return state.filter( (checkItem, index) => !(action.card.checklist.checkItem.id == checkItem.id));
     case CHECKITEM_SET_STATE :
       return state.map((checkItem, index) => (action.card.checklist.checkItem.id == checkItem.id ) ? { ...checkItem, state: action.card.checklist.checkItem.state } : checkItem);
     default:

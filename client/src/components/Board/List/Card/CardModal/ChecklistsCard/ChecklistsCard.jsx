@@ -5,6 +5,7 @@ import { faListUl } from '@fortawesome/fontawesome-free-solid';
 import {Checklist} from "./Checklist/Checklist";
 
 import './ChecklistsCard.css';
+import {checkItemDelete} from "../../../../../../actions/checkObjectActions";
 
 export class ChecklistsCard extends React.Component {
 
@@ -22,6 +23,7 @@ export class ChecklistsCard extends React.Component {
             checkItemSetPos,
             checkItemSetState,
             checkListDelete,
+            checkItemDelete,
             addCheckItem
         } = this.props;
         return (
@@ -43,6 +45,7 @@ export class ChecklistsCard extends React.Component {
                                         checkItemSetState={checkItemSetState}
                                         checkListDelete={checkListDelete}
                                         addCheckItem={addCheckItem}
+                                        checkItemDelete={checkItemDelete}
                                     />
                             )}
                         </Col>

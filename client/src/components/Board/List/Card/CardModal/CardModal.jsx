@@ -3,6 +3,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Badge, Popover, PopoverHeader, PopoverBody, InputGroup,} from 'reactstrap';
 
+
 // Css
 import './CardModal.css';
 
@@ -18,7 +19,7 @@ import {DescCard} from "./DescCard/DescCard";
 import {ChecklistsCard} from "./ChecklistsCard/ChecklistsCard";
 import {CommentsCard} from "./CommentsCard/CommentsCard";
 
-import {changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed} from '../../../../../requests/cards';
+import {changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed, deleteCardRequest} from '../../../../../requests/cards';
 import { getChecklists} from '../../../../../requests/checklists';
 import {getComments, postCommentToCard, putTextToComment} from '../../../../../requests/comments';
 import {getLabel, postLabel, putLabel, deleteLabel, removeLabelFromCard, postLabelToCard} from '../../../../../requests/labels';
@@ -30,10 +31,12 @@ import {
     checkItemSetPos,
     checkItemSetState,
     checkListDelete,
+    checkItemDelete,
     addCheckItem} from '../../../../../actions/checkObjectActions';
-import {setName, setDesc, setDue, setClosed, addChecklist, setChecklists} from '../../../../../actions/cardActions';
+import {setName, setDesc, setDue, setClosed, addChecklist, setChecklists, setDueComplete} from '../../../../../actions/cardActions';
 import {setComments, addComment, setTextComment} from '../../../../../actions/commentActions';
 import {setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard} from '../../../../../actions/labelActions';
+import {deleteCard} from "../../../../../actions/boardActions";
 
 
 export class CardModalToBeConnected extends React.Component {
@@ -46,7 +49,9 @@ export class CardModalToBeConnected extends React.Component {
             dueDateInput: false,
             addChecklist: false,
             openTags: false,
-            popoverAddChecklist : false
+            popoverAddChecklist : false,
+            archiveModal : false,
+            deleteModal : false
         }
     }
 
@@ -74,6 +79,11 @@ export class CardModalToBeConnected extends React.Component {
             .then(() => this.props.setClosed(this.props.listId, cardId, true))
     };
 
+    deleteCardEvent = () => {
+        deleteCardRequest(this.props.card.id)
+            .then(() => this.props.deleteCard(this.props.card))
+    }
+
     // COMMENTS
     addCommentToCard = (commentText) => {
         const cardId = (this.props.card.id != undefined) ? this.props.card.id : this.props.card._id;
@@ -85,6 +95,14 @@ export class CardModalToBeConnected extends React.Component {
     // Tags
     toggleTags = () => {
         this.setState({openTags: !this.state.openTags})
+    };
+
+    toggleArchive = () => {
+        this.setState({archiveModal: !this.state.archiveModal})
+    };
+
+    toggleDelete = () => {
+        this.setState({deleteModal: !this.state.deleteModal})
     };
 
     render() {
@@ -101,6 +119,7 @@ export class CardModalToBeConnected extends React.Component {
             addChecklist,
             checklistSetName, checklistSetPos,
             checkItemSetName, checkItemSetPos, checkItemSetState,
+            checkItemDelete
         } = this.props;
 
         return (
@@ -118,7 +137,11 @@ export class CardModalToBeConnected extends React.Component {
                         setDue={(due) => {
                             setDue(listId, card.id, due)
                         }}
+                        setDueComplete={(dueComplete) => {
+                            setDueComplete(listId, card.id, dueComplete)
+                        }}
                         due={card.due}
+                        dueComplete={card.dueComplete}
                     />
                 </ModalHeader>
                 <ModalBody>
@@ -135,7 +158,9 @@ export class CardModalToBeConnected extends React.Component {
                                 checklists={checklists}
                                 checklistSetName={checklistSetName}
                                 checklistSetPos={checklistSetPos}
-                                checkItemSetName={checkItemSetName}
+                                checkItemSetName={ (idChecklist, checklistName) => {
+                                    checklistSetName(idChecklist, checklistName, boardId)
+                                }}
                                 checkItemSetPos={checkItemSetPos}
                                 checkListDelete={(idChecklist) => {
                                     checkListDelete(boardId, card.id, idChecklist)
@@ -145,6 +170,9 @@ export class CardModalToBeConnected extends React.Component {
                                 }}
                                 checkItemSetState={(idCheckItem, checkItemState, idChecklist) => {
                                     checkItemSetState(idCheckItem, checkItemState, boardId, card.id, idChecklist)
+                                }}
+                                checkItemDelete={(idChecklist, idCheckItem) => {
+                                    checkItemDelete(boardId, card.id, idChecklist, idCheckItem)
                                 }}
                             />
                             <CommentsCard
@@ -163,8 +191,28 @@ export class CardModalToBeConnected extends React.Component {
                                     addChecklist(card.idList, card.id, checklist)
                                 }}
                             />
-                            <Button color="warning" size="sm" block>Archive</Button>
-                            <Button color="danger" size="sm" block>Delete</Button>
+                            <Button color="secondary" onClick={this.toggleArchive} size="sm" block>Archive</Button>
+                            <Modal isOpen={this.state.archiveModal} toggle={this.toggleArchive}>
+                                <ModalHeader toggle={this.toggleArchive}>Archive the card</ModalHeader>
+                                <ModalBody>
+                                    Do you want archive the card ?
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="warning" onClick={this.closeCard}>Archive</Button>{' '}
+                                    <Button color="secondary" onClick={this.toggleArchive}>Cancel</Button>
+                                </ModalFooter>
+                            </Modal>
+                            <Button color="danger" onClick={this.toggleDelete} size="sm" block>Delete</Button>
+                            <Modal isOpen={this.state.deleteModal} toggle={this.toggleDelete}>
+                                <ModalHeader toggle={this.toggleArchive}>Delete the card</ModalHeader>
+                                <ModalBody>
+                                    Do you want delete the card ?
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="danger" onClick={this.deleteCardEvent}>Archive</Button>{' '}
+                                    <Button color="secondary" onClick={this.toggleDelete}>Cancel</Button>
+                                </ModalFooter>
+                            </Modal>
                         </Col>
                     </Row>
                 </ModalBody>
@@ -182,6 +230,8 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    setDueComplete: (idList, idCard, dueComplete) => dispatch(setDueComplete = (idList, idCard, dueComplete)),
+    deleteCard: (card) =>  dispatch(deleteCard(card)),
     setName: (idList, idCard, name) => dispatch(setName(idList, idCard, name)),
     setDesc: (idList, idCard, desc) => dispatch(setDesc(idList, idCard, desc)),
     setDue: (idList, idCard, due) => dispatch(setDue(idList, idCard, due)),
@@ -189,6 +239,7 @@ const mapDispatchToProps = (dispatch) => ({
     addChecklist: (idList, idCard, checklist) => dispatch(addChecklist(idList, idCard, checklist)),
     addCheckItem : (idBoard, idCard, idChecklist, checkItem) => dispatch(addCheckItem(idBoard, idCard, idChecklist, checkItem)),
     checkListDelete: (idBoard, idCard, idChecklist) => dispatch(checkListDelete(idBoard, idCard,idChecklist)),
+    checkItemDelete :  (idBoard, idCard, idChecklist, idCheckItem) => dispatch(checkItemDelete(idBoard, idCard,idChecklist, idCheckItem)),
     setChecklists: (checklists) => dispatch(setChecklists(checklists)),
     checklistSetName: (idChecklist, checklistName, idBoard, idList, idCard) => dispatch(checklistSetName(idChecklist, checklistName, idBoard, idList, idCard)),
     checklistSetPos: (idChecklist, checklistPos, idBoard, idList, idCard) => dispatch(checklistSetPos(idChecklist, checklistPos, idBoard, idList, idCard)),

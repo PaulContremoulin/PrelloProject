@@ -10,9 +10,9 @@ import { combineReducers } from 'redux';
 
 import { DEFAULT_BOARD } from '../../constants';
 
-import { EDIT_STATE_BOARD, SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIST, SET_BOARD_MEMBERS, ADD_MEMBER, EDIT_ROLE_MEMBER, EDIT_INFORMATION_BOARD } from '../../actions/boardActions';
+import { EDIT_STATE_BOARD, SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIST, SET_BOARD_MEMBERS, ADD_MEMBER, EDIT_ROLE_MEMBER, EDIT_INFORMATION_BOARD, DELETE_CARD } from '../../actions/boardActions';
 
-import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE } from '../../actions/cardActions';
+import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE, CARD_SET_DUE_COMPLETE } from '../../actions/cardActions';
 
 import { LIST_SET_NAME, LIST_SET_CLOSED } from '../../actions/listActions';
 
@@ -151,6 +151,7 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
             return action.lists
         case CARD_SET_NAME :
         case CARD_SET_DUE :
+        case CARD_SET_DUE_COMPLETE :
         case CARD_SET_DESC :
         case CARD_SET_CLOSED :
             return state.map(
@@ -159,10 +160,15 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
                     ...list,
                     cards: list.cards.map(
                         (cardObj, index) => (action.card.id === cardObj.id ) ? card( cardObj, action ) : cardObj
-                        //(cardObj, index) => card( cardObj, action )
                     )
-                }
-            )
+                });
+        case DELETE_CARD :
+            return state.map(
+                (list, index) => !(list.id == action.list.id) ? list :
+                    {
+                        ...list,
+                        cards: list.cards.filter((cardObj, index) => (action.card.id !== cardObj.id ))
+                    });
         default:
             return state ;
     }
