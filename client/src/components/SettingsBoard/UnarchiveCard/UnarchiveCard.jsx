@@ -1,8 +1,9 @@
 // Modules
 import React from 'react';
 import {connect} from "react-redux";
-import {Button, Fade, Table, Alert} from 'reactstrap';
-
+import {Button, Row, Col, ListGroup, ListGroupItem} from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 
 // Css...
 import './UnarchiveCard.css';
@@ -31,25 +32,34 @@ export class UnarchiveCardToBeConnected extends React.Component {
         return (
             <div>
                 {this.state.cardsIdList.length !== 0 &&
-                    <Table striped size="sm">
-                        <thead>
-                            <tr>
-                                <th>Name Card</th>
-                                <th>Unarchive</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.cardsIdList.map(cardIdList => {
-                                return (
-                                    <tr>
-                                        <th>{cardIdList.card.name}</th>
-                                        <td><Button onClick={() => this.unarchive(cardIdList)} close>+</Button></td>
-                                    </tr>
-                                )
+                <div>
+                    <Row>
+                        <Col className="ContentArchivedCard">
+                            <h4><FontAwesomeIcon icon={faAlignJustify} size="1x"/> Archived Cards</h4>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={{size:11, offset:1}}>
+                            <ListGroup className="scrollingList">
+                                {this.state.cardsIdList.map(cardIdList => {
+                                    return (
+                                        <ListGroupItem key={cardIdList.card.id}>
+                                            <Row>
+                                                <Col sm={6}>
+                                                    {'Name card : '+cardIdList.card.name}
+                                                </Col>
+                                                <Col sm={6}>
+                                                    <Button className="float-right" onClick={() => this.unarchive(cardIdList)} color="secondary" size="sm">Unarchive</Button>
+                                                </Col>
+                                            </Row>
+                                        </ListGroupItem>
+                                    )
                                 }
-                            )}
-                            </tbody>
-                    </Table>
+                                )}
+                            </ListGroup>
+                        </Col>
+                    </Row>
+                </div>
                 }
             </div>
         );
