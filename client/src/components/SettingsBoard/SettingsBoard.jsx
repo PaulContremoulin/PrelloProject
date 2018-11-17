@@ -61,7 +61,7 @@ export class SettingsBoardToBeConnected extends React.Component {
                         </Row>
                         {this.state.type !== "observer" &&
                             <Row>
-                                <Col sm={12} md={{size:8,offset:2}}>
+                                <Col sm={12} md={{size:7}}>
                                     <UnarchiveCard/>
                                 </Col>
                             </Row>
