@@ -40,7 +40,7 @@ export class UnarchiveCardToBeConnected extends React.Component {
                     </Row>
                     <Row>
                         <Col md={{size:11, offset:1}}>
-                            <ListGroup className="scrollingList">
+                            <ListGroup className="scrollingListCards">
                                 {this.state.cardsIdList.map(cardIdList => {
                                     return (
                                         <ListGroupItem key={cardIdList.card.id}>

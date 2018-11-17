@@ -10,10 +10,9 @@
     margin-top: 15px;
 }
 
-.scrollingList {
-    max-height: 200px;
+.scrollingListCards {
+    max-height: 170px;
     overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
 }
 
 @media only screen and (min-width: 767px) {
