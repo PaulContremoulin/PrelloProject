@@ -12,7 +12,7 @@ import { DEFAULT_BOARD } from '../../constants';
 
 import { EDIT_STATE_BOARD, SET_BOARD, ADD_LIST, MOVE_LIST, ADD_CARD, MOVE_CARD, MOVE_CARD_FROM_LIST, SET_BOARD_MEMBERS, ADD_MEMBER, EDIT_ROLE_MEMBER, EDIT_INFORMATION_BOARD, DELETE_CARD } from '../../actions/boardActions';
 
-import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE, CARD_SET_DUE_COMPLETE, CARD_ADD_MEMBER, CARD_DELETE_MEMBER } from '../../actions/cardActions';
+import { CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE, CARD_SET_DUE_COMPLETE, CARD_ADD_MEMBER, CARD_DELETE_MEMBER, CARD_ADD_LABEL, CARD_DELETE_LABEL } from '../../actions/cardActions';
 
 import { LIST_SET_NAME, LIST_SET_CLOSED, LIST_DELETE } from '../../actions/listActions';
 
@@ -168,6 +168,8 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
         case CARD_SET_CLOSED :
         case CARD_ADD_MEMBER :
         case CARD_DELETE_MEMBER :
+        case CARD_ADD_LABEL :
+        case CARD_DELETE_LABEL :
             return state.map(
               (list, index) => !(list.id == action.list.id) ? list :
                 {
