@@ -25,11 +25,20 @@ export class CardComponent extends React.Component {
 
     openModal = () => {
         this.setState({open: true})
-    }
+    };
 
     closeModal = () => {
         this.setState({open: false})
-    }
+    };
+
+    dueDateState = () => {
+        if(this.props.card.dueComplete) return 'success';
+        let now = new Date();
+        let due = new Date(this.props.card.due);
+        if(due < now) return 'danger';
+        if(due < now.setDate(now.getDate() + 1)) return 'warning';
+        else return 'primary';
+    };
 
     render() {
         const {card, board, index, listId, openModal} = this.props;
@@ -53,7 +62,7 @@ export class CardComponent extends React.Component {
                                 >
                                     <h5>{card.name}</h5>
                                     {(card.due) ?
-                                        <div><Badge color="primary"> Due : {dateFormat(card.due, "shortDate")} </Badge></div>
+                                        <div><Badge style={{'color':'white'}} color={this.dueDateState()}> Due : {dateFormat(card.due, "shortDate")} </Badge></div>
                                         : null}
                                 </Card>
                             </div>

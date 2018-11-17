@@ -188,6 +188,7 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
 export const board = combineReducers({
     _id,
     name,
+    prefs,
     closed,
     desc,
     memberships,

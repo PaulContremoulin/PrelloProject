@@ -1,7 +1,5 @@
 import React from "react";
 import {Col, Input, Row, Progress, Button} from "reactstrap";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faCheckSquare} from '@fortawesome/fontawesome-free-regular';
 
 import {deleteCheckItem, putItemState} from "../../../../../../../../requests/checklists";
 import './CheckItem.css';
