@@ -164,6 +164,9 @@ export const setChecklists = (checklists) => {
 export const addMemberCard = (idCard, idMember, idList, idBoard) => {
   return {
       type: CARD_ADD_MEMBER,
+      list: {
+          id: idList
+      },
       card: {
         id: idCard,
         member: {
@@ -182,6 +185,9 @@ export const addMemberCard = (idCard, idMember, idList, idBoard) => {
 export const deleteMemberCard = (idCard, idMember, idList, idBoard) => {
   return {
       type: CARD_DELETE_MEMBER,
+      list: {
+          id: idList
+      },
       card: {
         id: idCard,
         member: {
@@ -200,6 +206,9 @@ export const deleteMemberCard = (idCard, idMember, idList, idBoard) => {
 export const addLabelCard = (idCard, idLabel, idList, idBoard) => {
   return {
       type: CARD_ADD_LABEL,
+      list: {
+          id: idList
+      },
       card: {
         id: idCard,
         label: {
@@ -218,6 +227,9 @@ export const addLabelCard = (idCard, idLabel, idList, idBoard) => {
 export const deleteLabelCard = (idCard, idLabel, idList, idBoard) => {
   return {
       type: CARD_DELETE_LABEL,
+      list: {
+          id: idList
+      },
       card: {
         id: idCard,
         label: {

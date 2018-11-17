@@ -11,10 +11,11 @@ import './CardModal.css';
 import {AddChecklist} from './AddChecklist/AddChecklist';
 import {AddComment} from './AddComment/AddComment';
 import {LabelComponent} from './Label/Label';
-import {AddLabel} from './AddLabel/AddLabel';
+import {AddTag} from './AddTag/AddTag';
 
 import {TitleCard} from "./TitleCard/TitleCard";
 import {DateCalendar} from "./DateCalendar/DateCalendar";
+import {Tags} from "./Tags/Tags";
 import {DescCard} from "./DescCard/DescCard";
 import {ChecklistsCard} from "./ChecklistsCard/ChecklistsCard";
 import {CommentsCard} from "./CommentsCard/CommentsCard";
@@ -22,7 +23,6 @@ import {CommentsCard} from "./CommentsCard/CommentsCard";
 import {changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed, deleteCardRequest} from '../../../../../requests/cards';
 import { getChecklists} from '../../../../../requests/checklists';
 import {getComments, postCommentToCard, putTextToComment} from '../../../../../requests/comments';
-import {getLabel, postLabel, putLabel, deleteLabel, removeLabelFromCard, postLabelToCard} from '../../../../../requests/labels';
 
 import {
     checklistSetName,
@@ -33,7 +33,7 @@ import {
     checkListDelete,
     checkItemDelete,
     addCheckItem} from '../../../../../actions/checkObjectActions';
-import {setName, setDesc, setDue, setClosed, addChecklist, setChecklists, setDueComplete} from '../../../../../actions/cardActions';
+import {setName, setDesc, setDue, setClosed, addChecklist, setChecklists, setDueComplete, addLabelCard, deleteLabelCard} from '../../../../../actions/cardActions';
 import {setComments, addComment, setTextComment} from '../../../../../actions/commentActions';
 import {setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard} from '../../../../../actions/labelActions';
 import {deleteCard} from "../../../../../actions/boardActions";
@@ -131,7 +131,11 @@ export class CardModalToBeConnected extends React.Component {
             checkItemSetPos,
             checkItemSetState,
             setDueComplete,
-            checkItemDelete
+            checkItemDelete,
+            labelsCard,
+            addLabel,
+            addLabelCard,
+            deleteLabelCard
         } = this.props;
 
         return (
@@ -154,6 +158,9 @@ export class CardModalToBeConnected extends React.Component {
                         }}
                         due={card.due}
                         dueComplete={card.dueComplete}
+                    />
+                    <Tags
+                        labelsCard={labelsCard}
                     />
                 </ModalHeader>
                 <ModalBody>
@@ -196,6 +203,21 @@ export class CardModalToBeConnected extends React.Component {
                         />
                         </Col>
                         <Col sm="3">
+                            <AddTag
+                                labelsBoard={labels}
+                                labelsCard={card.idLabels}
+                                cardId={card.id}
+                                boardId={boardId}
+                                addLabelCard={ (idLabel) => {
+                                    addLabelCard(card.id, idLabel, card.idList, boardId)
+                                }}
+                                deleteLabelCard={ (idLabel) => {
+                                    deleteLabelCard(card.id, idLabel, card.idList, boardId)
+                                }}
+                                addLabel={ (label) => {
+                                    addLabel(label, boardId)
+                                }}
+                            />
                             <AddChecklist
                                 cardId={card.id}
                                 boardId={boardId}
@@ -233,15 +255,24 @@ export class CardModalToBeConnected extends React.Component {
     }
 }
 
-const mapStateToProps = (state, props) => ({
-    boardId: (state.board.id) ? state.board.id : state.board._id,
-    checklists: state.checklists.filter(checklist => checklist.idCard == props.card.id),
-    comments: state.comments.filter(comment => comment.idCard == props.card.id),
-    labels: state.labels.filter(label => label.id == state.board.id),
-});
+const mapStateToProps = (state, props) => {
+    const labelsBoard = state.labels;
+    return({
+        boardId: (state.board.id) ? state.board.id : state.board._id,
+        checklists: state.checklists.filter(checklist => checklist.idCard == props.card.id),
+        comments: state.comments.filter(comment => comment.idCard == props.card.id),
+        labels: labelsBoard, //state.labels.filter(label => label.id == state.board.id),
+        labelsCard: labelsBoard.filter(
+            label => props.card.idLabels.includes(label.id)
+        ),
+    })
+};
 
 const mapDispatchToProps = (dispatch) => ({
+    addLabel: (label, idBoard) => dispatch(addLabel(label, idBoard)),
+    deleteLabelCard: (idCard, idLabel, idList, idBoard) => dispatch(deleteLabelCard(idCard, idLabel, idList, idBoard)),
     setDueComplete: (idList, idCard, dueComplete) => dispatch(setDueComplete(idList, idCard, dueComplete)),
+    addLabelCard : (idCard, idLabel, idList, idBoard) => dispatch(addLabelCard(idCard, idLabel, idList, idBoard)),
     deleteCard: (card) =>  dispatch(deleteCard(card)),
     setName: (idList, idCard, name, idBoard) => dispatch(setName(idList, idCard, name, idBoard)),
     setDesc: (idList, idCard, desc, idBoard) => dispatch(setDesc(idList, idCard, desc), idBoard),

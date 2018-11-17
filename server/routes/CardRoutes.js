@@ -268,9 +268,10 @@ router.post('/:id/idLabels', token, CardAccess.updateRights(), function(req, res
         if(err) debug ('card/:id/idLabels error : ' + err);
         if(!label) return res.status(404).json({message : 'Label not found'});
         if(!label.idBoard.equals(req.card.idBoard)) return res.status(400).json({message : 'Bad request, provide a label associate with the same board'});
+        debug(label._id)
         req.card.idLabels.push(label._id);
         req.card.validate(function(err){
-            if(err) return res.status(400).json({message : 'Label already added'});
+            if(err) return res.status(400).json({message : err});
             req.card.save(function(err){
                 if(err)  return res.status(500).json({message : 'Unexpected internal error'});
                 return res.status(201).json({message : 'Label added successfully'});

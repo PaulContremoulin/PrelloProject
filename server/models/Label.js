@@ -26,6 +26,16 @@ let labelSchema = new Schema({
         versionKey: false
     });
 
+labelSchema.pre('remove', function (next) {
+    var label = this;
+    label.model('Card').update(
+        { idLabels: {$in: label._id}},
+        { $pull: { idLabels :  label._id } },
+        { multi: true },
+        next
+    );
+});
+
 labelSchema.plugin(idValidator);
 
 let Label = mongoose.model('Label', labelSchema);

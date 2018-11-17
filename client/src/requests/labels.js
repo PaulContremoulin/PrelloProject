@@ -1,8 +1,7 @@
 import { putRequest, getRequest, postRequest, deleteRequest } from './genericRequest';
 
-
 export function postLabel(boardId, labelName, labelColor) {
-  return postRequest('/api/boards/' + boardId + '/?name=' + labelName + '&color=' + labelColor)
+  return postRequest('/api/boards/' + boardId + '/labels?name=' + escape(labelName) + '&color=' + escape(labelColor))
 }
 
 export function putLabel(labelId, labelName = "", labelColor = "") {

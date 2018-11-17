@@ -24,3 +24,9 @@
   border-radius: .25rem;
   width: 304px !important;
 }
+
+.listOption {
+  padding-left: 8px;
+  padding-right: 4px;
+  color: #aaaaaa;
+}

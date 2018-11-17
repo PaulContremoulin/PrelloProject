@@ -1,0 +1,18 @@
+ .tagsItem {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding : 6px;
+    border-radius: 5px;
+    border : 1px solid gray;
+}
+
+.tagsItem > span {
+    font-weight: 600;
+    color: white;
+    mix-blend-mode: difference;
+}
+
+ .nbTags {
+    color: white;
+    margin: 8px;
+}

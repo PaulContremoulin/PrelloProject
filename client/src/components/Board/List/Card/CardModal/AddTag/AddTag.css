@@ -1,0 +1,15 @@
+.tagsItemCard {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding : 6px;
+    border-radius: 5px;
+    border : 1px solid gray;
+}
+
+.tagListCard {
+    width: 400px;
+}
+
+.tagsItemCard > span {
+    font-weight: 600;
+}

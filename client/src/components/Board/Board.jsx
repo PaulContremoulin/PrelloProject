@@ -11,6 +11,7 @@ import {BoardMenu} from './BoardMenu/BoardMenu';
 import {List} from './List/List';
 import {AddList} from './AddList/AddList';
 import {setBoard, addList, moveList, addCard, moveCard, moveCardFromList} from '../../actions/boardActions';
+import { addLabel, deleteLabelFromBoard} from '../../actions/labelActions'
 import {resetComments} from '../../actions/commentActions';
 import {resetChecklists} from '../../actions/checkObjectActions';
 import { setListName, setListClosed, deleteList } from '../../actions/listActions';
@@ -244,7 +245,7 @@ export class BoardToBeConnected extends React.Component {
         //socket.emit('unsubscribe', idBoard);
     }
     render() {
-        const { board, addList, moveList, addCard, moveCard } = this.props;
+        const { board, addList, moveList, addCard, moveCard, labels, addLabel, deleteLabelFromBoard } = this.props;
         const boardId = (board._id) ? board._id : board.id;
         const color = (board.prefs && board.prefs.background) ? board.prefs.background : "#ffffff";
         return(
@@ -255,6 +256,13 @@ export class BoardToBeConnected extends React.Component {
                             boardName={board.name}
                             boardId={boardId}
                             color={color}
+                            boardLabels={labels}
+                            addLabel={ (label) => {
+                                addLabel(label, boardId)
+                            }}
+                            deleteLabelFromBoard={(idLabel) => {
+                                deleteLabelFromBoard(idLabel, boardId)
+                            }}
                         />
                         <div className="Lists">
                             <DragDropContext
@@ -283,6 +291,7 @@ export class BoardToBeConnected extends React.Component {
                                                             moveList={moveList}
                                                             setNameOfList={(listName) => this.setNameOfList(list.id, listName, boardId)}
                                                             index={index}
+                                                            labelsBoard={labels}
                                                         />
                                                     </div>
                                                   :
@@ -312,8 +321,11 @@ export class BoardToBeConnected extends React.Component {
 }
 const mapStateToProps = ( state, props ) => ({
     board: state.board,
+    labels: state.labels
 })
 const mapDispatchToProps = ( dispatch ) => ({
+    deleteLabelFromBoard: (idLabel, idBoard) => dispatch(deleteLabelFromBoard(idLabel, idBoard)),
+    addLabel: (label, idBoard) => dispatch(addLabel(label, idBoard)),
     setBoard: (board) => dispatch( setBoard(board)),
     addList: (listName) => dispatch( addList(listName) ),
     setListClosed: (listId, closed, boardId) => dispatch( setListClosed(listId, closed, boardId) ),

@@ -159,7 +159,7 @@ router.get('/:id/lists', token, boardAccess.readRights(), function(req, res) {
         delete req.query.cards;
     }
     var query = List.find(req.query);
-    if(oppenCard) query.populate('cards').populate('cards.idLabels');
+    if(oppenCard) query.populate('cards');
     query.exec(function(err, lists){
         if(err) {
             debug('GET boards/:id/lists error : ' + err)

@@ -32,17 +32,20 @@ export class CardComponent extends React.Component {
     };
 
     dueDateState = () => {
-        if(this.props.card.dueComplete) return 'success';
+        if (this.props.card.dueComplete) return 'success';
         let now = new Date();
         let due = new Date(this.props.card.due);
-        if(due < now) return 'danger';
-        if(due < now.setDate(now.getDate() + 1)) return 'warning';
+        if (due < now) return 'danger';
+        if (due < now.setDate(now.getDate() + 1)) return 'warning';
         else return 'primary';
     };
 
     render() {
-        const {card, board, index, listId, openModal} = this.props;
+        const {card, board, index, listId, openModal, labelsBoard} = this.props;
         const {open} = this.state;
+        const labelsCard = labelsBoard.filter(
+            label => card.idLabels.includes(label.id)
+        );
         return (
             <div className="Card">
                 <Draggable
@@ -60,10 +63,16 @@ export class CardComponent extends React.Component {
                                     className="CardCeption"
                                     onClick={() => this.openModal()}
                                 >
-                                    <h5>{card.name}</h5>
-                                    {(card.due) ?
-                                        <div><Badge style={{'color':'white'}} color={this.dueDateState()}> Due : {dateFormat(card.due, "shortDate")} </Badge></div>
-                                        : null}
+                                <div style={{"margin-bottom":"8px"}}>
+                                {labelsCard.map((label) =>
+                                    <Badge style={{"background-color": label.color, "margin-right":"4px", "display":"inline"}}>{label.name}</Badge>
+                                )}
+                                </div>
+                                <h5>{card.name}</h5>
+                                {(card.due) ?
+                                    <div><Badge style={{'color': 'white'}} color={this.dueDateState()}> Due
+                                        : {dateFormat(card.due, "shortDate")} </Badge></div>
+                                    : null}
                                 </Card>
                             </div>
                         </ContainerCard>
