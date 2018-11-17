@@ -8,6 +8,7 @@
 * email*	string, the user’s email
 * organization*	string, the user’s organization
 * idBoards	[...]
+* idLabels	[...]
 * idOrganizations	[...]
 * confirmed	boolean, if the user has confirmed his email address
 */
@@ -34,7 +35,6 @@ export const DEFAULT_USER = {
 * closed	boolean, the board’s close status
 * memberships	[...]
 * prefs	Prefs{...}
-* labelNames	LabelNames{...}
 */
 export const DEFAULT_BOARD = {
   _id: "default",
@@ -67,6 +67,7 @@ prefs: Object { background: "#000000" }
 * closed	boolean, if the board is closed
 * pos	number, the list’s position in the board
 * idBoard	string, the ID of the board the list is on
+* cards	Array[Card], the cards contained in the list
 */
 export const DEFAULT_LIST = {
   id: "default",
@@ -77,6 +78,10 @@ export const DEFAULT_LIST = {
   cards: []
 };
 
+// Result Object schema for drag and drop
+/*
+*
+*/
 export const RESULT = {
     draggableId: 'task-1',
     type: 'TYPE',
@@ -91,45 +96,21 @@ export const RESULT = {
     },
 }
 
+// Default card schema
 /*
-  id string
-  The ID of the card
-
-  closed boolean
-  Whether the card is closed (archived). Note: Archived lists and boards do not cascade archives to cards. A card can have closed: false but be on an archived board.
-
-  desc string
-  The description for the card. Up to 16384 chars.
-
-  due date
-  The due date on the card, if one exists
-
-  dueComplete boolean
-  Whether the due date has been marked complete
-
-  idBoard string
-  The ID of the board the card is on
-
-  idChecklists array of strings
-  An array of checklist IDs that are on this card
-
-  idLabels array of strings
-  An array of label IDs that are on this card
-
-  idList string
-  The ID of the list the card is in
-
-  idMembers array of strings
-  An array of member IDs that are on this card
-
-  labels array of Labels
-  Array of label objects on this card
-
-  name string
-  Name of the card
-
-  pos float
-  Position of the card in the list
+* id string, The ID of the card
+* closed boolean, Whether the card is closed (archived). Note: Archived lists and boards do not cascade archives to cards. A card can have closed: false but be on an archived board.
+* desc string, The description for the card. Up to 16384 chars.
+* due date, The due date on the card, if one exists
+* dueComplete boolean, Whether the due date has been marked complete
+* idBoard string, The ID of the board the card is on
+* idChecklists array of strings, An array of checklist IDs that are on this card
+* idLabels array of strings, An array of label IDs that are on this card
+* idList string, The ID of the list the card is in
+* idMembers array of strings, An array of member IDs that are on this card
+* labels array of Labels, Array of label objects on this card
+* name string, Name of the card
+* pos float, Position of the card in the list
 */
 export const DEFAULT_CARD = {
   id: "",
@@ -145,6 +126,13 @@ export const DEFAULT_CARD = {
   idList: "",
 }
 
+// Default label schema
+/*
+* id string, The ID of the label
+* idBoard string, The ID of the board the label is in
+* name string, Name of the label
+* color string, color of the label
+*/
 export const DEFAULT_LABEL = {
   id: "",
   name: "",

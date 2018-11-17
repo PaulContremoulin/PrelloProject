@@ -19,8 +19,6 @@ const name = ( state = DEFAULT_CARD.name, action ) => {
   switch (action.type) {
   case CARD_SET_NAME :
     return action.card.name
-    //return (action.card.id === state.id ) ? { ...state, name: action.card.name } : state
-    //return { ...state, name: action.card.name }
   default:
     return state ;
   }
@@ -30,8 +28,6 @@ const desc = ( state = DEFAULT_CARD.desc, action ) => {
   case CARD_SET_DESC :
       console.log(action)
     return action.card.desc
-    //return (action.card.id === state.id ) ? { ...state, desc: action.card.desc } : state
-    //return { ...state, desc: action.card.desc }
   default:
     return state ;
   }
@@ -56,8 +52,6 @@ const closed = ( state = DEFAULT_CARD.closed, action ) => {
   switch (action.type) {
   case CARD_SET_CLOSED :
     return action.card.closed
-    //return (action.card.id === state.id ) ? { ...state, closed: action.card.closed } : state
-    //return { ...state, closed: action.card.closed }
   default:
     return state ;
   }
