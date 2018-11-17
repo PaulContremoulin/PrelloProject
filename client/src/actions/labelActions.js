@@ -18,8 +18,10 @@
 
 
  /**
- * @desc
- */
+  * @desc Set the labels of the selected board
+  * @param labels
+  * @return SET_LABELS action
+  */
  export const setLabels = (labels) => {
    return {
        type: SET_LABELS,
@@ -28,8 +30,10 @@
  };
 
  /**
- * @desc
- */
+  * @desc Add a label to the board
+  * @param label, idBoard
+  * @return ADD_LABEL action
+  */
  export const addLabel = (label, idBoard) => {
    return {
        type: ADD_LABEL,
@@ -43,9 +47,11 @@
    }
  };
 
-/**
-* @desc
-*/
+ /**
+  * @desc Change the name of a label
+  * @param idLabel, nameLabel, idBoard
+  * @return SET_NAME_LABEL action
+  */
 export const setNameLabel = (idLabel, nameLabel, idBoard) => {
   return {
       type: SET_NAME_LABEL,
@@ -63,8 +69,10 @@ export const setNameLabel = (idLabel, nameLabel, idBoard) => {
 };
 
 /**
-* @desc
-*/
+ * @desc Change the color of a label
+ * @param idLabel, colorLabel, idBoard
+ * @return SET_COLOR_LABEL action
+ */
 export const setColorLabel = (idLabel, colorLabel, idBoard) => {
   return {
       type: SET_COLOR_LABEL,
@@ -82,8 +90,10 @@ export const setColorLabel = (idLabel, colorLabel, idBoard) => {
 };
 
 /**
-* @desc
-*/
+ * @desc Delete a label from the board
+ * @param idLabel, idBoard
+ * @return DELETE_LABEL action
+ */
 export const deleteLabelFromBoard = (idLabel, idBoard) => {
   return {
       type: DELETE_LABEL,

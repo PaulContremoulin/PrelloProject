@@ -23,9 +23,11 @@
  */
 
 
-/**
-* @desc
-*/
+ /**
+  * @desc Set the name of the card
+  * @param idList, idCard, name, idBoard
+  * @return CARD_SET_NAME action
+  */
 export const setName = (idList, idCard, name, idBoard) => {
   return {
       type: CARD_SET_NAME,
@@ -46,8 +48,10 @@ export const setName = (idList, idCard, name, idBoard) => {
 };
 
 /**
-* @desc
-*/
+ * @desc Set the description of the card
+ * @param idList, idCard, desc, idBoard
+ * @return CARD_SET_DESC action
+ */
 export const setDesc = (idList, idCard, desc, idBoard) => {
   return {
       type: CARD_SET_DESC,
@@ -69,8 +73,10 @@ export const setDesc = (idList, idCard, desc, idBoard) => {
 
 
 /**
-* @desc
-*/
+ * @desc Set the due date for a card
+ * @param idList, idCard, due, idBoard
+ * @return CARD_SET_DUE action
+ */
 export const setDue = (idList, idCard, due, idBoard) => {
   return {
       type: CARD_SET_DUE,
@@ -90,6 +96,11 @@ export const setDue = (idList, idCard, due, idBoard) => {
   }
 };
 
+/**
+ * @desc Set the completed status of the card
+ * @param idList, idCard, dueComplete
+ * @return CARD_SET_DUE_COMPLETE action
+ */
 export const setDueComplete = (idList, idCard, dueComplete) => {
     return {
         type: CARD_SET_DUE_COMPLETE,
@@ -110,8 +121,10 @@ export const setDueComplete = (idList, idCard, dueComplete) => {
 
 
 /**
-* @desc
-*/
+ * @desc Set the archived status of the card
+ * @param idList, idCard, closed, idBoard
+ * @return CARD_SET_CLOSED action
+ */
 export const setClosed = (idList, idCard, closed, idBoard) => {
   return {
       type: CARD_SET_CLOSED,
@@ -131,6 +144,11 @@ export const setClosed = (idList, idCard, closed, idBoard) => {
   }
 };
 
+/**
+ * @desc Add a checklist to the card
+ * @param idCard, checklist, idBoard
+ * @return CARD_ADD_CHECKLIST action
+ */
 export const addChecklist = (idCard, checklist, idBoard) => {
   return {
       type: CARD_ADD_CHECKLIST,
@@ -147,6 +165,11 @@ export const addChecklist = (idCard, checklist, idBoard) => {
   }
 }
 
+/**
+ * @desc Set the checklists of the selected card
+ * @param checklists
+ * @return CARD_SET_CHECKLISTS action
+ */
 export const setChecklists = (checklists) => {
   return {
       type: CARD_SET_CHECKLISTS,
@@ -161,6 +184,11 @@ export const setChecklists = (checklists) => {
   }
 }
 
+/**
+ * @desc Add a member to a card
+ * @param idCard, idMember, idList, idBoard
+ * @return CARD_ADD_MEMBER action
+ */
 export const addMemberCard = (idCard, idMember, idList, idBoard) => {
   return {
       type: CARD_ADD_MEMBER,
@@ -182,6 +210,11 @@ export const addMemberCard = (idCard, idMember, idList, idBoard) => {
   }
 }
 
+/**
+ * @desc Delete a member from a card
+ * @param idCard, idMember, idList, idBoard
+ * @return CARD_DELETE_MEMBER action
+ */
 export const deleteMemberCard = (idCard, idMember, idList, idBoard) => {
   return {
       type: CARD_DELETE_MEMBER,
@@ -203,6 +236,11 @@ export const deleteMemberCard = (idCard, idMember, idList, idBoard) => {
   }
 }
 
+/**
+ * @desc Add a label to a card
+ * @param idCard, idLabel, idList, idBoard
+ * @return CARD_ADD_LABEL action
+ */
 export const addLabelCard = (idCard, idLabel, idList, idBoard) => {
   return {
       type: CARD_ADD_LABEL,
@@ -224,6 +262,11 @@ export const addLabelCard = (idCard, idLabel, idList, idBoard) => {
   }
 }
 
+/**
+ * @desc Delete a label from a card
+ * @param idCard, idLabel, idList, idBoard
+ * @return CARD_DELETE_LABEL action
+ */
 export const deleteLabelCard = (idCard, idLabel, idList, idBoard) => {
   return {
       type: CARD_DELETE_LABEL,

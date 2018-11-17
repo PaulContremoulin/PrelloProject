@@ -25,7 +25,7 @@ export const DELETE_CARD = "DELETE_CARD";
  */
 
 /**
- * @desc add board
+ * @desc add a board to the lists of boards owned by the user
  * @param board
  * @return ADD_BOARD action
  */
@@ -55,7 +55,7 @@ export const fetchBoards = (boards) => {
 };
 
 /**
- * @desc
+ * @desc Setup all the informations for the board page
  * @param board
  * @return SET_BOARD action
  */
@@ -104,7 +104,9 @@ export const editRoleMember = (member) => {
 
 
 /**
- * @desc
+ * @desc Add a list to the current board
+ * @param list
+ * @return ADD_LIST action
  */
 export const addList = (list) => {
 
@@ -129,7 +131,9 @@ export const addList = (list) => {
 };
 
 /**
- * @desc
+ * @desc Add a card to the current board
+ * @param card
+ * @return ADD_CARD action
  */
 export const addCard = (card) => {
   return {
@@ -158,7 +162,9 @@ export const addCard = (card) => {
 };
 
 /**
- * @desc
+ * @desc Delete a card from the current board
+ * @param card
+ * @return DELETE_CARD action
  */
 export const deleteCard = (card) => {
     return {
@@ -179,7 +185,9 @@ export const deleteCard = (card) => {
 };
 
 /**
- * @desc
+ * @desc Move a list inside the board
+ * @param lists
+ * @return MOVE_LIST action
  */
 export const moveList = (lists) => {
   return {
@@ -196,7 +204,9 @@ export const moveList = (lists) => {
 
 
 /**
- * @desc
+ * @desc Move a card inside a list
+ * @param list, indexOfList
+ * @return MOVE_CARD action
  */
 export const moveCard = (list, indexOfList) => {
   return {
@@ -213,12 +223,11 @@ export const moveCard = (list, indexOfList) => {
 };
 
 /**
- * @desc
+ * @desc Move a card from a list to another
+ * @param startList, indexStart, endList, indexEnd
+ * @return MOVE_CARD_FROM_LIST action
  */
-export const moveCardFromList = (startList, indexStart, endList, indexEnd) => {
-  // console.log(startList);
-  // console.log(endList);
-  // console.log(indexStart, indexEnd);
+export const moveCardFromList = (startList, indexStart, endList, indexEnd) => {=
   return {
       type: MOVE_CARD_FROM_LIST,
       startList: startList,

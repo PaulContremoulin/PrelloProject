@@ -15,9 +15,11 @@
  */
 
 
-/**
-* @desc
-*/
+ /**
+  * @desc Change the name of a list
+  * @param idList, name, idBoard
+  * @return LIST_SET_NAME action
+  */
 export const setListName = (idList, name, idBoard) => {
   return {
       type: LIST_SET_NAME,
@@ -35,8 +37,10 @@ export const setListName = (idList, name, idBoard) => {
 };
 
 /**
-* @desc
-*/
+ * @desc Change the archived status of a list
+ * @param idList, closed, idBoard
+ * @return LIST_SET_CLOSED action
+ */
 export const setListClosed = (idList, closed, idBoard) => {
   return {
     type: LIST_SET_CLOSED,
@@ -54,8 +58,10 @@ export const setListClosed = (idList, closed, idBoard) => {
 };
 
 /**
-* @desc
-*/
+ * @desc Delete a list from the board
+ * @param idList, idBoard
+ * @return LIST_DELETE action
+ */
 export const deleteList = (idList, idBoard) => {
   return {
     type: LIST_DELETE,

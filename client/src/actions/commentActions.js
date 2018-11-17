@@ -16,8 +16,9 @@
  */
 
  /**
- * @desc
- */
+  * @desc Set the comments to their default value
+  * @return RESET_COMMENTS action
+  */
  export const resetComments = () => {
    return {
        type: RESET_COMMENTS,
@@ -25,8 +26,10 @@
  };
 
  /**
- * @desc
- */
+  * @desc Setup the comments of the selected card
+  * @param comments
+  * @return SET_COMMENTS action
+  */
  export const setComments = (comments) => {
    return {
        type: SET_COMMENTS,
@@ -35,8 +38,10 @@
  };
 
  /**
- * @desc
- */
+  * @desc Add a comment to the card
+  * @param comment, idBoard
+  * @return ADD_COMMENT action
+  */
  export const addComment = (comment, idBoard) => {
    return {
        type: ADD_COMMENT,
@@ -50,9 +55,11 @@
    }
  };
 
-/**
-* @desc
-*/
+ /**
+  * @desc Change the text of a comment
+  * @param idComment, textComment, idBoard
+  * @return SET_TEXT_COMMENT action
+  */
 export const setTextComment = (idComment, textComment, idBoard) => {
   return {
       type: SET_TEXT_COMMENT,
