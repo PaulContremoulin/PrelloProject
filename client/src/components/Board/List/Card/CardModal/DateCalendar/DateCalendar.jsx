@@ -1,11 +1,10 @@
 // Modules
 import React from 'react';
-import { connect } from 'react-redux';
 
 import { changeCardDueDate, cardDueDateCompleted } from '../../../../../../requests/cards';
 import  dateFormat from 'dateformat';
 import Calendar from 'react-calendar';
-import {Popover, Button, Col, Badge, PopoverHeader, PopoverBody, Input, InputGroup, InputGroupAddon} from "reactstrap";
+import {Popover, Button, Col, Badge, PopoverHeader, PopoverBody} from "reactstrap";
 
 export class DateCalendar extends React.Component {
     constructor(props) {
@@ -22,18 +21,21 @@ export class DateCalendar extends React.Component {
                 .then( () => this.props.setDue( newDate ) )
         }
         this.setState({ dueDateInput: false })
-    }
+    };
 
     handleOnChangeDueCompleted = (complete) => {
+        cardDueDateCompleted(this.props.cardId, complete)
+            .then( () => this.props.setDueComplete( complete ) )
+    };
 
-        //e.target.checked
-        /*const newDate = date;
-        if (newDate !== this.props.due) {
-            cardDueDateCompleted(this.props.cardId, complete )
-                .then( () => this.props.setDue( newDate ) )
-        }
-        this.setState({ dueDateInput: false })*/
-    }
+    dueDateState = () => {
+        if(this.props.dueComplete) return 'success';
+        let now = new Date();
+        let due = new Date(this.props.due);
+        if(due < now) return 'danger';
+        if(due < now.setDate(now.getDate() + 1)) return 'warning';
+        else return 'primary';
+    };
 
     toggleDueInput = () => { this.setState({ dueDateInput : !this.state.dueDateInput }) }
 
@@ -46,8 +48,12 @@ export class DateCalendar extends React.Component {
                             ?
                             <h6 id="dueDateId">
                                 For : {' '}
-                                <Badge color="primary">
-                                    <div onClick={() => this.toggleDueInput() }> { dateFormat(due, "fullDate")}</div>
+                                <Badge color={this.dueDateState()}>
+                                    <input
+                                        checked={dueComplete}
+                                        onChange={(e) => this.handleOnChangeDueCompleted(e.target.checked)}
+                                        type="checkbox" />
+                                    <div style={{'display':'inline', 'color':'white'}} onClick={() => this.toggleDueInput() }> { dateFormat(due, "fullDate")}</div>
                                 </Badge>
                             </h6>
                             :

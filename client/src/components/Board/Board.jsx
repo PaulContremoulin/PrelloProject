@@ -231,12 +231,16 @@ export class BoardToBeConnected extends React.Component {
     render() {
         const { board, addList, moveList, addCard, moveCard } = this.props;
         const boardId = (board._id) ? board._id : board.id;
-        const color = (board.prefs && board.preds.background) ? board.prefs.background : "#ffffff";
+        const color = (board.prefs && board.prefs.background) ? board.prefs.background : "#ffffff";
         return(
             <div className="Board">
                 {this.state.isGood ?
                     <div>
-                        <BoardMenu boardName={board.name} boardId={boardId} color={color}/>
+                        <BoardMenu
+                            boardName={board.name}
+                            boardId={boardId}
+                            color={color}
+                        />
                         <div className="Lists">
                             <DragDropContext
                                 onDragStart={() => {

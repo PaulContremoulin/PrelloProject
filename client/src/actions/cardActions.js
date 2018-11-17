@@ -88,7 +88,7 @@ export const setDue = (idList, idCard, due, idBoard) => {
 
 export const setDueComplete = (idList, idCard, dueComplete) => {
     return {
-        type: CARD_SET_DUE,
+        type: CARD_SET_DUE_COMPLETE,
         list: {
             id: idList
         },
