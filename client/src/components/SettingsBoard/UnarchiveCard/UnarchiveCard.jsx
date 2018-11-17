@@ -74,7 +74,6 @@ export class UnarchiveCardToBeConnected extends React.Component {
 
 const mapStateToProps = (state, props) => ({
     board: state.board,
-    user: state.user,
 });
 const mapDispatchToProps = (dispatch) => ({
     setClosed: (res) => dispatch(setClosed(res)),
