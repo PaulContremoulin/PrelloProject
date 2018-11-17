@@ -1,11 +1,14 @@
 // Modules
 import { combineReducers } from 'redux';
 import { SET_LABELS, SET_NAME_LABEL, ADD_LABEL, SET_COLOR_LABEL, DELETE_LABEL } from '../../actions/labelActions';
+import { SET_BOARD } from '../../actions/boardActions';
 
 import { DEFAULT_LABEL } from '../../constants';
 
 export const labels = ( state = [], action ) => {
   switch (action.type) {
+    case SET_BOARD :
+      return action.board.labels || [];
     case SET_LABELS :
       return [...(action.labels.map(
         labelObj => label(labelObj, action)

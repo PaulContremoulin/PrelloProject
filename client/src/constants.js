@@ -19,6 +19,7 @@ export const DEFAULT_USER = {
   email: "",
   organization: "",
   idBoards: [],
+  idLabels: [],
   idOrganizations: [],
   confirmed: false,
 };

@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import {
   CARD_SET_NAME, CARD_SET_DESC, CARD_SET_CLOSED, CARD_SET_DUE,
   CARD_SET_DUE_COMPLETE, CARD_ADD_CHECKLIST, CARD_ADD_MEMBER, CARD_DELETE_MEMBER,
+  CARD_ADD_LABEL, CARD_DELETE_LABEL,
 } from '../../actions/cardActions';
 
 import { DEFAULT_CARD } from '../../constants';
@@ -79,6 +80,10 @@ const idMembers = ( state = DEFAULT_CARD.idMembers, action ) => {
 }
 const idLabels = ( state = DEFAULT_CARD.idLabels, action ) => {
   switch (action.type) {
+    case CARD_ADD_LABEL :
+      return [...state, action.card.label.id]
+    case CARD_DELETE_LABEL :
+      return state.filter( label => !(label === action.card.label.id) )
       default:
           return state ;
   }

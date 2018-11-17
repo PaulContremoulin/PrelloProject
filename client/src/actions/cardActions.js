@@ -12,6 +12,8 @@
  export const CARD_SET_DUE_COMPLETE = 'CARD_SET_DUE_COMPLETE';
  export const CARD_ADD_MEMBER = 'CARD_ADD_MEMBER';
  export const CARD_DELETE_MEMBER = 'CARD_DELETE_MEMBER';
+ export const CARD_ADD_LABEL = 'CARD_ADD_LABEL';
+ export const CARD_DELETE_LABEL = 'CARD_DELETE_LABEL';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -184,6 +186,42 @@ export const deleteMemberCard = (idCard, idMember, idList, idBoard) => {
         id: idCard,
         member: {
           id: idMember,
+        }
+      },
+      meta: {
+          socket: {
+              channel: 'data:store',
+              room: idBoard,
+          }
+      }
+  }
+}
+
+export const addLabelCard = (idCard, idLabel, idList, idBoard) => {
+  return {
+      type: CARD_ADD_LABEL,
+      card: {
+        id: idCard,
+        label: {
+          id: idLabel,
+        }
+      },
+      meta: {
+          socket: {
+              channel: 'data:store',
+              room: idBoard,
+          }
+      }
+  }
+}
+
+export const deleteLabelCard = (idCard, idLabel, idList, idBoard) => {
+  return {
+      type: CARD_DELETE_LABEL,
+      card: {
+        id: idCard,
+        label: {
+          id: idLabel,
         }
       },
       meta: {
