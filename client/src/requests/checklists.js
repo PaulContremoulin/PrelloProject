@@ -1,24 +1,12 @@
 import {putRequest, getRequest, postRequest, deleteRequest} from './genericRequest';
 
-/*
-* @property {string} name.required - the checklist's name
-* @property {number} pos - the checklist's pos
-* @property {number} pos.required - the checklist's pos
-* @property {string} idCard - the checklist's card attached
-* @property {string} idBoard - the checklist's board attached
-* @property {Array.<CheckItem>} checkItems - the list of checkItems to do
-*/
-
-/*
-checkItems: [{
-        "state": "complete",
-        "id": "4eea6aeda5da7f5a490000b9",
-        "idChecklist": "4554132168484894528",
-        "name": "See if there is a call",
-        "pos": 16751
-    }]
-*/
-
+/**
+ * @desc create checklist in card
+ * @param { String } checklistName
+ * @param { String } idCard
+ * @param { String } idBoard
+ * @return status code
+ */
 export function postChecklistToCard(checklistName, idCard, idBoard) {
     return postRequest('/api/cards/' + idCard + '/checklists', {
         name: checklistName,
@@ -29,10 +17,22 @@ export function postChecklistToCard(checklistName, idCard, idBoard) {
     })
 }
 
+/**
+ * @desc get checklist
+ * @param { String } idCard
+ * @return status code
+ */
 export function getChecklists(idCard) {
     return getRequest('/api/cards/' + idCard + '/checklists')
 }
 
+/**
+ * @desc modify checklist
+ * @param { String } idChecklist
+ * @param { String } nameChecklist
+ * @param { String } posChecklist
+ * @return status code
+ */
 export function putChecklist(idChecklist, nameChecklist = "", posChecklist = "") {
     var queryStr = '';
     if (nameChecklist && posChecklist) {
@@ -47,6 +47,12 @@ export function putChecklist(idChecklist, nameChecklist = "", posChecklist = "")
     return putRequest('/api/checklists/' + idChecklist + queryStr)
 }
 
+/**
+ * @desc create checkitem in card
+ * @param { String } checkItemName
+ * @param { String } idChecklist
+ * @return status code
+ */
 export function postCheckitemToCard(checkItemName, idChecklist) {
     return postRequest('/api/checklists/' + idChecklist + "/checkItems", {
         name: checkItemName,
@@ -56,14 +62,32 @@ export function postCheckitemToCard(checkItemName, idChecklist) {
     })
 }
 
+/**
+ * @desc modify state of checkitem
+ * @param { String } idChecklist
+ * @param { String } idCheckItem
+ * @param { String } state
+ * @return status code
+ */
 export function putItemState(idChecklist, idCheckItem, state) {
     return putRequest('/api/checklists/' + idChecklist + '/checkItems/' + idCheckItem + '?state=' + state)
 }
 
+/**
+ * @desc delete checklist
+ * @param { String } idChecklist
+ * @return status code
+ */
 export function deleteChecklist(idChecklist) {
     return deleteRequest('/api/checklists/' + idChecklist)
 }
 
+/**
+ * @desc delete checkitem
+ * @param { String } idChecklist
+ * @param { String } idCheckItem
+ * @return status code
+ */
 export function deleteCheckItem(idChecklist, idCheckItem) {
     return deleteRequest('/api/checklists/' + idChecklist + /checkItems/ + idCheckItem)
 }

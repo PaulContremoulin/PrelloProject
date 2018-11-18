@@ -1,9 +1,7 @@
 import React from 'react';
-
-// Components & Actions
+import { Button, Form, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
 // Css
-import { Card, Button, CardBody, CardTitle, Form, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 import Octicon from 'react-octicon';
 import './AddList.css';
 

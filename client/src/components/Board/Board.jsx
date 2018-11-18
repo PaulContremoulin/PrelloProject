@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import * as qs from 'query-string';
 import { history } from '../../history';
 import { socket } from '../../redux/middleware/websocket';
+import { CardDeck, Alert } from 'reactstrap';
+
 // Components & Actions
 import { DEFAULT_BOARD } from '../../constants';
 import {BoardMenu} from './BoardMenu/BoardMenu';
@@ -19,10 +20,12 @@ import { postListToBoard, postCardToBoard, getListsOfBoard, getBoardById } from 
 import { changeListName, changeListPos, changeListClosed, deleteListFromBoard } from '../../requests/lists';
 import { changeCardPos, changeCardPosAndList } from '../../requests/cards';
 import { nextPosFromArray, calcPos, setupAllPos, calcNextPos } from '../../boardUtil.js';
+
 // Css
-import { Container, Row, Col, CardDeck, Alert } from 'reactstrap';
 import './Board.css';
 const ContainerBoard = styled.div``;
+
+
 export class BoardToBeConnected extends React.Component {
     constructor(props) {
         super(props)
@@ -31,7 +34,6 @@ export class BoardToBeConnected extends React.Component {
         }
     }
     onDragEnd = result => {
-        // console.log(result);
         const { destination, source, draggableId, type } = result;
         // If the card hasnt been moved to a droppable position
         if (!destination) {
@@ -169,11 +171,6 @@ export class BoardToBeConnected extends React.Component {
         }
         this.props.moveCardFromList(newContextListStart, indexOfListStart, newContextListEnd, indexOfListEnd);
 
-        console.log(contextListStart.cards);
-        console.log(contextListEnd.cards);
-        console.log(cardDragged);
-        console.log(newContextListStart.cards);
-        console.log(newContextListEnd.cards);
         return;
     };
 

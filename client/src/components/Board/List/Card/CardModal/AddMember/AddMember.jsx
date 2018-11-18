@@ -1,15 +1,14 @@
 import React from 'react';
+import {Button, Popover, Col} from 'reactstrap';
+import {faCheck} from "@fortawesome/fontawesome-free-solid/index";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUsers} from "@fortawesome/fontawesome-free-solid/index.es";
 
 // Components & Actions
+import {addMemberToCard, deleteMemberFromCard} from "../../../../../../requests/cards";
 
 // Css
-import {Row, Button, Form, Input, Popover, InputGroup, InputGroupAddon, Col} from 'reactstrap';
 import './AddMember.css'
-import {addMemberToCard, deleteMemberFromCard} from "../../../../../../requests/cards";
-import {faCheck, faPlus, faTimes} from "@fortawesome/fontawesome-free-solid/index";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {CirclePicker} from "react-color";
-import {faUsers} from "@fortawesome/fontawesome-free-solid/index.es";
 
 export class AddMember extends React.Component {
 

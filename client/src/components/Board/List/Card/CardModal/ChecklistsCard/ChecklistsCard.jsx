@@ -1,11 +1,14 @@
+//Module
 import React from "react";
 import {Col, Row} from "reactstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faListUl } from '@fortawesome/fontawesome-free-solid';
-import {Checklist} from "./Checklist/Checklist";
 
+//Css
 import './ChecklistsCard.css';
-import {checkItemDelete} from "../../../../../../actions/checkObjectActions";
+
+//Action & Component
+import {Checklist} from "./Checklist/Checklist";
 
 export class ChecklistsCard extends React.Component {
 

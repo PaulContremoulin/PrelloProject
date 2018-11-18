@@ -2,7 +2,6 @@ import React from "react";
 import {Col, Input, Row, Progress, Form, Button} from "reactstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCheckSquare} from '@fortawesome/fontawesome-free-regular';
-import { faTimes } from '@fortawesome/fontawesome-free-solid';
 import { CheckItem } from './CheckItem/CheckItem';
 
 

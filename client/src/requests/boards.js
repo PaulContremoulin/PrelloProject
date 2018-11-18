@@ -28,6 +28,12 @@ export function createBoard(name, idOrganization, desc, memberships, prefs) {
     })
 }
 
+/**
+ * @desc get user boards according to the state
+ * @param { String } idUser
+ * @param { String } state
+ * @return status code
+ */
 export function getBoardsUser(idUser, state) {
     return new Promise((resolve, reject) =>
     {
@@ -41,6 +47,11 @@ export function getBoardsUser(idUser, state) {
     })
 }
 
+/**
+ * @desc get all user boards
+ * @param { String } idUser
+ * @return status code
+ */
 export function getAllBoardsUser(idUser) {
     return new Promise((resolve, reject) =>
     {
@@ -54,30 +65,62 @@ export function getAllBoardsUser(idUser) {
     })
 }
 
+/**
+ * @desc get members of boards
+ * @param { String } idBoard
+ * @return status code
+ */
 export function getMembersOfBoard(idBoard) {
     return getRequest('/api/boards/'+idBoard+'/members')
 }
 
-  export function getBoardById(idBoard) {
+/**
+ * @desc get board by id
+ * @param { String } idBoard
+ * @return status code
+ */
+export function getBoardById(idBoard) {
     return getRequest('/api/boards/' + idBoard)
-    .then( res => res )
-  }
+        .then( res => res )
+}
 
-  export function getListsOfBoard(idBoard, withCards = false, archived = false) {
-      const cardsFilter = (withCards) ? "open" : "closed";
-      return getRequest('/api/boards/' + idBoard + '/lists?cards=' + cardsFilter)
-  }
+/**
+ * @desc get lists of boards
+ * @param { String } idBoard
+ * @param { Boolean } withCards
+ * @param { Boolean } archived
+ * @return status code
+ */
+export function getListsOfBoard(idBoard, withCards = false, archived = false) {
+    const cardsFilter = (withCards) ? "open" : "closed";
+    return getRequest('/api/boards/' + idBoard + '/lists?cards=' + cardsFilter)
+}
 
-  export function postListToBoard(listName, listPos, boardId) { // TODO: Generate Position
+/**
+ * @desc create list in board
+ * @param { String } listName
+ * @param { String } listPos
+ * @param { String } boardId
+ * @return status code
+ */
+export function postListToBoard(listName, listPos, boardId) {
     console.log(boardId);
-      return postRequest('/api/boards/' + boardId + '/lists/', {
+    return postRequest('/api/boards/' + boardId + '/lists/', {
         name: listName,
         pos: listPos
-      })
-  }
+    })
+}
 
-  export function postCardToBoard(cardName, cardPos, listId, boardId) { // TODO: Generate Position
-      return postRequest('/api/cards/', {
+/**
+ * @desc create card in board
+ * @param { String } cardName
+ * @param { String } cardPos
+ * @param { String } listId
+ * @param { String } boardId
+ * @return status code
+ */
+export function postCardToBoard(cardName, cardPos, listId, boardId) {
+    return postRequest('/api/cards/', {
         name: cardName,
         pos: cardPos,
         desc: "",
@@ -87,9 +130,17 @@ export function getMembersOfBoard(idBoard) {
         idBoard: boardId,
         idMembers: [],
         idLabels: [],
-      })
-  }
+    })
+}
 
+/**
+ * @desc change information of board
+ * @param { String } idBoard
+ * @param { String } name
+ * @param { String } desc
+ * @param { String } closed
+ * @return status code
+ */
 export const changeInformationBoard = (
     idBoard,
     name,

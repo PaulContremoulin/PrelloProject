@@ -1,28 +1,23 @@
 import React from 'react';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
-
-// Components & Actions
-import {CardComponent} from './Card/Card';
-import './List.css';
-import {AddCard} from './AddCard/AddCard';
-
-// Css
 import {
-    Container,
-    Row,
-    Col,
     Card,
-    CardText,
-    CardBody,
     CardTitle,
     Button,
     Input,
-    Popover,
-    ButtonGroup, PopoverHeader, PopoverBody
+    Popover, PopoverBody
 } from 'reactstrap';
 import styled from 'styled-components';
 import {faEllipsisV} from "@fortawesome/fontawesome-free-solid";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
+// Components & Actions
+import {CardComponent} from './Card/Card';
+import {AddCard} from './AddCard/AddCard';
+
+// Css
+import './List.css';
+
 
 const ContainerList = styled.div`
   width: 272px;

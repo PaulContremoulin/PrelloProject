@@ -1,9 +1,4 @@
 import React from 'react';
-
-// Components & Actions
-
-// Css
-import './TagsList.css'
 import { CirclePicker } from 'react-color';
 import {
     Row,
@@ -13,13 +8,17 @@ import {
     Popover,
     InputGroup,
     InputGroupAddon,
-    Col,
-    InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem
+    Col
 } from 'reactstrap';
-import {postLabel, deleteLabel} from "../../../../requests/labels";
 import {faTags, faTimes} from "@fortawesome/fontawesome-free-solid";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/fontawesome-free-solid/index";
+
+// Components & Actions
+import {postLabel, deleteLabel} from "../../../../requests/labels";
+
+// Css
+import './TagsList.css'
 
 export class TagsList extends React.Component {
 
@@ -63,7 +62,7 @@ export class TagsList extends React.Component {
                 <Popover placement="bottom" isOpen={this.state.popoverTagsList} target="TagsListId" toggle={() => this.toggleTagsList()}>
                     <Col>
                         {boardLabels.map( (label, index) =>
-                                    <div className="tagsItem">
+                                    <div key={label._id} className="tagsItem">
                                         <div className="tagsName" style={{'background-color':label.color}}><span>{label.name}</span></div>
                                         <a onClick={() => this.deleteTagToList(label.id)} className="float-right tagsAddon"><FontAwesomeIcon color="black" icon={faTimes}/></a>
                                     </div>

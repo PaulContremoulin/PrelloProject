@@ -1,14 +1,14 @@
 import React from 'react';
-
-// Components & Actions
-
-// Css
-import {Row, Button, Form, Input, Popover, InputGroup, InputGroupAddon, Col} from 'reactstrap';
-import Octicon from 'react-octicon';
-import './AddChecklist.css'
-import {postChecklistToCard} from "../../../../../../requests/checklists";
+import {Button, Form, Input, Popover, InputGroup, InputGroupAddon} from 'reactstrap';
 import {faCheckSquare} from "@fortawesome/fontawesome-free-regular";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome/index.es";
+
+// Components & Actions
+import {postChecklistToCard} from "../../../../../../requests/checklists";
+
+// Css
+import './AddChecklist.css'
+import Octicon from 'react-octicon';
 
 export class AddChecklist extends React.Component {
 
