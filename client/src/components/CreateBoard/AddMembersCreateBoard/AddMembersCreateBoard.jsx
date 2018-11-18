@@ -85,7 +85,9 @@ export class AddMembersCreateBoardToBeConnected extends React.Component {
     addMemberInStore = () => {
         const member = this.state.value;
         const membFind = this.state.membersFind.filter(memb => memb.username === member);
-        this.props.addMemberCreationBoard(membFind[0])
+        if(membFind.length !== 0) {
+            this.props.addMemberCreationBoard(membFind[0])
+        }
         this.setState({value:""})
     }
 
@@ -98,20 +100,20 @@ export class AddMembersCreateBoardToBeConnected extends React.Component {
         };
         return (
             <div>
-                    <Row>
-                        <Col xs={8} sm={8} md={9}>
-                            <Autosuggest
-                                suggestions={suggestions}
-                                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                                getSuggestionValue={this.getSuggestionValue}
-                                renderSuggestion={this.renderSuggestion}
-                                inputProps={inputProps} />
-                        </Col>
-                        <Col xs={4} sm={4} md={3}>
-                            <Button onClick={() => this.addMemberInStore()} className="buttonAddMember" color="secondary" >Add</Button>
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col xs={8} sm={8} md={9}>
+                        <Autosuggest
+                            suggestions={suggestions}
+                            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                            getSuggestionValue={this.getSuggestionValue}
+                            renderSuggestion={this.renderSuggestion}
+                            inputProps={inputProps} />
+                    </Col>
+                    <Col xs={4} sm={4} md={3}>
+                        <Button onClick={() => this.addMemberInStore()} className="buttonAddMember" color="secondary" >Add</Button>
+                    </Col>
+                </Row>
             </div>
         )
     }
