@@ -245,12 +245,12 @@ export class CardModalToBeConnected extends React.Component {
                             </Modal>
                             <Button color="danger" onClick={this.toggleDelete} size="sm" block><FontAwesomeIcon className='iconBefore' icon={faTrashAlt}/>Delete</Button>
                             <Modal isOpen={this.state.deleteModal} toggle={this.toggleDelete}>
-                                <ModalHeader toggle={this.toggleArchive}>Delete the card</ModalHeader>
+                                <ModalHeader toggle={this.toggleDelete()}>Delete the card</ModalHeader>
                                 <ModalBody>
                                     Do you want delete the card ?
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="danger" onClick={this.deleteCardEvent}>Archive</Button>{' '}
+                                    <Button color="danger" onClick={this.deleteCardEvent}>Delete</Button>{' '}
                                     <Button color="secondary" onClick={this.toggleDelete}>Cancel</Button>
                                 </ModalFooter>
                             </Modal>
