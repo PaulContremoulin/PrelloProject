@@ -155,7 +155,7 @@ export const addCheckItem = (idBoard, idCard, idChecklist, checkItem) => {
 }
 
 /**
- * @desc Change the position of a checkItem ina  checklist
+ * @desc Change the position of a checkItem in a  checklist
  * @param idCheckItem, checkItemPos, idBoard, idCard, idChecklist
  * @return CHECKITEM_SET_POS action
  */
@@ -213,7 +213,7 @@ export const checkItemSetState = (idCheckItem, checkItemState, idBoard, idCard, 
  * @param idBoard, idCard,idChecklist, idCheckItem
  * @return DELETE_CHECKITEM action
  */
-export const checkItemDelete = (idBoard, idCard,idChecklist, idCheckItem) => {
+export const checkItemDelete = (idBoard, idCard, idChecklist, idCheckItem) => {
     return {
         type: DELETE_CHECKITEM,
         card: {

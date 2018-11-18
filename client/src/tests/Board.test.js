@@ -4,11 +4,13 @@ import {expect} from 'chai';
 import { Board } from '../components/Board/Board';
 import Adapter from 'enzyme-adapter-react-16';
 import {DEFAULT_BOARD} from '../constants';
+import { Provider } from "react-redux";
+import { store } from "../redux/store";
 
 configure({ adapter: new Adapter() });
 
 describe('Enzyme Shallow', function () {
   it('renders without crashing', () => {
-    shallow(<Board board={DEFAULT_BOARD}/>);
+    shallow(<Board board={DEFAULT_BOARD} store={store}/>);
   });
 });
