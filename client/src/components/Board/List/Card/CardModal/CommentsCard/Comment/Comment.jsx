@@ -1,5 +1,5 @@
 import React from "react";
-import {Col, Input, Row, Button, Form} from "reactstrap";
+import {Col, Row} from "reactstrap";
 import TimeAgo from 'react-timeago'
 import enLang from 'react-timeago/lib/language-strings/en';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'

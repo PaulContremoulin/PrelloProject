@@ -1,15 +1,15 @@
 import React from 'react';
-
-// Components & Actions
-
-// Css
 import {Row, Button, Form, Input, Popover, InputGroup, InputGroupAddon, Col} from 'reactstrap';
-import './AddTag.css'
-import {postLabel, postLabelToCard, removeLabelFromCard} from "../../../../../../requests/labels";
-import {faCheck, faPlus, faTimes} from "@fortawesome/fontawesome-free-solid/index";
+import {faCheck, faPlus} from "@fortawesome/fontawesome-free-solid/index";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {CirclePicker} from "react-color";
 import {faTags} from "@fortawesome/free-solid-svg-icons/index.es";
+
+// Components & Actions
+import {postLabel, postLabelToCard, removeLabelFromCard} from "../../../../../../requests/labels";
+
+// Css
+import './AddTag.css'
 
 export class AddTag extends React.Component {
 

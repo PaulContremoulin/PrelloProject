@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 // Components & Actions
-import {NavBar} from '../../components/NavBar/NavBar';
 import {Board} from '../../components/Board/Board';
 import { logOut } from '../../actions/signActions.js';
 

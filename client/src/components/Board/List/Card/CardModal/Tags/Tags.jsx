@@ -1,6 +1,5 @@
 import React from "react";
-import {changeCardName} from "../../../../../../requests/cards";
-import {Badge, Col, Form, Input} from "reactstrap";
+import {Badge, Col} from "reactstrap";
 import './Tags.css';
 
 export class Tags extends React.Component {

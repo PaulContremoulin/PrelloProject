@@ -1,17 +1,15 @@
 // Modules
 import React from 'react';
-import { connect } from 'react-redux';
 import {history} from "../../../history";
+import {Navbar, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSlidersH} from '@fortawesome/fontawesome-free-solid';
 
 // Css...
 import './BoardMenu.css';
-import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reactstrap';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {} from '@fortawesome/fontawesome-free-regular';
-import {faSlidersH, faTags} from '@fortawesome/fontawesome-free-solid';
-import {TagsList} from "./TagsList/TagsList";
 
 // Actions & Constant
+import {TagsList} from "./TagsList/TagsList";
 
 export class BoardMenu extends React.Component {
   constructor(props) {

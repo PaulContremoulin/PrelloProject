@@ -1,15 +1,14 @@
 import React from 'react';
 import {Draggable} from "react-beautiful-dnd";
+import {Card, Badge} from 'reactstrap';
+import styled from 'styled-components';
+import dateFormat from "dateformat";
 
 // Components & Actions
 import {CardModal} from './CardModal/CardModal';
 
 // Css
-import {Container, Row, Col, Card, CardText, CardTitle, CardBody, Button, Badge} from 'reactstrap';
-import Octicon from 'react-octicon';
 import './Card.css';
-import styled from 'styled-components';
-import dateFormat from "dateformat";
 
 const ContainerCard = styled.div`
 `;

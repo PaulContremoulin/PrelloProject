@@ -8,7 +8,7 @@
 export function isPosValid(lesserObject, upperObject) {
   const lesserPos = (lesserObject) ? lesserObject.pos : false;
   const upperPos = (upperObject) ? upperObject.pos : false;
-  if ((lesserPos || lesserPos == 0) && (upperPos || upperPos == 0 )) {
+  if ((lesserPos || lesserPos === 0) && (upperPos || upperPos === 0 )) {
     return ((upperPos - lesserPos) > 1 );
   } else {
     return false;

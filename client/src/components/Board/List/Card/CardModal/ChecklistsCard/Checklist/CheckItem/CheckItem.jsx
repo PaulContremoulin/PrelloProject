@@ -1,9 +1,8 @@
 import React from "react";
-import {Col, Input, Row, Progress, Button} from "reactstrap";
+import {Col, Input, Button} from "reactstrap";
 
 import {deleteCheckItem, putItemState} from "../../../../../../../../requests/checklists";
 import './CheckItem.css';
-import {checkItemDelete} from "../../../../../../../../actions/checkObjectActions";
 
 export class CheckItem extends React.Component {
 

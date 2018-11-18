@@ -1,7 +1,7 @@
 // Modules
 import React from 'react';
 import {connect} from 'react-redux';
-import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Badge, Popover, PopoverHeader, PopoverBody, InputGroup,} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col} from 'reactstrap';
 import {faTrashAlt, faArchive} from "@fortawesome/fontawesome-free-solid";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
@@ -21,7 +21,7 @@ import {CommentsCard} from "./CommentsCard/CommentsCard";
 
 import { changeCardClosed, deleteCardRequest} from '../../../../../requests/cards';
 import { getChecklists} from '../../../../../requests/checklists';
-import {getComments, postCommentToCard, putTextToComment} from '../../../../../requests/comments';
+import {getComments} from '../../../../../requests/comments';
 
 import {
     checklistSetName,

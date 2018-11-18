@@ -1,5 +1,5 @@
 import React from "react";
-import {Badge, Col, Form, Input, Tooltip} from "reactstrap";
+import {Col} from "reactstrap";
 import './MembersCard.css';
 import {MemberItem} from "./MemberItem/MemberItem";
 
