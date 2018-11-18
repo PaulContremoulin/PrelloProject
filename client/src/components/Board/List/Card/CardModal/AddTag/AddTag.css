@@ -33,6 +33,6 @@
 
 .TagScroll {
     max-height: 300px;
-    overflow: scroll;
+    overflow: auto;
     overflow-x: hidden;
 }
