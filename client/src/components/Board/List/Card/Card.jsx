@@ -82,12 +82,6 @@ export class CardComponent extends React.Component {
                                             </div>
                                         )}
                                     </div>
-
-
-
-
-
-
                                 </Card>
                             </div>
                         </ContainerCard>
