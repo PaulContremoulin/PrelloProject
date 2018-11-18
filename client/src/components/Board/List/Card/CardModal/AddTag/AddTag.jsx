@@ -6,8 +6,9 @@ import React from 'react';
 import {Row, Button, Form, Input, Popover, InputGroup, InputGroupAddon, Col} from 'reactstrap';
 import './AddTag.css'
 import {postLabel, postLabelToCard, removeLabelFromCard} from "../../../../../../requests/labels";
-import { faCheck, faPlus} from "@fortawesome/fontawesome-free-solid/index";
+import {faCheck, faPlus, faTimes} from "@fortawesome/fontawesome-free-solid/index";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {CirclePicker} from "react-color";
 
 export class AddTag extends React.Component {
 
@@ -15,7 +16,7 @@ export class AddTag extends React.Component {
         super(props);
         this.state = {
             popoverAddTag: false,
-            tagColor : '#ffffff'
+            tagColor : '#607d8b'
         }
     };
 
@@ -38,8 +39,8 @@ export class AddTag extends React.Component {
             .then((res) => this.props.addLabel(res.data));
     };
 
-    handleColorChange = (event) => {
-        this.setState({tagColor: event.target.value});
+    handleColorChange = (color) => {
+        this.setState({tagColor: color.hex});
     }
 
     render() {
@@ -51,9 +52,9 @@ export class AddTag extends React.Component {
                          toggle={() => this.toggleAddTag()}>
                     <Col className="tagListCard">
                         {labelsBoard.map((label, index) =>
-                            <div className="tagsItemCard" onClick={() => this.addTagToCard(label.id)} style={{'background-color': label.color}}>
-                                <span>{label.name}</span>
-                                {(labelsCard.includes(label.id.toString())) ? <FontAwesomeIcon className="float-right" color="white" icon={faCheck}/> : null }
+                            <div className="tagsItem" onClick={() => this.addTagToCard(label.id)} style={{'background-color': label.color}}>
+                                <div className="tagsName" style={{'background-color':label.color}}><span>{label.name}</span></div>
+                            {(labelsCard.includes(label.id.toString())) ? <span className="tagsAddon"><FontAwesomeIcon color="white" icon={faCheck}/></span> : null }
                             </div>
                         )}
                     </Col>
@@ -67,18 +68,26 @@ export class AddTag extends React.Component {
                                 size="sm"
                             />
                             <Input
+                                id="colorInputId"
                                 size="sm"
                                 type="color"
                                 name="tagColor"
                                 value={this.state.tagColor}
                                 style={{"max-width":"40px"}}
-                                onChange={ (e) => this.handleColorChange(e)}
+                                onClick={ (e) => { e.preventDefault(); }}
                                 required={true}
                             />
                             <InputGroupAddon addonType="append">
-                                <Button size="sm" color="success"><FontAwesomeIcon className="float-right" color="white" icon={faPlus}/></Button>
+                                <Button size="sm" color="success"><FontAwesomeIcon  color="white" icon={faPlus}/></Button>
                             </InputGroupAddon>
                         </InputGroup>
+                        <Row className="pickerColor">
+                            <Col>
+                                <CirclePicker
+                                    color={ this.state.tagColor }
+                                    onChange={ (e) => this.handleColorChange(e)}
+                                /></Col>
+                        </Row>
                     </Form>
                 </Popover>
             </Button>

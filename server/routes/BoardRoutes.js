@@ -258,16 +258,17 @@ router.delete('/:id/members/:idMemberShip', token, boardAccess.deleteRights(), f
     if(board.nbAdmin() <= 1 && board.isAdminMember(req.params.idMemberShip))
         return res.status(403).json({message : 'Can not delete the last administrator'});
 
-    if(!board.memberships.pull(req.params.idMemberShip)) return res.status(404).json({message : 'Membership id not found'});
-
-    board.validate(function (err) {
-        if (err) return res.status(400).json({message: err});
-        board.save(function (err) {
-            if (err) {
-                debug('PUT board/:id error : ' + err);
-                return res.status(500).json({message: 'Unexpected internal error'});
-            }
-            return res.status(200).json({message: 'Board updated successfully'});
+    board.removeMember( req.params.idMemberShip , (err) => {
+        if(err)  return res.status(404).json({message : 'Membership id not found'});
+        board.validate(function (err) {
+            if (err) return res.status(400).json({message: err});
+            board.save(function (err) {
+                if (err) {
+                    debug('PUT board/:id error : ' + err);
+                    return res.status(500).json({message: 'Unexpected internal error'});
+                }
+                return res.status(200).json({message: 'Board updated successfully'});
+            });
         });
     });
 

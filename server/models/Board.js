@@ -171,6 +171,22 @@ boardSchema.methods.getAdmins = function() {
     return this.memberships.filter( m => m.memberType === 'admin');
 };
 
+/**
+ * Remove a user
+ * @param memberId, the id of user to remove
+ * @callback the next function to perform
+ * @return err if error occurred
+ */
+boardSchema.methods.removeMember = function(idMember, next) {
+    let member = this.memberships.pull(idMember)
+    if(!member) return next(true);
+    this.model('Member').update(
+        { id: member[0].idMember},
+        { $pull: { idBoards :  this._id } },
+        { multi: true },
+        next(null));
+};
+
 
 //boardSchema.plugin(uniqueValidator);
 

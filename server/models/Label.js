@@ -28,7 +28,7 @@ let labelSchema = new Schema({
 
 labelSchema.pre('remove', function (next) {
     var label = this;
-    label.model('Card').update(
+    label.model('Card').updateMany(
         { idLabels: {$in: label._id}},
         { $pull: { idLabels :  label._id } },
         { multi: true },

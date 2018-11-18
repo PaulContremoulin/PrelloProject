@@ -4,11 +4,20 @@ import React from 'react';
 
 // Css
 import './TagsList.css'
-
-import {Row, Button, Form, Input, Popover, InputGroup, InputGroupAddon, Col} from 'reactstrap';
-import Octicon from 'react-octicon';
+import { CirclePicker } from 'react-color';
+import {
+    Row,
+    Button,
+    Form,
+    Input,
+    Popover,
+    InputGroup,
+    InputGroupAddon,
+    Col,
+    InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem
+} from 'reactstrap';
 import {postLabel, deleteLabel} from "../../../../requests/labels";
-import {faTags} from "@fortawesome/fontawesome-free-solid";
+import {faTags, faTimes} from "@fortawesome/fontawesome-free-solid";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/fontawesome-free-solid/index";
 
@@ -18,7 +27,7 @@ export class TagsList extends React.Component {
         super(props);
         this.state = {
             popoverTagsList : false,
-            tagColor : '#ffffff'
+            tagColor : '#607d8b'
         }
     };
 
@@ -36,8 +45,8 @@ export class TagsList extends React.Component {
             .then((res) => this.props.deleteLabelFromBoard(idLabel));
     };
 
-    handleColorChange = (event) => {
-        this.setState({tagColor: event.target.value});
+    handleColorChange = (color) => {
+        this.setState({tagColor: color.hex});
     }
 
     render() {
@@ -48,9 +57,9 @@ export class TagsList extends React.Component {
                 <Popover placement="bottom" isOpen={this.state.popoverTagsList} target="TagsListId" toggle={() => this.toggleTagsList()}>
                     <Col>
                         {boardLabels.map( (label, index) =>
-                                    <div className="tagsItem" style={{'background-color':label.color}}>
-                                        <span>{label.name}</span>
-                                        <Button size="sm" className="deleteTag float-right" onClick={() => this.deleteTagToList(label.id)} close/>
+                                    <div className="tagsItem">
+                                        <div className="tagsName" style={{'background-color':label.color}}><span>{label.name}</span></div>
+                                        <a onClick={() => this.deleteTagToList(label.id)} className="float-right tagsAddon"><FontAwesomeIcon color="black" icon={faTimes}/></a>
                                     </div>
                             )}
                     </Col>
@@ -64,18 +73,26 @@ export class TagsList extends React.Component {
                                 size="sm"
                             />
                             <Input
+                                id="colorInputId"
                                 size="sm"
                                 type="color"
                                 name="tagColor"
                                 value={this.state.tagColor}
                                 style={{"max-width":"40px"}}
-                                onChange={ (e) => this.handleColorChange(e)}
+                                onClick={ (e) => { e.preventDefault(); }}
                                 required={true}
                             />
                             <InputGroupAddon addonType="append">
-                                <Button size="sm" color="success"><FontAwesomeIcon className="float-right" color="white" icon={faPlus}/></Button>
+                                <Button size="sm" color="success"><FontAwesomeIcon  color="white" icon={faPlus}/></Button>
                             </InputGroupAddon>
                         </InputGroup>
+                        <Row className="pickerColor">
+                            <Col>
+                            <CirclePicker
+                                color={ this.state.tagColor }
+                                onChange={ (e) => this.handleColorChange(e)}
+                            /></Col>
+                        </Row>
                     </Form>
                 </Popover>
             </Button>

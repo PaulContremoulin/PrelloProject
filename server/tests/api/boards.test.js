@@ -407,6 +407,7 @@ module.exports = function (app, options) {
                                     .expect(200)
                                     .end(function (err, res) {
                                         if (err) return done(err);
+                                        options.membership = res.body;
                                         done();
                                     });
                             });
