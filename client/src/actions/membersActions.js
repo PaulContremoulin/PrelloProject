@@ -43,10 +43,10 @@ export const deleteMemberCreationBoard = (member) => {
  * @param members
  * @return FETCH_MEMBERS_CREATION action
  */
-export const fetchMembersCreationBoard = (members) => {
+export const fetchMembersCreationBoard = () => {
     return {
         type: FETCH_MEMBERS_CREATION,
-        members
+        members: []
     }
 }
 

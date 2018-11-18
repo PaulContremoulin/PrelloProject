@@ -23,6 +23,7 @@ export class UnarchiveCardToBeConnected extends React.Component {
     unarchive = (cardIdList) => {
         changeCardClosed(cardIdList.card.id, "false")
             .then(res => {
+                this.props.setClosed(cardIdList.idList, cardIdList.card.id, false, this.props.board._id)
                 const test = this.state.cardsIdList.filter(cardT=> cardT.card.id !== cardIdList.card.id)
                 this.setState({cardsIdList:test})
             })
@@ -76,7 +77,7 @@ const mapStateToProps = (state, props) => ({
     board: state.board,
 });
 const mapDispatchToProps = (dispatch) => ({
-    setClosed: (res) => dispatch(setClosed(res)),
+    setClosed: (idList, idCard, closed, idBoard) => dispatch(setClosed(idList, idCard, closed, idBoard)),
 });
 
 export const UnarchiveCard = connect(
