@@ -30,3 +30,7 @@ html, body, #root, .index{
 .Board, .Board > div, .Board > div > .Lists {
   height: 100%;
 }
+
+.iconBefore {
+  margin-right: 8px;
+}

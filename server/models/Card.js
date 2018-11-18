@@ -45,7 +45,7 @@ let cardSchema = new Schema({
         idMembers : {
             type : [{
                 type : mongoose.Schema.ObjectId,
-                ref : 'Member'
+                ref : 'Board.memberships'
             }],
             default : []
         },
@@ -60,7 +60,7 @@ let cardSchema = new Schema({
         versionKey: false
     });
 
-cardSchema.plugin(idValidator);
+//cardSchema.plugin(idValidator);
 
 cardSchema.virtual('checklists', {
     ref: 'Checklist', // The model to use

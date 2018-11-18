@@ -1,8 +1,8 @@
- .tagsItem {
+.tagsItem {
     margin-top: 8px;
     margin-bottom: 8px;
     border : 1px solid gray;
-     border-radius: 5px;
+    border-radius: 5px;
 }
 
 .tagsItem > span {

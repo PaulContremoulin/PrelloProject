@@ -103,6 +103,15 @@ boardSchema.methods.getMember = function(memberId){
 };
 
 /**
+ * get the member if the member belongs at the board's team
+ * @param memberId, the member id to test
+ * @returns a member if exist or null
+ */
+boardSchema.methods.getMemberOfShip = function(memberId){
+    return this.memberships.id(memberId);
+};
+
+/**
  * Check if the user is a normal user
  * @param memberId
  * @returns {a|boolean}

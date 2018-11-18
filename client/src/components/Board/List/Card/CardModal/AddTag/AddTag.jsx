@@ -9,6 +9,7 @@ import {postLabel, postLabelToCard, removeLabelFromCard} from "../../../../../..
 import {faCheck, faPlus, faTimes} from "@fortawesome/fontawesome-free-solid/index";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {CirclePicker} from "react-color";
+import {faTags} from "@fortawesome/free-solid-svg-icons/index.es";
 
 export class AddTag extends React.Component {
 
@@ -16,7 +17,8 @@ export class AddTag extends React.Component {
         super(props);
         this.state = {
             popoverAddTag: false,
-            tagColor : '#607d8b'
+            tagColor : '#607d8b',
+            tagNameValue : ''
         }
     };
 
@@ -37,17 +39,23 @@ export class AddTag extends React.Component {
     addTagToList = (tagName, color) => {
         postLabel(this.props.boardId, tagName, color)
             .then((res) => this.props.addLabel(res.data));
+
+        this.setState({tagNameValue: ''});
     };
 
     handleColorChange = (color) => {
         this.setState({tagColor: color.hex});
+    };
+
+    onChangeValue = (event) => {
+        this.setState({tagNameValue: event.target.value});
     }
 
     render() {
         const {labelsBoard, labelsCard, cardId, boardId, addLabelCard} = this.props;
         return (
             <Button className="addTag" color="primary" size="sm" id="addTagId" onClick={() => this.toggleAddTag()} block>
-                Add a tag
+                <FontAwesomeIcon className='iconBefore' icon={faTags}/>Manage tags
                 <Popover placement="bottom" isOpen={this.state.popoverAddTag} target="addTagId"
                          toggle={() => this.toggleAddTag()}>
                     <Col className="tagListCard">
@@ -64,6 +72,8 @@ export class AddTag extends React.Component {
                                 type="text"
                                 name="tagName"
                                 placeholder="Add a tag"
+                                value={this.state.tagNameValue}
+                                onChange={this.onChangeValue}
                                 required={true}
                                 size="sm"
                             />

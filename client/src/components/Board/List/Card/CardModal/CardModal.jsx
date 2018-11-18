@@ -2,15 +2,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert, Badge, Popover, PopoverHeader, PopoverBody, InputGroup,} from 'reactstrap';
-
+import {faTrashAlt, faArchive} from "@fortawesome/fontawesome-free-solid";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 // Css
 import './CardModal.css';
 
 // Actions & Constant
 import {AddChecklist} from './AddChecklist/AddChecklist';
-import {AddComment} from './AddComment/AddComment';
-import {LabelComponent} from './Label/Label';
 import {AddTag} from './AddTag/AddTag';
 
 import {TitleCard} from "./TitleCard/TitleCard";
@@ -20,7 +19,7 @@ import {DescCard} from "./DescCard/DescCard";
 import {ChecklistsCard} from "./ChecklistsCard/ChecklistsCard";
 import {CommentsCard} from "./CommentsCard/CommentsCard";
 
-import {changeCardName, changeCardDueDate, changeCardDesc, changeCardClosed, deleteCardRequest} from '../../../../../requests/cards';
+import { changeCardClosed, deleteCardRequest} from '../../../../../requests/cards';
 import { getChecklists} from '../../../../../requests/checklists';
 import {getComments, postCommentToCard, putTextToComment} from '../../../../../requests/comments';
 
@@ -33,10 +32,12 @@ import {
     checkListDelete,
     checkItemDelete,
     addCheckItem} from '../../../../../actions/checkObjectActions';
-import {setName, setDesc, setDue, setClosed, addChecklist, setChecklists, setDueComplete, addLabelCard, deleteLabelCard} from '../../../../../actions/cardActions';
+import {setName, setDesc, setDue, setClosed, addChecklist, setChecklists, setDueComplete, addLabelCard, deleteLabelCard, addMemberCard, deleteMemberCard} from '../../../../../actions/cardActions';
 import {setComments, addComment, setTextComment} from '../../../../../actions/commentActions';
 import {setLabels, addLabel, setNameLabel, setColorLabel, deleteLabelFromBoard} from '../../../../../actions/labelActions';
 import {deleteCard} from "../../../../../actions/boardActions";
+import {AddMember} from "./AddMember/AddMember";
+import {MembersCard} from "./MembersCard/MembersCard";
 
 
 export class CardModalToBeConnected extends React.Component {
@@ -84,19 +85,6 @@ export class CardModalToBeConnected extends React.Component {
             .then(() => this.props.deleteCard(this.props.card))
     }
 
-    // COMMENTS
-    addCommentToCard = (commentText) => {
-        const cardId = this.props.card.id;
-        const boardId = this.props.boardId;
-        postCommentToCard(commentText, cardId)
-            .then(comment => this.props.addComment(comment.data, boardId))
-    };
-
-    // Tags
-    toggleTags = () => {
-        this.setState({openTags: !this.state.openTags})
-    };
-
     toggleArchive = () => {
         this.setState({archiveModal: !this.state.archiveModal})
     };
@@ -135,7 +123,11 @@ export class CardModalToBeConnected extends React.Component {
             labelsCard,
             addLabel,
             addLabelCard,
-            deleteLabelCard
+            deleteLabelCard,
+            membersBoard,
+            membersCard,
+            deleteMemberCard,
+            addMemberCard
         } = this.props;
 
         return (
@@ -161,6 +153,9 @@ export class CardModalToBeConnected extends React.Component {
                     />
                     <Tags
                         labelsCard={labelsCard}
+                    />
+                    <MembersCard
+                        membersCard={membersCard}
                     />
                 </ModalHeader>
                 <ModalBody>
@@ -203,6 +198,18 @@ export class CardModalToBeConnected extends React.Component {
                         />
                         </Col>
                         <Col sm="3">
+                            <AddMember
+                                memberships={membersBoard}
+                                membersCard={membersCard}
+                                cardId={card.id}
+                                idMembers={card.idMembers}
+                                addMemberCard={(idMember) => {
+                                    addMemberCard(card.id, idMember, card.idList, boardId)
+                                }}
+                                deleteMemberCard={ (idMember) => {
+                                    deleteMemberCard(card.id, idMember, card.idList, boardId)
+                                }}
+                                />
                             <AddTag
                                 labelsBoard={labels}
                                 labelsCard={card.idLabels}
@@ -225,7 +232,7 @@ export class CardModalToBeConnected extends React.Component {
                                     addChecklist(card.id, checklist, boardId)
                                 }}
                             />
-                            <Button color="secondary" onClick={this.toggleArchive} size="sm" block>Archive</Button>
+                            <Button color="secondary" onClick={this.toggleArchive} size="sm" block><FontAwesomeIcon className='iconBefore' icon={faArchive}/>Archive</Button>
                             <Modal isOpen={this.state.archiveModal} toggle={this.toggleArchive}>
                                 <ModalHeader toggle={this.toggleArchive}>Archive the card</ModalHeader>
                                 <ModalBody>
@@ -236,7 +243,7 @@ export class CardModalToBeConnected extends React.Component {
                                     <Button color="secondary" onClick={this.toggleArchive}>Cancel</Button>
                                 </ModalFooter>
                             </Modal>
-                            <Button color="danger" onClick={this.toggleDelete} size="sm" block>Delete</Button>
+                            <Button color="danger" onClick={this.toggleDelete} size="sm" block><FontAwesomeIcon className='iconBefore' icon={faTrashAlt}/>Delete</Button>
                             <Modal isOpen={this.state.deleteModal} toggle={this.toggleDelete}>
                                 <ModalHeader toggle={this.toggleArchive}>Delete the card</ModalHeader>
                                 <ModalBody>
@@ -265,10 +272,16 @@ const mapStateToProps = (state, props) => {
         labelsCard: labelsBoard.filter(
             label => props.card.idLabels.includes(label.id)
         ),
+        membersBoard: state.board.memberships,
+        membersCard: state.board.memberships.filter(
+            member => props.card.idMembers.includes(member.id)
+        ),
     })
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    addMemberCard : (idCard, idMember, idList, idBoard) => dispatch(addMemberCard(idCard, idMember, idList, idBoard)),
+    deleteMemberCard : (idCard, idMember, idList, idBoard) => dispatch(deleteMemberCard(idCard, idMember, idList, idBoard)),
     addLabel: (label, idBoard) => dispatch(addLabel(label, idBoard)),
     deleteLabelCard: (idCard, idLabel, idList, idBoard) => dispatch(deleteLabelCard(idCard, idLabel, idList, idBoard)),
     setDueComplete: (idList, idCard, dueComplete) => dispatch(setDueComplete(idList, idCard, dueComplete)),

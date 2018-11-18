@@ -7,6 +7,8 @@ import {Row, Button, Form, Input, Popover, InputGroup, InputGroupAddon, Col} fro
 import Octicon from 'react-octicon';
 import './AddChecklist.css'
 import {postChecklistToCard} from "../../../../../../requests/checklists";
+import {faCheckSquare} from "@fortawesome/fontawesome-free-regular";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome/index.es";
 
 export class AddChecklist extends React.Component {
 
@@ -31,7 +33,7 @@ export class AddChecklist extends React.Component {
         const {addChecklist, cardId, boardId} = this.props;
         return (
               <Button color="primary" size="sm" id="addCheckItemId" onClick={ () => this.toggleAddChecklist() } block>
-                  Add a checklist
+                  <FontAwesomeIcon className='iconBefore' icon={faCheckSquare}/>Add a checklist
                   <Popover placement="bottom" isOpen={this.state.popoverAddChecklist} target="addCheckItemId" toggle={() => this.toggleAddChecklist()}>
                       <Form className="form" onSubmit={(e) => { e.preventDefault(); this.addChecklistToCard(e.target.checklistName.value)}}>
                           <InputGroup>

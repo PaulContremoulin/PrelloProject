@@ -92,5 +92,5 @@ export function addMemberToCard(cardId, memberId) {
 * @param { String } memberId
 */
 export function deleteMemberFromCard(cardId, memberId) {
-    return deleteRequest('/api/cards/' + cardId + '/members/' + memberId )
+    return deleteRequest('/api/cards/' + cardId + '/idMembers/' + memberId )
 }

@@ -41,10 +41,13 @@ export class CardComponent extends React.Component {
     };
 
     render() {
-        const {card, board, index, listId, openModal, labelsBoard} = this.props;
+        const {card, board, index, listId, openModal, labelsBoard, membersBoard} = this.props;
         const {open} = this.state;
         const labelsCard = labelsBoard.filter(
             label => card.idLabels.includes(label.id)
+        );
+        const membersCard = membersBoard.filter(
+            member => card.idMembers.includes(member.id)
         );
         return (
             <div className="Card">
@@ -63,16 +66,29 @@ export class CardComponent extends React.Component {
                                     className="CardCeption"
                                     onClick={() => this.openModal()}
                                 >
-                                <div style={{"margin-bottom":"8px"}}>
-                                {labelsCard.map((label) =>
-                                    <Badge style={{"background-color": label.color, "margin-right":"4px", "display":"inline"}}>{label.name}</Badge>
-                                )}
-                                </div>
-                                <h5>{card.name}</h5>
-                                {(card.due) ?
-                                    <div><Badge style={{'color': 'white'}} color={this.dueDateState()}> Due
-                                        : {dateFormat(card.due, "shortDate")} </Badge></div>
-                                    : null}
+                                    <div style={{"margin-bottom":"8px"}}>
+                                    {labelsCard.map((label) =>
+                                        <Badge style={{"background-color": label.color, "margin-right":"4px", "display":"inline"}}>{label.name}</Badge>
+                                    )}
+                                    </div>
+                                    <h5>{card.name}</h5>
+                                    {(card.due) ?
+                                        <div><Badge style={{'color': 'white'}} color={this.dueDateState()}> Due
+                                            : {dateFormat(card.due, "shortDate")} </Badge></div>
+                                        : null}
+                                    <div style={{"margin-top":"8px"}}>
+                                        {membersCard.map((member) =>
+                                            <div className="memberCardIconMin">
+                                                {member.idMember.lastName[0].toUpperCase() + member.idMember.firstName[0].toUpperCase()}
+                                            </div>
+                                        )}
+                                    </div>
+
+
+
+
+
+
                                 </Card>
                             </div>
                         </ContainerCard>

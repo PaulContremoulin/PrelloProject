@@ -89,11 +89,11 @@ module.exports = function (app, options) {
 
         });
 
-        describe('POST /api/cards/idMembers/:id - Attach a member to the card', function () {
+        describe('POST /api/cards/:id/idMembers/ - Attach a member to the card', function () {
 
             it('should send back a OK response - Attach a authorized user to the board', function (done) {
                 request(app)
-                    .post('/api/cards/'+ options.card._id +'/idMembers?value='+options.memberFreinds._id)
+                    .post('/api/cards/'+ options.card._id +'/idMembers?value='+options.board.memberships[0]._id)
                     .set('Authorization', 'Bearer ' + options.token)
                     .set('Content-Type', 'application/json')
                     .expect(200)
@@ -113,6 +113,21 @@ module.exports = function (app, options) {
                         "pos": 123456789
                     })
                     .expect(403)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+        });
+
+        describe('DELETE /api/cards/:id/idMembers/:id - Remove a member to the card', function () {
+
+            it('should send back a OK response - Attach a authorized user to the board', function (done) {
+                request(app)
+                    .delete('/api/cards/' + options.card._id + '/idMembers/' + options.board.memberships[0]._id)
+                    .set('Authorization', 'Bearer ' + options.token)
+                    .set('Content-Type', 'application/json')
+                    .expect(200)
                     .end(function (err, res) {
                         if (err) return done(err);
                         done();

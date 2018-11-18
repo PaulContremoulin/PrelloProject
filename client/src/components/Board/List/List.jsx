@@ -59,7 +59,7 @@ export class List extends React.Component {
 
     render() {
         const {
-            list, board, labelsBoard,
+            list, board, labelsBoard, membersBoard,
             moveList, addCard, setNameOfList, setListClosed,
             index,
         } = this.props;
@@ -113,6 +113,7 @@ export class List extends React.Component {
                                                         card={card}
                                                         index={index}
                                                         labelsBoard={labelsBoard}
+                                                        membersBoard={membersBoard}
 
                                                     />
                                                 </div>

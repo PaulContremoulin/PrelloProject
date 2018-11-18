@@ -27,7 +27,8 @@ export class TagsList extends React.Component {
         super(props);
         this.state = {
             popoverTagsList : false,
-            tagColor : '#607d8b'
+            tagColor : '#607d8b',
+            tagNameValue : ''
         }
     };
 
@@ -38,6 +39,7 @@ export class TagsList extends React.Component {
     addTagToList = (tagName, color) => {
         postLabel(this.props.boardId, tagName, color)
             .then((res) => this.props.addLabel(res.data));
+        this.setState({tagNameValue: ''});
     };
 
     deleteTagToList = (idLabel) => {
@@ -47,6 +49,10 @@ export class TagsList extends React.Component {
 
     handleColorChange = (color) => {
         this.setState({tagColor: color.hex});
+    }
+
+    onChangeValue = (event) => {
+        this.setState({tagNameValue: event.target.value});
     }
 
     render() {
@@ -68,6 +74,8 @@ export class TagsList extends React.Component {
                             <Input
                                 type="text"
                                 name="tagName"
+                                value={this.state.tagNameValue}
+                                onChange={this.onChangeValue}
                                 placeholder="Add a tag"
                                 required={true}
                                 size="sm"

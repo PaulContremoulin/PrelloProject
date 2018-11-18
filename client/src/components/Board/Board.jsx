@@ -292,6 +292,7 @@ export class BoardToBeConnected extends React.Component {
                                                             setNameOfList={(listName) => this.setNameOfList(list.id, listName, boardId)}
                                                             index={index}
                                                             labelsBoard={labels}
+                                                            membersBoard={board.memberships}
                                                         />
                                                     </div>
                                                   :

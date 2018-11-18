@@ -178,12 +178,13 @@ router.post('/:id/idMembers', token, CardAccess.updateRights(), function(req, re
     if(!req.query.value) return res.status(400).json({message:'Member id missing'});
 
     let card = req.card;
-    let newMember = card.idList.idBoard.getMember(req.query.value);
+    let newMember = card.idList.idBoard.getMemberOfShip(req.query.value);
 
+    if(!newMember)
     if(!newMember)
         return res.status(403).json({message : 'Member does not belong to the associated board'});
 
-    card.createOrUpdateMember(newMember.idMember);
+    card.createOrUpdateMember(newMember._id);
 
     card.validate(function (err) {
         if(err) return res.status(400).json({message : err});
@@ -192,6 +193,32 @@ router.post('/:id/idMembers', token, CardAccess.updateRights(), function(req, re
             return res.status(200).json({message : 'Member added successfully at the card'});
         });
     });
+});
+
+/**
+ * Remove a member from a card
+ * @route DELETE /cards/{id}/idMembers/{idMember}
+ * @group card - Operations about boards
+ * @param {string} id.path.required - card's id.
+ * @param {string} idMember.path.required - membership's id to remove.
+ * @returns {Code} 200 - Member removed
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, card is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.delete('/:id/idMembers/:idMember', token, CardAccess.updateRights(), function(req, res) {
+
+    if(!mongoose.Types.ObjectId.isValid(req.params.idMember))
+        return res.status(404).json({message : 'Member id wrong'});
+
+    req.card.idMembers.remove(req.params.idMember);
+    req.card.save(function(err){
+        if(err) return res.status(400).json({message : err});
+        return res.status(200).json({message : 'Member removed successfully'});
+    })
+
 });
 
 /**
