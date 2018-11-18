@@ -22,7 +22,23 @@
 .ListContainer {
   background-color: rgba(255,255,255,0.8);
   border-radius: .25rem;
-  width: 304px !important;
+  width: 315px !important;
+}
+
+.ListScroll {
+  max-height: 65vh;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar-thumb{
+  border-radius: 3px;
+  background: grey ;
+}
+
+::-webkit-scrollbar {
+  width: 8px;  /* remove scrollbar space */
+  background: transparent ;  /* optional: just make scrollbar invisible */
 }
 
 .listOption {

@@ -5,7 +5,7 @@ import {
     CardTitle,
     Button,
     Input,
-    Popover, PopoverBody
+    Popover, PopoverBody, Form
 } from 'reactstrap';
 import styled from 'styled-components';
 import {faEllipsisV} from "@fortawesome/fontawesome-free-solid";
@@ -44,13 +44,14 @@ export class List extends React.Component {
         this.setState({popoverListOptionOpen: !this.state.popoverListOptionOpen})
     };
 
-    handleOnBlur = (event) => {
-        const newName = event.target.value;
+    handleSubmit = ( event ) => {
+        event.preventDefault();
+        const newName = event.target.listName.value;
         if (newName !== this.props.list.name) {
             this.props.setNameOfList(newName);
         }
         this.setState({inputNameList: false})
-    };
+    }
 
     render() {
         const {
@@ -71,17 +72,21 @@ export class List extends React.Component {
                             {...provided.dragHandleProps}
                         >
                             {(this.state.inputNameList) ?
+                                <Form onSubmit={this.handleSubmit}>
                                 <Input
                                     type="text"
                                     name="listName"
                                     required={true}
                                     defaultValue={list.name}
-                                    onBlur={(e) => this.handleOnBlur(e)}
                                 />
+                                <input hidden={true} type="submit" value="Submit" />
+                                </Form>
                                 :
+                                <div>
                                 <span onClick={() => this.setState({inputNameList: true})}>{list.name}</span>
+                                <a id={"listOptionsId"+list.id} className="float-right listOption" onClick={ () => this.toggleListOptionOpen() }><FontAwesomeIcon color="grey" icon={faEllipsisV}/></a>
+                                </div>
                             }
-                            <a id={"listOptionsId"+list.id} className="float-right listOption" onClick={ () => this.toggleListOptionOpen() }><FontAwesomeIcon color="grey" icon={faEllipsisV}/></a>
                             <Popover placement="bottom" isOpen={this.state.popoverListOptionOpen} target={"listOptionsId"+list.id} toggle={this.toggleListOptionOpen}>
                                 <PopoverBody>
                                     <Button color="danger" size="sm" onClick={() => setListClosed(true)}>Archive</Button>
@@ -97,8 +102,10 @@ export class List extends React.Component {
                                 {...provided.droppableProps}
                             >
                                 <Card className="List" style={{"width": "100%", "margin": "0px"}}>
-                                    {(list.cards != null) ?
-                                        list.cards.map((card, index) => (
+
+                                    {(list.cards != null && list.cards.length > 0) ?
+                                        <div className="ListScroll">
+                                            {list.cards.map((card, index) => (
                                             (card.closed) ?
                                                 null
                                                 :
@@ -112,7 +119,8 @@ export class List extends React.Component {
 
                                                     />
                                                 </div>
-                                        ))
+                                        ))}
+                                        </div>
                                         :
                                         null
                                     }{provided.placeholder}

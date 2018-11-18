@@ -26,6 +26,8 @@ import {GithubPage} from "./pages/GithubPage/GithubPage";
 import {CirclePage} from "./pages/CirclePage/CirclePage";
 import {SettingsBoard} from "./components/SettingsBoard/SettingsBoard";
 
+import './common.css'
+
 ReactDOM.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

@@ -78,7 +78,7 @@ router.put('/:id/closed', token, listAccess.updateRights(), function(req, res) {
  */
 router.put('/:id/name', token, listAccess.updateRights(), function(req, res) {
     if(!req.query.value)
-        res.status(400).json({message:'Value is missing'});
+        return res.status(400).json({message:'Value is missing'});
 
     let list = req.list;
     list.name = req.query.value;

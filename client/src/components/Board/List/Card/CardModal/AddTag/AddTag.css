@@ -30,3 +30,9 @@
     margin-top: 8px;
     padding: 8px;
 }
+
+.TagScroll {
+    max-height: 300px;
+    overflow: scroll;
+    overflow-x: hidden;
+}

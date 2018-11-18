@@ -276,10 +276,10 @@ export class BoardToBeConnected extends React.Component {
                                             ref={provided.innerRef}
                                             isDragging={snapshot.isDragging}
                                         >
-                                            <CardDeck style={{"width": (board.lists.length + 1) * 320 + "px"}}>
+                                            <CardDeck style={{"width": (board.lists.filter(l => !l.closed).length + 1) * 330 + "px"}}>
                                                 {board.lists.map((list, index) =>
                                                   !(list.closed) ?
-                                                    <div key={index} style={{"width": "320px"}}>
+                                                    <div key={index} style={{"width": "330px"}}>
                                                         <List
                                                             board={board}
                                                             list={list}

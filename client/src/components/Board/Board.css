@@ -2,33 +2,31 @@
 .Lists {
     text-align: left;
     padding: 1em;
-    margin: 1em;
     vertical-align: middle;
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
+
     overflow: auto;
 }
 
-.Board {
-    background: lightblue url("http://backgroundcheckall.com/wp-content/uploads/2017/12/background-work-2.jpg") no-repeat fixed center;
+.BoardPage {
+    background: url("https://images.pexels.com/photos/132037/pexels-photo-132037.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
-html, body, #root, .index{
+.BoardPage {
+    flex-grow: 1;
+}
+
+.Board, .Board > div{
     height: 100%;
 }
 
-.index {
-    display:flex;
-    flex-direction:column;
-}
-
-.BoardPage{
-    flex:1;
-}
-
-.Board, .Board > div, .Board > div > .Lists {
-    height: 100%;
+.Board > div{
 }
 
 .iconBefore {

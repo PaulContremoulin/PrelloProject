@@ -58,7 +58,7 @@ export class AddTag extends React.Component {
                 <FontAwesomeIcon className='iconBefore' icon={faTags}/>Manage tags
                 <Popover placement="bottom" isOpen={this.state.popoverAddTag} target="addTagId"
                          toggle={() => this.toggleAddTag()}>
-                    <Col className="tagListCard">
+                    <Col className="TagScroll">
                         {labelsBoard.map((label, index) =>
                             <div className="tagsItem" onClick={() => this.addTagToCard(label.id)} style={{'background-color': label.color}}>
                                 <div className="tagsName" style={{'background-color':label.color}}><span>{label.name}</span></div>

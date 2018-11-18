@@ -60,7 +60,7 @@ export class TagsList extends React.Component {
             <Button outline color="secondary" size="sm" id="TagsListId" onClick={ () => this.toggleTagsList() } block>
                 <span className="nbTags">{boardLabels.length}</span><FontAwesomeIcon color="white" icon={faTags}/>
                 <Popover placement="bottom" isOpen={this.state.popoverTagsList} target="TagsListId" toggle={() => this.toggleTagsList()}>
-                    <Col>
+                    <Col className="TagScroll">
                         {boardLabels.map( (label, index) =>
                                     <div key={label._id} className="tagsItem">
                                         <div className="tagsName" style={{'background-color':label.color}}><span>{label.name}</span></div>

@@ -1,6 +1,6 @@
 .MainPage {
     background-color: #99c2ff;
-    height: 100vh;
+    flex-grow: 1;
 }
 
 .content {
