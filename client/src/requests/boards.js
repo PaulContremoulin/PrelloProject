@@ -104,7 +104,6 @@ export function getListsOfBoard(idBoard, withCards = false, archived = false) {
  * @return status code
  */
 export function postListToBoard(listName, listPos, boardId) {
-    console.log(boardId);
     return postRequest('/api/boards/' + boardId + '/lists/', {
         name: listName,
         pos: listPos
@@ -150,4 +149,3 @@ export const changeInformationBoard = (
         .then(response => response)
         .catch(err => err.response)
 )
-

@@ -32,7 +32,6 @@ export const checklists = ( state = [], action ) => {
     case ADD_CHECKITEM :
     case DELETE_CHECKITEM :
     case CHECKITEM_SET_STATE :
-        console.log(action)
       return state.map( (checklist, index) => (action.card.checklist.id == checklist.id) ? { ...checklist, checkItems : checkItems(checklist.checkItems, action)} : checklist);
     case CHECKLIST_SET_NAME :
       return state.map((checklist, index) => (action.card.checklist.id == checklist.id ) ? { ...checklist, name: action.card.checklist.name } : checklist);

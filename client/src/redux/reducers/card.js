@@ -26,7 +26,6 @@ const name = ( state = DEFAULT_CARD.name, action ) => {
 const desc = ( state = DEFAULT_CARD.desc, action ) => {
   switch (action.type) {
   case CARD_SET_DESC :
-      console.log(action)
     return action.card.desc
   default:
     return state ;
