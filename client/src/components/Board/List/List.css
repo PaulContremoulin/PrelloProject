@@ -17,6 +17,8 @@
   margin-top: 8px;
   margin-bottom: 8px;
   flex: auto;
+    word-wrap : break-word;
+    white-space: normal;
 }
 
 .ListContainer {

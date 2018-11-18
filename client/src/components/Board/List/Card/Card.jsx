@@ -67,7 +67,7 @@ export class CardComponent extends React.Component {
                                 >
                                     <div style={{"margin-bottom":"8px"}}>
                                     {labelsCard.map((label) =>
-                                        <Badge style={{"background-color": label.color, "margin-right":"4px", "display":"inline"}}>{label.name}</Badge>
+                                        <div style={{"display":"inline-block"}}><Badge style={{"background-color": label.color, "margin-right":"4px", "display":"inline"}}>{label.name}</Badge></div>
                                     )}
                                     </div>
                                     <h5>{card.name}</h5>

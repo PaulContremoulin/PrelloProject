@@ -2,6 +2,7 @@ import React from "react";
 import {changeCardName} from "../../../../../../requests/cards";
 import { Col, Form, Input } from "reactstrap";
 
+import './TitleCard.css'
 
 export class TitleCard extends React.Component {
     constructor(props) {
@@ -24,7 +25,7 @@ export class TitleCard extends React.Component {
     render() {
         const { cardId, name, setName }  = this.props;
         return (
-            <Col>
+            <Col className="cardTitle">
                 {(this.state.openInputHeader) ?
                     <h4>
                         <Form onSubmit={ (e) => { e.preventDefault(); this.setCardName(e.target.cardName.value)}}>
