@@ -147,7 +147,6 @@ const lists = ( state = DEFAULT_BOARD.lists, action ) => {
             list => (list.id === action.list.id) ? {...list, closed: action.list.closed} : list
           )
         case ADD_CARD :
-            console.log(action);
             return state.map(
                 list => (list.id === action.card.idList) ? { ...list, cards: [...list.cards, { ...action.card, id: action.card._id }] } : list
             );
