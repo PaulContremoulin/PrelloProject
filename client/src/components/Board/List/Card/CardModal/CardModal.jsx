@@ -288,7 +288,7 @@ const mapDispatchToProps = (dispatch) => ({
     addLabelCard : (idCard, idLabel, idList, idBoard) => dispatch(addLabelCard(idCard, idLabel, idList, idBoard)),
     deleteCard: (card) =>  dispatch(deleteCard(card)),
     setName: (idList, idCard, name, idBoard) => dispatch(setName(idList, idCard, name, idBoard)),
-    setDesc: (idList, idCard, desc, idBoard) => dispatch(setDesc(idList, idCard, desc), idBoard),
+    setDesc: (idList, idCard, desc, idBoard) => dispatch(setDesc(idList, idCard, desc, idBoard)),
     setDue: (idList, idCard, due, idBoard) => dispatch(setDue(idList, idCard, due, idBoard)),
     setClosed: (idList, idCard, closed, idBoard) => dispatch(setClosed(idList, idCard, closed, idBoard)),
     addChecklist: (idCard, checklist, idBoard) => dispatch(addChecklist(idCard, checklist, idBoard)),
