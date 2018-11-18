@@ -227,7 +227,7 @@ export const moveCard = (list, indexOfList) => {
  * @param startList, indexStart, endList, indexEnd
  * @return MOVE_CARD_FROM_LIST action
  */
-export const moveCardFromList = (startList, indexStart, endList, indexEnd) => {=
+export const moveCardFromList = (startList, indexStart, endList, indexEnd) => {
   return {
       type: MOVE_CARD_FROM_LIST,
       startList: startList,
