@@ -1,0 +1,37 @@
+.memberItem {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border : 1px solid gray;
+    border-radius: 5px;
+}
+
+.memberItem > span {
+    font-weight: 600;
+    color: white;
+}
+
+.memberListCard {
+    width: 400px;
+}
+
+.memberItemCard {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding : 6px;
+    border-radius: 5px;
+    border : 1px solid gray;
+}
+
+.memberName {
+    border-radius: 4px;
+    font-weight: 700;
+    padding: 6px;
+    width: 180px;
+    display: inline-block;
+}
+
+.memberAddon {
+    padding: 6px;
+    margin-left: 8px;
+    margin-right: 8px;
+}

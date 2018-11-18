@@ -1,0 +1,12 @@
+.addBoard {
+    height: 150px;
+    border-style: dashed;
+    border-width: 2px;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.ModalBodyCreateBoard {
+    padding-top: 0px;
+}

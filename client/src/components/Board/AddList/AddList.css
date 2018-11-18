@@ -1,3 +1,12 @@
 .AddList {
+  padding: 8px;
   border: 0px !important;
+}
+
+.AddList form {
+  padding: 0px;
+}
+
+.AddList input {
+  border: solid 1px gray;
 }

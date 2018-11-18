@@ -1,11 +1,14 @@
+//Module
 import React from 'react';
-import {Registration} from "../../components/SignInOrSignUp/Registration/Registration";
-import {NavBar} from "../../components/NavBar/NavBar";
+
+//Css
 import './RegistrationPage.css';
+
+//Action & component
+import {Registration} from "../../components/SignInOrSignUp/Registration/Registration";
 
 export const RegistrationPage = () => (
     <div className="LoginPage">
-        <NavBar/>
         <Registration />
     </div>
 )

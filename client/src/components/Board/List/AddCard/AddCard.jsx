@@ -1,9 +1,7 @@
 import React from 'react';
-
-// Components & Actions
+import { Card, Button, Form, Input, InputGroup,InputGroupAddon } from 'reactstrap';
 
 // Css
-import { Row, Card, Button, CardBody, CardTitle, Form, Input } from 'reactstrap';
 import Octicon from 'react-octicon';
 import './AddCard.css';
 
@@ -40,27 +38,26 @@ export class AddCard extends React.Component {
 
   render() {
     return (
-      <Row>
         <Card className="AddCard">
           { (this.state.edited) ?
-              <CardTitle>
                 <Form className="form" onSubmit={this.handleSubmit}>
-                  <Input
-                      type="text"
-                      name="cardName"
-                      placeholder="Card name"
-                      required={true}
-                      onChange={(e) => this.handleChange(e)}
-                  />
-                  <Button color="success">Add a card</Button>
-                  <Button outline color="secondary" type="button" onClick={ () => this.toggleEdited() }><Octicon name="x"/></Button>
+                    <InputGroup>
+                      <Input
+                          type="text"
+                          name="cardName"
+                          placeholder="Card name"
+                          required={true}
+                          onChange={(e) => this.handleChange(e)}
+                      />
+                        <InputGroupAddon addonType="append"><Button color="success"><Octicon name="plus"/></Button></InputGroupAddon>
+                        <InputGroupAddon addonType="append"><Button outline color="secondary" type="button" onClick={ () => this.toggleEdited() }><Octicon name="x"/></Button></InputGroupAddon>
+
+                    </InputGroup>
                 </Form>
-              </CardTitle>
             :
-            <CardTitle><Button onClick={() => this.toggleEdited() }>Add a card</Button></CardTitle>
+            <Button onClick={() => this.toggleEdited() }>Add a card</Button>
           }
         </Card>
-      </Row>
     )
   }
 }

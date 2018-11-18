@@ -5,6 +5,10 @@
  */
 export const FETCH_CIRCLES = 'FETCH_CIRCLES';
 export const ADD_CIRCLE = 'ADD_CIRCLE';
+export const FETCH_CIRCLE = 'FETCH_CIRCLE';
+export const DELETE_BOARD_CIRCLE = 'DELETE_BOARD_CIRCLE';
+export const DELETE_CIRCLE = 'DELETE_CIRCLE';
+export const EDIT_CIRCLE = 'EDIT_CIRCLE';
 
 /** Action Builders
  * Action Builders are function that return an action following this rule of thumb :
@@ -28,12 +32,53 @@ export const fetchCircles = (circles) => {
  * @desc add a circle
  * @return ADD_CIRCLE action
  */
-export const addCircle = (circleId, circleName) => {
+export const addCircle = (data) => {
     return {
         type: ADD_CIRCLE,
-        circle: {
-          circleId: circleId,
-          circleName: circleName
-        }
+        circle: data,
     }
 };
+
+/**
+ * @desc set a circle
+ * @return FETCH_CIRCLE action
+ */
+export const setCircle = (circle) => {
+    return {
+        type: FETCH_CIRCLE,
+        circle
+    }
+};
+
+/**
+ * @desc delete boards from a circle
+ * @return DELETE_BOARD_CIRCLE action
+ */
+export const deleteBoardsCircle = (boardId) => {
+    return {
+        type: DELETE_BOARD_CIRCLE,
+        boardId: boardId,
+    }
+};
+
+/**
+ * @desc delete a circle
+ * @return DELETE_CIRCLE action
+ */
+export const deleteCircle = (circleId) => {
+    return {
+        type: DELETE_CIRCLE,
+        circleId: circleId,
+    }
+};
+
+/**
+ * @desc edit a circle
+ * @return EDIT_CIRCLE action
+ */
+export const editCircle = (circle) => {
+    return {
+        type: EDIT_CIRCLE,
+        circle
+    }
+}

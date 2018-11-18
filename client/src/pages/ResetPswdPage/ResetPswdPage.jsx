@@ -1,11 +1,14 @@
+//Module
 import React from 'react';
-import {NavBar} from "../../components/NavBar/NavBar";
-import {ResetPswd} from '../../components/SignInOrSignUp/ResetPswd/ResetPswd';
+
+//Css
 import './ResetPswdPage.css';
+
+//Action & constant
+import {ResetPswd} from '../../components/SignInOrSignUp/ResetPswd/ResetPswd';
 
 export const ResetPswdPage = () => (
     <div className="ResetPswdPage">
-        <NavBar/>
         <ResetPswd/>
     </div>
 )

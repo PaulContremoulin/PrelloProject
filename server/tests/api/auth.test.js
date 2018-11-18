@@ -66,6 +66,24 @@ module.exports = function (app, options) {
                     });
             });
 
+            it('should send back a OK response - 3nd member registration', function (done) {
+                request(app)
+                    .post('/api/signup')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        username: 'Arnold',
+                        lastName: 'Gabin',
+                        firstName: 'Arnold',
+                        password: 'f45ze85e',
+                        email: 'arn.gab@mail.com'
+                    })
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done();
+                    });
+            });
+
             it('should send back a BAD REQUEST response (invalid email field)', function (done) {
                 request(app)
                     .post('/api/signup')
@@ -202,6 +220,23 @@ module.exports = function (app, options) {
                         res.body.token.should.exist;
                         options.tokenFreinds = res.body.token;
                         options.memberFreinds = res.body.member;
+                        done();
+                    });
+            });
+
+            it('should send back a OK response (successful login) 4th user - user will be deleted', function (done) {
+                request(app)
+                    .post('/api/login')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        username: 'Arnold',
+                        password: 'f45ze85e'
+                    })
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        options.tokenLambda = res.body.token;
+                        options.memberLambda = res.body.member;
                         done();
                     });
             });

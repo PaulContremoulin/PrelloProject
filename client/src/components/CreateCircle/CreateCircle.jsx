@@ -1,12 +1,16 @@
 // Modules
 import React from 'react';
 import {Modal,ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
+//Css
+import './CreateCircle.css';
 
 // Actions & Constant
-import {createCircle} from "../../requests/circle";
 import { connect } from "react-redux";
 import {addCircle} from "../../actions/circleActions";
+import {createCircle} from "../../requests/circle";
 
 export class CreateCircleToBeConnected extends React.Component {
     constructor(props) {
@@ -42,17 +46,25 @@ export class CreateCircleToBeConnected extends React.Component {
     submitForm(e) {
         e.preventDefault();
         const name = this.state.name;
-        createCircle(name)
+        const userId = this.props.user.member._id;
+        createCircle(userId, name)
             .then(res => {
-                this.props.addCircle(res.data)
-                this.closeModal()
+                if (res.status === 201){
+                    this.props.addCircle(res.data);
+                    this.closeModal();
+                } else {
+                    this.setState({
+                        visible: true,
+                        'name':'',
+                    })
+                }
             })
-            .catch(
+            .catch(err => {
                 this.setState({
                     visible: true,
                     'name':'',
                 })
-            )
+            })
     };
 
     onDismiss = () => {
@@ -62,11 +74,13 @@ export class CreateCircleToBeConnected extends React.Component {
     };
 
     render() {
-        const { name, desc } = this.state;
+        const { name } = this.state;
         return (
             <div>
-                <Button className="button" color = "grey" onClick={() => this.openModal()}>+</Button>
-                <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
+                <div className="iconAdd">
+                    <FontAwesomeIcon icon={faPlus} className="float-right"  size="1x" onClick={() => this.openModal()}/>
+                </div>
+                    <Modal isOpen={this.state.open} toggle={() =>this.closeModal() } centered={true}>
                     <ModalHeader toggle={() =>this.closeModal()}>Add a Circle</ModalHeader>
                     <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
                         <ModalBody>

@@ -11,3 +11,18 @@
  * @property {Array.<string>} idMembers - list of member IDs to add to the card
  * @property {Array.<string>} idLabels - list of labels IDs to add to the card
  */
+
+
+/**
+ * @typedef NewComment
+ * @property {string} text.required - the comment's text
+ */
+
+/**
+ * @typedef Comment
+ * @property {string} id.required - the comment's id
+ * @property {string} text.required - the comment's text
+ * @property {string} idAuthor.required - the comment's author
+ * @property {string} idCard.required - the card's id attach at the comment
+ * @property {date} date.required - the date of the comment
+ */

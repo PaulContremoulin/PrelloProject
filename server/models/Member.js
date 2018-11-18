@@ -14,32 +14,42 @@ let memberSchema = new Schema({
         required  : true,
         unique   : true,
         minlength : 3,
+        maxlength : 30,
         type      : String
     },
     bio: {
-        type      : String
+        type      : String,
+        maxlength : 3000,
     },
     firstName: {
         minlength : 3,
+        maxlength : 50,
         type      : String
     },
     lastName: {
         required  : true,
         minlength : 3,
+        maxlength : 50,
         type      : String
     },
     organization: {
         required  : false,
+        maxlength : 50,
         type      : String
     },
     idBoards: {
-        type : [{
-            type : Schema.Types.ObjectId,
-            required : true,
-            ref : 'Board'
-        }],
+        type : [
+            {
+                type : Schema.Types.ObjectId,
+                ref : 'Board'
+            }
+        ],
         default : [],
         required : true
+    },
+    organization : {
+        type : String,
+        maxlength : 50
     },
     idOrganizations: {
         type : [Schema.Types.ObjectId],
@@ -52,6 +62,7 @@ let memberSchema = new Schema({
         index: true,
         unique: true,
         sparse: true,
+        maxlength : 100,
         match    : [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
     confirmed : {
@@ -83,6 +94,7 @@ let memberSchema = new Schema({
     }
 },
 {
+    toJSON: { virtuals: true },
     versionKey: false
 });
 

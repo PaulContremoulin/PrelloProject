@@ -52,13 +52,14 @@ passport.use('signup', new LocalStrategy({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
+            organization : req.body.organization,
             loginType : 'password'
         });
 
         newUser.setPassword(password);
 
         newUser.validate(function (err) {
-            if (err) return done(null, false, {message: err._message});
+            if (err) return done(null, false, {message: err});
             // save the user
             newUser.save(function (err) {
                 if (err) {
@@ -74,7 +75,7 @@ passport.use('signup', new LocalStrategy({
 passport.use(new GitHubStrategy({
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: process.env.HOST + ':' + process.env.GITHUB_PORT_CALLBACK + process.env.GITHUB_PATH_CALLBACK
+        callbackURL: 'http://' + process.env.DOMAIN + '/login/github'
     },
     function(accessToken, refreshToken, profile, cb) {
 

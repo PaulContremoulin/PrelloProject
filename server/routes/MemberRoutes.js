@@ -15,6 +15,7 @@ let memberAccess = require('./../middlewares/MemberAccess');
  * @param {string} id.path.required - member's id.
  * @returns {Member.model} 200 - Member's information
  * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden access
  * @returns {Error}  404 - Not found if the user doesn't exist
  * @returns {Error}  default - Unexpected error
  * @security JWT
@@ -28,6 +29,141 @@ router.get('/:id', token, memberAccess.readRights(), function(req, res) {
     });
 
 });
+
+/**
+ * Get the public profil of a member
+ * @route GET /members/{id}/public
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id.
+ * @returns {Member.model} 200 - Member's information
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/public', token, function(req, res) {
+
+    Member.findById(req.params.id,
+        { username : 1, lastName : 1, firstName : 1, email : 1, organization : 1},
+        function (err, member) {
+        if(err) debug('members/:id error : ' + err)
+        if(!member) return res.status(404).json({ message:'Member not found'});
+        return res.status(200).json(member);
+    });
+
+});
+
+/**
+ * Update the member
+ * @route PUT /members/{id}
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id
+ * @param {string} lastName.query - member's lastName
+ * @param {string} firstName.query - member's firstName
+ * @param {string} organization.query - member's organization
+ * @returns {Code} 200 - Member deleted
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden access
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.put('/:id', token, memberAccess.updateRights(), function(req, res) {
+
+    let member = req.member;
+
+    (req.query.lastName) ? member.lastName = req.query.lastName : null;
+    (req.query.firstName) ? member.firstName = req.query.firstName : null;
+    (req.query.organization) ? member.organization = req.query.organization : null;
+    (req.query.bio) ? member.bio = req.query.bio : null;
+
+    member.validate( (err) => {
+        if(err) return res.status(400).json({message : err});
+        member.save( (err) => {
+            if(err) return res.status(500).json({message : 'Unexpected internal error'});
+            return res.status(200).json({message : 'Member successfully updated'});
+        });
+    });
+
+});
+
+/**
+ * Delete the member
+ * @route DELETE /members/{id}
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id
+ * @returns {Code} 200 - Member deleted
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden access
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.delete('/:id', token, memberAccess.updateRights(), function(req, res) {
+
+    let member = req.member;
+
+    member.remove()
+    member.save( (err) => {
+        if(err) return res.status(500).json({message : 'Unexpected internal error'});
+        return res.status(200).json({message : 'Password successfully updated'});
+    });
+
+});
+
+/**
+ * Update the member's password
+ * @route PUT /members/{id}/password
+ * @group members - Operations about members
+ * @param {string} id.path.required - member's id.
+ * @param {string} oldPassword.body.required - member's old password
+ * @param {string} newPassword.body.required - member's new password
+ * @returns {Member.model} 200 - Member's password updated
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden access
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.put('/:id/password', token, memberAccess.updateRights(), function(req, res) {
+
+    if(!req.body.oldPassword || !req.body.newPassword ) return res.status(400).json({message : 'Old password field or new password field missing'});
+    let member = req.member;
+    if(!member.validPassword(req.body.oldPassword)) return res.status(400).json({message : 'old password isn\'t valid'});
+    if(!member.setPassword(req.body.newPassword)) return res.status(400).json({message : 'new password isn\'t valid'});
+
+    member.save( (err) => {
+       if(err) return res.status(500).json({message : 'Unexpected internal error'});
+       return res.status(200).json({message : 'Password successfully updated'});
+    });
+
+});
+
+/**
+ * Get all members for keywords given on the username field
+ * @route GET /members/search/{keywords}
+ * @group members - Operations about members
+ * @param {string} keywords.path.required - username to search.
+ * @returns {Array.<String>} 200 - Member's information (limit to 10 members)
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found if the user doesn't exist
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/search/:keywords', token, function(req, res) {
+
+    Member.find(
+        {username : new RegExp('.*'+req.params.keywords+'.*', "i")},
+        {username : 1, _id : 1, email: 1})
+        .limit(10)
+        .exec(function (err, member) {
+            if(err) debug('members/:id error : ' + err)
+            if(!member) return res.status(404).json({ message:'Member not found'});
+            return res.status(200).json(member);
+        });
+
+});
+
 
 /**
  * Get all member's boards for the member's id given
@@ -86,7 +222,7 @@ router.post('/:id/circles', token, memberAccess.updateRights(), function(req, re
         });
 
         circle.validate(function (err) {
-            if(err) return res.status(400).send(err);
+            if(err) return res.status(400).json({message:err});
             // save the circle
             circle.save(function (err) {
                 if (err) {
@@ -171,7 +307,7 @@ router.post('/:id/password/reset', function(req, res) {
         member.set('resetPass', undefined);
 
         member.validate(function (err) {
-            if(err) return res.status(400).json({message : err._message});
+            if(err) return res.status(400).json({message : err});
             member.save(function (err) {
                 if (err) {
                     debug('Error in Saving user: ' + err);
@@ -243,17 +379,13 @@ router.get('/:id/email/confirm', function(req, res) {
         member.set('tokenConfirm', undefined);
 
         member.validate(function (err) {
-            if(err) return res.status(400).json({message : err._message});
-
+            if(err) return res.status(400).json({message : err});
             member.save(function (err) {
                 if (err) {
                     debug('members/:id/email/confirm error : ' + err);
                     return res.status(500).json({message : 'Unexpected internal server error'});
                 }
-                if(req.query.callback)
-                    return res.redirect(req.query.callback);
-                else
-                    return res.status(200).json({message : 'Email successfully confirmed'});
+                return res.redirect('/login');
             });
         });
     });

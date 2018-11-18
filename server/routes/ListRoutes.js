@@ -51,7 +51,7 @@ router.put('/:id/closed', token, listAccess.updateRights(), function(req, res) {
     list.closed = req.query.value;
 
     list.validate(function (err) {
-        if(err) return res.status(400).json({message:err._message});
+        if(err) return res.status(400).json({message:err});
         list.save(function (err) {
             if(err) {
                 debug('lists/:id error : ' + err);
@@ -78,13 +78,13 @@ router.put('/:id/closed', token, listAccess.updateRights(), function(req, res) {
  */
 router.put('/:id/name', token, listAccess.updateRights(), function(req, res) {
     if(!req.query.value)
-        res.status(400).json({message:'Value is missing'});
+        return res.status(400).json({message:'Value is missing'});
 
     let list = req.list;
     list.name = req.query.value;
 
     list.validate(function (err) {
-        if(err) return res.status(400).json({message:err._message});
+        if(err) return res.status(400).json({message:err});
         list.save(function (err) {
             if(err) return res.status(500).json({message:'Unexpected internal errror'});
             return res.status(200).json({message : 'Name updated successfully'});
@@ -111,13 +111,13 @@ router.put('/:id/pos', token, listAccess.updateRights(), function(req, res) {
     if(!req.query.value) res.status(400).json({message:'Value is missing'});
 
     let list = req.list;
-    list.post = req.query.value;
+    list.pos = req.query.value;
 
     list.validate(function (err) {
-        if(err) return res.status(400).json({message:err._message});
+        if(err) return res.status(400).json({message:err});
         list.save(function (err) {
             if(err) return res.status(500).send('Internal error');
-            return res.status(200).josn({message:'Position updated successfully'});
+            return res.status(200).json({message:'Position updated successfully'});
         });
     });
 });

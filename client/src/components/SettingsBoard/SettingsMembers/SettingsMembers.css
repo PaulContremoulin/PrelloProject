@@ -1,0 +1,17 @@
+.SettingsMembers {
+    margin-top: 20px;
+}
+
+.listGroupMember {
+    margin-top: 15px;
+}
+
+.listItemUser {
+  background-color: #f2f2f2;
+}
+
+.scrollingList {
+    max-height: 190px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}

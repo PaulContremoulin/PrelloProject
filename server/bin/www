@@ -54,7 +54,6 @@ function normalizePort(val) {
     // port number
     return port;
   }
-
   return false;
 }
 
@@ -101,14 +100,25 @@ function onListening() {
 /**
  * Event connection for Socket io
  */
-
 function onConnection(socket){
     sobug('A user connected');
+
     socket.on('disconnect', function(){
         sobug('user disconnected');
     });
-    socket.on('data:store', function(action){
-        sobug('Data store event : ' + JSON.stringify(action));
-        socket.broadcast.emit('data:store', action)
+
+    socket.on('subscribe', function(room) {
+        console.log('User joining room', room);
+        socket.join(room);
+    });
+
+    socket.on('unsubscribe', function(room) {
+        console.log('User leaving room', room);
+        socket.leave(room);
+    });
+
+    socket.on('data:store', function(data){
+        sobug('Data store event : ' + JSON.stringify(data.action));
+        socket.broadcast.to(data.room).emit('data:store', data.action)
     });
 }

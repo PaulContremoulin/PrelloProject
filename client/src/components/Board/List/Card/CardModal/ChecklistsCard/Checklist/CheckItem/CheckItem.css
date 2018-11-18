@@ -1,0 +1,20 @@
+.checkItem {
+    padding: 8px;
+}
+
+.closeItem {
+    display: none;
+}
+
+.itemField {
+    border-radius: 3px;
+    padding: 3px 8px 3px 8px;
+}
+
+.itemField:hover {
+    background-color: lightgrey;
+}
+
+.itemField:hover .closeItem {
+    display: block;
+}

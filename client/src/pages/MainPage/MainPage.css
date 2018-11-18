@@ -1,21 +1,44 @@
+.MainPage {
+    background-color: #99c2ff;
+    flex-grow: 1;
+}
+
 .content {
-    margin-top: 20px;
     color: ghostwhite;
 }
 
-.MainPage {
-    background-color: #99c2ff;
-    height: 100vh;
+    .contentRight {
+        margin-top: 100px;
+    }
+
+    .contentLeft {
+        margin-top: 100px;
+    }
+
+    .content {
+        margin-top: 20px;
+    }
+
+    .buttonLog {
+        margin-top: 10px;
+    }
+
+@media only screen and (max-width: 580px) {
+    h1 {
+        font-size: 30px;
+    }
 }
 
-.contentRight {
-    margin-top: 100px;
-}
+@media only screen and (max-width: 400px) {
+    h1 {
+        font-size: 20px;
+    }
 
-.contentLeft {
-    margin-top: 100px;
-}
+    .butCreateAccount {
+        font-size: 15px;
+    }
 
-.buttonLog {
-    margin-top: 10px;
+    .buttonLog {
+        font-size: 15px;
+    }
 }

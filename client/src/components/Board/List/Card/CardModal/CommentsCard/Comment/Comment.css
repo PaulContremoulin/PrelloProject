@@ -1,0 +1,23 @@
+.oneComment {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.text {
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+.author {
+    font-weight: bold;
+    display: inline-block;
+    font-size: 15px;
+}
+
+.date {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 14px;
+    font-style: italic;
+}

@@ -1,0 +1,18 @@
+.Checklist {
+    margin-top : 8px;
+    padding: 8px;
+    background-color: ghostwhite;
+    border-radius: 5px;
+}
+.progressBar {
+    margin-bottom: 8px;
+    height: 8px;
+}
+.CheckItems {
+    padding: 8px;
+}
+.addField {
+    padding: 8px;
+    background-color: white;
+    cursor: pointer;
+}

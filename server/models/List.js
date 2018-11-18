@@ -5,7 +5,8 @@ let Schema = mongoose.Schema;
 let listSchema = new Schema({
         name: {
             required  : true,
-            minlength : 3,
+            minlength : 1,
+            maxlength : 100,
             type      : String
         },
         closed : {

@@ -1,9 +1,9 @@
 // Modules
 import React from 'react';
 import { history } from '../../../history';
+import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 
 // Css...
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import "./ResetPswd.css";
 
 // Actions & Constant
@@ -24,7 +24,7 @@ export class ResetPswd extends React.Component {
    handleSubmit = (event) => {
      event.preventDefault();
      const email = this.state.email;
-     resetPswd(email,process.env.REACT_APP_FRONT_URL+'/')
+     resetPswd(email,process.env.REACT_APP_FRONT_URL)
      .then( res => (res.status === 202) ? this.setState({ emailIsSent: true, emailNotFound: false }) : this.setState({ emailNotFound: true, email:"" }) )
      .catch( err => this.setState({ emailNotFound: true, email:"" }) )
    }
@@ -70,7 +70,7 @@ export class ResetPswd extends React.Component {
                   </FormGroup>
                 </Col>
                 <Col className="text-center">
-                    <Button color="info">Send</Button>
+                    <Button className="btnSend">Send</Button>
                 </Col>
               </Form>
             <Row>

@@ -1,6 +1,5 @@
 .List {
-  color: rgb(23, 57, 77);
-  background-color: #dfe3e6;
+  background-color: rgba(0,0,0,0);
   display: inline-block;
   font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
   font-size: 14px;
@@ -8,6 +7,44 @@
   line-height: 20px;
   vertical-align: top;
   white-space: nowrap;
-  margin-left: 4px;
   height: 100% !important;
+  border: 0px;
+}
+
+.ListTitle {
+  padding-right: 24px;
+  padding-left: 24px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  flex: auto;
+}
+
+.ListContainer {
+  background-color: rgba(255,255,255,0.8);
+  border-radius: .25rem;
+  width: 315px !important;
+}
+
+.ListScroll {
+  max-height: 65vh;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.ListScroll::-webkit-scrollbar-thumb{
+  border-radius: 3px;
+  background: grey ;
+}
+
+.ListScroll::-webkit-scrollbar {
+  width: 8px;  /* remove scrollbar space */
+  background: transparent ;  /* optional: just make scrollbar invisible */
+}
+
+
+
+.listOption {
+  padding-left: 8px;
+  padding-right: 4px;
+  color: #aaaaaa;
 }

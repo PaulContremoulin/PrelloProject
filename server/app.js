@@ -20,8 +20,8 @@ app.use(logger('app:api', 'dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Environment configuration
 const environmentPath = path.resolve('./environments/.' + app.get('env') + '.env' );
@@ -44,7 +44,11 @@ const boardRouter = require('./routes/BoardRoutes');
 const ListRoutes = require('./routes/ListRoutes');
 const CardRoutes = require('./routes/CardRoutes');
 const CircleRoutes = require('./routes/CircleRoutes');
+const ChecklistRoutes = require('./routes/ChecklistRoutes');
+const LabelRoutes = require('./routes/LabelRoutes');
 
+
+// Serve the API
 app.use('/api', indexRouter);
 app.use('/api', authRouter);
 app.use('/api/members', memberRouter);
@@ -52,5 +56,15 @@ app.use('/api/boards', boardRouter);
 app.use('/api/lists', ListRoutes);
 app.use('/api/cards', CardRoutes);
 app.use('/api/circles', CircleRoutes);
+app.use('/api/checklists', ChecklistRoutes);
+app.use('/api/labels', LabelRoutes);
+app.use('/api/*', function(req, res) {
+    res.status(404).json({message : 'Resource not found on this server'});
+});
+
+//Serve the client
+app.use('/*', function(req, res){
+    res.sendFile(__dirname + '/public/index.html');
+});
 
 module.exports = app;

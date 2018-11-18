@@ -1,13 +1,14 @@
 // Modules
 import React from 'react';
-import './Registration.css';
-import { registerUser } from '../../../requests/registration';
 import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import Octicon from 'react-octicon'
 import {history} from '../../../history';
+
 // Css...
+import './Registration.css';
 
 // Actions & Constant
+import { registerUser } from '../../../requests/registration';
 
 
 export class Registration extends React.Component {
@@ -110,8 +111,6 @@ export class Registration extends React.Component {
                                emailUsernameExist: false
                            });
                        }
-                   } else if (res.status === 204) {
-                       console.log("ok");
                    } else {
                        this.resetInput();
                        this.setState({emailExist:false, usernameExist:false, badRequest:true, emailUsernameExist:false});
@@ -295,7 +294,7 @@ export class Registration extends React.Component {
                 </Form>
                     <Row>
                       <Col className="text-center">
-                          <Button className="btnGithub" href="http://localhost:5000/api/auth/github"><Octicon name="mark-github"/> Sign Up with Github</Button>
+                          <Button className="btnGithub" href="/api/auth/github"><Octicon name="mark-github"/> Sign Up with Github</Button>
                       </Col>
                     </Row>
                     <Row>

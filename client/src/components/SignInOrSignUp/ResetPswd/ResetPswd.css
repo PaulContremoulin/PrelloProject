@@ -22,3 +22,11 @@
 .text-center {
    margin-top: 10px;
 }
+
+.btnSend {
+    background-color: #6495ED;
+}
+
+.btnSend:hover {
+    background-color: #4169E1;
+}

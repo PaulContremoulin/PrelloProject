@@ -1,0 +1,13 @@
+.descButton {
+    margin: 8px;
+}
+
+.desc {
+    padding : 8px;
+    background-color: ghostwhite;
+    border-radius: 5px;
+}
+
+.descCard {
+    margin-bottom: 16px;
+}

@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let Board = require('./../models/Board');
 let Member = require('./../models/Member');
+let Label = require('./../models/Label');
 let List = require('./../models/List');
 let debug = require('debug')('app:board');
 let boardAccess = require('./../middlewares/BoardAccess');
@@ -25,15 +26,15 @@ router.post('/', token, function(req, res) {
     newBoard.createOrUpdateMember(req.user._id, "admin", true);
 
     newBoard.validate(function (err) {
-        if (err) return res.status(400).json({message : err._message});
+        if (err) return res.status(400).json({message : err});
         newBoard.save(function (err) {
             if (err) {
                 debug('POST boards/ error : ' + err);
-                return res.status(400).json({message : err._message});
+                return res.status(400).json({message : err});
             }
             Member.findByIdAndUpdate(
                 { _id: req.user._id},
-                { $push: { idBoards: newBoard._id } },
+                { $addToSet: { idBoards: newBoard._id } },
                 function (err) {
                     if (err) return res.status(500).json({message : 'Unexpected internal error'});
                     return res.status(201).json(newBoard);
@@ -58,11 +59,46 @@ router.get('/:id', token, boardAccess.readRights(), function(req, res) {
     req.query._id = req.params.id;
 
     Board.findById(req.query)
-        .populate('memberships.idMember', 'username firstName lastName')
+        .populate('memberships.idMember', '_id username firstName lastName')
+        .populate('labels')
         .exec(function (err, board) {
         if (err) debug('GET boards/:id error : ' + err);
         if (!board) return res.status(404).json({message : 'Board not found'});
         return res.status(200).json(board);
+    });
+});
+
+/**
+ * Update a board by id
+ * @route PUT /boards/{id}
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id
+ * @param {string} name.query - board's name.
+ * @param {string} desc.query - board's description.
+ * @param {string} closed.query - board's archived or not.
+ * @returns {code} 200 - Board updated successfully
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.put('/:id', token, boardAccess.updateRights(), function(req, res) {
+
+    let board = req.board;
+
+    (req.query.name) ? board.name = req.query.name : null;
+    (req.query.desc) ? board.desc = req.query.desc : null;
+    (req.query.closed) ? board.closed = req.query.closed : null;
+
+    board.validate(function (err) {
+        if(err) return res.status(400).json({message:err});
+        board.save(function (err) {
+            if(err) {
+                debug('PUT board/:id error : ' + err);
+                return res.status(500).json({message:'Unexpected internal error'});
+            }
+            return res.status(200).json({message:'Board updated successfully'});
+        });
     });
 });
 
@@ -90,7 +126,7 @@ router.post('/:id/lists', token, boardAccess.updateRights(), function(req, res) 
 
         let newList = new List(req.body);
         newList.validate(function (err) {
-            if (err) return res.status(400).json({message:err.message});
+            if (err) return res.status(400).json({message:err});
 
             newList.save(function (err) {
                 if (err) {
@@ -135,12 +171,12 @@ router.get('/:id/lists', token, boardAccess.readRights(), function(req, res) {
 
 /**
  * Add the member at the board (or update role)
- * @route POST /boards/{id}/members/{id}
+ * @route PUT /boards/{id}/members/{id}
  * @group board - Operations about boards
  * @param {string} id.path.required - board's id.
  * @param {string} idMember.path.required - board's id.
  * @param {string} type.query.required - role assigned (observer - admin - normal).
- * @returns {code} 200 - List object
+ * @returns {Membership.model} 200 - A member added
  * @returns {Error}  401 - Unauthorized, invalid credentials
  * @returns {Error}  404 - Not found, board is not found
  * @returns {Error}  default - Unexpected error
@@ -151,20 +187,122 @@ router.put('/:id/members/:idMember', token, boardAccess.updateRights(), function
     let board = req.board;
     let type = req.query.type ? req.query.type : 'observer';
 
-    if((type === 'admin' && !board.isAdminMember(req.user.id))
-        || (type !== 'admin' && board.nbAdmin() <= 1 && req.user.id === req.params.idMember)){
-        return res.status(403).json({message : 'Can not set the role of the last administrator'});
-    }
+    if((type === 'admin' && !board.isAdminMember(req.user.id)) || (type !== 'admin' && board.isAdminMember(req.params.idMember) && !board.isAdminMember(req.user.id)))
+        return res.status(403).json({message : 'Forbidden access'});
 
-    board.createOrUpdateMember(req.params.idMember, type);
+    if(type !== 'admin' && board.nbAdmin() <= 1 && board.isAdminMember(req.params.idMember))
+        return res.status(403).json({message : 'Can not set the role of the last administrator'});
+
+    let membership = board.createOrUpdateMember(req.params.idMember, type);
 
     board.validate(function (err) {
-        if(err) return res.status(400).json({message:err._message});
+        if(err) return res.status(400).json({message:err});
         board.save(function (err) {
             if(err) return res.status(500).json({message:'Unexpected internal error'});
-            return res.status(200).json(board);
+
+            Member.findByIdAndUpdate(
+                { _id: req.params.idMember},
+                { $addToSet: { idBoards: board._id } },
+                {
+                    "fields": { "username":1, "lastName": 1, "firstName" : 1, "_id": 1 },
+                    "new": true
+                }).exec(function (err, member) {
+                    if (!member) return res.status(500).json({message : 'Unexpected internal error'});
+                    membership.idMember = member;
+                    return res.status(200).json(membership);
+                });
         });
     });
+});
+
+/**
+ * Get members of a board
+ * @route GET /boards/{id}/members
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @returns {Array.<MembershipDetail>} 200 - Members object
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.get('/:id/members', token, boardAccess.readRights(), function(req, res) {
+
+    Board.findById(req.params.id, {_id : 1, memberships: 1})
+        .populate('memberships.idMember', 'username firstName lastName')
+        .exec(function (err, board) {
+            if (err) debug('GET boards/:id error : ' + err);
+            if (!board) return res.status(404).json({message : 'Board not found'});
+            return res.status(200).json(board.memberships);
+        });
+});
+
+/**
+ * Delete a member of a board
+ * @route DELETE /boards/{id}/members/{idMemberShip}
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @param {string} idMemberShip.path.required - MemberShip's id.
+ * @returns {code} 200 - Members deleted successfully
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.delete('/:id/members/:idMemberShip', token, boardAccess.deleteRights(), function(req, res) {
+
+    let board = req.board;
+
+    if(board.nbAdmin() <= 1 && board.isAdminMember(req.params.idMemberShip))
+        return res.status(403).json({message : 'Can not delete the last administrator'});
+
+    board.removeMember( req.params.idMemberShip , (err) => {
+        if(err)  return res.status(404).json({message : 'Membership id not found'});
+        board.validate(function (err) {
+            if (err) return res.status(400).json({message: err});
+            board.save(function (err) {
+                if (err) {
+                    debug('PUT board/:id error : ' + err);
+                    return res.status(500).json({message: 'Unexpected internal error'});
+                }
+                return res.status(200).json({message: 'Board updated successfully'});
+            });
+        });
+    });
+
+});
+
+/**
+ * Create a label
+ * @route POST /boards/{id}/labels
+ * @group board - Operations about boards
+ * @param {string} id.path.required - board's id.
+ * @param {string} name.query.required - label's name.
+ * @param {string} color.query.required - label's color.
+ * @returns {Label.model} 200 - Label object
+ * @returns {Error}  401 - Unauthorized, invalid credentials
+ * @returns {Error}  403 - Forbidden, invalid credentials
+ * @returns {Error}  404 - Not found, board is not found
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
+router.post('/:id/labels', token, boardAccess.readRights(), function(req, res) {
+
+    if(!req.query.name) return res.status(400).json({message: 'Label name missing'});
+    if(!req.query.color) return res.status(400).json({message: 'Label color missing'});
+
+    let label = new Label({name : req.query.name, color : req.query.color, idBoard : req.board._id});
+
+    label.validate(function(err){
+        if(err) return res.status(400).json({message: err});
+        label.save(function(err){
+            if(err) return res.status(500).json({message:'Unexpected internal error.'});
+            return res.status(201).json(label);
+        })
+    })
+
 });
 
 module.exports = router;

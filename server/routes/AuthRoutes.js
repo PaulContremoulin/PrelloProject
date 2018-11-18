@@ -24,18 +24,16 @@ router.post('/signup', function(req, res, next) {
         }
         if (!member) return res.status(400).json({message : info});
 
-        let confirmUrl = process.env.HOST + ':' + process.env.PORT + '/api/members/' + member._id + '/email/confirm?token=' + member.tokenConfirm;
-
-        if(req.body.callback) confirmUrl += '&callback=' + req.body.callback;
+        let confirmUrl = process.env.DOMAIN + '/api/members/' + member._id + '/email/confirm?token=' + member.tokenConfirm;
 
         if(process.env.NODE_ENV === 'test') return res.status(200).end();
+
+        res.status(200).json({message : 'Successful registration'});
 
         mail.confirmEmailMessage(member, confirmUrl, function(err){
             if(err) {
                 debug(err);
-                return res.status(500).json({message:'Error during the sending of the confirmation email'});
             }
-            return res.status(200).json({message : 'Successful registration'});
         });
     })(req, res, next);
 });
@@ -97,21 +95,20 @@ router.get('/auth/github/callback',
 router.post('/auth/forgot/password', function(req, res) {
 
     if(!req.body.email) return res.status(400).json({message:'Email missing'});
-    if(!req.body.callback) return res.status(400).json({message:'Url callback missing'});
 
     Member.findOne({email : req.body.email}, function(err, member) {
         if(err) debug('POST /auth/forgot/password error : ' + err)
         if(!member) return res.status(404).json({message:'Not account found'});
 
-        let resetUrl = req.body.callback + '/login/reset/' + member._id + '/password?token=' + member.generateResetPasswordToken();
+        let resetUrl = process.env.DOMAIN + '/login/reset/' + member._id + '/password?token=' + member.generateResetPasswordToken();
+
+        member.save();
+        res.status(202).json({message:'Email reset password sent successfully'});
 
         mail.resetPasswordMessage(member, resetUrl, function(err){
             if(err){
                 debug('POST /auth/forgot/password error : ' + err);
-                return res.status(500).json({message:'Error during the sending of the confirmation email'});
             }
-            member.save();
-            return res.status(202).json({message:'Email reset password sent successfully'});
         });
     });
 });

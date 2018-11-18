@@ -1,0 +1,65 @@
+.clickBoard {
+     cursor: pointer;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+ }
+
+.clickBoard2 {
+    cursor: pointer;
+}
+
+.headerBoardCard {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.ellipsisCard {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.butHeaderCard {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.footerCardBoard {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+@media only screen and (min-width: 1200px) {
+    .ellipsisCard {
+        width: 200px;
+    }
+}
+
+@media only screen and (min-width: 800px) and (max-width: 1200px) {
+    .ellipsisCard {
+        width: 100px;
+    }
+}
+
+@media only screen and (min-width: 570px) and (max-width: 800px)  {
+    .ellipsisCard {
+        width: 100px;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 570px)  {
+    .ellipsisCard {
+        width: 180px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .ellipsisCard {
+        width: 100px;
+    }
+}

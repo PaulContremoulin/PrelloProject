@@ -1,11 +1,13 @@
 import React from 'react';
-import {Login} from "../../components/SignInOrSignUp/Login/Login";
-import {NavBar} from "../../components/NavBar/NavBar";
+
+//Css
 import './LoginPage.css';
+
+//Action & component
+import {Login} from "../../components/SignInOrSignUp/Login/Login";
 
 export const LoginPage = () => (
     <div className="LoginPage">
-        <NavBar/>
         <Login />
     </div>
 )

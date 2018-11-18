@@ -1,71 +1,70 @@
 // Modules
 import React from 'react';
-import {Container, Row, Col, Alert} from 'reactstrap';
+import {connect} from "react-redux";
+import {Row, Col} from 'reactstrap';
+import { history } from '../../history';
 
 // Css...
 import './ContentHome.css';
 
 // Actions & Constant
 import {CreateBoard} from "../CreateBoard/CreateBoard";
-import {CreateCircle} from "../CreateCircle/CreateCircle";
-import {connect} from "react-redux";
 import {CardBoard} from "../CardBoard/CardBoard";
-import {CardCircle} from "../CardCircle/CardCircle";
-import {getBoardsUser} from "../../requests/boards";
-import {getCirclesUser} from "../../requests/circle";
 import {fetchBoards} from "../../actions/boardActions";
 import {fetchCircles} from "../../actions/circleActions";
+import {ButtonFiltre} from "./ButtonFiltre/ButtonFiltre";
 
 
 export class ContentHomeToBeConnected extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    goToPageBoard = (board) => {
+      history.push('/board/' + board._id + '/' + board.name)
+    }
+
     render() {
         return (
             <div>
-                <Container className="contentHome">
-                    <Row>
-                        <Col>
-                            <h2>Personnal's Boards</h2>
-                        </Col>
-                    </Row>
-                </Container>
-                <Container className="contentBoard">
-                    <Row>
-                            {this.props.boards.map(board => {
-                                    return(
-                                        <Col className="displayBoard" xs={12} sm={6} md={3}>
-                                            <CardBoard board={board} key={ board._id }/>
-                                        </Col>
-                                    )
-                                })}
-                        <Col className="displayBoard" xs={12} sm={6} md={3}>
-                            <CreateBoard/>
-                        </Col>
-                    </Row>
-                </Container>
+                <Row className="titleContent">
+                    <Col xs={12}>
+                        {this.props.state ?
+                            <h2>Personal Boards (Archived)</h2>
+                            :
+                            <h2>Personal Boards</h2>
+                        }
+                            <ButtonFiltre />
+                    </Col>
+                </Row>
+                <Row className="displayCardBoard">
+                    {this.props.boards.map(board => {
+                        return(
+                            <Col className="displayBoard" xs={12} sm={6} md={6} xl={3} key={ board._id }>
+                                <CardBoard key={ board._id } board={board} goToPageBoard={() => this.goToPageBoard(board)} />
+                            </Col>
+                        )
+                    })}
+                    {!this.props.state &&
+                    <Col className="displayBoard" xs={12} sm={6} md={6} xl={3}>
+                        <CreateBoard/>
+                    </Col>
+                    }
+                </Row>
             </div>
         )
-    }
-
-    componentDidMount() {
-       getBoardsUser(this.props.user.member._id)
-         .then(res => {this.props.fetchBoards(res.data)})
-           .catch(error => {console.log(error)});
-       getCirclesUser(this.props.user.member._id)
-         .then(res => {this.props.fetchCircles(res.data)})
-           .catch(error => {console.log(error)})
     }
 }
 
 const mapStateToProps = ( state, props ) => ({
-    user : state.user,
     boards: state.boards,
-    circles: state.circles,
+    state: state.state,
 });
 
 const mapDispatchToProps = ( dispatch ) => ({
     fetchBoards: (res) => dispatch( fetchBoards(res)),
     fetchCircles: (res) => dispatch( fetchCircles(res)),
-
 });
 
 export const ContentHome = connect(

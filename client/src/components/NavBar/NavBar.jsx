@@ -1,25 +1,56 @@
-// Modules
+    // Modules
 import React from 'react';
 import { connect } from 'react-redux';
 import {history} from '../../history';
-import {logOut} from "../../actions/signActions";
+import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler} from 'reactstrap';
 
 // Css...
 import logo from '../../assets/prello_logo.png';
 import './NavBar.css';
-import {Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button} from 'reactstrap';
 
 // Actions & Constant
+import {logOut} from "../../actions/signActions";
+import {fetchBoards} from "../../actions/boardActions";
+import {fetchCircles, setCircle} from "../../actions/circleActions";
+import {setBoard} from "../../actions/boardActions";
 
 export class NavBarToBeConnected extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.toggleNavbar = this.toggleNavbar.bind(this);
+        this.state = {
+            collapsed: true
+        };
+    }
+
+    toggleNavbar() {
+        this.setState({
+            collapsed: !this.state.collapsed
+        });
+    }
+
     logOut = () => {
+        const temp = [];
+        const board = {
+            _id: "",
+            name: "",
+            idOrganization: "",
+            closed: false,
+            desc: "",
+            memberships: [],
+            lists: [],
+            prefs: {
+                background:"",
+            },
+        };
+        this.props.fetchCircles(temp);
+        this.props.fetchBoards(temp);
+        this.props.setBoard(board);
+        this.props.setCircle(temp);
         this.props.logOut();
         history.push('/');
-    };
-
-    redirectionMain = () => {
-        history.push('/')
     };
 
     redirectionHome = () => {
@@ -45,13 +76,10 @@ export class NavBarToBeConnected extends React.Component {
         } = this.props;
         return (
             <Navbar expand="md">
-                {!(user.member) ?
-                    <NavbarBrand><img onClick={() => this.redirectionMain()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
-                    :
-                    <NavbarBrand><img onClick={() => this.redirectionHome()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
-                }
+                <NavbarBrand><img onClick={() => this.redirectionHome()} src={logo} style={{width:100, marginTop: -5}} /></NavbarBrand>
+                <NavbarToggler onClick={this.toggleNavbar}  />
                 {!(user.member) && !(noLink==="true") &&
-                <Collapse navbar>
+                <Collapse isOpen={!this.state.collapsed} navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
                             <NavLink className="helpNavItem" href="#" onClick={ () => this.redirectionRegistration() }>Sign Up</NavLink>
@@ -63,8 +91,11 @@ export class NavBarToBeConnected extends React.Component {
                 </Collapse>
                 }
                 {(user.member) && !(noLink==="true") &&
-                <Collapse navbar>
+                <Collapse isOpen={!this.state.collapsed} navbar>
                     <Nav className="ml-auto" navbar>
+                        <NavItem>
+                            <NavLink className="helpNavItem" href="#" onClick={() => this.redirectionHome()}>Home</NavLink>
+                        </NavItem>
                         <NavItem>
                             <NavLink className="helpNavItem" href="#" onClick={() => this.redirectionAccount()}>My account</NavLink>
                         </NavItem>
@@ -80,10 +111,14 @@ export class NavBarToBeConnected extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-    user: state.user
+    user: state.user,
 });
 const mapDispatchToProps = (dispatch) => ({
     logOut: () => dispatch( logOut()),
+    fetchBoards: (res) => dispatch(fetchBoards(res)),
+    fetchCircles: (res) => dispatch(fetchCircles(res)),
+    setBoard: (res) => dispatch(setBoard(res)),
+    setCircle: (res) => dispatch(setCircle(res)),
 });
 
 export const NavBar = connect(

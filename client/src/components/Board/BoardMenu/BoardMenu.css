@@ -1,16 +1,15 @@
 .boardNavBar {
-  background-color: #ffffff;
+  background-color: rgba(0,0,0,0.6);
 }
-
 .boardTitle {
-    color: black;
+    color: whitesmoke;
 }
 .boardTitle:hover {
-    color: black;
+    color: whitesmoke;
 }
 
 .boardMenu {
-    color : black;
+    color : whitesmoke;
 }
 
 .BoardMenu {
