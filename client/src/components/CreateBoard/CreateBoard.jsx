@@ -41,11 +41,12 @@ export class CreateBoardToBeConnected extends React.Component {
     }
 
     openModal (){
+        this.props.fetchMembersCreationBoard()
         this.setState({ open: true })
     }
 
     closeModal () {
-        this.props.fetchMembersCreationBoard([])
+        this.props.fetchMembersCreationBoard()
         this.setState({
             activeTab: '1',
             open: false,
