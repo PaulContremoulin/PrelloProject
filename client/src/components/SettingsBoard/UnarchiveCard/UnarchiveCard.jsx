@@ -23,6 +23,7 @@ export class UnarchiveCardToBeConnected extends React.Component {
     unarchive = (cardIdList) => {
         changeCardClosed(cardIdList.card.id, "false")
             .then(res => {
+                this.props.setClosed(cardIdList.idList, cardIdList.card.id, false, this.props.board._id)
                 const test = this.state.cardsIdList.filter(cardT=> cardT.card.id !== cardIdList.card.id)
                 this.setState({cardsIdList:test})
             })
@@ -42,19 +43,19 @@ export class UnarchiveCardToBeConnected extends React.Component {
                         <Col md={{size:11, offset:1}}>
                             <ListGroup className="scrollingListCards">
                                 {this.state.cardsIdList.map(cardIdList => {
-                                    return (
-                                        <ListGroupItem key={cardIdList.card.id}>
-                                            <Row>
-                                                <Col sm={6}>
-                                                    {'Name card : '+cardIdList.card.name}
-                                                </Col>
-                                                <Col sm={6}>
-                                                    <Button className="float-right" onClick={() => this.unarchive(cardIdList)} color="secondary" size="sm">Unarchive</Button>
-                                                </Col>
-                                            </Row>
-                                        </ListGroupItem>
-                                    )
-                                }
+                                        return (
+                                            <ListGroupItem key={cardIdList.card.id}>
+                                                <Row>
+                                                    <Col sm={6}>
+                                                        {'Name card : '+cardIdList.card.name}
+                                                    </Col>
+                                                    <Col sm={6}>
+                                                        <Button className="float-right" onClick={() => this.unarchive(cardIdList)} color="secondary" size="sm">Unarchive</Button>
+                                                    </Col>
+                                                </Row>
+                                            </ListGroupItem>
+                                        )
+                                    }
                                 )}
                             </ListGroup>
                         </Col>
@@ -76,7 +77,7 @@ const mapStateToProps = (state, props) => ({
     board: state.board,
 });
 const mapDispatchToProps = (dispatch) => ({
-    setClosed: (res) => dispatch(setClosed(res)),
+    setClosed: (idList, idCard, closed, idBoard) => dispatch(setClosed(idList, idCard, closed, idBoard)),
 });
 
 export const UnarchiveCard = connect(
