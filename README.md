@@ -1,10 +1,11 @@
 # Prello project IG5 - Option 1 - G5
-Project managing tool using MongoDB - Express - NodeJS - Socket.IO - React - Redux. Application developed during our 5th year of CS & Management formation at Polytech Montpellier.  
+Project managing tool using MongoDB - Express - NodeJS - Socket.IO - React - Redux.  
+This application was developed during our 5th year of CS & Management formation at Polytech Montpellier.  
 Prello application : [https://prello-tech.igpolytech.fr/](https://prello-tech.igpolytech.fr/) 
 ## Getting started
 ### Requirement
 You also need to have :  
-* NodeJS and npm installed in your computer (check the documentation [https://www.npmjs.com/get-npm](https://www.npmjs.com/get-npm))
+* NodeJS (minimum version : 10.2.1) and npm (minimum version : 5.6.0) installed in your computer (check the documentation [https://www.npmjs.com/get-npm](https://www.npmjs.com/get-npm))
 * MongoDB installed in your computer (check the documentation [https://docs.mongodb.com](https://docs.mongodb.com/manual/tutorial/getting-started/))
 ### Launch
 * Step 1 : run `npm install` in both /client and /server folders
