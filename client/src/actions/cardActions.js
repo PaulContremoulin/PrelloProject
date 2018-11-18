@@ -101,7 +101,7 @@ export const setDue = (idList, idCard, due, idBoard) => {
  * @param idList, idCard, dueComplete
  * @return CARD_SET_DUE_COMPLETE action
  */
-export const setDueComplete = (idList, idCard, dueComplete) => {
+export const setDueComplete = (idList, idCard, dueComplete, idBoard) => {
     return {
         type: CARD_SET_DUE_COMPLETE,
         list: {
@@ -113,7 +113,8 @@ export const setDueComplete = (idList, idCard, dueComplete) => {
         },
         meta: {
             socket: {
-                channel: 'data:store'
+                channel: 'data:store',
+                room: idBoard,
             }
         }
     }

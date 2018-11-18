@@ -331,7 +331,7 @@ const mapDispatchToProps = ( dispatch ) => ({
     moveList: (newListOrder) => dispatch( moveList(newListOrder) ),
     addCard: (card) => dispatch( addCard(card) ),
     moveCard: (newList, indexOfList) => dispatch( moveCard(newList, indexOfList) ),
-    setListName: (listId, listName) => dispatch( setListName(listId, listName) ),
+    setListName: (listId, listName, idBoard) => dispatch( setListName(listId, listName, idBoard) ),
     moveCardFromList: (newListStart, indexOfListStart, newListEnd, indexOfListEnd) => dispatch( moveCardFromList(newListStart, indexOfListStart, newListEnd, indexOfListEnd) ),
     resetComments: () => dispatch( resetComments()),
     resetChecklists: () => dispatch( resetChecklists()),
