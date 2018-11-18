@@ -68,7 +68,7 @@ describe('actions', () => {
     expect(actions.setDue(idList, idCard, due, idBoard)) == (expectedAction)
   })
   it('should create an action to set the completed status of the card', () => {
-    const idList = "", idCard = "", dueComplete = "";
+    const idList = "", idCard = "", dueComplete = "", idBoard = "";
     const expectedAction = {
       type: actions.CARD_SET_DUE_COMPLETE,
       list: {
@@ -80,11 +80,12 @@ describe('actions', () => {
       },
       meta: {
           socket: {
-              channel: 'data:store'
+              channel: 'data:store',
+              room: idBoard,
           }
       }
     }
-    expect(actions.setDueComplete(idList, idCard, dueComplete)) == (expectedAction)
+    expect(actions.setDueComplete(idList, idCard, dueComplete, idBoard)) == (expectedAction)
   })
   it('should create an action to set the archived status of the card', () => {
     const idList = "", idCard = "", closed = "", idBoard = "";
