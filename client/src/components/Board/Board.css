@@ -8,6 +8,10 @@
     margin-top: 10px;
     overflow: auto;
     overflow-y: hidden;
+    height: 100%;
+    height: -webkit-calc(100% - 78px);
+    height: -moz-calc(100% - 78px);
+    height: calc(100% - 78px);
 }
 
 div.Lists::-webkit-scrollbar {

@@ -28,9 +28,9 @@
 }
 
 .ListScroll {
-  max-height: 65vh;
   overflow: auto;
   overflow-x: hidden;
+max-height: 60vh;
 }
 
 .ListScroll::-webkit-scrollbar-thumb{
