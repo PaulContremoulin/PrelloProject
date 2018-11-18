@@ -28,12 +28,12 @@ router.post('/signup', function(req, res, next) {
 
         if(process.env.NODE_ENV === 'test') return res.status(200).end();
 
+        res.status(200).json({message : 'Successful registration'});
+
         mail.confirmEmailMessage(member, confirmUrl, function(err){
             if(err) {
                 debug(err);
-                return res.status(500).json({message:'Error during the sending of the confirmation email'});
             }
-            return res.status(200).json({message : 'Successful registration'});
         });
     })(req, res, next);
 });
@@ -102,13 +102,13 @@ router.post('/auth/forgot/password', function(req, res) {
 
         let resetUrl = process.env.DOMAIN + '/login/reset/' + member._id + '/password?token=' + member.generateResetPasswordToken();
 
+        member.save();
+        res.status(202).json({message:'Email reset password sent successfully'});
+
         mail.resetPasswordMessage(member, resetUrl, function(err){
             if(err){
                 debug('POST /auth/forgot/password error : ' + err);
-                return res.status(500).json({message:'Error during the sending of the confirmation email'});
             }
-            member.save();
-            return res.status(202).json({message:'Email reset password sent successfully'});
         });
     });
 });

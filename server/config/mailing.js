@@ -24,7 +24,7 @@ let resetPasswordMessage = function(recipient, resetUrl, next) {
         // plaintext body
         text: 'Hello ' + recipient.firstName + '!',
         // HTML body
-        html:'<p><b>Hello</b> ' + recipient.username + ' !</p>'+
+        html:'<p>Hello <b>' + recipient.username + '</b> !</p>'+
         '<p>You have send request to reset your password.<br/>' +
         'Click on the link below to reset your password account. (Expire in 1 hour)<br/>' +
         'Link : <a href="' + resetUrl + '">' + resetUrl + '</a></p>' +
@@ -43,7 +43,7 @@ let confirmEmailMessage = function(recipient, confirmUrl, next) {
         // Subject of the message
         subject: 'Prello - Confirm your email',
         // plaintext body
-        text: 'Hello ' + recipient.firstName + '!',
+        text: 'Hello <b>' + recipient.firstName + '</b> !',
         // HTML body
         html:'<p><b>Hello</b> ' + recipient.firstName + ' !</p>'+
         '<p>Thanks you for your registration on Prello !<br/>' +

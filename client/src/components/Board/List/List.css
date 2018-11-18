@@ -31,15 +31,17 @@
   overflow-x: hidden;
 }
 
-::-webkit-scrollbar-thumb{
+.ListScroll::-webkit-scrollbar-thumb{
   border-radius: 3px;
   background: grey ;
 }
 
-::-webkit-scrollbar {
+.ListScroll::-webkit-scrollbar {
   width: 8px;  /* remove scrollbar space */
   background: transparent ;  /* optional: just make scrollbar invisible */
 }
+
+
 
 .listOption {
   padding-left: 8px;

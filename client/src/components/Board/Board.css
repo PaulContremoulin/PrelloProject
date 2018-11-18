@@ -6,9 +6,13 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
-    height: 51em;
     overflow: auto;
     overflow-y: hidden;
+}
+
+div.Lists::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
 }
 
 .BoardPage {
@@ -33,3 +37,4 @@
 .iconBefore {
     margin-right: 8px;
 }
+
