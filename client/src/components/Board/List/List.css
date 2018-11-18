@@ -27,7 +27,7 @@
 
 .ListScroll {
   max-height: 65vh;
-  overflow: scroll;
+  overflow: auto;
   overflow-x: hidden;
 }
 

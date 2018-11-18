@@ -102,10 +102,9 @@ export class List extends React.Component {
                                 {...provided.droppableProps}
                             >
                                 <Card className="List" style={{"width": "100%", "margin": "0px"}}>
-
+                                    <div  className="ListScroll">
                                     {(list.cards != null && list.cards.length > 0) ?
-                                        <div className="ListScroll">
-                                            {list.cards.map((card, index) => (
+                                            list.cards.map((card, index) => (
                                             (card.closed) ?
                                                 null
                                                 :
@@ -119,11 +118,11 @@ export class List extends React.Component {
 
                                                     />
                                                 </div>
-                                        ))}
-                                        </div>
+                                        ))
                                         :
                                         null
                                     }{provided.placeholder}
+                                    </div>
                                     <AddCard addCard={(cardName) => addCard(cardName, list.id)}/>
                                 </Card>
                             </CardList>
